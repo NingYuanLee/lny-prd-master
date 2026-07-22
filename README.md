@@ -31,26 +31,104 @@ AI Agent Skills 驱动的产品需求文档（PRD）工作流工具包。以"文
 
 ## 快速开始
 
-在 AI 编程工具中打开任意空目录（或已有 `main_spec.md` 的 PRD 项目根目录），输入：
+### 安装
+
+将本仓库克隆到本地，并在 AI 编程工具中将各子目录注册为 Agent Skill（具体方式取决于所用工具）：
+
+**Cursor**：将 `lny-prd-*/` 目录放入 `~/.cursor/skills/` 或在工作区 `.cursor/skills/` 中引用。
+
+**Claude Code / Codex**：按对应工具的 Skill 配置方式，指向各 `lny-prd-*/SKILL.md` 文件。
+
+### 使用
+
+在 AI 编程工具中打开任意空目录（或已有 `main_spec.md` 的 PRD 项目根目录），输入总控命令：
+
+```
+@lny-prd-master
+```
+
+或直接使用斜杠命令：
 
 ```
 /lny-prd-master
 ```
 
-Agent 将自动判定当前状态：空目录则走立项脚手架，已有项目则按状态检测路由到应执行的下一步。
+Agent 将自动判定当前状态：
 
-## 项目结构
+- **空目录**：走立项脚手架，引导填写项目名称、终端范围等关键信息，生成初始文档
+- **已有项目**：按状态检测找到当前应执行的步骤，自动路由；用户回复「继续」即可进入下一轮
+
+### 推荐工作流
+
+```text
+① 立项 → ②③④ 规格三件套（并行） → ⑤ 单页 PRD → ⑥ 原型生成 → ⑦ 检查验收 → ⑧ 新迭代（重复）
+```
+
+每轮只需输入「继续」，Agent 自动推进下一步，无需用户手动选择子指令。
+
+## 产物结构
+
+完整的 PRD 项目生成后，目录结构如下：
 
 ```
-lny-prd-master/
-├── lny-prd-api/SKILL.md         # ③ 接口需求规范
-├── lny-prd-check/SKILL.md       # ⑦ 检查与验收
-├── lny-prd-feature/SKILL.md     # ④ 功能规格拆分
-├── lny-prd-iter/SKILL.md        # ⑧ 迭代管理
-├── lny-prd-master/SKILL.md      # ① 总控入口与立项
-├── lny-prd-page/SKILL.md        # ⑤ 单页 PRD
-├── lny-prd-prototype/SKILL.md   # ⑥ 可交互原型
-├── lny-prd-ui/SKILL.md          # ② UI 设计
+my-project/                         # PRD 项目根目录
+│
+├── main_spec.md                    # 产品规格说明书（概述、终端、统计索引）
+├── api_spec.md                     # 接口需求索引（§4 终端对齐 + API/EXT 清单）
+├── ui_manifest.md                  # UI 设计清单（页面/分包/组件索引）
+├── feature_spec.md                 # 功能规格索引（全局规则 + Feature 索引）
+│
+├── api/                            # 接口需求明细（③ 负责）
+│   ├── API-MP-001.md               #   小程序接口
+│   ├── API-AD-001.md               #   管理后台接口
+│   └── EXT-001.md                  #   第三方接口
+│
+├── ui/                             # UI 页面与组件明细（② 负责）
+│   ├── PAGE-MP-001.md              #   单页面布局与状态描述
+│   ├── PAGE-AD-001.md
+│   └── COMP-001.md                 #   局部自定义 UI 组件规格
+│
+├── feature/                        # 功能规格明细（④ 负责）
+│   ├── FEATURE-001.md              #   单功能：目标、流程、验收标准、双图
+│   └── FEATURE-002.md
+│
+├── prototypes/                     # 可交互原型（⑥ 负责）
+│   ├── MP/                         #   小程序端
+│   │   ├── index.html              #     页面导航汇总
+│   │   ├── map.html                #     页面关系画布
+│   │   └── PAGE-MP-001.html        #     单页原型
+│   ├── AD/                         #   管理后台端
+│   └── PC/                         #   PC 端
+│
+├── prototypes-mui-app/             # 桌面端 React + Material UI 源码（⑥ 负责）
+│
+└── versions/                       # 版本管理（① 立项 / ⑧ 迭代）
+    ├── v1.0.0/                     #   首版
+    │   ├── iteration_notes.md      #     过程性留痕
+    │   ├── pages_prd/              #     单页 PRD（⑤ 负责）
+    │   │   └── PAGE-MP-001.md
+    │   └── prototypes/             #     原型静态镜像
+    └── v1.1.0/                     #   次版（⑧ 创建）
+        ├── iteration_notes.md
+        ├── ui_changes.md           #     变更台账
+        ├── api_changes.md
+        └── feature_changes.md
+```
+
+## 工具包结构
+
+```
+lny-prd-master/                     # 本仓库（工具包，非 PRD 项目）
+├── lny-prd-api/SKILL.md            # ③ 接口需求规范
+├── lny-prd-check/SKILL.md          # ⑦ 检查与验收
+├── lny-prd-feature/SKILL.md        # ④ 功能规格拆分
+├── lny-prd-iter/SKILL.md           # ⑧ 迭代管理
+├── lny-prd-master/SKILL.md         # ① 总控入口与立项
+├── lny-prd-page/SKILL.md           # ⑤ 单页 PRD
+├── lny-prd-prototype/SKILL.md      # ⑥ 可交互原型
+├── lny-prd-ui/SKILL.md             # ② UI 设计
+├── README.md
+└── .gitignore
 ```
 
 ## 许可证
