@@ -36,5 +36,5 @@ __pycache__/
 *.log
 logs/
 
-# Cursor local state (keep rules)
-.cursor/plans/
+# Cursor local state
+.cursor/
