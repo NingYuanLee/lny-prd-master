@@ -173,10 +173,9 @@ my-project/                         # PRD 项目根目录
 
 以下摘取四种核心产物的典型片段，展示实际落盘格式。
 
-### API 需求明细（`api/API-MP-001.md`）— 请求 & 响应参数字段表
+#### API 需求明细（`api/API-MP-001.md`）— 请求 & 响应参数字段表
 
-```markdown
-## 4. 请求需求
+##### 请求需求
 
 | 业务字段 | 类型语义 | 必要 | 说明 |
 |----------|----------|:--:|------|
@@ -186,17 +185,16 @@ my-project/                         # PRD 项目根目录
 | 当前页码 | 数值 | 是 | 从 1 起 |
 | 每页条数 | 数值 | 是 | 与列表页 UI 一致 |
 
-## 5. 响应需求
+##### 响应需求
 
 | 业务字段 | 类型语义 | 必要 | 说明 |
 |----------|----------|:--:|------|
 | 商品列表 | 数组（元素为对象） | 是 | 每项含：商品 ID、名称、图片、价格、库存状态 |
 | 总条数 | 数值 | 是 | 用于分页组件计算总页数 |
-```
 
-### UI 页面线框（`ui/PAGE-MP-001.md` / 单页 PRD 第 3 节）— ASCII 线框图
+#### UI 页面线框（`ui/PAGE-MP-001.md` / 单页 PRD 第 3 节）— ASCII 线框图
 
-~~~
+```text
 ┌────────────────────────────┐
 │  顶栏：页面标题 + 返回按钮 │
 ├────────────────────────────┤
@@ -218,11 +216,11 @@ my-project/                         # PRD 项目根目录
 ├────────────────────────────┤
 │  底：分页 / 加载更多       │
 └────────────────────────────┘
-~~~
+```
 
-### Feature 功能时序图（`feature/FEATURE-001.md`）— Mermaid 泳道时序图
+#### Feature 功能时序图（`feature/FEATURE-001.md`）— Mermaid 泳道时序图
 
-~~~mermaid
+```mermaid
 sequenceDiagram
     participant User as 用户
     participant UI_MP_002 as PAGE-MP-002 商品列表页
@@ -232,9 +230,9 @@ sequenceDiagram
     API_MP_003-->>UI_MP_002: 返回列表结果 / 错误码
     UI_MP_002-->>User: 刷新列表或提示失败重试
     Note over UI_MP_002,API_MP_003: 异常流：API-MP-003 失败后展示重试入口
-~~~
+```
 
-### 迭代台账（`versions/v1.1.0/ui_changes.md`）— 变更表与委派顺序
+#### 迭代台账（`versions/v1.1.0/ui_changes.md`）— 变更表与委派顺序
 
 **变更台账**（`ui_changes.md`）：
 
@@ -246,15 +244,12 @@ sequenceDiagram
 
 **委派顺序**（`iteration_notes.md`）：
 
-```markdown
-## 委派顺序
-1. /lny-prd-ui（②）— 新增 PAGE-MP-004；修改 PAGE-MP-001；废弃 PAGE-MP-003
-2. /lny-prd-api（③）— 新增 API-MP-010；修改 API-MP-002
-3. /lny-prd-feature（④）— 新增 FEATURE-010；修改 FEATURE-003
-4. /lny-prd-page（⑤）— pages_prd/pages/goods/PAGE-MP-004.md、pages_prd/pages/index/PAGE-MP-001.md
-5. /lny-prd-prototype（⑥）— 有新增/修改页面，必做
-6. /lny-prd-check（⑦）— 建议
-```
+1. `/lny-prd-ui`（②）— 新增 PAGE-MP-004；修改 PAGE-MP-001；废弃 PAGE-MP-003
+2. `/lny-prd-api`（③）— 新增 API-MP-010；修改 API-MP-002
+3. `/lny-prd-feature`（④）— 新增 FEATURE-010；修改 FEATURE-003
+4. `/lny-prd-page`（⑤）— `pages_prd/pages/goods/PAGE-MP-004.md`、`pages_prd/pages/index/PAGE-MP-001.md`
+5. `/lny-prd-prototype`（⑥）— 有新增/修改页面，必做
+6. `/lny-prd-check`（⑦）— 建议
 
 ## 工具包结构
 
