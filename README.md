@@ -1,6 +1,6 @@
 # LNY-PRD — 李宁远产品工作流
 
-Cursor Agent Skills 驱动的产品需求文档（PRD）工作流工具包。以"文档先行、原型后置"为原则，将产品需求从立项到迭代的全生命周期拆分为 **八步标准化流程**，由 AI Agent 按技能边界各司其职、逐步推进。
+AI Agent Skills 驱动的产品需求文档（PRD）工作流工具包。以"文档先行、原型后置"为原则，将产品需求从立项到迭代的全生命周期拆分为 **八步标准化流程**，由 AI Agent 按技能边界各司其职、逐步推进。适用于 Cursor、Claude Code、Codex 等支持 Agent Skills 的 AI 编程工具。
 
 ## 八步工作流
 
@@ -26,12 +26,12 @@ Cursor Agent Skills 驱动的产品需求文档（PRD）工作流工具包。以
 
 ## 前置条件
 
-- Cursor IDE
-- 已配置对应的 Agent Skills（将本仓库各 `lny-prd-*/` 目录下的 `SKILL.md` 注册为 Cursor Skill）
+- 支持 Agent Skills 的 AI 编程工具（Cursor、Claude Code、Codex 等）
+- 已将本仓库各 `lny-prd-*/` 目录下的 `SKILL.md` 注册为 Agent Skill
 
 ## 快速开始
 
-在 Cursor 中打开任意空目录（或已有 `main_spec.md` 的 PRD 项目根目录），输入：
+在 AI 编程工具中打开任意空目录（或已有 `main_spec.md` 的 PRD 项目根目录），输入：
 
 ```
 /lny-prd-master
@@ -51,7 +51,6 @@ lny-prd-master/
 ├── lny-prd-page/SKILL.md        # ⑤ 单页 PRD
 ├── lny-prd-prototype/SKILL.md   # ⑥ 可交互原型
 ├── lny-prd-ui/SKILL.md          # ② UI 设计
-└── .cursor/rules/               # Cursor 规则（审计日志等）
 ```
 
 ## 许可证
