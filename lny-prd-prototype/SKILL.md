@@ -17,7 +17,7 @@ description: 李宁远产品工作流 - 生成可交互原型。桌面端基于 
 
 - **开笔前**：Read **`lny-prd-master/SKILL.md` →「框架内置能力（不纳入 PRD）」** 及本项目追加排除项。**不生成**已排除项对应 `PAGE-*.html`。
 - **输入优先级**：
-  1. **默认**：须存在并 **Read** `versions/{版本号}/pages_prd/` 对应 `PAGE-*`（装配合同 + §7 请求编排）。
+  1. **默认**：须存在并 **Read** `versions/{版本号}/pages_prd/` 对应 `PAGE-*`（装配合同 + §7 API 请求编排类型）。
   2. **例外 `ui直出`**：无对应 `pages_prd` 时，须用户确认或台账标明 **`ui直出`**；主读 `ui/PAGE-*` + `api/` + `feature/`；产物备注或输出须写明 **`来源=ui直出`**（仅 PRD 原型例外，**不**替代 FE 交付主路径）。
 - **负责**：根据 **`main_spec.md`、`ui_manifest.md`、`api_spec.md`、`feature_spec.md`**（及默认 **`pages_prd`**）生成或更新 **`prototypes/{终端}/`** 与 **`versions/{版本号}/prototypes/{终端}/`**（仅静态文件镜像）；维护根目录 **`prototypes-mui-app/`** 中的 **React + Material UI** 桌面构建工程并在变更后 **自动 build** 到 `prototypes/` 对应桌面子目录；含各端 `index.html`、移动类 **`map.html` 关系画布**、桌面/移动 **通顶左栏 + 让位顶栏** 导航壳、**iframe 左侧 §C 状态面板**、**右侧规格抽屉** 等（见下文 **壳层布局总则** 与 **§A / §B / §C / §E**）。
 - **禁止**：在规格中缺失页面/接口/交互说明时，**仅用 HTML 编造**为「事实来源」；缺项须提示用户先走 **`lny-prd-ui`** / **`lny-prd-api`** / **`lny-prd-feature`** / **`lny-prd-page`** 补全规格后再生成；在 **`main_spec.md`、`api_spec.md`、`ui_manifest.md`、`feature_spec.md`** 等规范 **「变更记录」** 表中 **新增行**（**仅** `/lny-prd-iter` 可追加新版本记录，见 `lny-prd-master` **§1.1**）；**修改** 根目录 **`main_spec.md`、`api_spec.md`、`ui_manifest.md`、`feature_spec.md`** 任一正文，或写入 **`versions/{版本号}/iteration_notes.md`** 及其它 **非原型** 路径（本步 **只** 维护 **`prototypes/`**、**`versions/.../prototypes/`**、**`prototypes-mui-app/`**）；若对话要求改规格或写迭代流水，**拒绝落盘**并引导用户走 **`/lny-prd-ui`**、**`/lny-prd-api`**、**`/lny-prd-feature`**、**`/lny-prd-page`** 或总控对应步。**禁止**交付有已知 BUG 的原型（见 §G BUG 预防规则）；**禁止**在正常页面视图中保留演示专用按钮（必须归位 §C 面板，见 §C.5）。

@@ -174,6 +174,7 @@ description: 李宁远产品工作流 - 新迭代管理。创建新版本文件�
 4. `/lny-prd-page`（⑤）— {待办 pages_prd 路径列表}
 5. `/lny-prd-prototype`（⑥）— 有新增/修改页面时必做；仅 API/Feature 变更时可选
 6. `/lny-prd-check`（⑦）— 建议
+7. `/lny-prd-sp`（⑨）— 台账与规格就绪后按本版本估点（可选）
 ```
 
 ### `iteration_notes.md` 流水记录速查
