@@ -15,7 +15,7 @@ description: 李宁远产品工作流 - 新迭代管理。创建新版本文件�
 |----------|----------|
 | 版本号校验，创建 `versions/{新版本号}/` | 写入/修改 `ui/PAGE-*.md`、`api/API-*.md`、`feature/FEATURE-*.md` 正文 |
 | 写 `iteration_notes.md`（开篇：目标/统计/委派总览） | 生成 `versions/{v}/pages_prd/**/*.md` 内容 |
-| 写三类台账：`ui_changes.md`、`api_changes.md`、`feature_changes.md` | 更新 `main_spec` 页面架构表、`api_spec` §4 索引、`ui_manifest` §2-§4、`feature_spec` 索引行（留给 ②③④） |
+| 写三类台账：`ui_changes.md`、`api_changes.md`、`feature_changes.md`；写 **`eval_signals.md`** 汇总 | 更新 `main_spec` 页面架构表、`api_spec` §4 索引、`ui_manifest` §2-§4、`feature_spec` 索引行（留给 ②③④） |
 | 新增/修改页面在 `ui_changes.md` 登记 `pages_prd` 目标路径，状态初始 `待⑤` | 在输出中声称「已生成单页 PRD」「已登记 feature_spec」等子技能动作 |
 | 在根目录四规范「变更记录」表各追加一行（仅版本号+简述+日期；不改 §5/§6/§7） | |
 | 输出委派清单（建议顺序：②→③→④→⑤→⑥→⑦） | |
@@ -30,7 +30,7 @@ description: 李宁远产品工作流 - 新迭代管理。创建新版本文件�
 ## 版本与变更记录（本技能独占）
 
 - **`v1.0.0` 的初始化**（`versions/v1.0.0/` 与各规范变更记录 **首行**）**仅** 由 **`/lny-prd-master` 立项** 完成；本技能 **不** 代为初始化 `v1.0.0`。
-- **当且仅当**执行本技能 **`/lny-prd-iter`** 时，才允许：**新建** `versions/{新版本号}/`（新版本号 **大于** 当前最新）、生成 `iteration_notes.md` / `api_changes.md` / `ui_changes.md` / `feature_changes.md`，并在 **`main_spec.md`、`api_spec.md`、`ui_manifest.md`、`feature_spec.md`**（及项目模板中若另有根目录规范含「变更记录」表）中 **追加** 该新版本对应的 **一行** 变更记录。
+- **当且仅当**执行本技能 **`/lny-prd-iter`** 时，才允许：**新建** `versions/{新版本号}/`（新版本号 **大于** 当前最新）、生成 `iteration_notes.md` / `api_changes.md` / `ui_changes.md` / `feature_changes.md` / **`eval_signals.md`**，并在 **`main_spec.md`、`api_spec.md`、`ui_manifest.md`、`feature_spec.md`**（及项目模板中若另有根目录规范含「变更记录」表）中 **追加** 该新版本对应的 **一行** 变更记录。
 - **禁止**：为同一版本号 **追加第二行**；在表中写出 **`versions/` 下不存在** 的版本文件夹名；或遗漏 **`versions/{新版本号}/` 已创建** 却未在应维护的各规范表中登记的情况。
 - 迭代完成后：**「变更记录」表中的版本列表** 与 **`versions/`** 目录下子文件夹名 **一一对应**。
 - **`iteration_notes.md` 与过程性流水**：由 **⑧** 写 **开篇**；**②、③、④、⑤** 在 **`versions/{版本号}/iteration_notes.md`** **文末按序追加** 过程性流水（详见 **`lny-prd-master/SKILL.md` §1.1 + §1.1.1** 过滤规则）；**⑥、⑦** **不**维护该流水。
@@ -100,17 +100,58 @@ description: 李宁远产品工作流 - 新迭代管理。创建新版本文件�
 ```markdown
 # {UI|API|Feature} 变更台账 - {版本号}
 
-| ID | 操作 | 摘要 | 委派步 | pages_prd目标路径 | 状态 |
-|----|------|------|--------|-------------------|------|
-| PAGE-MP-004 | 新增 | {一句话} | ② | versions/{v}/pages_prd/pages/index/PAGE-MP-004.md | 待② |
-| PAGE-MP-001 | 修改 | {一句话} | ② | versions/{v}/pages_prd/pages/index/PAGE-MP-001.md | 待② |
-| PAGE-MP-003 | 废弃 | {一句话} | ② | 无需单页 PRD | 待② |
-| API-MP-010 | 新增 | {一句话} | ③ | — | 待③ |
+| ID | 操作 | 变更形态 | 存量数据影响 | 摘要 | 委派步 | pages_prd目标路径 | 状态 |
+|----|------|----------|--------------|------|--------|-------------------|------|
+| PAGE-MP-004 | 新增 | 新建 | 无 | {一句话} | ② | versions/{v}/pages_prd/pages/index/PAGE-MP-004.md | 待② |
+| PAGE-MP-001 | 修改 | 修改 | 无 | {一句话} | ② | versions/{v}/pages_prd/pages/index/PAGE-MP-001.md | 待② |
+| PAGE-MP-003 | 废弃 | 废弃删除 | 需备份或回滚预案 | {一句话} | ② | 无需单页 PRD | 待② |
+| API-MP-010 | 新增 | 复制扩展 | 无 | {一句话} | ③ | — | 待③ |
+| FEATURE-010 | 修改 | 修改 | 需迁移 | {一句话} | ④ | — | 待④ |
 ```
 
-- **状态枚举**：`待②` / `待③` / `待④` / `待⑤` / `已完成`（本步 **只初始化**；子技能完成后可在 `iteration_notes` 流水注明，或人工改台账）
-- **pages_prd目标路径**：**仅**「新增/修改页面」填写；规则见 `lny-prd-page` 步骤 9（从 `ui/PAGE-*.md` 或 `ui_manifest` 的 **存放路径** 推导 `versions/{版本号}/pages_prd/{路径}/PAGE-*.md`）；**废弃页面**填 `无需单页 PRD` 或 `—`
-- **api_changes.md / feature_changes.md**：`pages_prd目标路径` 列统一填 `—`
+**填写约束（本步只填格；原理见仓库 README「可评估性 → 迭代信号」）**：
+
+| 列 | 取值 |
+|----|------|
+| 操作 | `新增` / `修改` / `废弃`（与委派一致） |
+| **变更形态** | `新建` / `复制扩展` / `修改` / `废弃删除`（**必填**；复制扩展 = 以既有页/接口/功能为底少改；默认：操作=新增→`新建`，修改→`修改`，废弃→`废弃删除`；用户明示可复用时用 `复制扩展`） |
+| **存量数据影响** | `无` / `需迁移` / `需备份或回滚预案`（**必填**；禁止写 DDL/表名；无存量影响填 `无`） |
+| 状态 | `待②` / `待③` / `待④` / `待⑤` / `已完成`（本步 **只初始化**） |
+| pages_prd目标路径 | **仅**「新增/修改页面」填写；规则见 `lny-prd-page`；**废弃页面**填 `无需单页 PRD` 或 `—`；api/feature 台账该列填 `—` |
+
+### `eval_signals.md`（每版汇总清单，不计点）
+
+本步 **必建** `versions/{版本号}/eval_signals.md`：从三类台账 **汇总** 变更形态与存量影响，供 check / 估点采集；**不算 SP**；**禁止**长文与实现细节。
+
+```markdown
+# 迭代估点信号 - {版本号}
+
+> 阶段 1 只采信号、不计故事点。明细以三类 `*_changes.md` 为准；本文件为汇总。
+
+## 1. 变更形态统计
+
+| 变更形态 | UI | API | Feature | 合计 |
+|----------|----|-----|---------|------|
+| 新建 | n | n | n | n |
+| 复制扩展 | n | n | n | n |
+| 修改 | n | n | n | n |
+| 废弃删除 | n | n | n | n |
+
+## 2. 存量数据影响统计
+
+| 存量数据影响 | UI | API | Feature | 合计 |
+|--------------|----|-----|---------|------|
+| 无 | n | n | n | n |
+| 需迁移 | n | n | n | n |
+| 需备份或回滚预案 | n | n | n | n |
+
+## 3. 需关注条目（存量 ≠ 无）
+
+| ID | 台账 | 变更形态 | 存量数据影响 | 摘要 |
+|----|------|----------|--------------|------|
+| {FEATURE-010} | feature | 修改 | 需迁移 | {一句话} |
+| {无则一行写无} | — | — | — | 无 |
+```
 
 ### `iteration_notes.md` 开篇结构（最小）
 
@@ -124,6 +165,7 @@ description: 李宁远产品工作流 - 新迭代管理。创建新版本文件�
 - 页面：新增 n / 修改 n / 废弃 n
 - 接口：新增 n / 修改 n / 废弃 n
 - 功能：新增 n / 修改 n / 废弃 n
+- 估点信号：见同目录 `eval_signals.md`（不计点）
 
 ## 委派顺序
 1. `/lny-prd-ui`（②）— {待办 PAGE 摘要}
@@ -155,20 +197,21 @@ description: 李宁远产品工作流 - 新迭代管理。创建新版本文件�
 4. **解析输入**：YAML 或自然语言 → 九类台账条目（见「自然语言解析」）
 5. 创建 `versions/{新版本号}/` 文件夹
 6. 生成 `iteration_notes.md`（开篇结构 + 委派总览）
-7. 生成 `ui_changes.md`、`api_changes.md`、`feature_changes.md`（统一表结构；为新增/修改页面推导 `pages_prd目标路径`）
-8. 在 `main_spec.md`、`api_spec.md`、`ui_manifest.md`、`feature_spec.md` 中：
+7. 生成 `ui_changes.md`、`api_changes.md`、`feature_changes.md`（统一表结构，含 **变更形态** / **存量数据影响**；为新增/修改页面推导 `pages_prd目标路径`）
+8. 生成 **`eval_signals.md`**（按三类台账汇总统计 + 存量≠无的关注条目）
+9. 在 `main_spec.md`、`api_spec.md`、`ui_manifest.md`、`feature_spec.md` 中：
    - **「变更记录」表各追加一行**（版本号、简述、日期）
    - **「文档版本」字段**更新为新版本号，**「最后更新」日期**更新为当天
    - **不**改索引（如 §3/§4/§4.2）、统计（§5/§6/§7）、架构表正文
-9. 输出委派清单 + 所有新建/修改文件路径；**不**声称已写规格或单页 PRD
-10. **自检提示**（输出中列出）：所有「新增/修改页面」的 `pages_prd目标路径`，供 **⑤** 落盘与 **⑦** 核对
+10. 输出委派清单 + 所有新建/修改文件路径；**不**声称已写规格或单页 PRD
+11. **自检提示**（输出中列出）：所有「新增/修改页面」的 `pages_prd目标路径`，供 **⑤** 落盘与 **⑦** 核对；台账两列估点信号已填
 
 ## 输出示例
 
 ```
 ✅ 新迭代 v1.1.0 已创建（版本壳 + 台账）：
 
-📁 新增：versions/v1.1.0/iteration_notes.md + ui_changes.md + api_changes.md + feature_changes.md
+📁 新增：versions/v1.1.0/iteration_notes.md + ui_changes.md + api_changes.md + feature_changes.md + eval_signals.md
 📝 根规范变更记录（各 +1 行，未改正文）：main_spec.md / api_spec.md / ui_manifest.md / feature_spec.md
 📋 委派清单：
   - ② /lny-prd-ui：新增 PAGE-MP-004；修改 PAGE-MP-001；废弃 PAGE-MP-003

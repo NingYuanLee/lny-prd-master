@@ -5,7 +5,7 @@ description: 李宁远产品工作流 - 生成可交互原型。桌面端基于 
 
 ## 与总控的关系
 
-全流程见 **`lny-prd-master/SKILL.md`**。本步为 **⑥ `/lny-prd-prototype`**（方案 A：建议在 **⑤ 单页 PRD** 之后；**不硬阻塞**）。完成后可经总控进入 **⑦ `/lny-prd-check`**。
+全流程见 **`lny-prd-master/SKILL.md`**。本步为 **⑥ `/lny-prd-prototype`**（**默认**在 **⑤ 单页 PRD** 之后；缺 `pages_prd` 时仅允许 **`ui直出`** 例外并标注）。完成后可经总控进入 **⑦ `/lny-prd-check`**。
 
 # 生成原型图 `/lny-prd-prototype`
 
@@ -15,13 +15,16 @@ description: 李宁远产品工作流 - 生成可交互原型。桌面端基于 
 
 ## 本步职责与禁止越权
 
-- **开笔前**：Read **`lny-prd-master/SKILL.md` →「框架内置能力（不纳入 PRD）」** 及本项目追加排除项。**不生成**已排除项对应 `PAGE-*.html`。**可选（不阻塞）**：若存在 `versions/{版本号}/pages_prd/` 对应 `PAGE-*`，**可 Read** 加厚交互/跳转描述；**主事实源仍为** `ui/PAGE-*.md`、`api/`、`feature/`。
-- **负责**：根据 **`main_spec.md`、`ui_manifest.md`、`api_spec.md`、`feature_spec.md`** 生成或更新 **`prototypes/{终端}/`** 与 **`versions/{版本号}/prototypes/{终端}/`**（仅静态文件镜像）；维护根目录 **`prototypes-mui-app/`** 中的 **React + Material UI** 桌面构建工程并在变更后 **自动 build** 到 `prototypes/` 对应桌面子目录；含各端 `index.html`、移动类 **`map.html` 关系画布**、桌面/移动 **通顶左栏 + 让位顶栏** 导航壳、**iframe 左侧 §C 状态面板**、**右侧规格抽屉** 等（见下文 **壳层布局总则** 与 **§A / §B / §C / §E**）。
+- **开笔前**：Read **`lny-prd-master/SKILL.md` →「框架内置能力（不纳入 PRD）」** 及本项目追加排除项。**不生成**已排除项对应 `PAGE-*.html`。
+- **输入优先级**：
+  1. **默认**：须存在并 **Read** `versions/{版本号}/pages_prd/` 对应 `PAGE-*`（装配合同 + §7 请求编排）。
+  2. **例外 `ui直出`**：无对应 `pages_prd` 时，须用户确认或台账标明 **`ui直出`**；主读 `ui/PAGE-*` + `api/` + `feature/`；产物备注或输出须写明 **`来源=ui直出`**（仅 PRD 原型例外，**不**替代 FE 交付主路径）。
+- **负责**：根据 **`main_spec.md`、`ui_manifest.md`、`api_spec.md`、`feature_spec.md`**（及默认 **`pages_prd`**）生成或更新 **`prototypes/{终端}/`** 与 **`versions/{版本号}/prototypes/{终端}/`**（仅静态文件镜像）；维护根目录 **`prototypes-mui-app/`** 中的 **React + Material UI** 桌面构建工程并在变更后 **自动 build** 到 `prototypes/` 对应桌面子目录；含各端 `index.html`、移动类 **`map.html` 关系画布**、桌面/移动 **通顶左栏 + 让位顶栏** 导航壳、**iframe 左侧 §C 状态面板**、**右侧规格抽屉** 等（见下文 **壳层布局总则** 与 **§A / §B / §C / §E**）。
 - **禁止**：在规格中缺失页面/接口/交互说明时，**仅用 HTML 编造**为「事实来源」；缺项须提示用户先走 **`lny-prd-ui`** / **`lny-prd-api`** / **`lny-prd-feature`** / **`lny-prd-page`** 补全规格后再生成；在 **`main_spec.md`、`api_spec.md`、`ui_manifest.md`、`feature_spec.md`** 等规范 **「变更记录」** 表中 **新增行**（**仅** `/lny-prd-iter` 可追加新版本记录，见 `lny-prd-master` **§1.1**）；**修改** 根目录 **`main_spec.md`、`api_spec.md`、`ui_manifest.md`、`feature_spec.md`** 任一正文，或写入 **`versions/{版本号}/iteration_notes.md`** 及其它 **非原型** 路径（本步 **只** 维护 **`prototypes/`**、**`versions/.../prototypes/`**、**`prototypes-mui-app/`**）；若对话要求改规格或写迭代流水，**拒绝落盘**并引导用户走 **`/lny-prd-ui`**、**`/lny-prd-api`**、**`/lny-prd-feature`**、**`/lny-prd-page`** 或总控对应步。**禁止**交付有已知 BUG 的原型（见 §G BUG 预防规则）；**禁止**在正常页面视图中保留演示专用按钮（必须归位 §C 面板，见 §C.5）。
 
 ## 规格先行（必须先文档、后原型）
 
-1. **输入源（须 Read）**：与本次生成相关的 `main_spec.md`、`ui_manifest.md`、`api_spec.md`（§4 索引）、`api/API-*.md`、`feature_spec.md`；**可选** `versions/{版本号}/pages_prd/` 对应页。
+1. **输入源（须 Read）**：与本次生成相关的 `main_spec.md`、`ui_manifest.md`、`api_spec.md`（§4 索引）、`api/API-*.md`、`feature_spec.md`；**默认另须** `versions/{版本号}/pages_prd/` 对应页（无则走 **`ui直出`** 例外流程）。
 2. **若规格文档与目标页不一致或缺块**：**停止**生成/覆盖原型；说明缺哪一类内容，并指向总控下的 **②（`lny-prd-ui`）**、**③（`lny-prd-api`）**、**④（`lny-prd-feature`）** 或 **⑤（`lny-prd-page`）**；**禁止**以原型为主反向改写规格作为主要手段。
 3. **写盘顺序**：确认规格内容已覆盖本批页面后，再写入 **`prototypes/{终端}/`** 并完成 **`versions/{版本号}/prototypes/{终端}/`** 静态镜像；桌面端须 **先 build 再复制**；大改交互时优先改文档再同步原型。
 

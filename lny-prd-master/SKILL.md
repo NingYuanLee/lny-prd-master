@@ -9,7 +9,7 @@ description: >-
 
 ## 李宁远产品工作流
 
-🔷 **LNY-PRD** 共八步：**①** `/lny-prd-master` 立项 · **②** `/lny-prd-ui`（`main_spec` 页面架构 + `ui_manifest`）· **③** `/lny-prd-api`（`api_spec` **接口需求**）· **④** `/lny-prd-feature`（`feature_spec` 索引 + `feature/` 明细）· **⑤** `/lny-prd-page`（单页 PRD）· **⑥** `/lny-prd-prototype`（可交互原型）· **⑦** `/lny-prd-check` · **⑧** `/lny-prd-iter`。其中 **②③④ 为规格三件套（可并行推进）**；**⑤→⑥** 为文档先行（单页 PRD 后再原型，互不硬阻塞）。入口 `**@lny-prd-master` / `/lny-prd-master` /「继续」** 等价；由 **「LNY-PRD 总控协议」** 判定当前步，模型 **Read** 对应子目录 `SKILL.md` 后执行。
+🔷 **LNY-PRD** 共八步：**①** `/lny-prd-master` 立项 · **②** `/lny-prd-ui`（`main_spec` 页面架构 + `ui_manifest`）· **③** `/lny-prd-api`（`api_spec` **接口需求**）· **④** `/lny-prd-feature`（`feature_spec` 索引 + `feature/` 明细）· **⑤** `/lny-prd-page`（单页 PRD）· **⑥** `/lny-prd-prototype`（可交互原型）· **⑦** `/lny-prd-check` · **⑧** `/lny-prd-iter`。其中 **②③④ 为规格三件套（可并行推进）**；**⑥ 默认依赖 ⑤**（`pages_prd`；例外须标注 `ui直出`，见 prototype）。入口 `**@lny-prd-master` / `/lny-prd-master` /「继续」** 等价；由 **「LNY-PRD 总控协议」** 判定当前步，模型 **Read** 对应子目录 `SKILL.md` 后执行。
 
 ---
 
@@ -28,7 +28,7 @@ description: >-
 | ⑤ `lny-prd-page`                  | `lny-prd-page/SKILL.md`      | `versions/{版本号}/pages_prd/` 单页 PRD 等                                                                                                                                              | 不替代 ②③④ 的全局清单职责；**不依赖**原型；**不得**在任一规范「变更记录」表**追加**行（见 **§1.1**）                                                                                                                                                    |
 | ⑥ `lny-prd-prototype`             | `lny-prd-prototype/SKILL.md` | `prototypes/{终端}/`、`versions/.../prototypes/{终端}/`（仅静态镜像）、`prototypes-mui-app/`（桌面 MUI 源码与构建）                                                                                       | **禁止**用 HTML 代替规格：缺内容须先回到 ②/③/④/⑤ 补文档后再生成；**不得**在任一规范「变更记录」表**追加**行（见 **§1.1**）；**只写原型相关路径**，**不得**修改根目录 `main_spec`/`api_spec`/`ui_manifest` 或 `**versions/.../iteration_notes.md*`*（须改规格或流水时交 **②③④⑤** 或总控） |
 | ⑦ `lny-prd-check`                 | `lny-prd-check/SKILL.md`     | 仅输出检查报告                                                                                                                                                                             | **只读**，不借机改 PRD 正文                                                                                                                                                                                       |
-| ⑧ `lny-prd-iter`                  | `lny-prd-iter/SKILL.md`      | `versions/{新版本号}/`、`iteration_notes.md`、`*_changes.md` 变更台账、委派清单；根目录规范「变更记录」**按新版本各追加一行**                                                                                  | **仅**本步可**新建**版本目录并在各规范「变更记录」表**追加**新版本行；**不写**规格正文、**不**生成 `pages_prd`；索引/统计由 **②③④**、单页 PRD 由 **⑤** 按台账执行；其他步禁止代劳                                                                                                                          |
+| ⑧ `lny-prd-iter`                  | `lny-prd-iter/SKILL.md`      | `versions/{新版本号}/`、`iteration_notes.md`、`*_changes.md` 变更台账、**`eval_signals.md`**、委派清单；根目录规范「变更记录」**按新版本各追加一行**                                                                                  | **仅**本步可**新建**版本目录并在各规范「变更记录」表**追加**新版本行；**不写**规格正文、**不**生成 `pages_prd`；索引/统计由 **②③④**、单页 PRD 由 **⑤** 按台账执行；其他步禁止代劳                                                                                                                          |
 
 
 子技能内若有「写产物纪律」，须一并遵守；**凡改动根目录 `main_spec.md`、`api_spec.md`、`ui_manifest.md`、`feature_spec.md` 正文者**，须在 **当前 `版本号`** 下 `**versions/{版本号}/iteration_notes.md**` **文末按序追加** 总结性流水，**不得** 在根「变更记录」表记账或新建更高版本目录，见 **§1.1**。②～⑤ 还须遵守本文 **「框架内置能力（不纳入 PRD）」**（Read master 该节 + 本项目追加排除）。总控每轮结束须 **明示** 已完成步、判定到的下一步、以及下一步将 Read 的 `SKILL.md` 路径。
@@ -341,10 +341,10 @@ description: >-
 
 ### 1.2 用户故事
 
-| 用户类型 | 用户画像 | 用户故事 |
-|----------|----------|----------|
-| {用户A} | {用户A画像描述} | {故事A} |
-| {用户B} | {用户B画像描述} | {故事B} |
+| 故事编号 | 用户类型 | 用户画像 | 用户故事 | 关联 FEATURE / 框架承接 |
+|----------|----------|----------|----------|-------------------------|
+| STORY-001 | {用户A} | {用户A画像描述} | {故事A} | {FEATURE-001 / 框架承接} |
+| STORY-002 | {用户B} | {用户B画像描述} | {故事B} | {FEATURE-002} |
 
 ### 1.3 竞品分析
 {竞品分析内容}
@@ -374,6 +374,9 @@ description: >-
 
 **功能编号规则：** `FEATURE-{三位序号}`
 - 示例：FEATURE-001、FEATURE-002、FEATURE-003
+
+**用户故事编号规则：** `STORY-{三位序号}`
+- 示例：STORY-001、STORY-002；与 FEATURE 可为 N:M（FEATURE 明细标明主/次关联）
 
 **文件路径模板：**
 - 小程序主包：`pages/{模块名}`（首页模块 **必须为 `index`**，路由 `pages/index/index`；**禁止** `home`）
