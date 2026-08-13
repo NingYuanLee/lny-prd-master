@@ -1,6 +1,6 @@
 # LNY-PRD — 李宁远产品工作流
 
-**工具包版本：2.2.2**
+**工具包版本：2.5.0**
 
 ## 背景
 
@@ -47,12 +47,12 @@ LNY-PRD 做的是 **vibe-spec-coding** 里的 **vibe-spec**：把已经想清楚
 | ③ | `/lny-prd-api` | 接口需求（`api_spec.md` + `api/API-*.md`） |
 | ④ | `/lny-prd-feature` | 功能规格拆分（`feature_spec.md` + `feature/FEATURE-*.md`） |
 | ⑤ | `/lny-prd-page` | 单页 PRD 生成（`versions/{v}/pages_prd/`；PC/AD 必产 `_shell`） |
-| ⑥ | `/lny-prd-prototype` | 可交互原型（全端静态 HTML + MUI 套件；图标 kit 闭集 + `search-icons.py`） |
+| ⑥ | `/lny-prd-prototype` | 高保真可交互原型（全端静态 HTML + MUI 套件；每轮最多 3 个业务页，逐页对照 `pages_prd`） |
 | ⑦ | `/lny-prd-check` | 文档一致性检查 + 功能性验收 + 产品就绪度检查（只读报告） |
 | ⑧ | `/lny-prd-iter` | 新迭代管理（建版本壳 + 变更台账 + 委派清单） |
 | ⑨ | `/lny-prd-sp` | 按指定版本汇总 FE/BE 故事点（`sp_report.md`） |
 
-**②③④** 为规格三件套，可并行推进（总控 **同轮批跑**，中间不问「继续」）。用户目标是原型/演示时，总控在**当前版本**静默补 ②③④⑤⑥，**禁止静默 ⑧**（只有明确说新迭代才建新版本）。
+**②③④** 为规格三件套，可并行推进（总控 **同轮批跑**，中间不问「继续」）。用户目标是原型/演示时，总控在**当前版本**静默补 ②③④⑤⑥，**禁止静默 ⑧**（只有明确说新迭代才建新版本）。⑥ **每轮最多 3 个业务页**；未画完时「继续」只续原型，不重做规格。
 
 ## 二、核心原则
 
@@ -73,7 +73,7 @@ LNY-PRD 做的是 **vibe-spec-coding** 里的 **vibe-spec**：把已经想清楚
 | **接口需求定义** | 按终端拆解 API 需求（含第三方），产出带请求/响应语义的接口明细文档 |
 | **功能拆分** | 将整体需求拆为独立的功能模块，每个功能有目标、流程、验收标准 |
 | **单页 PRD** | 面向具体页面的回归式需求文档，强制写明依赖路径与数据来源 |
-| **可交互原型** | 全端静态 HTML + MUI 套件；`prototypes/index.html` 为总入口（简介 + 各端）；壳层含规格说明、状态演示、关系图、当前页范围说明 |
+| **可交互原型** | 全端静态 HTML + MUI 套件，**默认高保真**；AD 含弹窗/确认、Toast、页内签、按钮组、下拉、日期时间；每轮最多 3 个业务页 |
 | **文档检查** | 对已有 PRD 做只读一致性校验（引用闭环、编号规范、统计对齐），输出审计报告 |
 | **迭代管理** | 创建新版本目录骨架、变更台账（ui/api/feature），标注委派清单 |
 | **版本故事点** | 按版本汇总 FE/BE（及迭代系数）SP，落盘 `sp_report.md` |
@@ -411,7 +411,7 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 │   ├── reference-shell.md
 │   ├── reference-quality.md
 │   ├── kit/                        #     mui-kit.css / proto-shell.* / md-icons.js
-│   └── scripts/                    #     copy-kit.py、search-icons.py、verify-prototype-utf8.py
+│   └── scripts/                    #     copy-kit.py、search-icons.py、verify-prototype-utf8.py、verify-prototype-coverage.py
 ├── lny-prd-check/SKILL.md + reference-checks.md
 ├── lny-prd-iter/SKILL.md + reference.md
 ├── lny-prd-sp/SKILL.md + reference-weights.md

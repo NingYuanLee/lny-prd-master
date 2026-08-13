@@ -8,20 +8,58 @@
 </head>
 <body>
   <div class="md-d1">
+    <div class="md-page-head">
+      <h1 class="md-h3">商品列表</h1>
+      <span class="md-caption" id="totalHint">共 6 条</span>
+    </div>
     <div class="md-breadcrumb">
       <span>商品</span>
       <span>/</span>
       <span class="is-current">商品列表</span>
     </div>
-    <div class="md-d1__search">
+    <div id="pageAlert" class="md-alert md-alert--error" style="display:none"></div>
+    <div class="md-d1__search" data-section="搜索栏">
       <label class="md-field md-field--sm">
         <span class="md-field__label">商品名称</span>
-        <input class="md-field__input" id="qName" type="text" placeholder=" ">
+        <input class="md-field__input" id="qName" type="text" placeholder="请输入商品名称">
       </label>
-      <button type="button" class="md-btn md-btn--contained" id="btnQuery">
-        <span class="md-icon" data-icon="search" aria-hidden="true"></span>
-        查询
-      </button>
+      <label class="md-field md-field--sm md-field--select">
+        <span class="md-field__label">库存状态</span>
+        <select class="md-select" id="qStock">
+          <option value="">全部</option>
+          <option value="有货">有货</option>
+          <option value="缺货">缺货</option>
+        </select>
+      </label>
+      <label class="md-field md-field--sm md-field--date">
+        <span class="md-field__label">上架日期</span>
+        <input class="md-field__input" id="qDate" type="text" placeholder="年-月-日" autocomplete="off">
+      </label>
+      <label class="md-switch-row">
+        <span class="md-switch">
+          <input type="checkbox" id="qOn">
+          <span class="md-switch__track"></span>
+          <span class="md-switch__thumb"></span>
+        </span>
+        <span>仅看上架</span>
+      </label>
+      <div class="md-filter__actions md-btn-group">
+        <button type="button" class="md-btn md-btn--contained" id="btnQuery">
+          <span class="md-icon" data-icon="search" aria-hidden="true"></span>
+          查询
+        </button>
+        <button type="button" class="md-btn md-btn--outlined" id="btnReset">重置</button>
+      </div>
+    </div>
+    <div class="md-d1__toolbar">
+      <nav class="md-tabs md-tabs--page" id="stockTabs">
+        <button type="button" class="md-tab is-active">全部</button>
+        <button type="button" class="md-tab">有货</button>
+        <button type="button" class="md-tab">缺货</button>
+      </nav>
+      <div class="md-btn-group">
+        <a class="md-btn md-btn--contained" href="PAGE-AD-002.html">新增</a>
+      </div>
     </div>
     <div class="md-d1__table">
       <div class="md-table-wrap">
@@ -31,25 +69,90 @@
               <th>商品名称</th>
               <th>售价</th>
               <th>库存状态</th>
+              <th>上架日期</th>
+              <th>操作</th>
             </tr>
           </thead>
           <tbody id="tbody">
             <tr>
-              <td>示例商品 A</td>
-              <td>19.9</td>
+              <td><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--1"></span>有机草莓 250g</span></td>
+              <td>¥19.90</td>
               <td><span class="md-chip md-chip--success">有货</span></td>
+              <td>2026-03-12</td>
+              <td>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">查看</button>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">快捷编辑</button>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">选择关联</button>
+              </td>
             </tr>
             <tr>
-              <td>示例商品 B</td>
-              <td>29.9</td>
+              <td><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--2"></span>云南小粒咖啡 227g</span></td>
+              <td>¥29.90</td>
               <td><span class="md-chip md-chip--outlined">缺货</span></td>
+              <td>2026-02-08</td>
+              <td>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">查看</button>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">快捷编辑</button>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">选择关联</button>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--3"></span>青柠蜂蜜茶 500ml</span></td>
+              <td>¥12.50</td>
+              <td><span class="md-chip md-chip--success">有货</span></td>
+              <td>2026-04-01</td>
+              <td>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">查看</button>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">快捷编辑</button>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">选择关联</button>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--4"></span>全麦吐司 400g</span></td>
+              <td>¥9.90</td>
+              <td><span class="md-chip md-chip--success">有货</span></td>
+              <td>2026-01-20</td>
+              <td>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">查看</button>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">快捷编辑</button>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">选择关联</button>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--5"></span>巴旦木仁 200g</span></td>
+              <td>¥36.00</td>
+              <td><span class="md-chip md-chip--success">有货</span></td>
+              <td>2026-05-16</td>
+              <td>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">查看</button>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">快捷编辑</button>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">选择关联</button>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--6"></span>冷萃美式 250ml</span></td>
+              <td>¥15.80</td>
+              <td><span class="md-chip md-chip--outlined">缺货</span></td>
+              <td>2026-03-28</td>
+              <td>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">查看</button>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">快捷编辑</button>
+                <button type="button" class="md-btn md-btn--text md-btn--sm">选择关联</button>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
     <div class="md-d1__footer">
-      <span class="md-caption" id="totalHint">共 2 条</span>
+      <label class="md-field md-field--sm md-field--select">
+        <span class="md-field__label">每页条数</span>
+        <select class="md-select" id="pageSize">
+          <option>10</option>
+          <option selected>20</option>
+        </select>
+      </label>
+      <span class="md-caption">第 1 页</span>
       <nav class="md-pagination">
         <button type="button" class="md-page-btn" disabled>‹</button>
         <button type="button" class="md-page-btn is-active">1</button>
@@ -57,22 +160,332 @@
       </nav>
     </div>
   </div>
+
+  <div id="viewDlgBackdrop" class="md-backdrop"></div>
+  <div id="viewDlg" class="md-dialog" aria-hidden="true">
+    <h2 class="md-dialog__title">商品详情</h2>
+    <div class="md-dialog__body" id="viewBody"></div>
+    <div class="md-dialog__actions">
+      <button type="button" class="md-btn md-btn--text" id="viewClose">关闭</button>
+    </div>
+  </div>
+
+  <div id="editDlgBackdrop" class="md-backdrop"></div>
+  <div id="editDlg" class="md-dialog" aria-hidden="true">
+    <h2 class="md-dialog__title">快捷编辑</h2>
+    <div class="md-dialog__body">
+      <input type="hidden" id="editNameKey">
+      <div class="md-dialog__form">
+        <label class="md-field md-field--sm">
+          <span class="md-field__label">商品名称</span>
+          <input class="md-field__input" id="editName" type="text">
+        </label>
+        <label class="md-field md-field--sm">
+          <span class="md-field__label">售价</span>
+          <input class="md-field__input" id="editPrice" type="text">
+        </label>
+        <label class="md-field md-field--sm md-field--select">
+          <span class="md-field__label">库存状态</span>
+          <select class="md-select" id="editStock">
+            <option value="有货">有货</option>
+            <option value="缺货">缺货</option>
+          </select>
+        </label>
+        <label class="md-field md-field--sm md-field--date">
+          <span class="md-field__label">上架日期</span>
+          <input class="md-field__input" id="editDate" type="text" placeholder="年-月-日" autocomplete="off">
+        </label>
+        <label class="md-field md-field--sm md-field--time">
+          <span class="md-field__label">上架时间</span>
+          <input class="md-field__input" id="editTime" type="time">
+        </label>
+        <label class="md-switch-row">
+          <span class="md-switch">
+            <input type="checkbox" id="editOn">
+            <span class="md-switch__track"></span>
+            <span class="md-switch__thumb"></span>
+          </span>
+          <span>上架</span>
+        </label>
+        <div class="md-choice-group">
+          <span class="md-choice-group__label">配送方式</span>
+          <label class="md-radio"><input type="radio" name="editShip" value="包邮"> 包邮</label>
+          <label class="md-radio"><input type="radio" name="editShip" value="到店自提"> 到店自提</label>
+        </div>
+        <div class="md-choice-group">
+          <span class="md-choice-group__label">适用渠道</span>
+          <label class="md-check"><input type="checkbox" name="editCh" value="小程序"> 小程序</label>
+          <label class="md-check"><input type="checkbox" name="editCh" value="后台展示"> 后台展示</label>
+        </div>
+      </div>
+    </div>
+    <div class="md-dialog__actions">
+      <button type="button" class="md-btn md-btn--text" id="editCancel">取消</button>
+      <button type="button" class="md-btn md-btn--contained" id="editOk">确定</button>
+    </div>
+  </div>
+
+  <div id="pickDlgBackdrop" class="md-backdrop"></div>
+  <div id="pickDlg" class="md-dialog md-dialog--lg" aria-hidden="true">
+    <h2 class="md-dialog__title">选择关联商品</h2>
+    <div class="md-dialog__body">
+      <div class="md-table-wrap">
+        <table class="md-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>商品名称</th>
+              <th>售价</th>
+              <th>库存状态</th>
+            </tr>
+          </thead>
+          <tbody id="pickBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="md-dialog__actions">
+      <button type="button" class="md-btn md-btn--text" id="pickCancel">取消</button>
+      <button type="button" class="md-btn md-btn--contained" id="pickOk">确定</button>
+    </div>
+  </div>
+
   <script src="assets/md-icons.js"></script>
   <script src="assets/icons-extra.js"></script>
   <script src="assets/proto-page.js"></script>
   <script>
-    document.getElementById("btnQuery").addEventListener("click", function () {
+    var GOODS = [
+      { name: "有机草莓 250g", price: "19.90", stock: "有货", date: "2026-03-12", time: "09:00", intro: "当季鲜摘，冷链到店。", ph: 1, on: true, ship: "包邮", channels: ["小程序", "后台展示"] },
+      { name: "云南小粒咖啡 227g", price: "29.90", stock: "缺货", date: "2026-02-08", time: "08:30", intro: "中烘，适合手冲。", ph: 2, on: false, ship: "包邮", channels: ["小程序"] },
+      { name: "青柠蜂蜜茶 500ml", price: "12.50", stock: "有货", date: "2026-04-01", time: "10:15", intro: "冷藏短保，酸甜适口。", ph: 3, on: true, ship: "到店自提", channels: ["小程序"] },
+      { name: "全麦吐司 400g", price: "9.90", stock: "有货", date: "2026-01-20", time: "07:00", intro: "当日烘焙，无添加糖。", ph: 4, on: true, ship: "包邮", channels: ["后台展示"] },
+      { name: "巴旦木仁 200g", price: "36.00", stock: "有货", date: "2026-05-16", time: "11:00", intro: "原味烘烤，独立小包。", ph: 5, on: true, ship: "包邮", channels: ["小程序", "后台展示"] },
+      { name: "冷萃美式 250ml", price: "15.80", stock: "缺货", date: "2026-03-28", time: "09:45", intro: "低温慢萃，冰饮即开。", ph: 6, on: false, ship: "到店自提", channels: ["小程序"] }
+    ];
+
+    function chip(stock) {
+      var cls = stock === "有货" ? "md-chip md-chip--success" : "md-chip md-chip--outlined";
+      return '<span class="' + cls + '">' + stock + "</span>";
+    }
+
+    function filtered() {
       var q = (document.getElementById("qName").value || "").trim();
-      var rows = document.querySelectorAll("#tbody tr");
-      var n = 0;
-      rows.forEach(function (tr) {
-        var name = tr.cells[0].textContent;
-        var show = !q || name.indexOf(q) !== -1;
-        tr.style.display = show ? "" : "none";
-        if (show) n += 1;
+      var stock = document.getElementById("qStock").value;
+      var date = (document.getElementById("qDate").value || "").trim();
+      var onlyOn = document.getElementById("qOn").checked;
+      return GOODS.filter(function (g) {
+        if (q && g.name.indexOf(q) === -1) return false;
+        if (stock && g.stock !== stock) return false;
+        if (date && g.date < date) return false;
+        if (onlyOn && !g.on) return false;
+        return true;
       });
-      document.getElementById("totalHint").textContent = "共 " + n + " 条";
+    }
+
+    function render() {
+      var list = filtered();
+      var html = list.map(function (g) {
+        return (
+          "<tr><td><span class=\"md-row-goods\"><span class=\"md-thumb md-media-ph md-media-ph--" +
+          g.ph +
+          "\"></span>" +
+          g.name +
+          "</span></td><td>¥" +
+          g.price +
+          "</td><td>" +
+          chip(g.stock) +
+          "</td><td>" +
+          g.date +
+          '</td><td>' +
+          '<button type="button" class="md-btn md-btn--text md-btn--sm" data-act="view" data-name="' +
+          g.name +
+          '">查看</button>' +
+          '<button type="button" class="md-btn md-btn--text md-btn--sm" data-act="edit" data-name="' +
+          g.name +
+          '">快捷编辑</button>' +
+          '<button type="button" class="md-btn md-btn--text md-btn--sm" data-act="pick" data-name="' +
+          g.name +
+          '">选择关联</button></td></tr>'
+        );
+      }).join("");
+      document.getElementById("tbody").innerHTML = html;
+      document.getElementById("totalHint").textContent = "共 " + list.length + " 条";
+    }
+
+    function findGoods(name) {
+      var i;
+      for (i = 0; i < GOODS.length; i += 1) {
+        if (GOODS[i].name === name) return GOODS[i];
+      }
+      return null;
+    }
+
+    function showAlert(msg) {
+      var el = document.getElementById("pageAlert");
+      if (!msg) {
+        el.style.display = "none";
+        el.textContent = "";
+        return;
+      }
+      el.textContent = msg;
+      el.style.display = "flex";
+    }
+
+    function openView(name) {
+      var g = findGoods(name);
+      if (!g) {
+        ProtoPage.snackbar("商品不存在", { severity: "error" });
+        return;
+      }
+      document.getElementById("viewBody").innerHTML =
+        "<p>商品名称：" + g.name + "</p>" +
+        "<p>售价：¥" + g.price + "</p>" +
+        "<p>库存状态：" + g.stock + "</p>" +
+        "<p>上架日期：" + g.date + "</p>" +
+        "<p>上架时间：" + g.time + "</p>" +
+        "<p>是否上架：" + (g.on ? "上架" : "下架") + "</p>" +
+        "<p>配送方式：" + g.ship + "</p>" +
+        "<p>适用渠道：" + (g.channels || []).join("、") + "</p>" +
+        "<p>商品简介：" + g.intro + "</p>";
+      ProtoPage.openDialog("viewDlg");
+    }
+
+    function openEdit(name) {
+      var g = findGoods(name);
+      if (!g) {
+        ProtoPage.snackbar("商品不存在", { severity: "error" });
+        return;
+      }
+      document.getElementById("editNameKey").value = g.name;
+      document.getElementById("editName").value = g.name;
+      document.getElementById("editPrice").value = g.price;
+      document.getElementById("editStock").value = g.stock;
+      document.getElementById("editDate").value = g.date;
+      document.getElementById("editTime").value = g.time;
+      document.getElementById("editOn").checked = !!g.on;
+      document.querySelectorAll('input[name="editShip"]').forEach(function (r) {
+        r.checked = r.value === g.ship;
+      });
+      document.querySelectorAll('input[name="editCh"]').forEach(function (c) {
+        c.checked = (g.channels || []).indexOf(c.value) !== -1;
+      });
+      ProtoPage.openDialog("editDlg");
+    }
+
+    function openPick() {
+      document.getElementById("pickBody").innerHTML = GOODS.map(function (g, idx) {
+        return (
+          "<tr><td><label class=\"md-radio\"><input type=\"radio\" name=\"pickGoods\" value=\"" +
+          g.name +
+          "\"" +
+          (idx === 0 ? " checked" : "") +
+          "></label></td><td>" +
+          g.name +
+          "</td><td>¥" +
+          g.price +
+          "</td><td>" +
+          chip(g.stock) +
+          "</td></tr>"
+        );
+      }).join("");
+      ProtoPage.openDialog("pickDlg");
+    }
+
+    function syncTab(stock) {
+      var label = stock || "全部";
+      document.querySelectorAll("#stockTabs .md-tab").forEach(function (tab) {
+        tab.classList.toggle("is-active", tab.textContent.trim() === label);
+      });
+    }
+
+    function onActClick(ev) {
+      var btn = ev.target.closest("[data-act]");
+      if (!btn) return;
+      var act = btn.getAttribute("data-act");
+      var name = btn.getAttribute("data-name");
+      if (act === "view") openView(name);
+      if (act === "edit") openEdit(name);
+      if (act === "pick") openPick();
+    }
+
+    document.getElementById("btnQuery").addEventListener("click", function () {
+      syncTab(document.getElementById("qStock").value);
+      render();
     });
+    document.getElementById("btnReset").addEventListener("click", function () {
+      document.getElementById("qName").value = "";
+      document.getElementById("qStock").value = "";
+      document.getElementById("qDate").value = "";
+      document.getElementById("qOn").checked = false;
+      syncTab("");
+      render();
+    });
+    document.getElementById("stockTabs").addEventListener("click", function (ev) {
+      var tab = ev.target.closest(".md-tab");
+      if (!tab) return;
+      var label = tab.textContent.trim();
+      document.getElementById("qStock").value = label === "全部" ? "" : label;
+      render();
+    });
+    document.getElementById("qOn").addEventListener("change", render);
+    document.getElementById("tbody").addEventListener("click", onActClick);
+    document.getElementById("viewClose").addEventListener("click", function () {
+      ProtoPage.closeDialog("viewDlg");
+    });
+    document.getElementById("viewDlgBackdrop").addEventListener("click", function () {
+      ProtoPage.closeDialog("viewDlg");
+    });
+    document.getElementById("editCancel").addEventListener("click", function () {
+      ProtoPage.closeDialog("editDlg");
+    });
+    document.getElementById("editDlgBackdrop").addEventListener("click", function () {
+      ProtoPage.closeDialog("editDlg");
+    });
+    document.getElementById("editOk").addEventListener("click", function () {
+      var key = document.getElementById("editNameKey").value;
+      var g = findGoods(key);
+      var name = (document.getElementById("editName").value || "").trim();
+      var price = (document.getElementById("editPrice").value || "").trim();
+      if (!g) {
+        ProtoPage.snackbar("商品不存在", { severity: "error" });
+        return;
+      }
+      if (!name || !price) {
+        showAlert("名称、售价必填");
+        return;
+      }
+      showAlert("");
+      g.name = name;
+      g.price = price;
+      g.stock = document.getElementById("editStock").value;
+      g.date = document.getElementById("editDate").value;
+      g.time = document.getElementById("editTime").value;
+      g.on = document.getElementById("editOn").checked;
+      var ship = document.querySelector('input[name="editShip"]:checked');
+      g.ship = ship ? ship.value : "包邮";
+      g.channels = [];
+      document.querySelectorAll('input[name="editCh"]:checked').forEach(function (c) {
+        g.channels.push(c.value);
+      });
+      ProtoPage.closeDialog("editDlg");
+      render();
+      ProtoPage.snackbar("已保存", { severity: "success" });
+    });
+    document.getElementById("pickCancel").addEventListener("click", function () {
+      ProtoPage.closeDialog("pickDlg");
+    });
+    document.getElementById("pickDlgBackdrop").addEventListener("click", function () {
+      ProtoPage.closeDialog("pickDlg");
+    });
+    document.getElementById("pickOk").addEventListener("click", function () {
+      var picked = document.querySelector('input[name="pickGoods"]:checked');
+      ProtoPage.closeDialog("pickDlg");
+      if (picked) ProtoPage.snackbar("已选择关联：" + picked.value);
+    });
+
+    if (new URLSearchParams(location.search).get("saved") === "1") {
+      ProtoPage.snackbar("已保存", { severity: "success" });
+    }
+    render();
   </script>
 </body>
 </html>

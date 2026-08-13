@@ -17,9 +17,10 @@
 
 ```bash
 python <skillDir>/scripts/verify-prototype-utf8.py <prdRoot>/prototypes/MP/PAGE-MP-010.html <prdRoot>/versions/v1.0.0/prototypes/MP/PAGE-MP-010.html
+python <skillDir>/scripts/verify-prototype-coverage.py <prdRoot> --version v1.0.0 --page PAGE-MP-010
 ```
 
-exit 0 才可继续；exit 1 不得交付，按 F.1 整文件重写。禁止未跑验收就汇报「已更新」；禁止把 `repair-*` 当常规步骤。
+exit 0 才可继续；exit 1 不得交付，按 F.1 整文件重写（coverage 失败则按 G.4 补控件/跳转/COMP）。禁止未跑验收就汇报「已更新」；禁止把 `repair-*` 当常规步骤。
 
 ### G. 原型 BUG 预防规则（必守）
 
@@ -59,3 +60,32 @@ exit 0 才可继续；exit 1 不得交付，按 F.1 整文件重写。禁止未�
 | G3.12 | 侧栏可滚动 | `.proto-sidebar__nav` `overflow-y: auto` |
 | G3.13 | 套件引用 | `mui-kit.css` + `md-icons.js` + `icons-extra.js`；index 另引 shell；无 `prototypes-mui-app/`；无自造主题 |
 | G3.14 | 业务图标 | `data-icon` 属闭集或 extras 已 register；无手绘 path；未调 Cursor iconfont MCP |
+| G3.15 | 无裸控件 | 每个 `button`/`input`/`table` 使用 `md-*`（或「无类名组合」）；无页内 `<style>`；无主题向内联 `background`/`color` |
+| G3.16 | 规格对照脚本 | `verify-prototype-coverage.py --page …` exit 0 |
+
+#### G.4 逐页对照清单（必做，未过不得交付、不得写下页）
+
+每写一个 `PAGE-*.html` 之前，必须已经 Read 该页 `pages_prd`（`ui直出` 除外）+ `ui/PAGE-*` + 引用 COMP。对照下表逐项勾选；**G4.6 脚本失败 = 本页未完成**。
+
+| 序号 | 对照源 | 通过标准 |
+|------|--------|----------|
+| G4.1 | 本页 `pages_prd` | 本页文件已 Read；未用其它页或记忆顶替 |
+| G4.2 | §3 ASCII 线框与 `###` 分区 | 每个内容分区在 HTML 有对应可见区块（`data-section` 或可见标题）；禁止只画顶栏+一张空表 |
+| G4.3 | 各分区「结构与控件」 | 每个按钮/输入/Tab/卡片/列均用 `md-*` 落地；套件无类名 → [`reference-kit.md`](reference-kit.md)「无类名组合」 |
+| G4.4 | §4 跳转清单 | 每个目标 `PAGE-*` 有可点 `href`（本页自身与「无」除外） |
+| G4.5 | `ui/COMP-*` 状态矩阵 | `data-comp` + `data-state`；`empty`/`error` 有 `.md-empty`；`loading` 有骨架（卡片态或 `md-skel-host`） |
+| G4.6 | 脚本 | `verify-prototype-coverage.py` 对本页（及镜像）exit 0 |
+
+#### G.5 高保真（必做，未过不得交付）
+
+与估点「视觉细节」档位无关。对照 [`reference-kit.md`](reference-kit.md)「高保真落地」。
+
+| 序号 | 检查项 | 通过标准 |
+|------|--------|----------|
+| G5.1 | 夹具像真 | 无「示例商品 A/B」「测试数据」；名称/价格像业务数据 |
+| G5.2 | 密度 | 默认态列表/卡片/表 **≥4 条**（规格或 API 另有条数从其规定） |
+| G5.3 | 封面 | `md-media-ph--1`～`--6` 轮换，无纯灰块 |
+| G5.4 | 移动端 | 有 `md-status-bar`；分区用 `md-section-head` |
+| G5.5 | 桌面端 | 有 `md-page-head` |
+
+禁止：对照未过就汇报「已更新」；把 G.3（UTF-8/控制台）当成功能齐套。

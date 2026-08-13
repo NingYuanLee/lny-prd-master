@@ -23,13 +23,29 @@
           tabBarExempt: true,
           comps: [],
           spec: {
-            layout: "D1-1：搜索栏（商品名称）+ 只读表格（名称/售价/库存状态）+ 分页栏。",
+            layout: "D1-1：搜索栏（名称/库存状态/上架日期）+ 页内签 + 新增 + 表格操作列 + 三类弹窗 + 分页。",
             comps: "无",
-            apis: "API-AD-001 · 分页查询商品\n进页、点击查询、翻页。",
-            features: "FEATURE-001 · 浏览商品 · 后台列表查询",
-            actions: "点击 · 查询过滤当前表\n输入失焦 · 无"
+            apis: "API-AD-001 列表；API-AD-002 详情；API-AD-003 快捷保存\n进页、查询、翻页、页内签、打开弹窗。",
+            features: "FEATURE-001 · 后台核对\nFEATURE-002 · 弹窗维护",
+            actions: "点击 · 查询/重置/查看/快捷编辑/选择关联\n输入失焦 · 无"
           },
-          brief: "后台按名称筛选并分页查看在售商品。"
+          brief: "后台筛选商品，并用展示、表单、列表三类弹窗维护。"
+        },
+        {
+          id: "PAGE-AD-002",
+          name: "商品表单",
+          module: "商品",
+          file: "PAGE-AD-002.html",
+          tabBarExempt: true,
+          comps: [],
+          spec: {
+            layout: "D1-2：名称、售价、库存状态下拉、上架日期、上架时间、简介；保存/取消。",
+            comps: "无",
+            apis: "API-AD-003 · 保存商品\n点击保存。",
+            features: "FEATURE-002 · 整页表单保存",
+            actions: "点击 · 保存回列表、取消回列表\n输入失焦 · 无"
+          },
+          brief: "整页录入商品并保存后返回列表。"
         }
       ]
     };

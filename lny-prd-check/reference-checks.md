@@ -152,6 +152,7 @@
 | 演示按钮归位 | `PAGE-*.html` 内不得含 `demo-*`/`setDemo*`/`mock-*`（后端状态切换须归位状态演示） | `/lny-prd-prototype` 移至状态演示 | 中 |
 | 原型 JS 引用 | 静态无残留调用；可选 Console 无 ReferenceError | `/lny-prd-prototype` 按 G.1 修 | 高 |
 | 布局与 COMP 态 | 布局与 `ui/PAGE-*` 一致；COMP 态与矩阵可演示 | ② 或 ⑥ | 中 |
+| 逐页对照 G.4 | 每个业务 `PAGE-*.html` 对照 `pages_prd`：ASCII/分区、结构与控件、§4 跳转、COMP 态；须能过 `verify-prototype-coverage.py`（含高保真：无「示例 A/B」、≥4 条、封面变体、移动端状态栏） | `/lny-prd-prototype` 按 G.4/G.5 补页（每轮最多 3 页） | 高 |
 | 接口与 Feature | 展示字段能在 `api/API-*` 找到；主操作有 API；流程与 FEATURE/AC 可对照 | ③④ 或 ⑥ | 中 |
 | 跨层编号 | 原型中的 `PAGE-*` / `API-*` / `FEATURE-*` 可回溯索引 | 对应步补引用 | 高 |
 | 跳转 | 页面间跳转无死路；目标在 manifest | ⑥ 修跳转 | 低 |

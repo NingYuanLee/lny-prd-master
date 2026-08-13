@@ -307,6 +307,7 @@
       previewInner = el("div", { className: "phone-scale-host" }, [
         el("div", { className: "phone-frame" }, [
           el("iframe", { id: "previewFrame", title: "页面原型预览" }),
+          el("div", { className: "phone-home-bar" }),
         ]),
       ]);
     } else {

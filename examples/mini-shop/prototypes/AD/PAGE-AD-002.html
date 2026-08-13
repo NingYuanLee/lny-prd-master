@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>PAGE-AD-002 商品表单</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/mui-kit.css">
+</head>
+<body>
+  <div class="md-d1">
+    <div class="md-page-head">
+      <h1 class="md-h3">商品表单</h1>
+    </div>
+    <div class="md-breadcrumb">
+      <span>商品</span>
+      <span>/</span>
+      <span class="is-current">商品表单</span>
+    </div>
+    <div id="pageAlert" class="md-alert md-alert--error" style="display:none"></div>
+    <form class="md-d1__form" id="goodsForm">
+      <label class="md-field md-field--sm">
+        <span class="md-field__label">商品名称</span>
+        <input class="md-field__input" id="fName" type="text" placeholder="请输入商品名称">
+      </label>
+      <label class="md-field md-field--sm">
+        <span class="md-field__label">售价</span>
+        <input class="md-field__input" id="fPrice" type="text" placeholder="请输入售价">
+      </label>
+      <label class="md-field md-field--sm md-field--select">
+        <span class="md-field__label">库存状态</span>
+        <select class="md-select" id="fStock">
+          <option value="有货">有货</option>
+          <option value="缺货">缺货</option>
+        </select>
+      </label>
+      <label class="md-field md-field--sm md-field--date">
+        <span class="md-field__label">上架日期</span>
+        <input class="md-field__input" id="fDate" type="text" placeholder="年-月-日" autocomplete="off">
+      </label>
+      <label class="md-field md-field--sm md-field--time">
+        <span class="md-field__label">上架时间</span>
+        <input class="md-field__input" id="fTime" type="time">
+      </label>
+      <label class="md-switch-row">
+        <span class="md-switch">
+          <input type="checkbox" id="fOn" checked>
+          <span class="md-switch__track"></span>
+          <span class="md-switch__thumb"></span>
+        </span>
+        <span>上架</span>
+      </label>
+      <div class="md-choice-group">
+        <span class="md-choice-group__label">配送方式</span>
+        <label class="md-radio"><input type="radio" name="fShip" value="包邮" checked> 包邮</label>
+        <label class="md-radio"><input type="radio" name="fShip" value="到店自提"> 到店自提</label>
+      </div>
+      <div class="md-choice-group">
+        <span class="md-choice-group__label">适用渠道</span>
+        <label class="md-check"><input type="checkbox" name="fCh" value="小程序" checked> 小程序</label>
+        <label class="md-check"><input type="checkbox" name="fCh" value="后台展示"> 后台展示</label>
+      </div>
+      <label class="md-field md-field--sm">
+        <span class="md-field__label">商品简介</span>
+        <textarea class="md-field__input" id="fIntro" rows="3" placeholder="请输入商品简介"></textarea>
+      </label>
+      <div class="md-btn-group">
+        <a class="md-btn md-btn--text" href="PAGE-AD-001.html">取消</a>
+        <button type="submit" class="md-btn md-btn--contained">保存</button>
+      </div>
+    </form>
+  </div>
+  <script src="assets/md-icons.js"></script>
+  <script src="assets/icons-extra.js"></script>
+  <script src="assets/proto-page.js"></script>
+  <script>
+    document.getElementById("goodsForm").addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var name = (document.getElementById("fName").value || "").trim();
+      var price = (document.getElementById("fPrice").value || "").trim();
+      var alertEl = document.getElementById("pageAlert");
+      if (!name || !price) {
+        alertEl.textContent = "名称、售价必填";
+        alertEl.style.display = "flex";
+        return;
+      }
+      location.href = "PAGE-AD-001.html?saved=1";
+    });
+  </script>
+</body>
+</html>
