@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Mini Shop MP 汇总</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/mui-kit.css">
+  <link rel="stylesheet" href="assets/proto-shell.css">
+</head>
+<body>
+  <div id="proto-root"></div>
+  <script>
+    window.PROTO_SHELL = {
+      terminal: "MP",
+      mode: "mobile",
+      title: "小程序原型",
+      pages: [
+        {
+          id: "PAGE-MP-001",
+          name: "首页",
+          module: "首页",
+          file: "PAGE-MP-001.html",
+          tabBarExempt: false,
+          comps: [
+            { id: "COMP-001", name: "商品卡片", states: ["loading", "empty", "error", "default"] }
+          ],
+          spec: {
+            layout: "L0 状态栏与 TabBar；L1 顶栏「首页」；L2 推荐商品区；L3 商品卡片栅格。",
+            comps: "COMP-001 · 商品卡片\n状态切换入口：壳层状态演示（loading / empty / error / default）。",
+            apis: "API-MP-001 · 查询推荐商品\n进页请求；失败由状态演示 error 演示。",
+            features: "FEATURE-001 · 浏览商品 · 首页推荐入口",
+            actions: "点击 · 本夹具卡片无出页\n壳层 · 组件状态切换"
+          },
+          brief: "首页展示推荐商品，可从底栏进入商品列表。"
+        },
+        {
+          id: "PAGE-MP-002",
+          name: "商品列表",
+          module: "商品",
+          file: "PAGE-MP-002.html",
+          tabBarExempt: false,
+          comps: [
+            { id: "COMP-001", name: "商品卡片", states: ["loading", "empty", "error", "default"] }
+          ],
+          spec: {
+            layout: "L0 TabBar；L1 顶栏「商品」；L2 列表滚动；L3 商品卡片纵向排列。",
+            comps: "COMP-001 · 商品卡片\n状态切换入口：壳层状态演示。",
+            apis: "API-MP-001 · 分页查询商品\n进页请求；失败 Toast 由状态演示 error 演示。",
+            features: "FEATURE-001 · 浏览商品 · 列表浏览",
+            actions: "滚动 · 列表区内滚动\n壳层 · 组件状态切换"
+          },
+          brief: "商品列表分页浏览在售商品，失败可重试。"
+        }
+      ]
+    };
+  </script>
+  <script src="assets/md-icons.js"></script>
+  <script src="assets/icons-extra.js"></script>
+  <script src="assets/proto-shell.js"></script>
+</body>
+</html>

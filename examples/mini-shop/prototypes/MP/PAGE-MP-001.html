@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>PAGE-MP-001 首页</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/mui-kit.css">
+</head>
+<body>
+  <div class="md-mobile-page">
+    <header class="md-appbar md-appbar--mobile">
+      <div class="md-appbar__title">首页</div>
+    </header>
+    <main class="md-mobile-body">
+      <h1 class="md-h3" style="margin-bottom:16px">推荐</h1>
+      <div class="md-grid-2">
+        <article class="md-card" data-comp="COMP-001" data-state="default">
+          <div class="md-card__media" style="background:#bbdefb"></div>
+          <div class="md-card__body">
+            <h2 class="md-card__title">示例商品 A</h2>
+            <p class="md-price">¥19.9</p>
+          </div>
+        </article>
+        <article class="md-card" data-comp="COMP-001" data-state="default">
+          <div class="md-card__media" style="background:#c8e6c9"></div>
+          <div class="md-card__body">
+            <h2 class="md-card__title">示例商品 B</h2>
+            <p class="md-price">¥29.9</p>
+          </div>
+        </article>
+      </div>
+      <p class="md-empty is-hidden" data-empty-for="COMP-001" data-empty-text="暂无推荐商品" data-error-text="推荐加载失败"></p>
+    </main>
+    <nav class="md-tabbar">
+      <a class="is-active" href="PAGE-MP-001.html">
+        <span class="md-icon" data-icon="home" aria-hidden="true"></span>
+        <span>首页</span>
+      </a>
+      <a href="PAGE-MP-002.html">
+        <span class="md-icon" data-icon="goods" aria-hidden="true"></span>
+        <span>商品</span>
+      </a>
+    </nav>
+  </div>
+  <script src="assets/md-icons.js"></script>
+  <script src="assets/icons-extra.js"></script>
+  <script src="assets/proto-page.js"></script>
+</body>
+</html>

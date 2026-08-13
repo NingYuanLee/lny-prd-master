@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Mini Shop AD 汇总</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/mui-kit.css">
+  <link rel="stylesheet" href="assets/proto-shell.css">
+</head>
+<body>
+  <div id="proto-root"></div>
+  <script>
+    window.PROTO_SHELL = {
+      terminal: "AD",
+      mode: "desktop",
+      title: "管理后台原型",
+      pages: [
+        {
+          id: "PAGE-AD-001",
+          name: "商品列表",
+          module: "商品",
+          file: "PAGE-AD-001.html",
+          tabBarExempt: true,
+          comps: [],
+          spec: {
+            layout: "D1-1：搜索栏（商品名称）+ 只读表格（名称/售价/库存状态）+ 分页栏。",
+            comps: "无",
+            apis: "API-AD-001 · 分页查询商品\n进页、点击查询、翻页。",
+            features: "FEATURE-001 · 浏览商品 · 后台列表查询",
+            actions: "点击 · 查询过滤当前表\n输入失焦 · 无"
+          },
+          brief: "后台按名称筛选并分页查看在售商品。"
+        }
+      ]
+    };
+  </script>
+  <script src="assets/md-icons.js"></script>
+  <script src="assets/icons-extra.js"></script>
+  <script src="assets/proto-shell.js"></script>
+</body>
+</html>

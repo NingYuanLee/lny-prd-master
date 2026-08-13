@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>PAGE-AD-001 商品列表</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/mui-kit.css">
+</head>
+<body>
+  <div class="md-d1">
+    <div class="md-breadcrumb">
+      <span>商品</span>
+      <span>/</span>
+      <span class="is-current">商品列表</span>
+    </div>
+    <div class="md-d1__search">
+      <label class="md-field md-field--sm">
+        <span class="md-field__label">商品名称</span>
+        <input class="md-field__input" id="qName" type="text" placeholder=" ">
+      </label>
+      <button type="button" class="md-btn md-btn--contained" id="btnQuery">
+        <span class="md-icon" data-icon="search" aria-hidden="true"></span>
+        查询
+      </button>
+    </div>
+    <div class="md-d1__table">
+      <div class="md-table-wrap">
+        <table class="md-table">
+          <thead>
+            <tr>
+              <th>商品名称</th>
+              <th>售价</th>
+              <th>库存状态</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+            <tr>
+              <td>示例商品 A</td>
+              <td>19.9</td>
+              <td><span class="md-chip md-chip--success">有货</span></td>
+            </tr>
+            <tr>
+              <td>示例商品 B</td>
+              <td>29.9</td>
+              <td><span class="md-chip md-chip--outlined">缺货</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="md-d1__footer">
+      <span class="md-caption" id="totalHint">共 2 条</span>
+      <nav class="md-pagination">
+        <button type="button" class="md-page-btn" disabled>‹</button>
+        <button type="button" class="md-page-btn is-active">1</button>
+        <button type="button" class="md-page-btn" disabled>›</button>
+      </nav>
+    </div>
+  </div>
+  <script src="assets/md-icons.js"></script>
+  <script src="assets/icons-extra.js"></script>
+  <script src="assets/proto-page.js"></script>
+  <script>
+    document.getElementById("btnQuery").addEventListener("click", function () {
+      var q = (document.getElementById("qName").value || "").trim();
+      var rows = document.querySelectorAll("#tbody tr");
+      var n = 0;
+      rows.forEach(function (tr) {
+        var name = tr.cells[0].textContent;
+        var show = !q || name.indexOf(q) !== -1;
+        tr.style.display = show ? "" : "none";
+        if (show) n += 1;
+      });
+      document.getElementById("totalHint").textContent = "共 " + n + " 条";
+    });
+  </script>
+</body>
+</html>
