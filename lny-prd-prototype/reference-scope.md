@@ -4,7 +4,7 @@
 
 **唯一文件**：`prototypes/index.html`。不写 `scope.html`、不写 `scope.md`。禁止放到 PRD 仓库根目录。
 
-轮末覆盖刷新，并镜像到 `versions/{v}/prototypes/index.html`。① 立项不落本文件；②③④⑤ 本轮若无 ⑥ 则下次出原型再刷。
+轮末覆盖刷新，并镜像到 `versions/{v}/prototypes/index.html`。① 立项不落本文件；②③④⑤ 本轮若无 ⑥ 则下次出原型再刷。⑨ 估点落盘后同一轮须刷本页（⑥「只刷总入口」）：更新版本清单分数，**不**重画各端页面；尚无任何端目录则跳过。
 
 观感对齐套件主色 `#1976d2`；用少量内联 CSS，**不**依赖某一端 `assets/`。UTF-8 无 BOM。
 

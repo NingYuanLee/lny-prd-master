@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## 与总控的关系
 
-本步为 **⑥ `/lny-prd-prototype`**。只写 `prototypes/` 与 `versions/.../prototypes/`（含总入口 `index.html`、各端目录）。禁止改根规格与 `iteration_notes`。缺规格时 **本步内** Read ②③④⑤ 对应 SKILL 并落盘，再写 HTML；**禁止**空中楼阁 HTML，**禁止**停下来只说「交总控」。⑦ 须用户明确要求检查。全流程见 `lny-prd-master/SKILL.md`。
+本步为 **⑥ `/lny-prd-prototype`**。只写 `prototypes/` 与 `versions/.../prototypes/`（含总入口 `index.html`、各端目录）。禁止改根规格与 `iteration_notes`。缺规格时 **本步内** Read ②③④⑤ 对应 SKILL 并落盘，再写 HTML；**禁止**空中楼阁 HTML，**禁止**停下来只说「交总控」。⑨ 交来时只走「只刷总入口」，禁止升级成全量出原型。⑦ 须用户明确要求检查。全流程见 `lny-prd-master/SKILL.md`。
 
 # 生成原型 `/lny-prd-prototype`
 
@@ -67,9 +67,22 @@ python <skillDir>/scripts/verify-prototype-utf8.py <prdRoot>/prototypes/...
 ```yaml
 版本号: v1.0.0
 页面编号列表: (可选)
+只刷总入口: false  # ⑨ 交来或只要更新版本清单时为 true
 ```
 
+## 只刷总入口
+
+⑨ 估点落盘后、或用户只要更新总入口版本清单时走本节，**不要**走下方全量步骤。
+
+1. Read [`reference-scope.md`](reference-scope.md)。
+2. 若尚无任何 `prototypes/{终端}/`：不新建空总入口，回报「无原型可挂」并结束。
+3. 覆盖写入 `prototypes/index.html`，并镜像到 `versions/{v}/prototypes/index.html`（`{v}` 取估点版本，未指定则当前工作版本）。版本清单按 **全部** `versions/` 填写。
+4. UTF-8 验收这两个 `index.html`。
+5. **禁止**：copy-kit；改各端 `PAGE-*.html` / 端 `index.html` / `map.html`；补 ②③④⑤；把本节当成全量出原型。
+
 ## 执行步骤
+
+若输入 `只刷总入口: true` 或由 ⑨ 交来 → 只走上一节。
 
 1. 校验版本目录。有未清委派或缺规格 → 先补链（见开笔前），不要停。
 2. Read 相关规格与（默认）`pages_prd`；核对未触碰「明确不做」。
