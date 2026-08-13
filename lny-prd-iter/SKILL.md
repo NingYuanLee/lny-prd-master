@@ -24,7 +24,7 @@ disable-model-invocation: true
 | 写 `iteration_notes.md` 开篇、三类 `*_changes.md`、`eval_signals.md` | 生成 `pages_prd` |
 | 新增/修改页面登记 `pages_prd` 目标路径，状态 `待②`/`待⑤` | 更新索引/统计（留给 ②③④） |
 | 根四规范「变更记录」各追加一行（版本号+简述+日期） | 声称已写规格或单页 PRD |
-| 输出委派清单（②→③→④→⑤；⑥ 视演示目标；⑦ 不自动） | 初始化 `v1.0.0`（属 ①）；拷贝或新建根 `scope.html` |
+| 输出委派清单（②→③→④→⑤；⑥ 视演示目标；⑦ 不自动） | 初始化 `v1.0.0`（属 ①）；写 `prototypes/index.html`（属 ⑥） |
 
 **独占**：仅本步可新建高于当前最新的 `versions/{新版本号}/` 并追加变更记录行。表内版本须与 `versions/` 一一对应；同版本不得第二行。流水过滤见 master §1.1.1。
 

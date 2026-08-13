@@ -28,7 +28,7 @@ description: >-
 | ③ | `lny-prd-api/SKILL.md` | `api_spec` 索引 + `api/API-*`/`EXT-*`（禁路由/JSON/code） | 不写 UI 线框；不改 `prototypes/` |
 | ④ | `lny-prd-feature/SKILL.md` | `feature_spec` + `feature/`；FEATURE↔PAGE/API 闭环 | 不写接口字段、UI 线框 |
 | ⑤ | `lny-prd-page/SKILL.md` | `pages_prd/`；PC/AD 必产 `_shell` | 不替代 ②③④；不依赖原型 |
-| ⑥ | `lny-prd-prototype/SKILL.md` | `prototypes/{终端}/` + 版本镜像（含 `assets/`）+ PRD 根 `scope.html` | 用 HTML 代替规格；改根规格或 `iteration_notes`；npm / `prototypes-mui-app/` |
+| ⑥ | `lny-prd-prototype/SKILL.md` | `prototypes/`（总入口 `index.html` + `{终端}/`）+ 版本镜像（含 `assets/`） | 用 HTML 代替规格；改根规格或 `iteration_notes`；npm / `prototypes-mui-app/` |
 | ⑦ | `lny-prd-check/SKILL.md` | 只读报告 | 改任何 PRD 正文 |
 | ⑧ | `lny-prd-iter/SKILL.md` | 新版本目录、台账、`eval_signals`、变更记录新行 | 写规格正文、生成 `pages_prd` |
 | ⑨ | `lny-prd-sp/SKILL.md` | `sp_report.md` | 改规格/台账/原型；不可估则停算 |
@@ -40,7 +40,7 @@ description: >-
 - **v1.0.0**：仅立项创建目录与各规范变更记录首行。续跑与 ②～⑨ 不得再建/再写该行。⑧ 不得补初始化 v1.0.0。
 - **新版本行**：仅 ⑧ 可新建 `versions/{新版本号}/` 并追加一行。细则见 `lny-prd-iter`。
 - **其余技能**：不得在变更记录表新增行；同版本不得多行（发现则交 ⑦/⑧，他步不擅自改表）；表内版本须与 `versions/` 文件夹一致；「文档版本」只能填已存在的版本目录。
-- **过程流水**：②③④⑤ 改根四规范（`main_spec` / `api_spec` / `ui_manifest` / `feature_spec`）正文时，在当前版本 `iteration_notes.md` 文末追加一条业务摘要。⑥ 不改根规格与流水（可覆盖刷新根 `scope.html`）；⑦ 只读；⑨ 只写 `sp_report.md`。⑧ 写开篇；其后仍可文末追加，不替代变更记录新行。
+- **过程流水**：②③④⑤ 改根四规范（`main_spec` / `api_spec` / `ui_manifest` / `feature_spec`）正文时，在当前版本 `iteration_notes.md` 文末追加一条业务摘要。⑥ 不改根规格与流水（可覆盖刷新 `prototypes/index.html`）；⑦ 只读；⑨ 只写 `sp_report.md`。⑧ 写开篇；其后仍可文末追加，不替代变更记录新行。
 - **当前工作版本**：未指定则取 `versions/` 最大 semver；用户显式版本优先且目录须已存在；与文档头不一致时以 `versions/` 为准。
 
 #### 1.1.1 流水内容过滤（必守）
@@ -188,7 +188,7 @@ description: >-
    - `ui_manifest.md` ← `lny-prd-ui/reference.md`
    - `feature_spec.md` ← `lny-prd-feature/reference.md`
 3. 四份文档统一文档信息 / 变更记录首行 v1.0.0；`main_spec` 第4章终端表直接放在二级标题下，**禁止** `###` 小节
-4. 创建 `versions/v1.0.0/` 与 `iteration_notes.md`
+4. 创建 `versions/v1.0.0/` 与 `iteration_notes.md`（含「版本名称」，无则写「首版」）
 5. 输出结构；下一步总控进规格三件套（②③④ 可并行）
 
 ## 续跑：新增/变更/删减终端

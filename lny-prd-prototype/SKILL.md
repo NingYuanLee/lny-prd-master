@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## 与总控的关系
 
-本步为 **⑥ `/lny-prd-prototype`**。只写 `prototypes/`、`versions/.../prototypes/` 与 PRD 根 `scope.html`。禁止改根规格与 `iteration_notes`。缺规格时 **本步内** Read ②③④⑤ 对应 SKILL 并落盘，再写 HTML；**禁止**空中楼阁 HTML，**禁止**停下来只说「交总控」。⑦ 须用户明确要求检查。全流程见 `lny-prd-master/SKILL.md`。
+本步为 **⑥ `/lny-prd-prototype`**。只写 `prototypes/` 与 `versions/.../prototypes/`（含总入口 `index.html`、各端目录）。禁止改根规格与 `iteration_notes`。缺规格时 **本步内** Read ②③④⑤ 对应 SKILL 并落盘，再写 HTML；**禁止**空中楼阁 HTML，**禁止**停下来只说「交总控」。⑦ 须用户明确要求检查。全流程见 `lny-prd-master/SKILL.md`。
 
 # 生成原型 `/lny-prd-prototype`
 
@@ -17,7 +17,7 @@ disable-model-invocation: true
 - 套件类名与壳数据：[`reference-kit.md`](reference-kit.md)
 - 内置图标：[`reference-icons.md`](reference-icons.md)
 - 壳层 / 关系图 / 缩放：[`reference-shell.md`](reference-shell.md)
-- 根目录范围页：[`reference-scope.md`](reference-scope.md)
+- 原型总入口：[`reference-scope.md`](reference-scope.md)
 - UTF-8 与 BUG 清单：[`reference-quality.md`](reference-quality.md)
 - 复制套件：`scripts/copy-kit.py`
 - 搜图标：`scripts/search-icons.py`
@@ -39,7 +39,7 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 1. `python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}`
 2. Read [`reference-kit.md`](reference-kit.md)：`index.html` 只填 `PROTO_SHELL`；单页只用 `md-*` 类。
 3. 业务图标：Read [`reference-icons.md`](reference-icons.md)。闭集能覆盖则 `data-icon`；否则 `search-icons.py --pick 0 --name … --out …/assets`。
-4. 壳层行为（状态演示 / 规格说明 / 缩放 / 关系图）见 [`reference-shell.md`](reference-shell.md)。轮末按 [`reference-scope.md`](reference-scope.md) 覆盖刷新 PRD 根 `scope.html`。
+4. 壳层行为（状态演示 / 规格说明 / 缩放 / 关系图）见 [`reference-shell.md`](reference-shell.md)。轮末按 [`reference-scope.md`](reference-scope.md) 覆盖刷新 `prototypes/index.html`。
 
 **禁止**：初始化 npm/Vite/React；查询 mui-mcp；调用 `user-search-iconfont-mcp`（改用本技能 `search-icons.py`）；页内自造主题色、手绘图标 path 或第二套组件 CSS。
 
@@ -74,6 +74,6 @@ python <skillDir>/scripts/verify-prototype-utf8.py <prdRoot>/prototypes/...
 1. 校验版本目录。有未清委派或缺规格 → 先补链（见开笔前），不要停。
 2. Read 相关规格与（默认）`pages_prd`；核对未触碰「明确不做」。
 3. 复制 kit 到本批每个 `prototypes/{终端}/assets/`。
-4. 按 [`reference-kit.md`](reference-kit.md) 写单页（图标见 [`reference-icons.md`](reference-icons.md)）；按 [`reference-shell.md`](reference-shell.md) 写 `index.html`（及移动端 `map.html`）；按 [`reference-scope.md`](reference-scope.md) 写根 `scope.html`；镜像到 `versions/{v}/prototypes/{终端}/`（含 `assets/`）。**不**把 `scope.html` 拷进版本目录。
+4. 按 [`reference-kit.md`](reference-kit.md) 写单页（图标见 [`reference-icons.md`](reference-icons.md)）；按 [`reference-shell.md`](reference-shell.md) 写各端 `index.html`（及移动端 `map.html`）；按 [`reference-scope.md`](reference-scope.md) 写 `prototypes/index.html`；镜像到 `versions/{v}/prototypes/`（各端含 `assets/`，总入口放在该目录根下）。不写 `scope.html`。
 5. UTF-8 脚本验收 + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）。
 6. 输出路径列表；附验收通过说明。

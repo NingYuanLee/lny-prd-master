@@ -6,7 +6,7 @@
 
 - 单页、`index.html`、`assets/` 均在 `prototypes/{终端}/`（`MP` / `H5` / `APP` / `PC` / `AD`）。框架通用页（如 AD 登录）不生成 `PAGE-*.html`。
 - 镜像到 `versions/{版本号}/prototypes/{终端}/`（含 `assets/`）。禁止 `node_modules` / npm / `prototypes-mui-app/`。
-- 生成前 `copy-kit.py`；`index.html` 只填 `PROTO_SHELL`。根 `scope.html` 见 [`reference-scope.md`](reference-scope.md)。
+- 生成前 `copy-kit.py`；各端 `index.html` 只填 `PROTO_SHELL`。总入口见 [`reference-scope.md`](reference-scope.md)。
 
 ## 硬规则（套件已实现，禁止改布局）
 
@@ -46,7 +46,7 @@
 
 ### 范围说明（当前页，`PROTO_SHELL.pages[].brief`）
 
-人话两三句：这页干什么、主路径能做什么。从 `ui/PAGE-*.md` / `pages_prd` 抽取。禁止编造、禁止贴 API 编号。切页后跟着变。**不**链根 `scope.html`。
+人话两三句：这页干什么、主路径能做什么。从 `ui/PAGE-*.md` / `pages_prd` 抽取。禁止编造、禁止贴 API 编号。切页后跟着变。**不**链 `prototypes/index.html`。
 
 ### C. 状态演示
 

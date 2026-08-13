@@ -92,8 +92,9 @@
 | 检查项 | 规则 | 不通过建议 | 优先级 |
 |--------|------|------------|--------|
 | 原型图文件存在性（建议） | 每个页面可有 `prototypes/{终端}/PAGE-{终端}-{序号}.html`；不作为规格阻塞项 | 运行 `/lny-prd-prototype`（⑥） | 低 |
-| 原型须有单页 PRD 来源 | 每个业务页原型 `prototypes/{终端}/PAGE-*.html`（不含 `index.html`/`map.html`/壳层汇总）须能对应到 `versions/{v}/pages_prd/**` 下同源单页 PRD；**例外**仅当台账或产物明确标注 **`ui直出`**（须可核对） | 缺来源则先跑 `/lny-prd-page`（⑤）补单页 PRD，再 `/lny-prd-prototype`；或补标 `ui直出` | 中 |
-| 根原型 ↔ 版本镜像 | 若存在 `versions/{v}/prototypes/`：业务页 `PAGE-*.html` 集合宜与根 `prototypes/` **同端同名对齐**（允许镜像晚于根；明显缺页/只存在一侧须报） | `/lny-prd-prototype` 同步镜像或根目录 | 低 |
+| 原型总入口 | 若已有任一端 `prototypes/{终端}/`：须有 `prototypes/index.html`（含简介正文 + 各端入口）；**不**再写 `scope.html` | 运行 `/lny-prd-prototype`（⑥）补总入口 | 中 |
+| 原型须有单页 PRD 来源 | 每个业务页原型 `prototypes/{终端}/PAGE-*.html`（不含各端 `index.html`/`map.html`、也不含 `prototypes/index.html`）须能对应到 `versions/{v}/pages_prd/**` 下同源单页 PRD；**例外**仅当台账或产物明确标注 **`ui直出`**（须可核对） | 缺来源则先跑 `/lny-prd-page`（⑤）补单页 PRD，再 `/lny-prd-prototype`；或补标 `ui直出` | 中 |
+| 根原型 ↔ 版本镜像 | 若存在 `versions/{v}/prototypes/`：业务页 `PAGE-*.html` 集合宜与根 `prototypes/` **同端同名对齐**；总入口 `index.html` 宜同时出现在两侧（允许镜像晚于根；明显缺页/只存在一侧须报） | `/lny-prd-prototype` 同步镜像或根目录 | 低 |
 
 ---
 
@@ -145,7 +146,7 @@
 |--------|------|------------|--------|
 | 状态演示面板 | 汇总页：状态演示固定宽 200px（收起后 0）；顶栏可收起；选项与 `ui/COMP-*` 矩阵逐字一致 | `/lny-prd-prototype` 补状态演示 | 中 |
 | 规格说明宽度 | 右侧规格说明固定 375px | `/lny-prd-prototype` 按套件调整 | 中 |
-| 范围说明 | 顶栏「范围说明」为当前页人话短说明（`brief`）；不链根 `scope.html` | `/lny-prd-prototype` 补 `brief` | 中 |
+| 范围说明 | 顶栏「范围说明」为当前页人话短说明（`brief`）；不链 `prototypes/index.html` | `/lny-prd-prototype` 补 `brief` | 中 |
 | 移动端预览缩放 | MP/H5/APP：`preview-area` 无外围滚动条；含 `phone-scale-host` + `fitPhoneFrame()`；页单/状态演示收起、切页显隐、resize 时重算 | `/lny-prd-prototype` 按 §D 补缩放 | 高 |
 | 原型套件引用 | 各端 `PAGE-*.html` 引用同端 `assets/mui-kit.css`、`md-icons.js`、`icons-extra.js`；`index.html` 另引 `proto-shell.css` + `proto-shell.js`；不得存在 `prototypes-mui-app/`；缺闭集图标须由 `search-icons.py` 写入 extras | `/lny-prd-prototype` 按 kit 补齐 | 中 |
 | 演示按钮归位 | `PAGE-*.html` 内不得含 `demo-*`/`setDemo*`/`mock-*`（后端状态切换须归位状态演示） | `/lny-prd-prototype` 移至状态演示 | 中 |

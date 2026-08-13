@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Mini Shop 原型</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { --md-primary: #1976d2; --md-text: rgba(0,0,0,0.87); --md-muted: rgba(0,0,0,0.6); }
+    body { margin: 0; font-family: Roboto, "Segoe UI", sans-serif; color: var(--md-text); background: #fafafa; }
+    main { max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px; }
+    h1 { font-size: 1.75rem; font-weight: 500; margin: 0 0 8px; }
+    .meta { color: var(--md-muted); font-size: 0.875rem; margin-bottom: 24px; }
+    h2 { font-size: 1.125rem; font-weight: 500; margin: 0 0 8px; color: var(--md-primary); }
+    .block { margin-bottom: 24px; }
+    p, li { line-height: 1.7; margin: 0 0 12px; }
+    p:last-child, li:last-child { margin-bottom: 0; }
+    ul, ol { margin: 0; padding-left: 1.25rem; }
+    a { color: var(--md-primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .layout { display: grid; grid-template-columns: 1fr minmax(300px, 360px); gap: 32px; align-items: start; }
+    @media (max-width: 840px) { .layout { grid-template-columns: 1fr; } }
+    .card { background: #fff; border-radius: 4px; padding: 16px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.12); overflow-x: auto; }
+    .table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+    .table th, .table td { text-align: left; padding: 10px 8px; border-bottom: 1px solid rgba(0,0,0,0.08); vertical-align: top; }
+    .table th { color: var(--md-muted); font-weight: 500; }
+    .table tr:last-child td { border-bottom: 0; }
+    .card--links { padding: 4px 0; }
+    .row { display: block; padding: 16px 20px; border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .row:last-child { border-bottom: 0; }
+    .row strong { display: block; font-weight: 500; color: var(--md-text); }
+    .row span { display: block; font-size: 0.875rem; color: var(--md-muted); margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Mini Shop 原型</h1>
+    <p class="meta">当前规格版本 v1.0.0</p>
+
+    <div class="layout">
+      <div class="col col--main">
+        <section class="block">
+          <h2>这是什么</h2>
+          <div class="card">
+            <p>Mini Shop 是一个最小的商品浏览样例：买家在微信小程序里看推荐、逛在售商品；运营在管理后台核对待售清单。它用来把「浏览商品」这件事说清楚，不是完整电商，也不承担成交。</p>
+          </div>
+        </section>
+        <section class="block">
+          <h2>谁在用、能干什么</h2>
+          <div class="card">
+            <p>买家打开小程序，先在首页看到少量推荐，再进入列表翻页浏览，列表里只出现在售商品；请求失败时可以重试。运营在后台按名称筛选、分页核对商品。两端都是「看清有什么货」，没有下单或改价。</p>
+          </div>
+        </section>
+        <section class="block">
+          <h2>有哪些功能</h2>
+          <div class="card">
+            <ol>
+              <li>浏览在售商品：买家看推荐和列表，运营在后台核对商品</li>
+            </ol>
+          </div>
+        </section>
+        <section class="block">
+          <h2>需要准备哪些数据或资料</h2>
+          <div class="card">
+            <ol>
+              <li>在售商品清单：名称、图片、售价（小程序首页推荐与列表都要用）</li>
+              <li>后台核对另需库存状态，并能按商品名称搜索</li>
+              <li>没有外部系统要对齐的资料</li>
+            </ol>
+          </div>
+        </section>
+      </div>
+
+      <aside class="col col--side">
+        <section class="block">
+          <h2>各端原型</h2>
+          <div class="card card--links">
+            <a class="row" href="MP/index.html">
+              <strong>微信小程序</strong>
+              <span>2 个页面</span>
+            </a>
+            <a class="row" href="AD/index.html">
+              <strong>管理后台</strong>
+              <span>1 个页面</span>
+            </a>
+          </div>
+        </section>
+        <section class="block">
+          <h2>版本清单</h2>
+          <div class="card">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>版本号</th>
+                  <th>版本名称</th>
+                  <th>前端</th>
+                  <th>后端</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>v1.0.0</td>
+                  <td>首版夹具</td>
+                  <td>4.0</td>
+                  <td>3.8</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>

@@ -55,7 +55,7 @@
 | **接口需求定义** | 按终端拆解 API 需求（含第三方），产出带请求/响应语义的接口明细文档 |
 | **功能拆分** | 将整体需求拆为独立的功能模块，每个功能有目标、流程、验收标准 |
 | **单页 PRD** | 面向具体页面的回归式需求文档，强制写明依赖路径与数据来源 |
-| **可交互原型** | 全端静态 HTML + MUI 套件；壳层含规格说明、状态演示、关系图、当前页范围说明；根目录 `scope.html` 为项目现状一页 |
+| **可交互原型** | 全端静态 HTML + MUI 套件；`prototypes/index.html` 为总入口（简介 + 各端）；壳层含规格说明、状态演示、关系图、当前页范围说明 |
 | **文档检查** | 对已有 PRD 做只读一致性校验（引用闭环、编号规范、统计对齐），输出审计报告 |
 | **迭代管理** | 创建新版本目录骨架、变更台账（ui/api/feature），标注委派清单 |
 | **版本故事点** | 按版本汇总 FE/BE（及迭代系数）SP，落盘 `sp_report.md` |
@@ -123,7 +123,7 @@ FE：① ui 页壳 → ② api 全局层 → ③ 可复用 COMP → ④ 多 Agen
 
 **Codex**：按对应工具的 Skill 配置方式，指向各 `lny-prd-*/SKILL.md`。
 
-对照粒度：打开 [`examples/mini-shop/`](examples/mini-shop/)（只读样例，含 MP+AD、COMP-001、`_shell/AD-shell.md`）。
+对照粒度：打开 [`examples/mini-shop/`](examples/mini-shop/)（只读样例，含 MP+AD、COMP-001、`_shell/AD-shell.md`、`sp_report.md`）。
 
 ### 5.2 使用
 
@@ -160,7 +160,6 @@ Agent 将自动判定当前状态：
 my-project/                         # PRD 项目根目录
 │
 ├── main_spec.md                    # 产品规格说明书（概述、终端、统计索引）
-├── scope.html                      # 给人看的项目现状一页（⑥ 刷新；不写 scope.md）
 ├── api_spec.md                     # 接口需求索引（§4 终端对齐 + API/EXT 清单）
 ├── ui_manifest.md                  # UI 设计清单（页面/分包/组件索引）
 ├── feature_spec.md                 # 功能规格索引（全局规则 + Feature 索引）
@@ -180,9 +179,10 @@ my-project/                         # PRD 项目根目录
 │   └── FEATURE-002.md
 │
 ├── prototypes/                     # 可交互原型（⑥ 负责）
+│   ├── index.html                  #   总入口（简介 + 各端）
 │   ├── MP/                         #   小程序端
 │   │   ├── assets/                 #     从技能包 kit/ 拷贝的 MUI 视觉套件
-│   │   ├── index.html              #     页面导航汇总
+│   │   ├── index.html              #     该端页面导航汇总
 │   │   ├── map.html                #     页面关系图
 │   │   └── PAGE-MP-001.html        #     单页原型
 │   ├── AD/                         #   管理后台端（同样静态 HTML + kit）
@@ -191,6 +191,7 @@ my-project/                         # PRD 项目根目录
 └── versions/                       # 版本管理（① 立项 / ⑧ 迭代）
     ├── v1.0.0/                     #   首版
     │   ├── iteration_notes.md      #     过程性留痕
+    │   ├── sp_report.md            #     版本故事点（⑨ 负责；夹具已给出）
     │   ├── pages_prd/              #     单页 PRD（⑤ 负责）
     │   │   └── PAGE-MP-001.md
     │   └── prototypes/             #     原型静态镜像
@@ -288,7 +289,7 @@ sequenceDiagram
 
 #### 7.5 版本故事点
 
-见 [第八章](#八估点与可评估性) 与 [`lny-prd-sp/reference-weights.md`](lny-prd-sp/reference-weights.md)。
+见 [第八章](#八估点与可评估性)、[`lny-prd-sp/reference-weights.md`](lny-prd-sp/reference-weights.md)，以及夹具 [`examples/mini-shop/versions/v1.0.0/sp_report.md`](examples/mini-shop/versions/v1.0.0/sp_report.md)。
 
 ## 八、估点与可评估性
 
