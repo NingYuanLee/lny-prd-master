@@ -10,6 +10,15 @@
   var statePanelOpen = true;
   var drawerOpen = false;
   var briefOpen = false;
+  var collapsedGroups = {};
+
+  function syncGroup(head, body, open) {
+    if (head) {
+      head.classList.toggle("is-open", open);
+      head.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    if (body) body.classList.toggle("is-collapsed", !open);
+  }
 
   function el(tag, attrs, children) {
     var node = document.createElement(tag);
@@ -170,6 +179,17 @@
     document.querySelectorAll(".md-list-item[data-page]").forEach(function (a) {
       a.classList.toggle("is-active", a.getAttribute("data-page") === page.id);
     });
+    document.querySelectorAll(".proto-nav-group").forEach(function (gEl) {
+      var ids = (gEl.getAttribute("data-pages") || "").split(",");
+      if (ids.indexOf(page.id) === -1) return;
+      var name = gEl.getAttribute("data-group") || "";
+      collapsedGroups[name] = false;
+      syncGroup(
+        gEl.querySelector(".proto-nav-group__head"),
+        gEl.querySelector(".proto-nav-group__items"),
+        true
+      );
+    });
     var frame = document.getElementById("previewFrame");
     if (frame) frame.src = page.file;
     renderStatePanel(page);
@@ -224,9 +244,11 @@
 
     var nav = el("nav", { className: "proto-sidebar__nav" });
     groupPages().forEach(function (g) {
-      nav.appendChild(el("div", { className: "md-list-subheader", text: g.name }));
+      var open = collapsedGroups[g.name] !== true;
+      var ids = g.items.map(function (p) { return p.id; }).join(",");
+      var body = el("div", { className: "proto-nav-group__items" });
       g.items.forEach(function (p) {
-        nav.appendChild(
+        body.appendChild(
           el("button", {
             type: "button",
             className: "md-list-item" + (p.id === currentId ? " is-active" : ""),
@@ -240,6 +262,29 @@
           })
         );
       });
+      var head = el("button", {
+        type: "button",
+        className: "proto-nav-group__head",
+        "aria-expanded": open ? "true" : "false",
+        on: {
+          click: function () {
+            var next = !head.classList.contains("is-open");
+            collapsedGroups[g.name] = !next;
+            syncGroup(head, body, next);
+          },
+        },
+      }, [
+        el("span", { className: "proto-nav-group__title", text: g.name }),
+        icon("chevron-right"),
+      ]);
+      syncGroup(head, body, open);
+      nav.appendChild(
+        el("div", {
+          className: "proto-nav-group",
+          "data-group": g.name,
+          "data-pages": ids,
+        }, [head, body])
+      );
     });
 
     var sidebar = el("aside", { id: "protoSidebar", className: "proto-sidebar" }, [

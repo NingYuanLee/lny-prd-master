@@ -39,7 +39,43 @@
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
+  padding: 8px 0 16px;
 }
+.proto-nav-group__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 36px;
+  padding: 0 12px 0 16px;
+  border: 0;
+  background: transparent;
+  color: var(--md-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: left;
+}
+.proto-nav-group__head:hover { background: var(--md-hover); }
+.proto-nav-group__title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.proto-nav-group__head .md-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  transition: transform var(--md-duration) var(--md-ease);
+}
+.proto-nav-group__head.is-open .md-icon { transform: rotate(90deg); }
+.proto-nav-group__items { overflow: hidden; }
+.proto-nav-group__items.is-collapsed { display: none; }
+.proto-nav-group__items .md-list-item { padding-left: 28px; }
 
 .proto-main {
   flex: 1;
