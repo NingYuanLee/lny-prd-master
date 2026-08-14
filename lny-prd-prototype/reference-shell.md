@@ -7,13 +7,14 @@
 - 单页、`index.html`、`assets/` 均在 `prototypes/{终端}/`（`MP` / `H5` / `APP` / `PC` / `AD`）。框架通用页（如 AD 登录）不生成 `PAGE-*.html`。
 - 镜像到 `versions/{版本号}/prototypes/{终端}/`（含 `assets/`）。禁止 `node_modules` / npm / `prototypes-mui-app/`。
 - 生成前 `copy-kit.py`；各端 `index.html` 只填 `PROTO_SHELL`。总入口见 [`reference-scope.md`](reference-scope.md)。
+- 各端 `index.html` 右下角 SKILL 小字由 `proto-shell.js` 注入（GitHub / Gitee 技能包地址）。禁止手写、禁止删。总入口标注见 [`reference-scope.md`](reference-scope.md)。
 
 ## 硬规则（套件已实现，禁止改布局）
 
 - 左菜单通顶；按模块分组，分组标题可点收缩，当前页所在组保持展开。菜单项显示页面名称，下方小字 PAGE 编码。AppBar 只在主内容区上方、让出侧栏宽度。
 - 页单收起、状态演示收起按钮在顶栏；收起后宽度 0、不留窄条。
 - 状态演示在 iframe **左侧**并排（固定 200px），禁止放 iframe 上方或顶栏内。
-- 移动端预览：375×812 设备框，`scale ≤ 1`，外围无滚动条；iframe 内滚动保留。
+- 移动端预览：375×812 为**屏内**尺寸，`scale ≤ 1`，外围无滚动条；iframe 内滚动保留。设备框 10px 边框在屏外（`box-sizing: content-box`），避免壳页全局 `border-box` 把右边/底边切掉约 20px。
 - 规格说明面板固定 375px。桌面 iframe 无手机框，可不套缩放。
 - 不区分观看模式，无 `?audience=`。顶栏始终提供：规格说明、状态演示、关系图（移动端）、范围说明（当前页短说明）。
 
@@ -58,7 +59,7 @@
 
 ### D. 移动端缩放
 
-由 `proto-shell.js` 的 `fitPhoneFrame` 在加载、resize、切页、页单/状态演示收起后重算。禁止另写缩放脚本或给 `.preview-area` 设 `overflow: auto`。
+由 `proto-shell.js` 的 `fitPhoneFrame` 在加载、resize、切页、页单/状态演示收起后重算。禁止另写缩放脚本或给 `.preview-area` 设 `overflow: auto`。触屏预览区用 `overflow: visible`，手机阴影画在 `.phone-scale-host` 上（不要画在 `.phone-frame` 上，会被缩放层裁掉）。
 
 ---
 

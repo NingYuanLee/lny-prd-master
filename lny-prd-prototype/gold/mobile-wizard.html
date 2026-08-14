@@ -1,9 +1,9 @@
-<!-- LNY-PRD gold: 金样：移动向导。步骤条 + 进步条 + 当前步表单，最后一步才提交。写触屏分步页前必 Read。 -->
+<!-- LNY-PRD gold: 金样：触屏步骤向导。横向步骤 + 分段进步条 + 无极进度条 + 当前步表单，最后一步才提交。写触屏分步页前必 Read。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <title>PAGE-MP-005 上架向导</title>
+  <title>PAGE-MP-005 步骤向导</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <link rel="stylesheet" href="assets/mui-kit.css">
 </head>
@@ -11,38 +11,57 @@
   <div class="md-mobile-page md-mp md-standard">
     <header class="md-appbar md-appbar--mobile">
       <a class="md-icon-btn" href="#" aria-label="返回"><span class="md-icon" data-icon="chevron-left"></span></a>
-      <h1 class="md-appbar__title">上架向导</h1>
+      <h1 class="md-appbar__title">步骤向导</h1>
     </header>
     <main class="md-mobile-body">
-      <div class="md-stepper" id="steps">
-        <div class="md-step is-active" data-step="1">基本信息</div>
-        <div class="md-step" data-step="2">售卖设置</div>
-        <div class="md-step" data-step="3">确认提交</div>
-      </div>
-      <div class="md-advance md-advance--lg" id="wizProg" data-segments="3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33">
-        <div class="md-advance__head">
-          <span class="md-advance__label">完成进度</span>
-          <span class="md-advance__value">1 / 3</span>
+      <section class="md-module">
+        <div class="md-section-head">
+          <h2 class="md-section-head__title">横向步骤</h2>
         </div>
-        <div class="md-advance__track">
-          <div class="md-advance__seg"><div class="md-advance__bar" style="width:100%"></div></div>
-          <div class="md-advance__seg"><div class="md-advance__bar" style="width:0%"></div></div>
-          <div class="md-advance__seg"><div class="md-advance__bar" style="width:0%"></div></div>
+        <div class="md-stepper" id="steps">
+          <div class="md-step is-active" data-step="1">第一步</div>
+          <div class="md-step" data-step="2">第二步</div>
+          <div class="md-step" data-step="3">第三步</div>
         </div>
-      </div>
-      <form id="wiz">
-        <div data-step="0">
-          <label class="md-field"><span class="md-field__label">商品名称</span><input class="md-field__input" id="fName" type="text" placeholder="请输入商品名称"></label>
-          <label class="md-field"><span class="md-field__label">售价</span><input class="md-field__input" id="fPrice" type="text" placeholder="请输入售价"></label>
+        <div class="md-advance md-advance--lg" id="wizProg" data-segments="3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33">
+          <div class="md-advance__head">
+            <span class="md-advance__label">分段进步条</span>
+            <span class="md-advance__value">1 / 3</span>
+          </div>
+          <div class="md-advance__track">
+            <div class="md-advance__seg"><div class="md-advance__bar" style="width:100%"></div></div>
+            <div class="md-advance__seg"><div class="md-advance__bar" style="width:0%"></div></div>
+            <div class="md-advance__seg"><div class="md-advance__bar" style="width:0%"></div></div>
+          </div>
         </div>
-        <div data-step="1" hidden>
-          <label class="md-field md-field--select"><span class="md-field__label">库存状态</span><select class="md-select" id="fStock"><option>有货</option><option>缺货</option></select></label>
-          <label class="md-switch-row"><span class="md-switch"><input type="checkbox" id="fOn" checked><span class="md-switch__track"></span><span class="md-switch__thumb"></span></span><span>上架</span></label>
+        <div class="md-progress md-progress--lg" id="wizBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33">
+          <div class="md-progress__head">
+            <span class="md-progress__label">无极进度条</span>
+            <span class="md-progress__value">33%</span>
+          </div>
+          <div class="md-progress__track">
+            <div class="md-progress__bar" style="width:33%"></div>
+          </div>
         </div>
-        <div data-step="2" hidden>
-          <p class="md-body2">确认名称、售价与上架状态无误后提交。</p>
+      </section>
+      <section class="md-module">
+        <div class="md-section-head">
+          <h2 class="md-section-head__title">当前步骤</h2>
         </div>
-      </form>
+        <form id="wiz">
+          <div data-step="0">
+            <label class="md-field"><span class="md-field__label">名称</span><input class="md-field__input" id="fName" type="text" placeholder="请输入名称"></label>
+            <label class="md-field"><span class="md-field__label">说明</span><textarea class="md-field__input" id="fNote" rows="3" placeholder="选填说明"></textarea></label>
+          </div>
+          <div data-step="1" hidden>
+            <label class="md-field md-field--select"><span class="md-field__label">选项</span><select class="md-select" id="fOpt"><option>方案甲</option><option>方案乙</option></select></label>
+            <label class="md-switch-row"><span class="md-switch"><input type="checkbox" id="fOn" checked><span class="md-switch__track"></span><span class="md-switch__thumb"></span></span><span>启用</span></label>
+          </div>
+          <div data-step="2" hidden>
+            <p class="md-body2">确认前两步内容无误后提交。</p>
+          </div>
+        </form>
+      </section>
     </main>
     <div class="md-action-bar">
       <button type="button" class="md-btn md-btn--text" id="btnPrev">上一步</button>
@@ -60,11 +79,19 @@
       });
       document.querySelectorAll(".md-step").forEach(function (el, i) {
         el.classList.toggle("is-active", i === step);
+        el.classList.toggle("is-done", i < step);
       });
       document.getElementById("btnPrev").disabled = step === 0;
       document.getElementById("btnNext").textContent = step === 2 ? "提交" : "下一步";
       ProtoPage.setAdvance("#wizProg", ((step + 1) / 3) * 100, (step + 1) + " / 3");
+      ProtoPage.setProgress("#wizBar", ((step + 1) / 3) * 100);
     }
+    document.querySelectorAll(".md-step").forEach(function (el, i) {
+      el.addEventListener("click", function () {
+        step = i;
+        paint();
+      });
+    });
     document.getElementById("btnPrev").addEventListener("click", function () {
       if (step > 0) { step -= 1; paint(); }
     });

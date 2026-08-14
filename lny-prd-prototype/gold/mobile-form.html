@@ -1,166 +1,204 @@
-<!-- LNY-PRD gold: 金样：标准顶栏 + 输入独立成行且右侧安全距 + 五步/无极滑动条 + 下拉（少选项中间弹窗） + 进度条 + 底半屏日期/省市区 + 单图更换/多图可删/文件上传 + 贴底提交。写触屏表单前必 Read。 -->
+<!-- LNY-PRD gold: 金样：触屏表单把套件控件一次铺齐。写触屏表单前必 Read。禁止漏控件。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <title>PAGE-MP-004 到货提醒</title>
+  <title>PAGE-MP-004 表单</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <link rel="stylesheet" href="assets/mui-kit.css">
 </head>
 <body>
   <div class="md-mobile-page md-mp md-standard">
     <header class="md-appbar md-appbar--mobile">
-      <a class="md-icon-btn" href="PAGE-MP-003.html" aria-label="返回">
+      <a class="md-icon-btn" href="#" aria-label="返回">
         <span class="md-icon" data-icon="chevron-left" aria-hidden="true"></span>
       </a>
-      <h1 class="md-appbar__title">到货提醒</h1>
+      <h1 class="md-appbar__title">表单</h1>
     </header>
     <main class="md-mobile-body">
-      <div class="md-section-head">
-        <h2 class="md-section-head__title">填写资料</h2>
-      </div>
-      <div class="md-progress md-progress--lg" id="formProg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-        <div class="md-progress__head">
-          <span class="md-progress__label">填写进度</span>
-          <span class="md-progress__value">0%</span>
-        </div>
-        <div class="md-progress__track">
-          <div class="md-progress__bar" style="width:0%"></div>
-        </div>
-      </div>
-      <form id="notifyForm">
-        <label class="md-field">
-          <span class="md-field__label">联系人</span>
-          <input class="md-field__input" id="fName" type="text" placeholder="请输入联系人">
-        </label>
-        <label class="md-field">
-          <span class="md-field__label">联系电话</span>
-          <input class="md-field__input" id="fPhone" type="tel" placeholder="请输入联系电话">
-        </label>
-        <div class="md-choice-group">
-          <span class="md-choice-group__label">通知方式</span>
-          <label class="md-radio"><input type="radio" name="fWay" value="微信通知" checked> 微信通知</label>
-          <label class="md-radio"><input type="radio" name="fWay" value="短信"> 短信</label>
-        </div>
-        <div class="md-slider md-slider--steps" data-labels="低,较低,一般,较高,高">
-          <span class="md-slider__label">提醒优先级</span>
-          <div class="md-slider__row">
-            <input type="range" id="fPriority" min="1" max="5" step="1" value="3">
-            <span class="md-slider__value">一般</span>
+      <form id="kitForm">
+        <section class="md-module">
+          <div class="md-section-head">
+            <h2 class="md-section-head__title">文本</h2>
           </div>
-          <div class="md-slider__ticks">
-            <span>低</span><span>较低</span><span>一般</span><span>较高</span><span>高</span>
+          <label class="md-field">
+            <span class="md-field__label">单行文本</span>
+            <input class="md-field__input" id="fText" type="text" placeholder="请输入名称">
+          </label>
+          <label class="md-field">
+            <span class="md-field__label">数字</span>
+            <input class="md-field__input" id="fNum" type="number" inputmode="decimal" placeholder="请输入数量">
+          </label>
+          <label class="md-field">
+            <span class="md-field__label">电话</span>
+            <input class="md-field__input" id="fPhone" type="tel" inputmode="tel" placeholder="请输入联系电话">
+          </label>
+          <label class="md-field">
+            <span class="md-field__label">多行文本</span>
+            <textarea class="md-field__input" id="fNote" rows="3" placeholder="选填说明"></textarea>
+          </label>
+          <label class="md-field md-field--readonly">
+            <span class="md-field__label">只读</span>
+            <input class="md-field__input" type="text" value="不可编辑" readonly>
+          </label>
+        </section>
+
+        <section class="md-module">
+          <div class="md-section-head">
+            <h2 class="md-section-head__title">选择</h2>
           </div>
-        </div>
-        <div class="md-slider md-slider--fluid">
-          <span class="md-slider__label">可接受溢价</span>
-          <div class="md-slider__row">
-            <input type="range" id="fPremium" min="0" max="20" step="1" value="5" data-suffix="%">
-            <span class="md-slider__value">5%</span>
+          <div class="md-choice-group">
+            <span class="md-choice-group__label">单选标签</span>
+            <label class="md-radio"><input type="radio" name="fRadio" value="微信通知" checked> 微信通知</label>
+            <label class="md-radio"><input type="radio" name="fRadio" value="短信"> 短信</label>
           </div>
-        </div>
-        <label class="md-field md-field--select">
-          <span class="md-field__label">期望规格</span>
-          <select class="md-select" id="fSpec">
-            <option value="250g">250g</option>
-            <option value="500g">500g</option>
-            <option value="礼盒装">礼盒装</option>
-          </select>
-        </label>
-        <label class="md-field">
-          <span class="md-field__label">期望到货日期</span>
-          <button type="button" class="md-field__input md-picker-trigger" id="fArrive" data-wheel="date">请选择日期</button>
-        </label>
-        <label class="md-field">
-          <span class="md-field__label">收货地区</span>
-          <button type="button" class="md-field__input md-picker-trigger" id="fRegion" data-wheel="region">请选择省市区</button>
-        </label>
-        <div>
-          <span class="md-form-label">包装参考</span>
-          <div class="md-upload md-upload--single" data-upload="single">
-            <input type="file" accept="image/*,video/*">
-            <div class="md-upload__empty">
-              <span class="md-icon" data-icon="image" aria-hidden="true"></span>
-              <span>点击上传包装参考</span>
-              <p class="md-upload__hint">图片或视频，点选后可更换</p>
+          <div class="md-choice-group">
+            <span class="md-choice-group__label">多选标签</span>
+            <label class="md-check"><input type="checkbox" name="fCheck" value="小程序" checked> 小程序</label>
+            <label class="md-check"><input type="checkbox" name="fCheck" value="后台展示"> 后台展示</label>
+            <label class="md-check"><input type="checkbox" name="fCheck" value="到店自提"> 到店自提</label>
+          </div>
+          <label class="md-switch-row">
+            <span class="md-switch">
+              <input type="checkbox" id="fSwitch" checked>
+              <span class="md-switch__track"></span>
+              <span class="md-switch__thumb"></span>
+            </span>
+            <span>开关</span>
+          </label>
+          <label class="md-field md-field--select">
+            <span class="md-field__label">下拉（少选项·中间弹窗）</span>
+            <select class="md-select" id="fSpec">
+              <option value="250g">250g</option>
+              <option value="500g">500g</option>
+              <option value="礼盒装">礼盒装</option>
+            </select>
+          </label>
+          <label class="md-field md-field--select">
+            <span class="md-field__label">下拉（多选项·底半屏）</span>
+            <select class="md-select" id="fCat">
+              <option value="水果">水果</option>
+              <option value="浆果">浆果</option>
+              <option value="柑橘">柑橘</option>
+              <option value="饮品">饮品</option>
+              <option value="咖啡">咖啡</option>
+              <option value="烘焙">烘焙</option>
+              <option value="坚果">坚果</option>
+              <option value="乳品">乳品</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="md-module">
+          <div class="md-section-head">
+            <h2 class="md-section-head__title">滑动条</h2>
+          </div>
+          <div class="md-slider md-slider--steps" data-labels="低,较低,一般,较高,高">
+            <span class="md-slider__label">五步滑动条</span>
+            <div class="md-slider__row">
+              <input type="range" id="fPriority" min="1" max="5" step="1" value="3">
+              <span class="md-slider__value">一般</span>
             </div>
-            <div class="md-upload__filled is-hidden">
-              <div class="md-upload__preview md-media-ph md-media-ph--1"></div>
-              <button type="button" class="md-btn md-btn--contained md-btn--sm md-upload__replace">更换</button>
+            <div class="md-slider__ticks">
+              <span>低</span><span>较低</span><span>一般</span><span>较高</span><span>高</span>
             </div>
           </div>
-        </div>
-        <div>
-          <span class="md-form-label">现场照片</span>
-          <div class="md-upload-grid" data-upload="multi">
-            <div class="md-upload-grid__item">
-              <div class="md-upload-grid__thumb md-media-ph md-media-ph--2"></div>
-              <button type="button" class="md-icon-btn md-upload-grid__del" aria-label="删除">
-                <span class="md-icon" data-icon="close" aria-hidden="true"></span>
-              </button>
+          <div class="md-slider md-slider--fluid">
+            <span class="md-slider__label">无极滑动条</span>
+            <div class="md-slider__row">
+              <input type="range" id="fPremium" min="0" max="20" step="1" value="5" data-suffix="%">
+              <span class="md-slider__value">5%</span>
             </div>
-            <div class="md-upload-grid__item">
-              <div class="md-upload-grid__thumb md-media-ph md-media-ph--4"></div>
-              <button type="button" class="md-icon-btn md-upload-grid__del" aria-label="删除">
-                <span class="md-icon" data-icon="close" aria-hidden="true"></span>
-              </button>
-            </div>
-            <label class="md-upload-grid__add">
+          </div>
+        </section>
+
+        <section class="md-module">
+          <div class="md-section-head">
+            <h2 class="md-section-head__title">日期与地区</h2>
+          </div>
+          <label class="md-field">
+            <span class="md-field__label">单日</span>
+            <button type="button" class="md-field__input md-picker-trigger" id="fDate" data-wheel="date">请选择日期</button>
+          </label>
+          <label class="md-field">
+            <span class="md-field__label">日期段</span>
+            <button type="button" class="md-field__input md-picker-trigger" id="fRange" data-wheel="daterange">请选择开始与结束日期</button>
+          </label>
+          <label class="md-field">
+            <span class="md-field__label">省市区</span>
+            <button type="button" class="md-field__input md-picker-trigger" id="fRegion" data-wheel="region">请选择省市区</button>
+          </label>
+        </section>
+
+        <section class="md-module">
+          <div class="md-section-head">
+            <h2 class="md-section-head__title">上传</h2>
+          </div>
+          <div>
+            <span class="md-form-label">单图更换</span>
+            <div class="md-upload md-upload--single" data-upload="single">
               <input type="file" accept="image/*,video/*">
-              <span class="md-icon" data-icon="add" aria-hidden="true"></span>
-              <span>添加</span>
-            </label>
+              <div class="md-upload__empty">
+                <span class="md-icon" data-icon="image" aria-hidden="true"></span>
+                <span>点击上传单图</span>
+                <p class="md-upload__hint">图片或视频，点选后可更换</p>
+              </div>
+              <div class="md-upload__filled is-hidden">
+                <div class="md-upload__preview md-media-ph md-media-ph--1"></div>
+                <button type="button" class="md-btn md-btn--contained md-btn--sm md-upload__replace">更换</button>
+              </div>
+            </div>
           </div>
-        </div>
-        <label class="md-upload md-upload--file">
-          <input type="file">
-          <span class="md-icon" data-icon="copy" aria-hidden="true"></span>
-          <span>到货凭证</span>
-          <p class="md-upload__hint">支持 PDF / Word / 图片</p>
-          <span class="md-upload__name"></span>
-        </label>
-        <div class="md-progress is-hidden" id="fileProg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-          <div class="md-progress__head">
-            <span class="md-progress__label">凭证上传</span>
-            <span class="md-progress__value">0%</span>
+          <div>
+            <span class="md-form-label">多图可删</span>
+            <div class="md-upload-grid" data-upload="multi">
+              <div class="md-upload-grid__item">
+                <div class="md-upload-grid__thumb md-media-ph md-media-ph--2"></div>
+                <button type="button" class="md-icon-btn md-upload-grid__del" aria-label="删除">
+                  <span class="md-icon" data-icon="close" aria-hidden="true"></span>
+                </button>
+              </div>
+              <div class="md-upload-grid__item">
+                <div class="md-upload-grid__thumb md-media-ph md-media-ph--4"></div>
+                <button type="button" class="md-icon-btn md-upload-grid__del" aria-label="删除">
+                  <span class="md-icon" data-icon="close" aria-hidden="true"></span>
+                </button>
+              </div>
+              <label class="md-upload-grid__add">
+                <input type="file" accept="image/*,video/*">
+                <span class="md-icon" data-icon="add" aria-hidden="true"></span>
+                <span>添加</span>
+              </label>
+            </div>
           </div>
-          <div class="md-progress__track">
-            <div class="md-progress__bar" style="width:0%"></div>
+          <label class="md-upload md-upload--file">
+            <input type="file">
+            <span class="md-icon" data-icon="copy" aria-hidden="true"></span>
+            <span>文件上传</span>
+            <p class="md-upload__hint">支持 PDF / Word / 图片</p>
+            <span class="md-upload__name"></span>
+          </label>
+          <div class="md-progress is-hidden" id="fileProg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="md-progress__head">
+              <span class="md-progress__label">文件上传进度</span>
+              <span class="md-progress__value">0%</span>
+            </div>
+            <div class="md-progress__track">
+              <div class="md-progress__bar" style="width:0%"></div>
+            </div>
           </div>
-        </div>
-        <label class="md-switch-row">
-          <span class="md-switch">
-            <input type="checkbox" id="fAgree" checked>
-            <span class="md-switch__track"></span>
-            <span class="md-switch__thumb"></span>
-          </span>
-          <span>允许店铺联系我</span>
-        </label>
-        <label class="md-field">
-          <span class="md-field__label">备注</span>
-          <textarea class="md-field__input" id="fNote" rows="3" placeholder="选填，补充想买的规格"></textarea>
-        </label>
+        </section>
       </form>
     </main>
     <div class="md-action-bar">
-      <a class="md-btn md-btn--text" href="PAGE-MP-003.html">取消</a>
-      <button type="submit" form="notifyForm" class="md-btn md-btn--contained">提交</button>
+      <a class="md-btn md-btn--text" href="#">取消</a>
+      <button type="submit" form="kitForm" class="md-btn md-btn--contained">提交</button>
     </div>
   </div>
   <script src="assets/md-icons.js"></script>
   <script src="assets/icons-extra.js"></script>
   <script src="assets/proto-page.js"></script>
   <script>
-    function formProgress() {
-      var n = 0;
-      if ((document.getElementById("fName").value || "").trim()) n += 1;
-      if ((document.getElementById("fPhone").value || "").trim()) n += 1;
-      if ((document.getElementById("fArrive").getAttribute("data-value") || "").trim()) n += 1;
-      if ((document.getElementById("fRegion").getAttribute("data-value") || "").trim()) n += 1;
-      ProtoPage.setProgress("#formProg", Math.round((n / 4) * 100));
-    }
-    document.getElementById("notifyForm").addEventListener("input", formProgress);
-    document.getElementById("notifyForm").addEventListener("change", formProgress);
     document.querySelector(".md-upload--file input").addEventListener("change", function () {
       var box = document.getElementById("fileProg");
       box.classList.remove("is-hidden");
@@ -172,17 +210,16 @@
         if (p >= 100) clearInterval(t);
       }, 120);
     });
-    document.getElementById("notifyForm").addEventListener("submit", function (ev) {
+    document.getElementById("kitForm").addEventListener("submit", function (ev) {
       ev.preventDefault();
-      var name = (document.getElementById("fName").value || "").trim();
+      var name = (document.getElementById("fText").value || "").trim();
       var phone = (document.getElementById("fPhone").value || "").trim();
       if (!name || !phone) {
-        ProtoPage.snackbar("请填写联系人与电话");
+        ProtoPage.snackbar("请填写单行文本与电话");
         return;
       }
-      ProtoPage.snackbar("已登记到货提醒");
+      ProtoPage.snackbar("已提交");
     });
-    formProgress();
   </script>
 </body>
 </html>

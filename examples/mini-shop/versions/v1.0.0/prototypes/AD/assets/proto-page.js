@@ -157,8 +157,14 @@
   }
 
   function syncDialogLock() {
-    var open = document.querySelector(".md-dialog.is-open, .md-backdrop.is-open");
+    var open = document.querySelector(
+      ".md-dialog.is-open, .md-backdrop.is-open, .md-lightbox.is-open"
+    );
     document.body.classList.toggle("md-dialog-open", !!open);
+    document.body.classList.toggle(
+      "md-lightbox-open",
+      !!document.querySelector(".md-lightbox.is-open")
+    );
   }
 
   function closeDialog(id) {
@@ -568,8 +574,7 @@
       bar.innerHTML = '<span>9:41</span><span class="md-status-bar__signals"></span>';
     }
     bar.classList.add("md-status-bar--chrome");
-    if (page.classList.contains("md-mp")) bar.classList.add("md-status-bar--mp");
-    else bar.classList.remove("md-status-bar--mp");
+    bar.classList.remove("md-status-bar--mp");
     var immersive = page.classList.contains("md-immersive") || page.classList.contains("md-sink");
     bar.classList.toggle("md-status-bar--immersive", immersive);
     bar.classList.toggle("md-status-bar--standard", !immersive);
@@ -848,6 +853,7 @@
             preview.style.backgroundImage = "";
             preview.className = "md-upload__preview " + phClass(2);
           }
+          markPreviewables();
         });
       }
     });
@@ -887,6 +893,7 @@
           grid.insertBefore(item, add);
           bindDel(item);
           if (global.ProtoIcons && global.ProtoIcons.mount) global.ProtoIcons.mount(item);
+          markPreviewables();
           input.value = "";
         });
       }
@@ -1029,6 +1036,332 @@
     });
   }
 
+  function bindTimelines() {
+    document.querySelectorAll(".md-timeline").forEach(function (tl) {
+      if (tl.getAttribute("data-md-bound") === "1") return;
+      tl.setAttribute("data-md-bound", "1");
+      tl.addEventListener("click", function (ev) {
+        var item = ev.target.closest(".md-timeline__item");
+        if (!item || !tl.contains(item)) return;
+        tl.querySelectorAll(".md-timeline__item.is-active").forEach(function (n) {
+          n.classList.remove("is-active");
+        });
+        item.classList.add("is-active");
+        tl.dispatchEvent(
+          new CustomEvent("md-timeline-select", {
+            bubbles: true,
+            detail: { item: item },
+          })
+        );
+      });
+    });
+  }
+
+  function bindTrees() {
+    document.querySelectorAll(".md-tree").forEach(function (tree) {
+      if (tree.getAttribute("data-md-bound") === "1") return;
+      tree.setAttribute("data-md-bound", "1");
+      tree.addEventListener("click", function (ev) {
+        var toggle = ev.target.closest(".md-tree__toggle");
+        var item = ev.target.closest(".md-tree__item");
+        if (toggle && tree.contains(toggle)) {
+          ev.preventDefault();
+          ev.stopPropagation();
+          var branch = toggle.closest("li");
+          if (branch && branch.querySelector(":scope > ul")) {
+            branch.classList.toggle("is-open");
+          }
+          return;
+        }
+        if (!item || !tree.contains(item)) return;
+        tree.querySelectorAll(".md-tree__item.is-active").forEach(function (n) {
+          n.classList.remove("is-active");
+        });
+        item.classList.add("is-active");
+        var li = item.closest("li");
+        if (li && li.querySelector(":scope > ul")) li.classList.add("is-open");
+        var cat = item.getAttribute("data-cat") || "";
+        var title = document.getElementById("catTitle");
+        if (title && cat) title.textContent = cat;
+        tree.dispatchEvent(
+          new CustomEvent("md-tree-select", {
+            bubbles: true,
+            detail: { item: item, cat: cat },
+          })
+        );
+      });
+    });
+  }
+
+  function previewSkip(el) {
+    if (!el || !el.closest) return true;
+    if (el.closest(".md-lightbox")) return true;
+    if (el.getAttribute("data-preview") === "off") return true;
+    if (el.closest("[data-preview=off]")) return true;
+    if (
+      el.closest(
+        ".md-appbar__cover, .md-card__leading, .md-empty__art, .md-chart-ph, .md-upload-grid__add, .md-upload-grid__del"
+      )
+    ) {
+      return true;
+    }
+    if (el.closest(".is-hidden")) return true;
+    return false;
+  }
+
+  function isPreviewable(el) {
+    if (!el || previewSkip(el)) return false;
+    if (el.tagName === "IMG" && !el.closest(".md-icon, svg")) return true;
+    var cls = el.className && String(el.className);
+    if (cls && /\bmd-media-ph--[1-6]\b/.test(cls)) return true;
+    if (
+      el.classList &&
+      (el.classList.contains("md-upload-grid__thumb") ||
+        el.classList.contains("md-upload__preview"))
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  function collectPreviewables() {
+    var nodes = document.querySelectorAll(
+      '[class*="md-media-ph--"], .md-upload-grid__thumb, .md-upload__preview, img'
+    );
+    var out = [];
+    for (var i = 0; i < nodes.length; i++) {
+      var el = nodes[i];
+      if (!isPreviewable(el)) continue;
+      var nested = false;
+      for (var j = 0; j < out.length; j++) {
+        if (out[j].contains(el)) {
+          nested = true;
+          break;
+        }
+      }
+      if (nested) continue;
+      out.push(el);
+    }
+    return out;
+  }
+
+  function markPreviewables() {
+    collectPreviewables().forEach(function (el) {
+      el.classList.add("md-previewable");
+    });
+  }
+
+  function mediaUrl(el) {
+    if (!el) return "";
+    if (el.tagName === "IMG") return el.currentSrc || el.src || "";
+    var bg = (el.style && el.style.backgroundImage) || "";
+    var m = bg.match(/url\(["']?([^"')]+)["']?\)/);
+    return m ? m[1] : "";
+  }
+
+  function ensureLightbox() {
+    var box = document.getElementById("mdLightbox");
+    if (box) return box;
+    box = document.createElement("div");
+    box.id = "mdLightbox";
+    box.className = "md-lightbox";
+    box.setAttribute("role", "dialog");
+    box.setAttribute("aria-modal", "true");
+    box.setAttribute("aria-hidden", "true");
+    box.setAttribute("aria-label", "图片预览");
+    box.innerHTML =
+      '<div class="md-lightbox__mask" data-lightbox-close="1"></div>' +
+      '<div class="md-lightbox__stage">' +
+      '<div class="md-lightbox__frame"></div>' +
+      "</div>" +
+      '<button type="button" class="md-lightbox__close" aria-label="关闭">' +
+      '<span class="md-icon" data-icon="close" aria-hidden="true"></span>' +
+      "</button>" +
+      '<button type="button" class="md-lightbox__nav md-lightbox__prev" aria-label="上一张">' +
+      '<span class="md-icon" data-icon="chevron-left" aria-hidden="true"></span>' +
+      "</button>" +
+      '<button type="button" class="md-lightbox__nav md-lightbox__next" aria-label="下一张">' +
+      '<span class="md-icon" data-icon="chevron-right" aria-hidden="true"></span>' +
+      "</button>" +
+      '<p class="md-lightbox__count"></p>';
+    document.body.appendChild(box);
+    if (global.ProtoIcons && global.ProtoIcons.mount) global.ProtoIcons.mount(box);
+    return box;
+  }
+
+  var lightboxIndex = 0;
+  var lightboxTouch = null;
+
+  function renderLightboxFrame(el) {
+    var frame = document.querySelector("#mdLightbox .md-lightbox__frame");
+    if (!frame) return;
+    frame.innerHTML = "";
+    var src = mediaUrl(el);
+    if (src) {
+      var img = document.createElement("img");
+      img.src = src;
+      img.alt = (el.getAttribute && el.getAttribute("alt")) || "";
+      frame.appendChild(img);
+      return;
+    }
+    var ph = document.createElement("div");
+    ph.className = "md-lightbox__ph md-media-ph";
+    var cls = el && el.className ? String(el.className) : "";
+    var m = cls.match(/\bmd-media-ph--[1-6]\b/);
+    ph.classList.add(m ? m[0] : "md-media-ph--1");
+    frame.appendChild(ph);
+  }
+
+  function paintLightbox() {
+    var box = ensureLightbox();
+    var items = collectPreviewables();
+    if (!items.length) {
+      closeLightbox();
+      return;
+    }
+    if (lightboxIndex < 0) lightboxIndex = 0;
+    if (lightboxIndex > items.length - 1) lightboxIndex = items.length - 1;
+    renderLightboxFrame(items[lightboxIndex]);
+    var count = box.querySelector(".md-lightbox__count");
+    if (count) count.textContent = lightboxIndex + 1 + " / " + items.length;
+    var prev = box.querySelector(".md-lightbox__prev");
+    var next = box.querySelector(".md-lightbox__next");
+    if (prev) prev.disabled = lightboxIndex <= 0;
+    if (next) next.disabled = lightboxIndex >= items.length - 1;
+  }
+
+  function openLightbox(el) {
+    markPreviewables();
+    var items = collectPreviewables();
+    var idx = -1;
+    for (var i = 0; i < items.length; i++) {
+      if (items[i] === el) {
+        idx = i;
+        break;
+      }
+    }
+    if (idx < 0) return;
+    lightboxIndex = idx;
+    var box = ensureLightbox();
+    box.classList.add("is-open");
+    box.setAttribute("aria-hidden", "false");
+    paintLightbox();
+    syncDialogLock();
+    var closeBtn = box.querySelector(".md-lightbox__close");
+    if (closeBtn && closeBtn.focus) closeBtn.focus();
+  }
+
+  function closeLightbox() {
+    var box = document.getElementById("mdLightbox");
+    if (!box) return;
+    box.classList.remove("is-open");
+    box.setAttribute("aria-hidden", "true");
+    syncDialogLock();
+  }
+
+  function stepLightbox(delta) {
+    var items = collectPreviewables();
+    var next = lightboxIndex + delta;
+    if (next < 0 || next >= items.length) return;
+    lightboxIndex = next;
+    paintLightbox();
+  }
+
+  function previewHostFromEvent(ev) {
+    var t = ev.target;
+    if (!t || !t.closest) return null;
+    if (t.closest(".md-lightbox")) return null;
+    if (
+      t.closest(
+        "button, input, textarea, select, label.md-upload-grid__add, .md-upload-grid__del, .md-icon-btn, a.md-btn"
+      )
+    ) {
+      return null;
+    }
+    var el = t.closest(
+      '[class*="md-media-ph--"], .md-upload-grid__thumb, .md-upload__preview, img'
+    );
+    if (!el || !isPreviewable(el)) return null;
+    return el;
+  }
+
+  function bindLightbox() {
+    if (document.documentElement.getAttribute("data-md-lightbox") === "1") {
+      markPreviewables();
+      return;
+    }
+    document.documentElement.setAttribute("data-md-lightbox", "1");
+    ensureLightbox();
+    markPreviewables();
+    document.addEventListener(
+      "click",
+      function (ev) {
+        var el = previewHostFromEvent(ev);
+        if (!el) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        openLightbox(el);
+      },
+      true
+    );
+    document.addEventListener("click", function (ev) {
+      var t = ev.target;
+      if (!t || !t.closest) return;
+      var box = t.closest("#mdLightbox");
+      if (!box || !box.classList.contains("is-open")) return;
+      if (t.closest("[data-lightbox-close], .md-lightbox__close")) {
+        closeLightbox();
+        return;
+      }
+      if (t.closest(".md-lightbox__prev")) {
+        stepLightbox(-1);
+        return;
+      }
+      if (t.closest(".md-lightbox__next")) {
+        stepLightbox(1);
+        return;
+      }
+      if (t.classList && t.classList.contains("md-lightbox__stage")) {
+        closeLightbox();
+      }
+    });
+    document.addEventListener("keydown", function (ev) {
+      var box = document.getElementById("mdLightbox");
+      if (!box || !box.classList.contains("is-open")) return;
+      if (ev.key === "Escape") {
+        ev.preventDefault();
+        closeLightbox();
+      } else if (ev.key === "ArrowLeft") {
+        ev.preventDefault();
+        stepLightbox(-1);
+      } else if (ev.key === "ArrowRight") {
+        ev.preventDefault();
+        stepLightbox(1);
+      }
+    });
+    var stage = document.querySelector("#mdLightbox .md-lightbox__stage");
+    if (stage) {
+      stage.addEventListener(
+        "touchstart",
+        function (ev) {
+          var t = ev.changedTouches && ev.changedTouches[0];
+          if (!t) return;
+          lightboxTouch = { x: t.clientX, y: t.clientY };
+        },
+        { passive: true }
+      );
+      stage.addEventListener("touchend", function (ev) {
+        if (!lightboxTouch) return;
+        var t = ev.changedTouches && ev.changedTouches[0];
+        var dx = t ? t.clientX - lightboxTouch.x : 0;
+        var dy = t ? t.clientY - lightboxTouch.y : 0;
+        lightboxTouch = null;
+        if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+        stepLightbox(dx > 0 ? -1 : 1);
+      });
+    }
+  }
+
   function bindUi() {
     ensureStatusBar();
     bindTabs();
@@ -1037,9 +1370,12 @@
     bindSwipers();
     bindWheels();
     bindSliders();
+    bindTrees();
+    bindTimelines();
     bindUploads();
     bindMobileSelects();
     bindProgress();
+    bindLightbox();
   }
 
   global.ProtoPage = {

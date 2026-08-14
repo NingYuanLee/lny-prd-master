@@ -32,17 +32,14 @@
       pages: [
         { id: "PAGE-MP-001", name: "首页", module: "首页", file: "PAGE-MP-001.html", x: 80, y: 80 },
         { id: "PAGE-MP-002", name: "商品列表", module: "商品", file: "PAGE-MP-002.html", x: 400, y: 80 },
-        { id: "PAGE-MP-003", name: "商品详情", module: "商品", file: "PAGE-MP-003.html", x: 400, y: 680 },
-        { id: "PAGE-MP-004", name: "到货提醒", module: "商品", file: "PAGE-MP-004.html", x: 720, y: 680 }
+        { id: "PAGE-MP-003", name: "商品详情", module: "商品", file: "PAGE-MP-003.html", x: 400, y: 680 }
       ],
       links: [
         { from: "PAGE-MP-001", to: "PAGE-MP-002", type: "tab", label: "TabBar" },
         { from: "PAGE-MP-002", to: "PAGE-MP-001", type: "tab", label: "TabBar" },
         { from: "PAGE-MP-001", to: "PAGE-MP-002", type: "forward", label: "去商品列表" },
         { from: "PAGE-MP-002", to: "PAGE-MP-003", type: "forward", label: "商品卡片" },
-        { from: "PAGE-MP-003", to: "PAGE-MP-002", type: "back", label: "返回" },
-        { from: "PAGE-MP-003", to: "PAGE-MP-004", type: "forward", label: "到货提醒" },
-        { from: "PAGE-MP-004", to: "PAGE-MP-003", type: "back", label: "返回" }
+        { from: "PAGE-MP-003", to: "PAGE-MP-002", type: "back", label: "返回" }
       ]
     });
   </script>

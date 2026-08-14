@@ -1,0 +1,166 @@
+<!-- LNY-PRD gold: 金样：触屏左树右内容。写分类树/组织树前必 Read。箭头展开收起，点节点只换右区。 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>PAGE-MP-008 分类</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="assets/mui-kit.css">
+</head>
+<body>
+  <div class="md-mobile-page md-mp md-standard md-tree-page">
+    <header class="md-appbar md-appbar--mobile">
+      <a class="md-icon-btn" href="PAGE-MP-001.html" aria-label="返回"><span class="md-icon" data-icon="chevron-left"></span></a>
+      <h1 class="md-appbar__title">分类</h1>
+    </header>
+    <main class="md-mobile-body">
+      <div class="md-split">
+        <aside class="md-split__side">
+          <ul class="md-tree">
+            <li class="is-open">
+              <button type="button" class="md-tree__item is-active" data-cat="水果">
+                <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                <span class="md-tree__label">水果</span>
+              </button>
+              <ul>
+                <li class="is-open">
+                  <button type="button" class="md-tree__item" data-cat="浆果">
+                    <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                    <span class="md-tree__label">浆果</span>
+                  </button>
+                  <ul>
+                    <li>
+                      <button type="button" class="md-tree__item" data-cat="草莓">
+                        <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                        <span class="md-tree__label">草莓</span>
+                      </button>
+                    </li>
+                    <li>
+                      <button type="button" class="md-tree__item" data-cat="蓝莓">
+                        <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                        <span class="md-tree__label">蓝莓</span>
+                      </button>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <button type="button" class="md-tree__item" data-cat="柑橘">
+                    <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                    <span class="md-tree__label">柑橘</span>
+                  </button>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <button type="button" class="md-tree__item" data-cat="饮品">
+                <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                <span class="md-tree__label">饮品</span>
+              </button>
+              <ul>
+                <li>
+                  <button type="button" class="md-tree__item" data-cat="咖啡">
+                    <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                    <span class="md-tree__label">咖啡</span>
+                  </button>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <button type="button" class="md-tree__item" data-cat="烘焙">
+                <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                <span class="md-tree__label">烘焙</span>
+              </button>
+            </li>
+          </ul>
+        </aside>
+        <div class="md-split__main">
+          <div class="md-section-head">
+            <h2 class="md-section-head__title" id="catTitle">水果</h2>
+          </div>
+          <div class="md-grid-2" data-section="分类商品">
+            <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default" data-tree-item="水果,浆果,草莓">
+              <div class="md-card__media md-media-ph md-media-ph--1">
+                <span class="md-card__tag md-chip md-chip--success">有货</span>
+              </div>
+              <div class="md-card__body">
+                <h3 class="md-card__title">有机草莓 250g</h3>
+                <p class="md-price">¥19.90</p>
+              </div>
+            </article>
+            <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default" data-tree-item="水果,柑橘">
+              <div class="md-card__media md-media-ph md-media-ph--3">
+                <span class="md-card__tag md-chip md-chip--primary">新品</span>
+              </div>
+              <div class="md-card__body">
+                <h3 class="md-card__title">赣南脐橙 5斤</h3>
+                <p class="md-price">¥32.80</p>
+              </div>
+            </article>
+            <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default" data-tree-item="饮品,咖啡">
+              <div class="md-card__media md-media-ph md-media-ph--2">
+                <span class="md-card__tag md-card__tag--tr md-chip md-chip--error">售罄</span>
+              </div>
+              <div class="md-card__body">
+                <h3 class="md-card__title">云南小粒咖啡 227g</h3>
+                <p class="md-price">¥29.90</p>
+              </div>
+            </article>
+            <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default" data-tree-item="饮品">
+              <div class="md-card__media md-media-ph md-media-ph--5"></div>
+              <div class="md-card__body">
+                <h3 class="md-card__title">青柠蜂蜜茶 500ml</h3>
+                <p class="md-price">¥12.50</p>
+              </div>
+            </article>
+            <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default" data-tree-item="烘焙">
+              <div class="md-card__media md-media-ph md-media-ph--4"></div>
+              <div class="md-card__body">
+                <h3 class="md-card__title">全麦吐司 400g</h3>
+                <p class="md-price">¥9.90</p>
+              </div>
+            </article>
+            <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default" data-tree-item="水果,浆果,蓝莓">
+              <div class="md-card__media md-media-ph md-media-ph--6"></div>
+              <div class="md-card__body">
+                <h3 class="md-card__title">当季蓝莓 125g</h3>
+                <p class="md-price">¥16.80</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-skel-host is-hidden" data-skel-for="COMP-001">
+            <div class="md-skeleton md-skeleton--media"></div>
+            <div class="md-skeleton md-skeleton--title"></div>
+          </div>
+          <div class="md-empty md-empty--illus is-hidden" data-empty-for="COMP-001" data-empty-text="该分类暂无商品" data-error-text="加载失败">
+            <div class="md-empty__art" aria-hidden="true"></div>
+            <p class="md-empty__title">暂无内容</p>
+            <p class="md-empty__text">该分类暂无商品</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/md-icons.js"></script>
+  <script src="assets/icons-extra.js"></script>
+  <script src="assets/proto-page.js"></script>
+  <script>
+    (function () {
+      function paintCat(cat) {
+        var n = 0;
+        document.querySelectorAll("[data-tree-item]").forEach(function (row) {
+          var tags = (row.getAttribute("data-tree-item") || "").split(",");
+          var on = tags.indexOf(cat) !== -1;
+          row.classList.toggle("is-hidden", !on);
+          if (on) n += 1;
+        });
+        var empty = document.querySelector('[data-empty-for="COMP-001"]');
+        if (empty) empty.classList.toggle("is-hidden", n > 0);
+      }
+      document.addEventListener("md-tree-select", function (ev) {
+        paintCat(ev.detail.cat);
+      });
+      paintCat("水果");
+    })();
+  </script>
+</body>
+</html>

@@ -35,7 +35,7 @@
 | AC-3 | 提交失败可再次提交 | BR-2 | API-MP-003 |
 
 ## 6. 关联对象
-- 关联页面：PAGE-MP-004
+- 关联页面：PAGE-MP-004 表单（夹具为套件样例，提交仅 Toast）
 - 关联接口：API-MP-003
 - 关联第三方接口：无
 - 引用文档：ui/PAGE-MP-004.md, api/API-MP-003.md
@@ -45,7 +45,7 @@
 ```mermaid
 sequenceDiagram
     participant User as 用户
-    participant UI_MP_004 as PAGE-MP-004 到货提醒
+    participant UI_MP_004 as PAGE-MP-004 表单
     participant API_MP_003 as API-MP-003 提交到货提醒
     User->>UI_MP_004: 点击提交
     UI_MP_004->>API_MP_003: 调用 API-MP-003
@@ -62,7 +62,7 @@ flowchart TD
     valid -->|否| hint[PAGE-MP-004 提示补全]
     valid -->|是| callApi[调用 API-MP-003]
     callApi --> ok{API-MP-003 成功?}
-    ok -->|是| doneToast[PAGE-MP-004 Toast 已登记]
+    ok -->|是| doneToast[PAGE-MP-004 Toast 已提交]
     ok -->|否| failToast[PAGE-MP-004 Toast 失败可重试]
     hint --> finished[结束]
     doneToast --> finished

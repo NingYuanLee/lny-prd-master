@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 金样：触屏按钮三档尺寸。每档含线框、色块、线框置灰、色块置灰、带角标。写按钮前对照本页。 -->
+<!-- LNY-PRD gold: 金样：触屏按钮三档尺寸 + 纯文字链接钮。每档含线框、色块、文字、置灰、角标。写按钮前对照本页。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -10,45 +10,61 @@
 <body>
   <div class="md-mobile-page md-mp md-standard">
     <header class="md-appbar md-appbar--mobile">
-      <a class="md-icon-btn" href="PAGE-MP-001.html" aria-label="返回"><span class="md-icon" data-icon="chevron-left"></span></a>
+      <a class="md-icon-btn" href="#" aria-label="返回"><span class="md-icon" data-icon="chevron-left"></span></a>
       <h1 class="md-appbar__title">按钮</h1>
     </header>
     <main class="md-mobile-body">
-      <section class="md-btn-demo">
+      <section class="md-module md-btn-demo">
         <div class="md-section-head">
           <h2 class="md-section-head__title">小</h2>
         </div>
         <div class="md-btn-demo__row">
           <button type="button" class="md-btn md-btn--outlined md-btn--sm">线框</button>
           <button type="button" class="md-btn md-btn--contained md-btn--sm">色块</button>
+          <button type="button" class="md-btn md-btn--text md-btn--sm">文字</button>
           <button type="button" class="md-btn md-btn--outlined md-btn--sm" disabled>线框置灰</button>
           <button type="button" class="md-btn md-btn--contained md-btn--sm" disabled>色块置灰</button>
           <button type="button" class="md-btn md-btn--contained md-btn--sm">角标<span class="md-badge">8</span></button>
         </div>
       </section>
-      <section class="md-btn-demo">
+      <section class="md-module md-btn-demo">
         <div class="md-section-head">
           <h2 class="md-section-head__title">中</h2>
         </div>
         <div class="md-btn-demo__row">
           <button type="button" class="md-btn md-btn--outlined">线框</button>
           <button type="button" class="md-btn md-btn--contained">色块</button>
+          <button type="button" class="md-btn md-btn--text">文字</button>
           <button type="button" class="md-btn md-btn--outlined" disabled>线框置灰</button>
           <button type="button" class="md-btn md-btn--contained" disabled>色块置灰</button>
           <button type="button" class="md-btn md-btn--contained">角标<span class="md-badge">8</span></button>
         </div>
       </section>
-      <section class="md-btn-demo">
+      <section class="md-module md-btn-demo">
         <div class="md-section-head">
           <h2 class="md-section-head__title">大</h2>
         </div>
         <div class="md-btn-demo__row">
           <button type="button" class="md-btn md-btn--outlined md-btn--lg">线框</button>
           <button type="button" class="md-btn md-btn--contained md-btn--lg">色块</button>
+          <button type="button" class="md-btn md-btn--text md-btn--lg">文字</button>
           <button type="button" class="md-btn md-btn--outlined md-btn--lg" disabled>线框置灰</button>
           <button type="button" class="md-btn md-btn--contained md-btn--lg" disabled>色块置灰</button>
           <button type="button" class="md-btn md-btn--contained md-btn--lg">角标<span class="md-badge">8</span></button>
         </div>
+      </section>
+      <section class="md-module md-btn-demo">
+        <div class="md-section-head">
+          <h2 class="md-section-head__title">纯文字链接</h2>
+          <a class="md-btn md-btn--link" href="#">了解更多</a>
+        </div>
+        <div class="md-btn-demo__row">
+          <button type="button" class="md-btn md-btn--link">查看更多</button>
+          <button type="button" class="md-btn md-btn--link">了解全部</button>
+          <button type="button" class="md-btn md-btn--link">查看全部</button>
+          <button type="button" class="md-btn md-btn--link" disabled>不可点</button>
+        </div>
+        <p class="md-body2">`md-btn--link`：无线框、无背景、无阴影；分区头「查看全部」也用这一形态，不要做成线框/色块。</p>
       </section>
     </main>
   </div>

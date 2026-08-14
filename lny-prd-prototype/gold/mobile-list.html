@@ -25,9 +25,11 @@
       </div>
     </header>
     <main class="md-mobile-body">
-      <div class="md-stack" data-section="商品卡片列表">
+      <div class="md-module md-stack" data-section="商品卡片列表">
         <a class="md-card md-card--row" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
-          <div class="md-card__media md-media-ph md-media-ph--1"></div>
+          <div class="md-card__media md-media-ph md-media-ph--1">
+            <span class="md-card__tag md-chip md-chip--success">有货</span>
+          </div>
           <div class="md-card__body">
             <div class="md-card__main">
               <h2 class="md-card__title">有机草莓 250g</h2>
@@ -43,7 +45,9 @@
           </div>
         </a>
         <a class="md-card md-card--row" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
-          <div class="md-card__media md-media-ph md-media-ph--2"></div>
+          <div class="md-card__media md-media-ph md-media-ph--2">
+            <span class="md-card__tag md-card__tag--tr md-chip md-chip--error">售罄</span>
+          </div>
           <div class="md-card__body">
             <div class="md-card__main">
               <h2 class="md-card__title">云南小粒咖啡 227g 精选烘焙手冲豆袋装超长标题示例</h2>
@@ -106,20 +110,37 @@
           </div>
         </a>
         <a class="md-card md-card--row" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
-          <div class="md-card__media md-media-ph md-media-ph--6"></div>
+          <span class="md-card__leading md-card__leading--avatar md-media-ph md-media-ph--4" aria-hidden="true"></span>
           <div class="md-card__body">
             <div class="md-card__main">
-              <h2 class="md-card__title">冷萃美式 250ml</h2>
+              <h2 class="md-card__title">迷你烘焙</h2>
+              <p class="md-card__text">左头像右文；全麦吐司今日可自提。</p>
             </div>
             <div class="md-card__foot">
               <div class="md-card__meta">
-                <span class="md-card__meta-item"><span class="md-icon" data-icon="view" aria-hidden="true"></span>2.1万</span>
+                <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>昨天</span>
               </div>
-              <p class="md-price">¥15.80</p>
             </div>
           </div>
         </a>
-      </div>
+        <article class="md-card md-card--plain" data-comp="COMP-001" data-state="default">
+          <div class="md-card__body">
+            <div class="md-card__main">
+              <h2 class="md-card__title">阿宁</h2>
+              <p class="md-card__text">果很新鲜，到货包装也完整，冷藏一夜还是脆的。</p>
+            </div>
+            <div class="md-card__photos">
+              <div class="md-card__photo md-media-ph md-media-ph--1"></div>
+              <div class="md-card__photo md-media-ph md-media-ph--2"></div>
+              <div class="md-card__photo md-media-ph md-media-ph--3"></div>
+            </div>
+            <div class="md-card__foot">
+              <div class="md-card__meta">
+                <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>2026-08-10</span>
+              </div>
+            </div>
+          </div>
+        </article>
       <div class="md-skel-host is-hidden" data-skel-for="COMP-001">
         <div class="md-skeleton md-skeleton--media"></div>
         <div class="md-skeleton md-skeleton--title"></div>
@@ -129,6 +150,7 @@
         <div class="md-empty__art" aria-hidden="true"></div>
         <p class="md-empty__title">暂无内容</p>
         <p class="md-empty__text">暂无商品</p>
+      </div>
       </div>
     </main>
     <nav class="md-tabbar">

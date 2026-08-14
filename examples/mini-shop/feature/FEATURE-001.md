@@ -35,12 +35,13 @@
 | AC-3 | 后台列表可按名称筛选并分页 | — | API-AD-001 |
 | AC-4 | 小程序请求失败出现重试入口 | BR-2 | API-MP-001 |
 | AC-5 | 从列表进入详情可见名称、售价、库存、图文介绍与评论 | BR-1 | API-MP-002 |
+| AC-6 | 后台整页详情可见名称、售价、库存、图文介绍与评论 | BR-1 | API-AD-002 |
 
 ## 6. 关联对象
-- 关联页面：PAGE-MP-001, PAGE-MP-002, PAGE-MP-003, PAGE-AD-001
-- 关联接口：API-MP-001, API-MP-002, API-AD-001
+- 关联页面：PAGE-MP-001, PAGE-MP-002, PAGE-MP-003, PAGE-AD-001, PAGE-AD-008
+- 关联接口：API-MP-001, API-MP-002, API-AD-001, API-AD-002
 - 关联第三方接口：无
-- 引用文档：ui/PAGE-MP-001.md, ui/PAGE-MP-002.md, ui/PAGE-MP-003.md, ui/PAGE-AD-001.md, api/API-MP-001.md, api/API-MP-002.md, api/API-AD-001.md
+- 引用文档：ui/PAGE-MP-001.md, ui/PAGE-MP-002.md, ui/PAGE-MP-003.md, ui/PAGE-AD-001.md, ui/PAGE-AD-008.md, api/API-MP-001.md, api/API-MP-002.md, api/API-AD-001.md, api/API-AD-002.md
 
 ## 7. 时序图（按触发条件必填）
 

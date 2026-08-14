@@ -14,16 +14,16 @@
 
 | 项 | 要求 |
 |----|------|
-| 金样 | 按页类型 Read `gold/`：`mobile-grid` / `mobile-list` / `mobile-detail` / `mobile-form` / `mobile-settings` / `mobile-wizard` / `mobile-buttons` / `desktop-list` / `desktop-form` / `desktop-dashboard` / `desktop-split` / `desktop-settings` / `desktop-wizard`。复制骨架含 script。密度不得低于金样。禁止用 `desktop-list` 硬套工作台 |
+| 金样 | 按页类型 Read `gold/`：`mobile-grid` / `mobile-list` / `mobile-detail` / `mobile-form` / `mobile-settings` / `mobile-wizard` / `mobile-timeline` / `mobile-buttons` / `mobile-tree` / `desktop-list` / `desktop-form` / `desktop-dashboard` / `desktop-split` / `desktop-settings` / `desktop-wizard` / `desktop-timeline`。复制骨架含 script。密度不得低于金样。禁止用 `desktop-list` 硬套工作台；禁止用 `mobile-list` 硬套触屏树 |
 | 估点档 | 忽略「视觉细节=粗糙」；⑥ 不降档；须满足 `reference-mobile-design.md` 审美必做 |
 | 舒适默认 | §2.3 漏写也要落地：隐藏 `md-skel-host`、插画 `md-empty`、失败可重试、按下态、浮层过渡、D1-1 `md-d1--list`+`md-col-*`。禁止发明新跳转/字段/弹窗；**有字段时必须按层级排版** |
 | 夹具数据 | 用符合业务域的中文名称与真实量级价格（如 `有机草莓 250g` / `¥19.90`）。**禁止** `示例商品 A/B`、`测试数据`、`xxx`、`Item 1` |
 | 条数 | 列表/卡片/表格默认态 **≥4 条**（规格写明空态、或 API 写死更少条数时从其规定；首页有「每页条数」则按其值） |
 | 字段 | API/COMP 已列的展示字段都要出现（名称、图、价、库存状态等）；**不**发明规格没有的字段（如无「销量」就不要写已售） |
-| 图片 | `md-card__media md-media-ph md-media-ph--{1-6}` 轮换；禁止无编号的纯灰 `md-media-ph`、禁止随机色块 |
-| 移动端 | 状态栏由 `proto-page.js` 固定顶注入；页根须标 `md-immersive`（状态栏透明）或 `md-standard`（状态栏不透明）；`md-section-head`；列表优先 `md-card md-card--row`；触屏 `md-search` 仅左图标+输入（无「搜索」文案、无右侧搜索按钮）；`viewport-fit=cover`；左右下及四角走 `--md-safe-*` |
+| 图片 | `md-card__media md-media-ph md-media-ph--{1-6}` 轮换；禁止无编号的纯灰 `md-media-ph`、禁止随机色块。点图由 `proto-page.js` 注入 `.md-lightbox` 放大阅览（同页一组、翻页不循环；封面/头像/空态/图表除外） |
+| 移动端 | 状态栏由 `proto-page.js` 固定顶注入；页根须标 `md-immersive` 或 `md-standard`；`md-section-head`；列表卡三形态择一：`md-card--cover` / `md-card--tile`（`md-grid-2`）/ `md-card--row` 或 `--plain`；触屏 `md-search` 仅左图标+输入；`viewport-fit=cover`；左右下及四角走 `--md-safe-*` |
 | 桌面端 | 必须有 `md-breadcrumb`（内容区顶部，**不要** `md-page-head` 大标题）；表格首列可用 `md-row-goods` + `md-thumb md-media-ph--n`。D1-1 列表：页内签在筛选上方且整区切换；`md-d1--list` 让分页与表横条贴底，并走 **紧凑密度**；勾选列 `md-col-check` 左冻、操作列 `md-col-actions` 右冻定宽；中间列按语义加 `md-col-name` / `md-col-price` / `md-col-status` / `md-col-date`（名称吃剩余，金额/状态/日期窄，禁止均分或被 `min-width` 拉长）；操作过多用 `md-actions` + `data-menu`「更多」下拉；`md-d1__stats` 靠左、`md-d1__pager` 靠右。规格出现的弹窗/签/下拉/日期/按钮组必须用本节 AD 控件，禁止裸 `alert` / 无样式 `<select>` |
-| 间距 | 只用套件：分区头 / 栅格 / `md-d1`，禁止用内联 `margin` 当排版 |
+| 间距 | 触屏滚动区模块间距走 `--md-module-gap`（`md-module`）；卡片/栅格内距走套件；禁止内联 `margin` 当排版 |
 
 ## 复制
 
@@ -47,7 +47,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 ## `index.html`（数据驱动壳）
 
-只填 `PROTO_SHELL`，**不要**手写侧栏/顶栏/状态演示/规格说明 DOM。
+只填 `PROTO_SHELL`，**不要**手写侧栏/顶栏/状态演示/规格说明 DOM。右下角 SKILL 标注由 `proto-shell.js` 注入，不要写进本页 HTML。
 
 ```html
 <!DOCTYPE html>
@@ -178,44 +178,87 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
     <div class="md-swiper">…Banner 下沉…</div>
   </div>
   <main class="md-mobile-body">
-    <nav class="md-king">…5 列金刚区…</nav>
-    <nav class="md-king md-king--pair">…一排两张大卡…</nav>
-    <div class="md-section-head">
-      <h1 class="md-section-head__title">推荐</h1>
-    </div>
-    <div class="md-grid-2">
-      <article class="md-card" data-comp="COMP-001" data-state="default">
-        <div class="md-card__media md-media-ph md-media-ph--1"></div>
-        …
-      </article>
+    <div class="md-mobile-sheet">
+      <section class="md-module">
+        <nav class="md-king">…5 列金刚区…</nav>
+      </section>
+      <section class="md-module">
+        <nav class="md-king md-king--pair">…一排两张大卡…</nav>
+      </section>
+      <section class="md-module">
+        <div class="md-section-head">
+          <h1 class="md-section-head__title">推荐</h1>
+          <a class="md-btn md-btn--link" href="…">查看全部</a>
+        </div>
+        <div class="md-grid-2">
+          <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default">
+            <div class="md-card__media md-media-ph md-media-ph--1"></div>
+            <div class="md-card__body">
+              <h2 class="md-card__title">标题最多两行</h2>
+              <p class="md-price">¥19.90</p>
+              <p class="md-card__time">今天上架</p>
+            </div>
+          </article>
+        </div>
+      </section>
     </div>
   </main>
   <nav class="md-tabbar">…</nav>
 </div>
 ```
 
-有 TabBar 时 **不要**再写 `md-appbar`。列表横卡用 `md-card md-card--row`（封面 **1:1**、触屏为内缩圆角缩略图 + **弹性正文**：`__main` 标题/副标题/摘要 + `__foot` 元信息与价；标题最多两行、副标题一行、摘要两行截断；禁止厚重浮块大阴影）。宫格卡同样 **1:1**。详情/内容页主图用 `md-swiper md-swiper--wide`（**16:9**），介绍配图用 `md-media--16x9`。评论附图用 `md-comment__photos` + `md-comment__photo`（**1:1**、圆角、横向排布超出换行）。触屏正文左右下走 `--md-safe-*`；标准顶栏同样走安全距，MP 另避让胶囊。触屏 `md-search` 仅左图标+输入（无「搜索」文案、无右侧搜索按钮）。左/底/右半屏：`md-drawer--left/bottom/right`。移动页 `<meta viewport>` 须带 `viewport-fit=cover`。**禁止**在页内手写 `md-status-bar`：由 `proto-page.js` 注入固定顶演示层。页根必须标 **`md-immersive`**（状态栏背景透明）或 **`md-standard`**（状态栏背景不透明）。可点文案与 Tab 走套件安全距（左右下及四角）。
+有 TabBar 时 **不要**再写 `md-appbar`。**沉浸式下沉**：`md-immersive` + `md-hero` 时，Hero **绝对定位钉在页顶底层、不随滚**；`md-mobile-body` 内必须包一层 **`md-mobile-sheet`（白底、宽 100%、无外边距、可有内边距）**，滚动时白底从上层盖住 Banner；顶距由 `::before` 占位露图并可点穿轮播。详情 `md-appbar--overlay` 仍叠最上层。**触屏滚动区按模块切分**：每个 L3 分区包 `md-module`；`md-mobile-body` / `md-mobile-sheet` 用 `--md-module-gap`（16px）统一模块间距；分区头放在模块内，禁止用内联 margin 拉开模块。**列表卡三形态择一**（见下节）。详情/内容页主图用 `md-swiper md-swiper--wide`（**16:9**），介绍配图用 `md-media--16x9`。评论附图用 `md-comment__photos` / `md-card__photos`（**1:1**、圆角、横向排布超出换行）。触屏正文左右下走 `--md-safe-*`；标准顶栏同样走安全距，MP 另避让胶囊。触屏 `md-search` 仅左图标+输入（无「搜索」文案、无右侧搜索按钮）。左/底/右半屏：`md-drawer--left/bottom/right`。移动页 `<meta viewport>` 须带 `viewport-fit=cover`。**禁止**在页内手写 `md-status-bar`：由 `proto-page.js` 注入固定顶演示层。页根必须标 **`md-immersive`**（状态栏背景透明）或 **`md-standard`**（状态栏背景不透明）。可点文案与 Tab 走套件安全距（左右下及四角）。
 
-### 触屏列表卡片排版（弹性布局）
+### 触屏列表卡片三形态
 
-横卡正文必须可伸缩：左图（或 `__leading` 小图标）固定，右 `__body` 用 flex 列把主文与底栏撑开。规格有字段才写对应节点，**禁止**为好看编造业务字段。
+同一列表（或同一模块）只选一种。规格有字段才写对应节点，**禁止**为好看编造业务字段。
+
+**① 封面叠字** `md-card--cover`：一行一列大图，单行标题悬图片底部。默认高度随 **16:9**；`--ratio-2x1` / `--ratio-1x1` 换比例；`--h-sm/md/lg` 固定高度。
+
+```html
+<a class="md-card md-card--cover" href="…">
+  <div class="md-card__media md-media-ph md-media-ph--1">
+    <span class="md-card__tag md-chip md-chip--success">有货</span>
+    <h2 class="md-card__title">单行标题截断</h2>
+  </div>
+</a>
+<!-- 固定高度：md-card--cover md-card--h-md -->
+```
+
+**② 双列瓷砖** `md-card--tile` + `md-grid-2`：上图 **1:1**，标题最多两行，可选 `__chips` 小标签/图标、`md-price`、`__time` 小字。
+
+```html
+<article class="md-card md-card--tile">
+  <div class="md-card__media md-media-ph md-media-ph--1">
+    <span class="md-card__tag md-chip md-chip--primary">新品</span>
+  </div>
+  <div class="md-card__body">
+    <h2 class="md-card__title">标题最多两行</h2>
+    <div class="md-card__chips"><span class="md-chip md-chip--outlined">小标签</span></div>
+    <p class="md-price">¥19.90</p>
+    <p class="md-card__time"><span class="md-icon" data-icon="schedule"></span>今天上架</p>
+  </div>
+</article>
+```
+
+**③ 横卡 / 纯文** `md-card--row` 或 `--plain`：左图右文、左图标/头像右文、或无图纯文（评论可带 `__photos` 小图一排）。
 
 ```html
 <a class="md-card md-card--row" href="…">
-  <div class="md-card__media md-media-ph md-media-ph--1"></div>
-  <!-- 无封面时可用：<span class="md-card__leading"><span class="md-icon" data-icon="goods"></span></span> -->
+  <div class="md-card__media md-media-ph md-media-ph--1">
+    <span class="md-card__tag md-chip md-chip--success">有货</span>
+  </div>
+  <!-- 无封面：<span class="md-card__leading"><span class="md-icon" data-icon="goods"></span></span> -->
+  <!-- 头像：<span class="md-card__leading md-card__leading--avatar md-media-ph md-media-ph--n"></span> -->
   <div class="md-card__body">
     <div class="md-card__main">
       <h2 class="md-card__title">标题最多两行截断</h2>
       <p class="md-card__subtitle">副标题一行</p>
-      <p class="md-card__text">摘要最多两行；也可用 md-line-clamp-1/2/3</p>
+      <p class="md-card__text">摘要最多两行</p>
     </div>
     <div class="md-card__foot">
       <div class="md-card__meta">
         <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule"></span>昨天</span>
-        <span class="md-card__meta-item"><span class="md-icon" data-icon="view"></span>1.2万</span>
-        <span class="md-card__meta-item"><span class="md-icon" data-icon="favorite"></span>328</span>
-        <!-- 带头像：<span class="md-card__meta-item"><span class="md-card__thumb md-media-ph--n"></span>店铺名</span> -->
       </div>
       <p class="md-price">¥19.90</p>
     </div>
@@ -223,14 +266,37 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 </a>
 ```
 
+```html
+<article class="md-card md-card--plain">
+  <div class="md-card__body">
+    <div class="md-card__main">
+      <h2 class="md-card__title">用户名</h2>
+      <p class="md-card__text">评论文案</p>
+    </div>
+    <div class="md-card__photos">
+      <div class="md-card__photo md-media-ph md-media-ph--1"></div>
+    </div>
+    <div class="md-card__foot">
+      <div class="md-card__meta">
+        <span class="md-card__meta-item">2026-08-10</span>
+      </div>
+    </div>
+  </div>
+</article>
+```
+
 | 节点 | 规则 |
 |------|------|
-| `__title` | 主标题；横卡默认两行截断 |
-| `__subtitle` | 次级一行；颜色次要 |
-| `__text` | 多行摘要；横卡默认两行截断；通用用 `md-line-clamp-*` |
-| `__meta` / `__meta-item` | 时间、浏览、点赞等小字；可带 14px 图标或 `__thumb` 小图 |
-| `__foot` | 底栏：左 meta、右价格（或仅一侧）；`flex` 两端对齐 |
-| `__leading` | 无大封面时的左侧小图标容器 |
+| `__title` | ①单行悬底；②③最多两行截断 |
+| `__subtitle` | ③次级一行 |
+| `__text` | ③摘要；横卡默认两行截断 |
+| `__chips` | ②正文小标签/小图标，不是封面角标 |
+| `__time` | ②底部小字时间/浏览 |
+| `__meta` / `__meta-item` | ③时间、浏览、点赞等小字；可带 14px 图标或 `__thumb` |
+| `__foot` | ③底栏：左 meta、右价格 |
+| `__leading` | ③左侧小图标；`--avatar` 为圆头像 |
+| `__tag` | 状态标签贴**封面**左上或右上（`--tr`） |
+| `__photos` / `__photo` | ③纯文/评论小图，1:1，一排最多五张 |
 
 触屏顶栏四种（规格点名一种，禁止混用、禁止把封面顶栏拉成 16:9）：
 
@@ -382,6 +448,15 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 单日用 `md-field--date`（聚焦弹出月历）。日期段用 `md-field--daterange`：先点开始日、再点结束日，输入框显示 `YYYY-MM-DD ~ YYYY-MM-DD`，起止写在 `data-start` / `data-end`。时间用 `md-field--time` + `type="time"`。禁止再写 `datetime-local` 裸控件。
 
+**只读输入**（灰底、淡字；日期段触发器的 `readonly` 不要套本类）
+
+```html
+<label class="md-field md-field--readonly">
+  <span class="md-field__label">只读</span>
+  <input class="md-field__input" type="text" value="不可编辑" readonly>
+</label>
+```
+
 触屏单日与省市区（只有年-月-日 / 省-市-区三级滚轮，**禁止**加开始/结束日期签）：
 
 ```html
@@ -461,7 +536,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 ProtoPage.snackbar("已保存");
 ProtoPage.snackbar("失败", { severity: "error" });
 ProtoPage.confirm({ title: "删除确认", body: "删除后不可恢复", onOk: function () {} });
-ProtoPage.setProgress("#formProg", 40);          // 无极进度条，右侧显示 40%
+ProtoPage.setProgress("#wizBar", 40);          // 无极进度条，右侧显示 40%
 ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义右侧文案
 ```
 
@@ -471,7 +546,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 <button type="button" class="md-btn md-btn--text md-tooltip" data-tip="刷新列表">刷新</button>
 ```
 
-触屏按钮三档对照金样 `gold/mobile-buttons.html`（小 `--sm` / 中默认 / 大 `--lg`）。每档：线框 `--outlined`、色块 `--contained`、置灰 `disabled`、角标内嵌 `md-badge`。
+触屏按钮对照金样 `gold/mobile-buttons.html`：小 `--sm` / 中默认 / 大 `--lg`；形态含线框 `--outlined`、色块 `--contained`、文字 `--text`、**纯文字链接 `--link`（无线框无背景，用于查看更多/了解全部）**、置灰 `disabled`、角标内嵌 `md-badge`。
 
 ```html
 <button type="button" class="md-btn md-btn--outlined md-btn--sm">线框</button>
@@ -511,6 +586,28 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 
 **进度条** `md-progress`：无极连续轨道，上传/完整度用。`ProtoPage.setProgress` 把单根 `__bar` 拉到对应宽度。不确定进度用 `md-progress--indeterminate`（或旧类 `md-linear`）。触屏可用 `md-progress--lg`。
 
+```html
+<ol class="md-timeline">
+  <li class="md-timeline__item is-done">
+    <div class="md-timeline__rail" aria-hidden="true">
+      <span class="md-timeline__node"></span>
+      <span class="md-timeline__line"></span>
+    </div>
+    <article class="md-timeline__body md-card md-card--row">
+      <div class="md-card__media md-media-ph md-media-ph--1"></div>
+      <div class="md-card__body">
+        <div class="md-card__main">
+          <h2 class="md-card__title">已提交</h2>
+          <p class="md-card__text">右侧图文说明。</p>
+        </div>
+      </div>
+    </article>
+  </li>
+</ol>
+```
+
+**时间轴** `md-timeline`：左侧竖状 `__rail`（节点 `__node` + 连线 `__line`），右侧 `__body` 用 `md-card--row` 图文。`is-done` 已完成、`is-active` 当前。点节点由 `proto-page.js` 切高亮。金样 `gold/mobile-timeline.html` / `gold/desktop-timeline.html`。
+
 ## 无类名组合（禁止裸 HTML）
 
 套件没有「一模一样」的控件时，**必须**用下表组合，禁止自造 class、禁止无 `md-*` 的 `<button>` / `<input>` / `<table>`、禁止用随机色块当图。
@@ -529,12 +626,13 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | 触屏日期段 | `data-wheel="daterange"` 底半屏，开始/结束两个签 | 两个独立日期框硬凑；原生 `type=date` |
 | 空态 | `md-empty md-empty--illus` | 一行灰字 / 空白 |
 | 加载 | `md-skeleton` / `data-state="loading"` + `md-skel-host` | 纯文字「加载中」 |
-| 封面 / 图片位 | `md-card__media md-media-ph md-media-ph--1`～`--6` 轮换 | `style="background:#xxx"` 色块；无编号灰块 |
+| 封面 / 图片位 | `md-card__media md-media-ph md-media-ph--1`～`--6` 轮换；点图 `.md-lightbox` 同页一组翻页不循环 | `style="background:#xxx"` 色块；无编号灰块 |
 | D1-2 表单 | `md-d1` + `md-d1__form` + `md-field--sm` | 无纸面的裸 label 堆叠；弹窗内 56px 大输入框 |
-| 步骤条 | `md-stepper` + `md-step` | 纯数字列表 |
+| 步骤条 | `md-stepper` + `md-step`；已完成 `is-done`；当前 `is-active` | 纯数字列表 |
 | 进步条 | `md-advance` + `__head` + `__track` + `__seg` + `__bar`；`data-segments`；触屏可 `--lg` | 用无极 `md-progress` 冒充分步 |
 | 进度条 | `md-progress` + `__head` + `__track` + `__bar`；不确定 `--indeterminate`；触屏可 `--lg` | 裸 `<progress>` / 自造色条 / 用分段 `md-advance` 冒充上传 |
-| 树 | `md-tree` | 无类名嵌套 `ul` |
+| 时间轴 | `md-timeline` + `__item` `__rail` `__node` `__line` `__body`；右图文 `md-card--row`；`is-done` / `is-active` | 用列表硬套竖轨；左图右线反过来 |
+| 树 | `md-tree` + `__item` `__toggle` `__label`；分支 `li.is-open`；当前 `is-active` | 无类名嵌套 `ul`；触屏用列表硬套分类树 |
 | 图表 | `md-chart-ph` 占位条 | 手写 canvas / 自造柱 |
 | 页内分页签 | `md-tabs md-tabs--page` + `md-tab` + `md-tab-panel` | 自造下划线 `div` / 裸 `<a>` 签 |
 | 按钮组 / 工具栏按钮 | `md-btn-group` / `md-d1__toolbar` | 无 class 的一排 `<button>` |
@@ -552,21 +650,21 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 
 | 用途 | 类名 |
 |------|------|
-| 主/线/字按钮 | `md-btn md-btn--contained` / `--outlined` / `--text`；`--sm` `--lg`；置灰 `disabled`；角标内嵌 `md-badge` |
+| 主/线/字/链接按钮 | `md-btn md-btn--contained` / `--outlined` / `--text` / **`--link`（纯文字无线框无背景，查看更多/了解全部）**；`--sm` `--lg`；置灰 `disabled`；角标内嵌 `md-badge` |
 | 图标 | `span.md-icon` + `data-icon`（闭集见 [`reference-icons.md`](reference-icons.md)） |
 | 图标按钮 | `md-icon-btn` 内放 `span.md-icon` |
-| 输入 | `md-field` + `md-field__label` + `md-field__input` |
-| 卡片 | `md-card` `md-card--row` `md-card__media` `md-card__leading` `md-media-ph--n` `md-card__body` `md-card__main` `md-card__title` `md-card__subtitle` `md-card__text` `md-card__foot` `md-card__meta` `md-card__meta-item` `md-card__thumb` `md-price` `md-line-clamp-1/2/3` |
+| 输入 | `md-field` + `md-field__label` + `md-field__input`；只读加 `md-field--readonly` + `readonly`（灰底淡字）。日期段 `readonly` 触发器不要加 `--readonly` |
+| 卡片 | `md-card` **`--cover`（大图叠字）`--tile`（双列 1:1）`--row`（左图右文）`--plain`（纯文/评论）** `md-card__media` `md-card__leading` `--avatar` `md-card__body` `md-card__main` `md-card__title` `md-card__subtitle` `md-card__text` `md-card__chips` `md-card__time` `md-card__foot` `md-card__meta` `md-card__photos` `md-card__photo` `md-card__tag` `--tl/--tr` `md-price` |
 | 详情 16:9 图 | `md-swiper--wide`；介绍配图 `md-media--16x9`；评论 `md-comment` `__user` `__time` `__text` `__photos` `__photo`（一排最多五张） |
-| 分区头 | `md-section-head` `md-section-head__title` |
-| 系统栏 | `md-status-bar`（`proto-page.js` 固定顶注入；页内禁止手写） |
+| 分区 / 模块 | `md-module`（L3，模块间距 `--md-module-gap`）`md-section-head` `md-section-head__title` |
+| 系统栏 | `md-status-bar`（`proto-page.js` 固定顶注入；页内禁止手写；时间/信号贴顶、电量信号贴右，不为胶囊留空） |
 | 触屏顶栏 | ① `md-hero` 16:9+slogan ② `--overlay` 叠 16:9 ③ 标准 `md-appbar--mobile` ④ `--cover` 两倍高度封面 |
 | 桌面面包屑 | `md-breadcrumb`（D1 内容区顶部，禁止再写 `md-page-head`） |
 | 操作列 | `md-col-actions` 定宽；过多操作用 `md-actions` + `data-menu`「更多」+ `md-menu md-menu--fixed`（打开时抬高当前行，菜单留在单元格内，避免被后续表行挡住，也避免点菜单打不开弹窗） |
 | 语义列宽 | `md-col-check` 勾选；`md-col-name` 名称吃剩余；`md-col-price` 金额窄右齐；`md-col-status` 状态/短枚举；`md-col-date` 日期；`md-col-id` 短码；`md-col-num` 数量。禁止所有列均分 |
 | D1-1 紧凑 | 根节点 `md-d1 md-d1--list`（矮行、小内外距）；**不要**套到 D1-2 表单页 |
 | 工作台 | `md-stat-grid` `md-stat-card`；趋势 `md-chart-ph` |
-| 分栏 | `md-d1--split` `md-split` `__side` `__main`；树 `md-tree` `__item is-active` |
+| 分栏 | `md-d1--split` / 触屏 `md-tree-page`；`md-split` `__side` `__main`；树 `md-tree` `__item` `__toggle` `__label` `is-open` `is-active` |
 | 设置分组 | `md-set-group` `__title` `md-set-row`；一行一项开关 |
 | 汇总分页 | `md-d1__footer`：`md-d1__stats` 靠左，`md-d1__pager` 靠右 |
 | 纸面/表格 | `md-paper` `md-table` `md-table-wrap` `md-col-check` `md-col-name` `md-col-price` `md-col-status` `md-col-date` `md-col-actions` `md-pagination` `md-page-btn` |
@@ -580,6 +678,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 空态 | `md-empty md-empty--illus` + `__art` `__title` `__text` |
 | 骨架 | `md-skeleton` `--text/--title/--media/--row`；`md-skel-host` |
 | 步骤/树/图 | `md-stepper` `md-step` `md-tree` `md-chart-ph` `md-stat-grid` `md-stat-card` |
+| 时间轴 | `md-timeline` `__item` `__rail` `__node` `__line` `__body`；右图文 `md-card--row`；`is-done` / `is-active` |
 | 进步条 | `md-advance` `__label` `__value` `__track` `__seg` `__bar`；`data-segments`；`--lg`；`ProtoPage.setAdvance` |
 | 进度条 | `md-progress` `__label` `__value` `__track` `__bar`；`--lg`；`--indeterminate`；`ProtoPage.setProgress` |
 | Chip/Alert | `md-chip` `md-badge` `md-alert md-alert--error/--info/--success/--warning` |

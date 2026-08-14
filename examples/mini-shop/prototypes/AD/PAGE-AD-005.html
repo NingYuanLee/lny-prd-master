@@ -1,9 +1,9 @@
-<!-- LNY-PRD gold: 金样：左树右内容。写分类树/组织树前必 Read。禁止整页刷新换右区。 -->
+<!-- LNY-PRD gold: 金样：左树右内容。写分类树/组织树前必 Read。箭头展开收起，点树只换右区。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <title>PAGE-AD-005 分类管理</title>
+  <title>PAGE-AD-005 分类</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="assets/mui-kit.css">
 </head>
@@ -15,14 +15,60 @@
     <div class="md-split">
       <aside class="md-split__side">
         <ul class="md-tree">
-          <li><button type="button" class="md-tree__item is-active" data-cat="水果">水果</button>
+          <li class="is-open">
+            <button type="button" class="md-tree__item is-active" data-cat="水果">
+              <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+              <span class="md-tree__label">水果</span>
+            </button>
             <ul>
-              <li><button type="button" class="md-tree__item" data-cat="浆果">浆果</button></li>
-              <li><button type="button" class="md-tree__item" data-cat="柑橘">柑橘</button></li>
+              <li class="is-open">
+                <button type="button" class="md-tree__item" data-cat="浆果">
+                  <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                  <span class="md-tree__label">浆果</span>
+                </button>
+                <ul>
+                  <li>
+                    <button type="button" class="md-tree__item" data-cat="草莓">
+                      <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                      <span class="md-tree__label">草莓</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" class="md-tree__item" data-cat="蓝莓">
+                      <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                      <span class="md-tree__label">蓝莓</span>
+                    </button>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <button type="button" class="md-tree__item" data-cat="柑橘">
+                  <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                  <span class="md-tree__label">柑橘</span>
+                </button>
+              </li>
             </ul>
           </li>
-          <li><button type="button" class="md-tree__item" data-cat="饮品">饮品</button></li>
-          <li><button type="button" class="md-tree__item" data-cat="烘焙">烘焙</button></li>
+          <li>
+            <button type="button" class="md-tree__item" data-cat="饮品">
+              <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+              <span class="md-tree__label">饮品</span>
+            </button>
+            <ul>
+              <li>
+                <button type="button" class="md-tree__item" data-cat="咖啡">
+                  <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                  <span class="md-tree__label">咖啡</span>
+                </button>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <button type="button" class="md-tree__item" data-cat="烘焙">
+              <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+              <span class="md-tree__label">烘焙</span>
+            </button>
+          </li>
         </ul>
       </aside>
       <div class="md-split__main">
@@ -37,10 +83,12 @@
               </tr>
             </thead>
             <tbody id="catBody">
-              <tr><td class="md-col-name">有机草莓 250g</td><td class="md-col-price">¥19.90</td><td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td></tr>
-              <tr><td class="md-col-name">云南小粒咖啡 227g</td><td class="md-col-price">¥29.90</td><td class="md-col-status"><span class="md-chip">缺货</span></td></tr>
-              <tr><td class="md-col-name">青柠蜂蜜茶 500ml</td><td class="md-col-price">¥12.50</td><td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td></tr>
-              <tr><td class="md-col-name">全麦吐司 400g</td><td class="md-col-price">¥9.90</td><td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td></tr>
+              <tr data-tree-item="水果,浆果,草莓"><td class="md-col-name">有机草莓 250g</td><td class="md-col-price">¥19.90</td><td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td></tr>
+              <tr data-tree-item="水果,柑橘"><td class="md-col-name">赣南脐橙 5斤</td><td class="md-col-price">¥32.80</td><td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td></tr>
+              <tr data-tree-item="饮品,咖啡"><td class="md-col-name">云南小粒咖啡 227g</td><td class="md-col-price">¥29.90</td><td class="md-col-status"><span class="md-chip">缺货</span></td></tr>
+              <tr data-tree-item="饮品"><td class="md-col-name">青柠蜂蜜茶 500ml</td><td class="md-col-price">¥12.50</td><td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td></tr>
+              <tr data-tree-item="烘焙"><td class="md-col-name">全麦吐司 400g</td><td class="md-col-price">¥9.90</td><td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td></tr>
+              <tr data-tree-item="水果,浆果,蓝莓"><td class="md-col-name">当季蓝莓 125g</td><td class="md-col-price">¥16.80</td><td class="md-col-status"><span class="md-chip md-chip--primary">新品</span></td></tr>
             </tbody>
           </table>
           <div class="md-skel-host is-hidden" data-skel-for="COMP-001">
@@ -60,13 +108,23 @@
   <script src="assets/icons-extra.js"></script>
   <script src="assets/proto-page.js"></script>
   <script>
-    document.querySelectorAll(".md-tree__item").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        document.querySelectorAll(".md-tree__item").forEach(function (b) { b.classList.remove("is-active"); });
-        btn.classList.add("is-active");
-        document.getElementById("catTitle").textContent = btn.getAttribute("data-cat");
+    (function () {
+      function paintCat(cat) {
+        var n = 0;
+        document.querySelectorAll("[data-tree-item]").forEach(function (row) {
+          var tags = (row.getAttribute("data-tree-item") || "").split(",");
+          var on = tags.indexOf(cat) !== -1;
+          row.classList.toggle("is-hidden", !on);
+          if (on) n += 1;
+        });
+        var empty = document.querySelector('[data-empty-for="COMP-001"]');
+        if (empty) empty.classList.toggle("is-hidden", n > 0);
+      }
+      document.addEventListener("md-tree-select", function (ev) {
+        paintCat(ev.detail.cat);
       });
-    });
+      paintCat("水果");
+    })();
   </script>
 </body>
 </html>

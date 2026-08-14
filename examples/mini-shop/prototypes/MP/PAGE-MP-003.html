@@ -26,6 +26,8 @@
       </div>
     </div>
     <main class="md-mobile-body">
+      <div class="md-mobile-sheet">
+      <section class="md-module" data-section="商品信息">
       <div class="md-display-block">
         <h2 class="md-h2">有机草莓 250g</h2>
         <p class="md-price">¥19.90</p>
@@ -42,9 +44,11 @@
           <div class="md-article__figure">
             <div class="md-media--16x9 md-media-ph md-media-ph--4"></div>
           </div>
-          <p>缺货时可登记到货提醒，到货后按所选方式通知。</p>
+          <p>本页只展示商品信息与评论，不提供下单。</p>
         </div>
       </div>
+      </section>
+      <section class="md-module" data-section="评论">
       <div class="md-section-head">
         <h2 class="md-section-head__title">评论</h2>
       </div>
@@ -89,9 +93,11 @@
           </div>
         </article>
       </div>
+      </section>
+      </div>
     </main>
     <div class="md-action-bar">
-      <a class="md-btn md-btn--contained" href="PAGE-MP-004.html">到货提醒</a>
+      <button type="button" class="md-btn md-btn--contained" onclick="ProtoPage.snackbar('本页只展示，不下单')">收藏</button>
     </div>
   </div>
   <script src="assets/md-icons.js"></script>

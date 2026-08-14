@@ -39,24 +39,29 @@ disable-model-invocation: true
 
 | 夹具页 | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
-| PAGE-MP-001 首页 | `gold/mobile-grid.html` | `md-immersive` `md-hero` `md-swiper` `md-king`（5 列）+ `md-king--pair`（一排两张大卡、内容与小图标靠左）；有 TabBar 则无 `md-appbar` |
-| PAGE-MP-002 列表 | `gold/mobile-list.html` | `md-standard`；搜索+筛选贴顶；`md-card--row` 弹性正文（`__main`/`__foot`/`__meta`，标题副标题摘要截断）；筛选半屏含 `data-wheel="daterange"` 与类目下拉 |
-| PAGE-MP-003 详情 | `gold/mobile-detail.html` | `md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 一排最多五张 |
-| PAGE-MP-004 表单 | `gold/mobile-form.html` | 返回顶栏；无极 `md-progress` 填写/上传；`md-select` 少选项中间弹窗；`data-wheel="date"` 单日；`data-wheel="region"` 省市区（无开始/结束签）；滑动条；上传；`md-action-bar` 贴底 |
-| PAGE-MP-005 向导 | `gold/mobile-wizard.html` | `md-stepper` + 分段 `md-advance md-advance--lg`；最后一步才提交 |
+| PAGE-MP-001 首页 | `gold/mobile-grid.html` | `md-immersive` `md-hero`；`md-module`；`md-card--cover` 精选 + `md-card--tile` 双列推荐；`md-king` 5 列 + `--pair`；有 TabBar 则无 `md-appbar` |
+| PAGE-MP-002 列表 | `gold/mobile-list.html` | `md-standard`；搜索+筛选贴顶；`md-card--row` 左图/左图标/头像 + `md-card--plain` 纯文附图；筛选半屏 `data-wheel="daterange"` |
+| PAGE-MP-003 详情 | `gold/mobile-detail.html` | `md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 一排最多五张；点图 `.md-lightbox` 同页一组翻页不循环 |
+| PAGE-MP-004 表单 | `gold/mobile-form.html` | 返回顶栏；**全部触屏表单控件**：文本/数字/电话/多行/只读、单选多选标签、开关、少选项中间弹窗、多选项底半屏、五步/无极滑动条、`data-wheel` 单日/日期段/省市区、单图更换/多图可删/文件上传；`md-action-bar` 贴底。进度条不在本页，见步骤向导 |
+| PAGE-MP-005 步骤向导 | `gold/mobile-wizard.html` | 横向 `md-stepper`；分段 `md-advance md-advance--lg`；无极 `md-progress md-progress--lg`；当前步表单；`md-action-bar` 贴底，最后一步才提交 |
 | PAGE-MP-006 设置 | `gold/mobile-settings.html` | 沉浸式；`md-appbar--cover` 两倍高度封面顶栏；分组 `md-set-group`；一行一项开关 |
-| PAGE-MP-007 按钮 | `gold/mobile-buttons.html` | 小 `--sm` / 中默认 / 大 `--lg`；每档线框、色块、置灰、`md-badge` 角标 |
+| PAGE-MP-007 按钮 | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、文字、**`--link` 纯文字**、置灰、`md-badge` |
+| PAGE-MP-008 分类 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左树右内容；`md-tree` `__toggle` 展开收起；点节点只换右区 |
+| PAGE-MP-009 时间轴 | `gold/mobile-timeline.html` | `md-timeline` 左 `__rail` 竖轨，右 `md-card--row` 图文；`is-done` / `is-active`；点节点切高亮 |
 
 **桌面端**
 
 | 夹具页 | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
 | PAGE-AD-001 列表 | `gold/desktop-list.html` | `md-d1 md-d1--list`（**紧凑密度**）；`md-breadcrumb` 无 `md-page-head`；签 `md-tabs--page` 在筛上整区切换；列类 `md-col-check` `md-col-name` `md-col-price` `md-col-status` `md-col-date` `md-col-actions`（**按字段语义，禁止均分**）；筛选用 `md-field--daterange`；「更多」`md-menu--fixed`；`md-d1__stats` 左 / `md-d1__pager` 右 |
-| PAGE-AD-002 表单 | `gold/desktop-form.html` | `md-breadcrumb`；`md-field--sm`；无极 `md-progress` 资料完整度。**不要**加 `md-d1--list` |
+| PAGE-AD-002 商品表单 | `gold/desktop-form.html` | `md-breadcrumb`；`md-field--sm`。**按规格裁字段**，不要把套件样例整页搬来；进度条不在本页，见步骤向导 |
+| PAGE-AD-009 表单 | `gold/desktop-form.html` | **全部桌面表单控件**：文本/数字/电话/多行/只读、单选多选、开关、少/多选项下拉、五步/无极滑动条、`md-field--date` / `--time` / `--daterange`、省市区三级下拉、单图更换/多图可删/文件上传。**不要**加 `md-d1--list`，不要触屏 `data-wheel` |
+| PAGE-AD-008 详情 | `gold/desktop-detail.html` | `md-breadcrumb`；`md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 一排最多五张；点图 `.md-lightbox` 同页一组翻页不循环。不要 `md-d1--list`、不要沉浸式叠层 |
 | PAGE-AD-003 向导 | `gold/desktop-wizard.html` | `md-stepper` + 分段 `md-advance`；最后一步才提交 |
 | PAGE-AD-004 工作台 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
-| PAGE-AD-005 分类 | `gold/desktop-split.html` | `md-d1--split` 左树右内容 |
+| PAGE-AD-005 分类 | `gold/desktop-split.html` | `md-d1--split` 左树右内容；`md-tree` `__toggle` 展开收起；点树只换右区 |
 | PAGE-AD-006 设置 | `gold/desktop-settings.html` | 分组 `md-set-group`；一行一项开关 |
+| PAGE-AD-007 时间轴 | `gold/desktop-timeline.html` | `md-breadcrumb`；`md-timeline` 左竖轨右图文；点节点切高亮 |
 | 关系图 | `prototypes/{端}/map.html` | `ProtoMap.boot`；预览区 **375×812**；连线端口错开 + 线中 `label`；底部色线图例；拖动写入 localStorage；「导出图片」 |
 
 ## 开笔前
@@ -74,7 +79,7 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 1. `python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}`
 2. Read [`reference-kit.md`](reference-kit.md)：**高保真落地** + `index.html` 只填 `PROTO_SHELL`；单页只用 `md-*` 类；无对应类名时用该文「无类名组合」，**禁止裸 HTML**、禁止「示例 A/B」低保真夹具。
 3. 业务图标：Read [`reference-icons.md`](reference-icons.md)。闭集能覆盖则 `data-icon`；否则 `search-icons.py --pick 0 --name … --out …/assets`。
-4. 壳层行为（状态演示 / 规格说明 / 缩放 / 关系图）见 [`reference-shell.md`](reference-shell.md)。每批末按 [`reference-scope.md`](reference-scope.md) 覆盖刷新 `prototypes/index.html`。
+4. 壳层行为（状态演示 / 规格说明 / 缩放 / 关系图）见 [`reference-shell.md`](reference-shell.md)。每批末按 [`reference-scope.md`](reference-scope.md) 覆盖刷新 `prototypes/index.html`（含页底右下 SKILL 标注）。各端 `index.html` 的同类标注由 `proto-shell.js` 注入，禁止手写。
 
 **禁止**：初始化 npm/Vite/React；查询 mui-mcp；调用 `user-search-iconfont-mcp`（改用本技能 `search-icons.py`）；页内自造主题色、手绘图标 path 或第二套组件 CSS。
 
@@ -87,7 +92,7 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 3. ASCII = 分区顺序；金样 = 密度。`ui/PAGE`「视觉细节」只给 ⑨ 估点，⑥ 一律按金样。触屏 §1.3.3；桌面 D1-1 §1.4.3。
 4. **舒适默认（§2.3 漏写也要落地）**：按 `lny-prd-ui` **§1.7.0**。骨架、空态插图、失败可重试、一个主按钮、按下态、浮层过渡、D1-1 语义列宽+`md-d1--list`、评论时间行+附图一排最多五张。禁止发明新跳转/新字段/新弹窗。**有字段时必须按层级排版**。用户未给设计规范 ≠ 可以画线框。
 5. 重画不得删 Chip / 面包屑 / 横卡 / `data-icon` / `md-dialog`。未 Read 金样 = 本页未完成。
-6. 不是夹具表里已有的页型：按金样表选最接近的金样（dashboard / split / settings / wizard），禁止拿 `desktop-list` 硬套工作台。
+6. 不是夹具表里已有的页型：按金样表选最接近的金样（dashboard / split / settings / wizard / timeline），禁止拿 `desktop-list` 硬套工作台。
 
 ## 职责与禁止
 
@@ -121,7 +126,7 @@ python <skillDir>/scripts/verify-prototype-coverage.py <prdRoot> --version vX.Y.
 
 1. Read [`reference-scope.md`](reference-scope.md)。
 2. 若尚无任何 `prototypes/{终端}/`：不新建空总入口，回报「无原型可挂」并结束。
-3. 覆盖写入 `prototypes/index.html`，并镜像到 `versions/{v}/prototypes/index.html`（`{v}` 取估点版本，未指定则当前工作版本）。版本清单按 **全部** `versions/` 填写。
+3. 覆盖写入 `prototypes/index.html`，并镜像到 `versions/{v}/prototypes/index.html`（`{v}` 取估点版本，未指定则当前工作版本）。版本清单按 **全部** `versions/` 填写。页底右下须保留 SKILL 标注（见 [`reference-scope.md`](reference-scope.md)）。
 4. UTF-8 验收这两个 `index.html`。
 5. **禁止**：copy-kit；改各端 `PAGE-*.html` / 端 `index.html` / `map.html`；补 ②③④⑤；把本节当成全量出原型。
 

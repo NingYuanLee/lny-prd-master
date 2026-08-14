@@ -29,7 +29,9 @@
       </div>
     </div>
     <main class="md-mobile-body">
-      <nav class="md-king" data-section="金刚区" aria-label="分类">
+      <div class="md-mobile-sheet">
+      <section class="md-module" data-section="金刚区">
+      <nav class="md-king" aria-label="分类">
         <button type="button" class="md-king__item" data-cat="全部">
           <span class="md-king__icon"><span class="md-icon" data-icon="category" aria-hidden="true"></span></span>
           全部
@@ -51,7 +53,9 @@
           坚果
         </button>
       </nav>
-      <nav class="md-king md-king--pair" data-section="金刚区" aria-label="专题入口">
+      </section>
+      <section class="md-module" data-section="专题入口">
+      <nav class="md-king md-king--pair" aria-label="专题入口">
         <button type="button" class="md-king__item" data-cat="时令鲜果">
           <span class="md-king__icon"><span class="md-icon" data-icon="goods" aria-hidden="true"></span></span>
           <span class="md-king__name">时令鲜果</span>
@@ -73,36 +77,69 @@
           <span class="md-king__desc">罐装便携</span>
         </button>
       </nav>
+      </section>
+      <section class="md-module" data-section="精选大图">
+      <div class="md-section-head">
+        <h1 class="md-section-head__title">精选</h1>
+      </div>
+      <div class="md-stack">
+        <a class="md-card md-card--cover" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
+          <div class="md-card__media md-media-ph md-media-ph--1">
+            <span class="md-card__tag md-chip md-chip--success">有货</span>
+            <h2 class="md-card__title">有机草莓 250g</h2>
+          </div>
+        </a>
+        <a class="md-card md-card--cover md-card--h-md" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
+          <div class="md-card__media md-media-ph md-media-ph--5">
+            <h2 class="md-card__title">冷萃美式 250ml</h2>
+          </div>
+        </a>
+      </div>
+      </section>
+      <section class="md-module" data-section="推荐区">
       <div class="md-section-head">
         <h1 class="md-section-head__title">推荐</h1>
+        <a class="md-btn md-btn--link" href="PAGE-MP-002.html">查看全部</a>
       </div>
       <div class="md-grid-2" data-section="推荐区">
-        <article class="md-card" data-comp="COMP-001" data-state="default">
-          <div class="md-card__media md-media-ph md-media-ph--1"></div>
+        <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default">
+          <div class="md-card__media md-media-ph md-media-ph--1">
+            <span class="md-card__tag md-chip md-chip--success">有货</span>
+          </div>
           <div class="md-card__body">
             <h2 class="md-card__title">有机草莓 250g</h2>
             <p class="md-price">¥19.90</p>
+            <p class="md-card__time"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>今天上架</p>
           </div>
         </article>
-        <article class="md-card" data-comp="COMP-001" data-state="default">
-          <div class="md-card__media md-media-ph md-media-ph--2"></div>
+        <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default">
+          <div class="md-card__media md-media-ph md-media-ph--2">
+            <span class="md-card__tag md-card__tag--tr md-chip md-chip--error">售罄</span>
+          </div>
           <div class="md-card__body">
-            <h2 class="md-card__title">云南小粒咖啡 227g</h2>
+            <h2 class="md-card__title">云南小粒咖啡 227g 精选烘焙手冲豆</h2>
+            <div class="md-card__chips">
+              <span class="md-chip md-chip--outlined">手冲</span>
+            </div>
             <p class="md-price">¥29.90</p>
+            <p class="md-card__time">8.6千浏览</p>
           </div>
         </article>
-        <article class="md-card" data-comp="COMP-001" data-state="default">
-          <div class="md-card__media md-media-ph md-media-ph--3"></div>
+        <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default">
+          <div class="md-card__media md-media-ph md-media-ph--3">
+            <span class="md-card__tag md-chip md-chip--primary">新品</span>
+          </div>
           <div class="md-card__body">
             <h2 class="md-card__title">青柠蜂蜜茶 500ml</h2>
             <p class="md-price">¥12.50</p>
           </div>
         </article>
-        <article class="md-card" data-comp="COMP-001" data-state="default">
+        <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default">
           <div class="md-card__media md-media-ph md-media-ph--4"></div>
           <div class="md-card__body">
             <h2 class="md-card__title">全麦吐司 400g</h2>
             <p class="md-price">¥9.90</p>
+            <p class="md-card__time"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>昨天</p>
           </div>
         </article>
       </div>
@@ -115,6 +152,8 @@
         <div class="md-empty__art" aria-hidden="true"></div>
         <p class="md-empty__title">暂无内容</p>
         <p class="md-empty__text">暂无推荐商品</p>
+      </div>
+      </section>
       </div>
     </main>
     <nav class="md-tabbar">

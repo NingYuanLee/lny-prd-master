@@ -81,9 +81,10 @@
     var area = document.querySelector(".preview-area");
     var host = document.querySelector(".phone-scale-host");
     if (!area || !host) return;
-    var pad = 48;
-    var scaleX = (area.clientWidth - pad) / 375;
-    var scaleY = (area.clientHeight - pad) / 812;
+    var pad = 64;
+    var bezel = 10;
+    var scaleX = (area.clientWidth - pad) / (375 + bezel * 2);
+    var scaleY = (area.clientHeight - pad) / (812 + bezel * 2);
     var scale = Math.min(1, scaleX, scaleY);
     if (!isFinite(scale) || scale <= 0) scale = 1;
     host.style.setProperty("--phone-scale", String(scale));
@@ -233,6 +234,33 @@
     if (spec) spec.classList.toggle("is-open", drawerOpen);
     if (brief) brief.classList.toggle("is-open", briefOpen);
     if (b) b.classList.toggle("is-open", drawerOpen || briefOpen);
+  }
+
+  function mountSkillCredit() {
+    if (document.getElementById("protoSkillCredit")) return;
+    var p = el("p", {
+      id: "protoSkillCredit",
+      className: "proto-skill-credit",
+    });
+    p.appendChild(document.createTextNode("该原型使用SKILL地址： "));
+    p.appendChild(
+      el("a", {
+        href: "https://github.com/NingYuanLee/lny-prd-master",
+        target: "_blank",
+        rel: "noopener noreferrer",
+        text: "https://github.com/NingYuanLee/lny-prd-master",
+      })
+    );
+    p.appendChild(document.createTextNode(" 或"));
+    p.appendChild(
+      el("a", {
+        href: "https://gitee.com/ningyuanlee/lny-prd-master",
+        target: "_blank",
+        rel: "noopener noreferrer",
+        text: "https://gitee.com/ningyuanlee/lny-prd-master",
+      })
+    );
+    document.body.appendChild(p);
   }
 
   function build() {
@@ -421,6 +449,7 @@
     root.appendChild(backdrop);
     root.appendChild(drawer);
     root.appendChild(briefDrawer);
+    mountSkillCredit();
 
     loadPage(currentId);
     window.addEventListener("resize", window.fitPhoneFrame);

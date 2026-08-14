@@ -38,9 +38,9 @@
 | 字体 | 「标题强于副文；元信息最小可读」 | `.md-h*` / `__title` / `__subtitle` / `__meta` |
 | 图标 | 「与文案同组；元信息用小图标」 | `data-icon`；闭集见 `reference-icons` |
 | 间距圆角 | 「区块有呼吸；卡片勿厚重浮块」 | `--md-space: 8px` 倍数；触屏卡 12px 圆角 |
-| 图片 | 「列表封面 1:1；详情主图 16:9」 | `md-media-ph--n` / `md-swiper--wide` |
+| 图片 | 「列表卡三形态；详情主图 16:9；点图放大阅览」 | `--cover` / `--tile` 1:1 / `--row`；`md-swiper--wide`；同页 `.md-lightbox` 一组翻页不循环 |
 
-列表横卡文字层级（有字段才写）：标题 → 副标题 → 摘要截断 → 底栏元信息（时间/浏览/点赞）+ 价格。详见 prototype `reference-kit`「触屏列表卡片排版」。
+列表卡三形态（有字段才写）：①封面叠字单行标题；②双列标题两行+可选标签/金额/时间；③横卡或纯文。详见 prototype `reference-kit`。
 
 ## 3. 组件规范（工具箱）
 
@@ -48,10 +48,10 @@
 
 | 类别 | 规格用语 | ⑥ 类名（摘要） |
 |------|----------|----------------|
-| 基础 | 按钮主/次/线框、输入、单元格/横卡 | `md-btn` `md-field` `md-card--row` |
+| 基础 | 按钮主/次/线框/文字/纯链接、输入、列表卡三形态 | `md-btn`；`md-field`；`md-card--cover` / `--tile` / `--row` / `--plain` |
 | 表单 | 开关、单选多选、下拉、轮盘 | `md-switch` `md-check` `md-radio` `md-select` `data-wheel` |
 | 反馈 | 对话框、Toast、骨架、空态 | `md-dialog` `snackbar` `md-skeleton` `md-empty` |
-| 展示 | 标签、头像/缩略、轮播、进步/进度 | `md-chip` `md-card__thumb` `md-swiper` `md-advance` `md-progress` |
+| 展示 | 标签（含卡片角标）、头像/缩略、轮播、进步/进度、时间轴 | `md-chip` `md-card__tag` `--tl/--tr`；`md-card__thumb` `md-swiper` `md-advance` `md-progress` `md-timeline` |
 | 导航 | TabBar、返回顶栏、宫格 | `md-tabbar` `md-appbar` `md-king` |
 
 触屏搜索框：**仅左图标 + 输入**，无「搜索」文案、无右侧搜索按钮。
@@ -64,7 +64,7 @@
 |----|------------|---|
 | 结构 | 状态栏模式 + 顶栏/无顶栏 + 内容 + Tab/操作条 | `md-immersive` / `md-standard`；金样四种顶栏 |
 | 安全区 | 左右下+四角；MP 胶囊避让 | `--md-safe-*`；MP 顶栏/状态栏避让 |
-| 弹性布局 | 「左图右文可伸缩；主文与底栏分开」 | `__main` + `__foot` flex |
+| 弹性布局 | 「左图右文可伸缩；主文与底栏分开；树页左树右内容；时间轴左竖轨右图文」 | `__main` + `__foot` flex；树 `md-tree-page`；时间轴 `md-timeline` |
 | 适配基准 | 不写死唯一稿宽 | 预览逻辑宽 **375**；`viewport-fit=cover` |
 
 顶栏四选一（禁止混用）：① 16:9+slogan ② 16:9+返回标题 ③ 标准返回标题 ④ 两倍高度封面。

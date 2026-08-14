@@ -1,6 +1,6 @@
 # LNY-PRD — 李宁远产品工作流
 
-**工具包版本：2.6.33**
+**工具包版本：2.6.54**
 
 ## 背景
 
@@ -410,7 +410,7 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 │   ├── reference-icons.md          #     闭集 + search-icons.py
 │   ├── reference-shell.md
 │   ├── reference-quality.md
-│   ├── gold/                       #     视觉金样（六种夹具页 + 工作台/树/设置/向导）
+│   ├── gold/                       #     视觉金样（列表/表单/详情 + 工作台/树/设置/向导/时间轴）
 │   ├── kit/                        #     mui-kit.css / proto-shell.* / proto-map.js / md-icons.js
 │   └── scripts/                    #     copy-kit.py、search-icons.py、verify-prototype-utf8.py、verify-prototype-coverage.py
 ├── lny-prd-check/SKILL.md + reference-checks.md
