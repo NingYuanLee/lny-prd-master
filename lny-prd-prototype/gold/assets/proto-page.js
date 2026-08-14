@@ -1,0 +1,720 @@
+/* Page helpers: COMP state, snackbar, dialog, AD tabs/menu/date/confirm. */
+(function (global) {
+  "use strict";
+
+  var WEEK = ["日", "一", "二", "三", "四", "五", "六"];
+
+  function applyCompState(compId, state) {
+    var nodes = document.querySelectorAll('[data-comp="' + compId + '"]');
+    nodes.forEach(function (n) {
+      n.setAttribute("data-state", state);
+    });
+    var empties = document.querySelectorAll('[data-empty-for="' + compId + '"]');
+    empties.forEach(function (n) {
+      var hide = state !== "empty" && state !== "error";
+      n.classList.toggle("is-hidden", hide);
+      var msg = "";
+      if (state === "empty") msg = n.getAttribute("data-empty-text") || "暂无数据";
+      if (state === "error") msg = n.getAttribute("data-error-text") || "加载失败";
+      if (msg) {
+        var slot = n.querySelector(".md-empty__text");
+        if (slot) slot.textContent = msg;
+        else if (!n.querySelector(".md-empty__art")) n.textContent = msg;
+      }
+    });
+    var skels = document.querySelectorAll('[data-skel-for="' + compId + '"]');
+    skels.forEach(function (n) {
+      n.classList.toggle("is-hidden", state !== "loading");
+    });
+    var page = document.documentElement;
+    page.setAttribute("data-comp-" + compId, state);
+  }
+
+  function isMobilePage() {
+    return !!document.querySelector(".md-mobile-page");
+  }
+
+  function snackbarIcon(severity) {
+    if (severity === "error") return "error";
+    if (severity === "warning") return "warning";
+    if (severity === "info") return "info";
+    return "check";
+  }
+
+  function snackbar(text, msOrOpts) {
+    var opts = typeof msOrOpts === "object" && msOrOpts ? msOrOpts : {};
+    var ms = typeof msOrOpts === "number" ? msOrOpts : opts.ms || 2400;
+    var bar = document.getElementById("mdSnackbar");
+    var mobile = isMobilePage();
+    var sev = opts.severity || "";
+    if (!bar) {
+      bar = document.createElement("div");
+      bar.id = "mdSnackbar";
+      document.body.appendChild(bar);
+    }
+    bar.className = "md-snackbar"
+      + (sev ? " md-snackbar--" + sev : "")
+      + (mobile ? " md-snackbar--toast" : "");
+    if (mobile) {
+      bar.innerHTML = '<span class="md-snackbar__icon md-icon" data-icon="'
+        + snackbarIcon(sev)
+        + '" aria-hidden="true"></span><span class="md-snackbar__text"></span>';
+      bar.querySelector(".md-snackbar__text").textContent = text;
+      if (global.ProtoIcons && global.ProtoIcons.mount) global.ProtoIcons.mount(bar);
+    } else {
+      bar.textContent = text;
+    }
+    bar.classList.add("is-open");
+    clearTimeout(bar._t);
+    bar._t = setTimeout(function () {
+      bar.classList.remove("is-open");
+    }, ms);
+  }
+
+  function syncDialogLock() {
+    var open = document.querySelector(".md-dialog.is-open, .md-backdrop.is-open");
+    document.body.classList.toggle("md-dialog-open", !!open);
+  }
+
+  function closeDialog(id) {
+    var dlg = document.getElementById(id);
+    var mask = document.getElementById(id + "Backdrop");
+    if (dlg) {
+      dlg.classList.remove("is-open");
+      dlg.setAttribute("aria-hidden", "true");
+    }
+    if (mask) mask.classList.remove("is-open");
+    syncDialogLock();
+  }
+
+  function openDialog(id) {
+    var dlg = document.getElementById(id);
+    var mask = document.getElementById(id + "Backdrop");
+    if (mask) mask.classList.add("is-open");
+    if (dlg) {
+      dlg.classList.add("is-open");
+      dlg.setAttribute("aria-hidden", "false");
+    }
+    syncDialogLock();
+  }
+
+  function closeDrawer(id) {
+    var el = document.getElementById(id);
+    var mask = document.getElementById(id + "Backdrop");
+    if (el) el.classList.remove("is-open");
+    if (mask) mask.classList.remove("is-open");
+  }
+
+  function openDrawer(id) {
+    var el = document.getElementById(id);
+    var mask = document.getElementById(id + "Backdrop");
+    if (mask) mask.classList.add("is-open");
+    if (el) el.classList.add("is-open");
+  }
+
+  function ensureConfirm() {
+    if (document.getElementById("mdConfirmDlg")) return;
+    var mask = document.createElement("div");
+    mask.id = "mdConfirmDlgBackdrop";
+    mask.className = "md-backdrop";
+    var dlg = document.createElement("div");
+    dlg.id = "mdConfirmDlg";
+    dlg.className = "md-dialog md-dialog--sm";
+    dlg.innerHTML =
+      '<h2 class="md-dialog__title" id="mdConfirmTitle">确认</h2>' +
+      '<div class="md-dialog__body" id="mdConfirmBody"></div>' +
+      '<div class="md-dialog__actions">' +
+      '<button type="button" class="md-btn md-btn--text" id="mdConfirmCancel">取消</button>' +
+      '<button type="button" class="md-btn md-btn--contained" id="mdConfirmOk">确定</button>' +
+      "</div>";
+    document.body.appendChild(mask);
+    document.body.appendChild(dlg);
+    mask.addEventListener("click", function () {
+      closeDialog("mdConfirmDlg");
+    });
+    document.getElementById("mdConfirmCancel").addEventListener("click", function () {
+      closeDialog("mdConfirmDlg");
+    });
+  }
+
+  function confirm(opts) {
+    opts = opts || {};
+    ensureConfirm();
+    document.getElementById("mdConfirmTitle").textContent = opts.title || "确认";
+    document.getElementById("mdConfirmBody").textContent = opts.body || "";
+    var okBtn = document.getElementById("mdConfirmOk");
+    okBtn.textContent = opts.ok || "确定";
+    document.getElementById("mdConfirmCancel").textContent = opts.cancel || "取消";
+    okBtn.onclick = function () {
+      closeDialog("mdConfirmDlg");
+      if (typeof opts.onOk === "function") opts.onOk();
+    };
+    openDialog("mdConfirmDlg");
+  }
+
+  function closeMenus(except) {
+    document.querySelectorAll(".md-menu.is-open").forEach(function (m) {
+      if (m !== except) m.classList.remove("is-open");
+    });
+    document.querySelectorAll(".md-cal-pop.is-open").forEach(function (m) {
+      if (m !== except) m.classList.remove("is-open");
+    });
+    document.querySelectorAll(".is-menu-host").forEach(function (el) {
+      if (except && el.contains(except)) return;
+      el.classList.remove("is-menu-host");
+    });
+  }
+
+  function bindTabs() {
+    document.querySelectorAll(".md-tabs").forEach(function (bar) {
+      bar.addEventListener("click", function (ev) {
+        var tab = ev.target.closest(".md-tab");
+        if (!tab || !bar.contains(tab)) return;
+        var panelId = tab.getAttribute("data-panel");
+        bar.querySelectorAll(".md-tab").forEach(function (t) {
+          t.classList.toggle("is-active", t === tab);
+        });
+        if (!panelId) return;
+        var next = bar.nextElementSibling;
+        var root =
+          next && next.classList.contains("md-tab-panels")
+            ? next
+            : bar.parentElement || document;
+        root.querySelectorAll(".md-tab-panel").forEach(function (p) {
+          p.classList.toggle("is-active", p.id === panelId);
+        });
+      });
+    });
+  }
+
+  function placeFixedMenu(btn, menu) {
+    if (!menu.classList.contains("md-menu--fixed")) return;
+    var host = btn.closest("tr") || btn.closest(".md-select-wrap") || btn.parentElement;
+    if (host) host.classList.add("is-menu-host");
+    var r = btn.getBoundingClientRect();
+    menu.style.position = "fixed";
+    menu.style.top = r.bottom + 4 + "px";
+    menu.style.left = "auto";
+    menu.style.right = Math.max(8, window.innerWidth - r.right) + "px";
+    menu.style.minWidth = "128px";
+    menu.style.zIndex = "1300";
+  }
+
+  function bindMenus() {
+    document.addEventListener("click", function (ev) {
+      if (ev.target.closest(".md-menu__item")) {
+        closeMenus();
+        return;
+      }
+      var btn = ev.target.closest("[data-menu]");
+      if (btn) {
+        var id = btn.getAttribute("data-menu");
+        var menu = document.getElementById(id);
+        if (menu) {
+          var open = !menu.classList.contains("is-open");
+          closeMenus(menu);
+          menu.classList.toggle("is-open", open);
+          if (open) placeFixedMenu(btn, menu);
+        }
+        ev.stopPropagation();
+        return;
+      }
+      if (
+        !ev.target.closest(".md-menu") &&
+        !ev.target.closest(".md-cal-pop") &&
+        !ev.target.closest(".md-field--date")
+      ) {
+        closeMenus();
+      }
+    });
+    document.addEventListener(
+      "scroll",
+      function () {
+        closeMenus();
+      },
+      true
+    );
+  }
+
+  function pad(n) {
+    return n < 10 ? "0" + n : String(n);
+  }
+
+  function ymd(y, m, d) {
+    return y + "-" + pad(m + 1) + "-" + pad(d);
+  }
+
+  function renderCal(pop, input, view) {
+    var y = view.getFullYear();
+    var m = view.getMonth();
+    var first = new Date(y, m, 1);
+    var start = first.getDay();
+    var days = new Date(y, m + 1, 0).getDate();
+    var prevDays = new Date(y, m, 0).getDate();
+    var selected = (input.value || "").split("-");
+    var html =
+      '<div class="md-cal"><div class="md-cal__head">' +
+      '<button type="button" class="md-icon-btn" data-cal="prev">‹</button>' +
+      "<span>" +
+      y +
+      "年" +
+      (m + 1) +
+      "月</span>" +
+      '<button type="button" class="md-icon-btn" data-cal="next">›</button></div>' +
+      '<div class="md-cal__week">' +
+      WEEK.map(function (w) {
+        return "<span>" + w + "</span>";
+      }).join("") +
+      "</div><div class=\"md-cal__grid\">";
+    var i;
+    for (i = 0; i < start; i += 1) {
+      html +=
+        '<button type="button" class="md-cal__day is-muted" data-day="' +
+        ymd(y, m - 1, prevDays - start + i + 1) +
+        '">' +
+        (prevDays - start + i + 1) +
+        "</button>";
+    }
+    var today = new Date();
+    var todayStr = ymd(today.getFullYear(), today.getMonth(), today.getDate());
+    for (i = 1; i <= days; i += 1) {
+      var val = ymd(y, m, i);
+      var cls = "md-cal__day";
+      if (val === todayStr) cls += " is-today";
+      if (
+        selected.length === 3 &&
+        Number(selected[0]) === y &&
+        Number(selected[1]) === m + 1 &&
+        Number(selected[2]) === i
+      ) {
+        cls += " is-active";
+      }
+      html +=
+        '<button type="button" class="' + cls + '" data-day="' + val + '">' + i + "</button>";
+    }
+    html += "</div></div>";
+    pop.innerHTML = html;
+    pop._view = view;
+  }
+
+  function bindCals() {
+    document.querySelectorAll(".md-field--date").forEach(function (field) {
+      var input = field.querySelector('input[type="date"], input.md-field__input');
+      if (!input) return;
+      var pop = field.querySelector(".md-cal-pop");
+      if (!pop) {
+        pop = document.createElement("div");
+        pop.className = "md-cal-pop";
+        field.appendChild(pop);
+      }
+      function openPop() {
+        closeMenus(pop);
+        if (pop.classList.contains("is-open")) return;
+        var base = input.value ? new Date(input.value + "T00:00:00") : new Date();
+        if (isNaN(base.getTime())) base = new Date();
+        renderCal(pop, input, base);
+        pop.classList.add("is-open");
+      }
+      field.addEventListener("click", function (ev) {
+        ev.stopPropagation();
+      });
+      input.addEventListener("focus", openPop);
+      input.addEventListener("click", openPop);
+      pop.addEventListener("mousedown", function (ev) {
+        ev.preventDefault();
+      });
+      pop.addEventListener("click", function (ev) {
+        var nav = ev.target.closest("[data-cal]");
+        if (nav) {
+          var view = pop._view || new Date();
+          view = new Date(view.getFullYear(), view.getMonth() + (nav.getAttribute("data-cal") === "next" ? 1 : -1), 1);
+          renderCal(pop, input, view);
+          ev.preventDefault();
+          return;
+        }
+        var day = ev.target.closest("[data-day]");
+        if (day) {
+          input.value = day.getAttribute("data-day");
+          pop.classList.remove("is-open");
+          input.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+      });
+    });
+  }
+
+  function onMessage(ev) {
+    var data = ev.data || {};
+    if (data.type === "comp-state" && data.compId) {
+      applyCompState(data.compId, data.state);
+    }
+  }
+
+  function onHash() {
+    var q = new URLSearchParams(location.hash.replace(/^#/, "").replace(/^\?/, ""));
+    q.forEach(function (state, compId) {
+      if (compId) applyCompState(compId, state);
+    });
+  }
+
+  function bindSwipers() {
+    document.querySelectorAll(".md-swiper").forEach(function (root) {
+      var track = root.querySelector(".md-swiper__track");
+      var slides = root.querySelectorAll(".md-swiper__slide");
+      var dotsHost = root.querySelector(".md-swiper__dots");
+      if (!track || slides.length < 2) return;
+      var i = 0;
+      function paintDots() {
+        if (!dotsHost) return;
+        var dots = dotsHost.querySelectorAll(".md-swiper__dot");
+        if (!dots.length) {
+          for (var s = 0; s < slides.length; s += 1) {
+            var b = document.createElement("button");
+            b.type = "button";
+            b.className = "md-swiper__dot" + (s === 0 ? " is-active" : "");
+            b.setAttribute("aria-label", String(s + 1));
+            (function (idx) {
+              b.addEventListener("click", function () {
+                go(idx);
+              });
+            })(s);
+            dotsHost.appendChild(b);
+          }
+          dots = dotsHost.querySelectorAll(".md-swiper__dot");
+        }
+        dots.forEach(function (d, di) {
+          d.classList.toggle("is-active", di === i);
+        });
+      }
+      function go(n) {
+        i = (n + slides.length) % slides.length;
+        track.style.transform = "translateX(" + -i * 100 + "%)";
+        paintDots();
+      }
+      paintDots();
+      if (root.getAttribute("data-auto") !== "off") {
+        setInterval(function () {
+          go(i + 1);
+        }, 4000);
+      }
+    });
+  }
+
+  function ensureStatusBar() {
+    var page = document.querySelector(".md-mobile-page");
+    if (!page) return;
+    var bars = document.querySelectorAll(".md-status-bar");
+    var bar = bars[0];
+    var i;
+    for (i = 1; i < bars.length; i++) {
+      bars[i].parentNode.removeChild(bars[i]);
+    }
+    if (!bar) {
+      bar = document.createElement("div");
+      bar.className = "md-status-bar";
+      bar.setAttribute("aria-hidden", "true");
+      bar.innerHTML = '<span>9:41</span><span class="md-status-bar__signals"></span>';
+    }
+    bar.classList.add("md-status-bar--chrome");
+    if (page.classList.contains("md-mp")) bar.classList.add("md-status-bar--mp");
+    else bar.classList.remove("md-status-bar--mp");
+    var immersive = page.classList.contains("md-immersive") || page.classList.contains("md-sink");
+    bar.classList.toggle("md-status-bar--immersive", immersive);
+    bar.classList.toggle("md-status-bar--standard", !immersive);
+    if (!page.classList.contains("md-immersive") && !page.classList.contains("md-sink") && !page.classList.contains("md-standard")) {
+      page.classList.add("md-standard");
+    }
+    if (bar.parentNode !== document.body) {
+      document.body.insertBefore(bar, document.body.firstChild);
+    }
+  }
+
+  var REGION = [
+    { n: "浙江省", c: [
+      { n: "杭州市", d: ["西湖区", "余杭区", "滨江区"] },
+      { n: "宁波市", d: ["海曙区", "鄞州区"] }
+    ]},
+    { n: "广东省", c: [
+      { n: "广州市", d: ["天河区", "越秀区"] },
+      { n: "深圳市", d: ["南山区", "福田区"] }
+    ]},
+    { n: "四川省", c: [
+      { n: "成都市", d: ["武侯区", "锦江区"] }
+    ]}
+  ];
+
+  function daysInMonth(y, m) {
+    return new Date(y, m, 0).getDate();
+  }
+
+  function fillCol(col, items, selected) {
+    col.innerHTML = items.map(function (item) {
+      var on = item === selected ? " is-active" : "";
+      return '<div class="md-wheel__opt' + on + '" data-val="' + item + '">' + item + "</div>";
+    }).join("");
+  }
+
+  function ensureWheel() {
+    if (document.getElementById("mdWheelSheet")) return;
+    var mask = document.createElement("div");
+    mask.id = "mdWheelSheetBackdrop";
+    mask.className = "md-backdrop";
+    var sheet = document.createElement("aside");
+    sheet.id = "mdWheelSheet";
+    sheet.className = "md-drawer md-drawer--bottom md-wheel";
+    sheet.setAttribute("aria-hidden", "true");
+    sheet.innerHTML =
+      '<div class="md-wheel__bar">' +
+      '<button type="button" class="md-btn md-btn--text" data-wheel-cancel>取消</button>' +
+      '<h2 class="md-wheel__title" id="mdWheelTitle">请选择</h2>' +
+      '<button type="button" class="md-btn md-btn--text" data-wheel-ok>确定</button>' +
+      "</div>" +
+      '<div class="md-wheel__cols">' +
+      '<div class="md-wheel__col" data-col="0"></div>' +
+      '<div class="md-wheel__col" data-col="1"></div>' +
+      '<div class="md-wheel__col" data-col="2"></div>' +
+      "</div>";
+    document.body.appendChild(mask);
+    document.body.appendChild(sheet);
+    mask.addEventListener("click", function () {
+      closeDrawer("mdWheelSheet");
+    });
+    sheet.querySelector("[data-wheel-cancel]").addEventListener("click", function () {
+      closeDrawer("mdWheelSheet");
+    });
+    sheet.querySelector("[data-wheel-ok]").addEventListener("click", function () {
+      var trig = sheet._trigger;
+      if (trig) {
+        var text;
+        if (sheet._kind === "date") {
+          text = sheet._sel[0] + "-" + pad(Number(sheet._sel[1])) + "-" + pad(Number(sheet._sel[2]));
+        } else {
+          text = sheet._sel.join(" ");
+        }
+        trig.textContent = text;
+        trig.classList.add("has-value");
+        trig.setAttribute("data-value", sheet._sel.join("-"));
+      }
+      closeDrawer("mdWheelSheet");
+    });
+    sheet.querySelectorAll(".md-wheel__col").forEach(function (col) {
+      col.addEventListener("click", function (ev) {
+        var opt = ev.target.closest(".md-wheel__opt");
+        if (!opt) return;
+        var idx = Number(col.getAttribute("data-col"));
+        sheet._sel[idx] = opt.getAttribute("data-val");
+        paintWheel(sheet);
+      });
+    });
+  }
+
+  function dateCols(sel) {
+    var y = Number(sel[0]);
+    var m = Number(sel[1]);
+    var years = [];
+    var i;
+    for (i = 2025; i <= 2028; i += 1) years.push(String(i));
+    var months = [];
+    for (i = 1; i <= 12; i += 1) months.push(String(i));
+    if (years.indexOf(sel[0]) < 0) sel[0] = "2026";
+    if (months.indexOf(sel[1]) < 0) sel[1] = "8";
+    y = Number(sel[0]);
+    m = Number(sel[1]);
+    var maxd = daysInMonth(y, m);
+    var days = [];
+    for (i = 1; i <= maxd; i += 1) days.push(String(i));
+    if (days.indexOf(sel[2]) < 0) sel[2] = String(Math.min(Number(sel[2]) || 14, maxd));
+    return [years, months, days];
+  }
+
+  function regionCols(sel) {
+    var p = REGION.filter(function (x) { return x.n === sel[0]; })[0] || REGION[0];
+    sel[0] = p.n;
+    var c = p.c.filter(function (x) { return x.n === sel[1]; })[0] || p.c[0];
+    sel[1] = c.n;
+    if (c.d.indexOf(sel[2]) < 0) sel[2] = c.d[0];
+    return [
+      REGION.map(function (x) { return x.n; }),
+      p.c.map(function (x) { return x.n; }),
+      c.d.slice()
+    ];
+  }
+
+  function paintWheel(sheet) {
+    var kind = sheet._kind;
+    var cols = kind === "region" ? regionCols(sheet._sel) : dateCols(sheet._sel);
+    sheet._labels = sheet._sel.slice();
+    sheet.querySelectorAll(".md-wheel__col").forEach(function (col, i) {
+      fillCol(col, cols[i], sheet._sel[i]);
+      var on = col.querySelector(".is-active");
+      if (on) on.scrollIntoView({ block: "center" });
+    });
+  }
+
+  function openWheel(trigger) {
+    ensureWheel();
+    var sheet = document.getElementById("mdWheelSheet");
+    var kind = trigger.getAttribute("data-wheel");
+    sheet._kind = kind;
+    sheet._trigger = trigger;
+    var cur = (trigger.getAttribute("data-value") || "").split("-");
+    if (kind === "region") {
+      document.getElementById("mdWheelTitle").textContent = "选择地区";
+      sheet._sel = [cur[0] || "浙江省", cur[1] || "杭州市", cur[2] || "西湖区"];
+    } else {
+      document.getElementById("mdWheelTitle").textContent = "选择日期";
+      sheet._sel = [cur[0] || "2026", cur[1] || "8", cur[2] || "14"];
+    }
+    paintWheel(sheet);
+    openDrawer("mdWheelSheet");
+  }
+
+  function bindWheels() {
+    document.querySelectorAll("[data-wheel]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        openWheel(btn);
+      });
+    });
+  }
+
+  function bindSliders() {
+    document.querySelectorAll(".md-slider input[type=range]").forEach(function (el) {
+      var box = el.closest(".md-slider");
+      var out = box.querySelector(".md-slider__value");
+      var labels = box.getAttribute("data-labels");
+      var suffix = el.getAttribute("data-suffix") || "";
+      function paint() {
+        if (!out) return;
+        if (labels) {
+          var arr = labels.split(",");
+          var i = Number(el.value) - Number(el.min || 1);
+          out.textContent = arr[i] || el.value;
+        } else {
+          out.textContent = el.value + suffix;
+        }
+      }
+      el.addEventListener("input", paint);
+      paint();
+    });
+  }
+
+  function phClass(n) {
+    return "md-media-ph md-media-ph--" + ((n % 6) + 1);
+  }
+
+  function bindUploads() {
+    document.querySelectorAll('[data-upload="single"]').forEach(function (box) {
+      var input = box.querySelector('input[type="file"]');
+      var empty = box.querySelector(".md-upload__empty");
+      var filled = box.querySelector(".md-upload__filled");
+      var preview = box.querySelector(".md-upload__preview");
+      var replace = box.querySelector(".md-upload__replace");
+      function pick() {
+        if (input) input.click();
+      }
+      if (empty) empty.addEventListener("click", pick);
+      if (replace) replace.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        pick();
+      });
+      if (input) {
+        input.addEventListener("change", function () {
+          var file = input.files && input.files[0];
+          box.classList.add("is-filled");
+          if (empty) empty.classList.add("is-hidden");
+          if (filled) filled.classList.remove("is-hidden");
+          if (!file || !preview) return;
+          if (file.type.indexOf("image/") === 0) {
+            var url = URL.createObjectURL(file);
+            preview.style.backgroundImage = "url(" + url + ")";
+            preview.className = "md-upload__preview";
+          } else {
+            preview.style.backgroundImage = "";
+            preview.className = "md-upload__preview " + phClass(2);
+          }
+        });
+      }
+    });
+    document.querySelectorAll('[data-upload="multi"]').forEach(function (grid) {
+      var add = grid.querySelector(".md-upload-grid__add");
+      var input = add && add.querySelector('input[type="file"]');
+      var n = grid.querySelectorAll(".md-upload-grid__item").length;
+      function bindDel(item) {
+        var del = item.querySelector(".md-upload-grid__del");
+        if (del) {
+          del.addEventListener("click", function () {
+            item.parentNode.removeChild(item);
+          });
+        }
+      }
+      grid.querySelectorAll(".md-upload-grid__item").forEach(bindDel);
+      if (input) {
+        input.addEventListener("change", function () {
+          var file = input.files && input.files[0];
+          var item = document.createElement("div");
+          item.className = "md-upload-grid__item";
+          var thumb = document.createElement("div");
+          n += 1;
+          if (file && file.type.indexOf("image/") === 0) {
+            thumb.className = "md-upload-grid__thumb";
+            thumb.style.backgroundImage = "url(" + URL.createObjectURL(file) + ")";
+          } else {
+            thumb.className = "md-upload-grid__thumb " + phClass(n);
+          }
+          var del = document.createElement("button");
+          del.type = "button";
+          del.className = "md-icon-btn md-upload-grid__del";
+          del.setAttribute("aria-label", "删除");
+          del.innerHTML = '<span class="md-icon" data-icon="close" aria-hidden="true"></span>';
+          item.appendChild(thumb);
+          item.appendChild(del);
+          grid.insertBefore(item, add);
+          bindDel(item);
+          if (global.ProtoIcons && global.ProtoIcons.mount) global.ProtoIcons.mount(item);
+          input.value = "";
+        });
+      }
+    });
+    document.querySelectorAll(".md-upload--file input[type=file]").forEach(function (input) {
+      input.addEventListener("change", function () {
+        var name = input.files && input.files[0] ? input.files[0].name : "";
+        var slot = input.closest(".md-upload").querySelector(".md-upload__name");
+        if (slot) slot.textContent = name;
+      });
+    });
+  }
+
+  function bindUi() {
+    ensureStatusBar();
+    bindTabs();
+    bindMenus();
+    bindCals();
+    bindSwipers();
+    bindWheels();
+    bindSliders();
+    bindUploads();
+  }
+
+  global.ProtoPage = {
+    applyCompState: applyCompState,
+    snackbar: snackbar,
+    openDialog: openDialog,
+    closeDialog: closeDialog,
+    openDrawer: openDrawer,
+    closeDrawer: closeDrawer,
+    confirm: confirm,
+    closeMenus: closeMenus,
+  };
+
+  window.addEventListener("message", onMessage);
+  window.addEventListener("hashchange", onHash);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () {
+      onHash();
+      bindUi();
+    });
+  } else {
+    onHash();
+    bindUi();
+  }
+})(window);

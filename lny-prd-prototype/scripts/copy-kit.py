@@ -18,7 +18,8 @@ KIT_FILES = (
 
 def main() -> int:
     if len(sys.argv) < 2:
-        print("usage: copy-kit.py <prdRoot>/prototypes/{TERM} [...more terminals]")
+        print("usage: copy-kit.py <prdRoot>/prototypes/{TERM} [...more dests]")
+        print("       also: copy-kit.py <skillDir>/gold   # preview assets for gold HTML")
         return 2
     kit_dir = Path(__file__).resolve().parents[1] / "kit"
     missing = [n for n in KIT_FILES if not (kit_dir / n).is_file()]

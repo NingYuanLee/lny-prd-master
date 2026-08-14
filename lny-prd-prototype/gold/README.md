@@ -4,6 +4,12 @@
 
 `pages_prd` 的 ASCII 线框只定**分区顺序**。金样定**控件密度与套件类名**。二者冲突时以金样为准。
 
+金样 HTML 写 `assets/mui-kit.css`（以及 `md-icons.js` / `icons-extra.js` / `proto-page.js`）是**故意**的：复制到 `prototypes/{终端}/` 后与 `copy-kit.py` 写入的 `assets/` 对齐。禁止改成 `../kit/`，否则业务页会丢样式。本目录 `gold/assets/` 只供直接打开金样预览；改过 `kit/` 后执行：
+
+```text
+python <skillDir>/scripts/copy-kit.py <skillDir>/gold
+```
+
 | 本页类型 | 必读 |
 |----------|------|
 | 移动宫格 / 推荐 / 双列卡片 | `mobile-grid.html`（**沉浸式**透明状态栏 + 下沉 Banner + 金刚区） |
