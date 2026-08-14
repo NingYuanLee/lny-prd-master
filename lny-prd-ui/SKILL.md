@@ -23,6 +23,7 @@ disable-model-invocation: true
 ## Additional resources
 
 - 模板与 L/D 层级、控件形态：[`reference.md`](reference.md)
+- 移动端设计词典（原则/视觉/组件/布局/交互分工）：[`reference-mobile-design.md`](reference-mobile-design.md)
 - 框架排除：`lny-prd-master/framework-exclusions.md`
 - 旧项目迁移：`scripts/migrate-prd-structure.mjs`
 - 桌面壳 PRD 由 **⑤** 落盘：`lny-prd-page/reference.md`
@@ -76,12 +77,12 @@ disable-model-invocation: true
 
 Read `lny-prd-master/framework-exclusions.md` 及本项目追加排除。不为框架通用已排除项建 `ui/PAGE-*`。Read `main_spec` §1.5「明确不做」（若有）：**禁止**为清单中的能力建 PAGE。**新立项只走目录化**（`ui_manifest` 只留索引 + `ui/` 明细）；旧「manifest 内嵌全文」只读兼容，禁止双轨扩写。
 
-写任何 `ui/PAGE-*` 前必须 Read [`reference.md`](reference.md) **§1.7**（先 **§1.7.0 默认体验规范**，再舒适默认与夹具外页型），并在该页写 **§2.3**。移动端另读 **§1.3.3**。桌面 D1-1 另读 **§1.4.3**。先扫上方 **夹具速查**：同类页用夹具地板，再写舒适默认；不是夹具表里已有的页型就用「夹具没有的页型」表，禁止拿商品列表硬套。禁止只写「有个列表、有个按钮」就把球踢给 `/lny-prd-prototype`。用户另给交互规范时只覆盖冲突项，其余仍用 §1.7.0。
+写任何 `ui/PAGE-*` 前必须 Read [`reference.md`](reference.md) **§1.7**（先 **§1.7.0**）与 [`reference-mobile-design.md`](reference-mobile-design.md)（移动端六大板块分工），并在该页写 **§2.3**。移动端另读 **§1.3.3**。桌面 D1-1 另读 **§1.4.3**。先扫上方 **夹具速查**：同类页用夹具地板，再写舒适默认；不是夹具表里已有的页型就用「夹具没有的页型」表，禁止拿商品列表硬套。禁止只写「有个列表、有个按钮」就把球踢给 `/lny-prd-prototype`。用户另给交互规范时只覆盖冲突项，其余仍用 §1.7.0。
 
 ## 职责与禁止
 
-- **负责**：以体验设计师身份产出 `ui_manifest.md` + `ui/PAGE-*.md` + `ui/COMP-*.md`（含 **§2.3 交互体验设计**）；`main_spec.md` **只写 §5 统计**。
-- **禁止**：只列控件不设计体验；改第4章终端表；写 `api_spec` 字段；改 `prototypes/`；写预览壳机制（状态演示/postMessage/`map.html`）；在根规范「变更记录」表新增行；落盘 `pages_prd/_shell`（属 ⑤）；写阴影/字号/色值清单（动效用「快/中/慢」「过渡滑入」等，不写 ms/px）。仅当 PM 已说出点位或 AD 字典条目才写埋点；**禁止自拟埋点方案**。
+- **负责**：以体验设计师身份产出 `ui_manifest.md` + `ui/PAGE-*.md` + `ui/COMP-*.md`（含 **§2.3 交互体验设计**：原则、视觉层级、组件、布局、反馈）；`main_spec.md` **只写 §5 统计**。
+- **禁止**：只列控件不设计体验；改第4章终端表；写 `api_spec` 字段；改 `prototypes/`；写预览壳机制（状态演示/postMessage/`map.html`）；在根规范「变更记录」表新增行；落盘 `pages_prd/_shell`（属 ⑤）。**规格里**不要写 `#hex` / `px` / 阴影参数表（动效用「快/中/慢」「过渡滑入」）；**必须**用语义写主次、疏密、图文比例与反馈——「不写色值表」≠「不设计视觉」。仅当 PM 已说出点位或 AD 字典条目才写埋点；**禁止自拟埋点方案**。
 
 COMP **编号必填** `COMP-{三位序号}`，与 `ui_manifest` §4「组件编号」列、`ui/COMP-*.md` 文件名一致。
 

@@ -18,6 +18,7 @@ disable-model-invocation: true
 ## Additional resources
 
 - 套件类名与壳数据：[`reference-kit.md`](reference-kit.md)
+- 移动端设计词典落地（原则→金样/Token）：[`reference-mobile-design.md`](reference-mobile-design.md)
 - 内置图标：[`reference-icons.md`](reference-icons.md)
 - 壳层 / 关系图 / 缩放：[`reference-shell.md`](reference-shell.md)
 - 原型总入口：[`reference-scope.md`](reference-scope.md)
@@ -32,14 +33,14 @@ disable-model-invocation: true
 
 ## 夹具速查（写 HTML 前扫一眼）
 
-夹具 `examples/mini-shop/` → 金样 + 套件类。复制金样骨架（**含 `<script>` 行为**）再换文案。夹具是地板：还须落地舒适默认。类名细则 [`reference-kit.md`](reference-kit.md)。
+夹具 `examples/mini-shop/` → 金样 + 套件类。复制金样骨架（**含 `<script>` 行为**）再换文案。夹具是地板：还须落地舒适默认与 [`reference-mobile-design.md`](reference-mobile-design.md) **审美必做**。类名细则 [`reference-kit.md`](reference-kit.md)。
 
 **移动端**
 
 | 夹具页 | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
 | PAGE-MP-001 首页 | `gold/mobile-grid.html` | `md-immersive` `md-hero` `md-swiper` `md-king`（5 列）+ `md-king--pair`（一排两张大卡、内容与小图标靠左）；有 TabBar 则无 `md-appbar` |
-| PAGE-MP-002 列表 | `gold/mobile-list.html` | `md-standard`；搜索+筛选贴顶；`md-card--row` 封面 1:1；筛选半屏含 `data-wheel="daterange"` 与类目下拉 |
+| PAGE-MP-002 列表 | `gold/mobile-list.html` | `md-standard`；搜索+筛选贴顶；`md-card--row` 弹性正文（`__main`/`__foot`/`__meta`，标题副标题摘要截断）；筛选半屏含 `data-wheel="daterange"` 与类目下拉 |
 | PAGE-MP-003 详情 | `gold/mobile-detail.html` | `md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 一排最多五张 |
 | PAGE-MP-004 表单 | `gold/mobile-form.html` | 返回顶栏；无极 `md-progress` 填写/上传；`md-select` 少选项中间弹窗；`data-wheel="date"` 单日；`data-wheel="region"` 省市区（无开始/结束签）；滑动条；上传；`md-action-bar` 贴底 |
 | PAGE-MP-005 向导 | `gold/mobile-wizard.html` | `md-stepper` + 分段 `md-advance md-advance--lg`；最后一步才提交 |
@@ -79,12 +80,12 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 
 ## 视觉地板（降质禁令）
 
-真实项目没有样例店可看时，模型会按 ASCII 线框画出空盒子。用 `gold/` 钉死地板，再用舒适默认抬高：
+真实项目没有样例店可看时，模型会按 ASCII 线框画出空盒子。用 `gold/` 钉死地板，用 [`reference-mobile-design.md`](reference-mobile-design.md) 钉死审美必做，再用舒适默认抬高：
 
 1. 写页前只做三件事：Read [`gold/README.md`](gold/README.md) → Read **本页类型**金样全文 → **整份复制**（含 `<script>`）。禁止凭记忆、禁止按 ASCII 从零画。
 2. 只替换业务文案、条数、跳转、本页规格里的分区。**保留金样脚本行为**（轮盘 `data-wheel`、`data-menu` 更多、页内签 `data-panel`、筛选渲染）。换业务时禁止把 JS 删成静态壳。
 3. ASCII = 分区顺序；金样 = 密度。`ui/PAGE`「视觉细节」只给 ⑨ 估点，⑥ 一律按金样。触屏 §1.3.3；桌面 D1-1 §1.4.3。
-4. **舒适默认（§2.3 漏写也要落地）**：按 `lny-prd-ui` **§1.7.0**。骨架、空态插图、失败可重试、一个主按钮、按下态、浮层过渡、D1-1 语义列宽+`md-d1--list`、评论时间行+附图一排最多五张。禁止发明新跳转/新字段/新弹窗。用户未给设计规范 ≠ 可以画线框。
+4. **舒适默认（§2.3 漏写也要落地）**：按 `lny-prd-ui` **§1.7.0**。骨架、空态插图、失败可重试、一个主按钮、按下态、浮层过渡、D1-1 语义列宽+`md-d1--list`、评论时间行+附图一排最多五张。禁止发明新跳转/新字段/新弹窗。**有字段时必须按层级排版**。用户未给设计规范 ≠ 可以画线框。
 5. 重画不得删 Chip / 面包屑 / 横卡 / `data-icon` / `md-dialog`。未 Read 金样 = 本页未完成。
 6. 不是夹具表里已有的页型：按金样表选最接近的金样（dashboard / split / settings / wizard），禁止拿 `desktop-list` 硬套工作台。
 

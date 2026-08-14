@@ -1,6 +1,6 @@
 # 原型视觉金样（地板，不是业务内容）
 
-⑥ 写任何 `PAGE-*.html` **之前**必须 Read 下表对应文件，**复制骨架再换文案/条数/跳转**。
+⑥ 写任何 `PAGE-*.html` **之前**必须 Read 下表对应文件，**复制骨架再换文案/条数/跳转**。触屏另扫 [`../reference-mobile-design.md`](../reference-mobile-design.md) 审美必做。
 
 `pages_prd` 的 ASCII 线框只定**分区顺序**。金样定**控件密度与套件类名**。二者冲突时以金样为准。
 
@@ -13,7 +13,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 本页类型 | 必读 |
 |----------|------|
 | 移动宫格 / 推荐 / 双列卡片 | `mobile-grid.html`（**沉浸式**透明状态栏 + 下沉 Banner + 金刚区 5 列或 `md-king--pair` 一排两张大卡） |
-| 移动列表 / 动态流 / 横卡 | `mobile-list.html`（**标准**不透明状态栏 + **搜索行+筛选行贴顶** + 1:1 横卡 + 左/右半屏；筛选含类目下拉（选项多则底半屏）与 `data-wheel="daterange"`） |
+| 移动列表 / 动态流 / 横卡 | `mobile-list.html`（**标准** + 搜索/筛选贴顶 + 横卡弹性排版：标题/副标题/摘要截断、时间浏览点赞等 `__meta`、可选 `__leading`/`__thumb`；左/右半屏；`data-wheel="daterange"`） |
 | 移动展示 / 详情 | `mobile-detail.html`（**沉浸式**下沉 **16:9** 图 + 返回叠图上 + 图文介绍 + 评论 + 贴底次要操作） |
 | 移动表单 | `mobile-form.html`（**标准**不透明状态栏 + **标准高度**返回顶栏 + `md-progress` + 单日 `data-wheel="date"` + 下拉少选项中间弹窗 + 底半屏省市区 + 上传 + 贴底提交） |
 | 桌面表格 / 筛选列表 / 弹窗维护 | `desktop-list.html`（内容区顶面包屑无大标题；页内签在筛选上方整区切换；分页与表横条贴底；勾选左冻 / 操作右冻定宽「更多」下拉；汇总左分页右；**列宽按字段语义**；**紧凑密度一屏多行**；隐藏骨架+插画空态；筛选用 `md-field--daterange`） |

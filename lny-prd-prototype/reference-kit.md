@@ -15,13 +15,13 @@
 | 项 | 要求 |
 |----|------|
 | 金样 | 按页类型 Read `gold/`：`mobile-grid` / `mobile-list` / `mobile-detail` / `mobile-form` / `mobile-settings` / `mobile-wizard` / `mobile-buttons` / `desktop-list` / `desktop-form` / `desktop-dashboard` / `desktop-split` / `desktop-settings` / `desktop-wizard`。复制骨架含 script。密度不得低于金样。禁止用 `desktop-list` 硬套工作台 |
-| 估点档 | 忽略「视觉细节=粗糙」；⑥ 不降档 |
-| 舒适默认 | §2.3 漏写也要落地：隐藏 `md-skel-host`、插画 `md-empty`、失败可重试、按下态、浮层过渡、D1-1 `md-d1--list`+`md-col-*`。禁止发明新跳转/字段/弹窗 |
+| 估点档 | 忽略「视觉细节=粗糙」；⑥ 不降档；须满足 `reference-mobile-design.md` 审美必做 |
+| 舒适默认 | §2.3 漏写也要落地：隐藏 `md-skel-host`、插画 `md-empty`、失败可重试、按下态、浮层过渡、D1-1 `md-d1--list`+`md-col-*`。禁止发明新跳转/字段/弹窗；**有字段时必须按层级排版** |
 | 夹具数据 | 用符合业务域的中文名称与真实量级价格（如 `有机草莓 250g` / `¥19.90`）。**禁止** `示例商品 A/B`、`测试数据`、`xxx`、`Item 1` |
 | 条数 | 列表/卡片/表格默认态 **≥4 条**（规格写明空态、或 API 写死更少条数时从其规定；首页有「每页条数」则按其值） |
 | 字段 | API/COMP 已列的展示字段都要出现（名称、图、价、库存状态等）；**不**发明规格没有的字段（如无「销量」就不要写已售） |
 | 图片 | `md-card__media md-media-ph md-media-ph--{1-6}` 轮换；禁止无编号的纯灰 `md-media-ph`、禁止随机色块 |
-| 移动端 | 状态栏由 `proto-page.js` 固定顶注入；页根须标 `md-immersive`（状态栏透明）或 `md-standard`（状态栏不透明）；`md-section-head`；列表优先 `md-card md-card--row`；`viewport-fit=cover`；左右下及四角走 `--md-safe-*` |
+| 移动端 | 状态栏由 `proto-page.js` 固定顶注入；页根须标 `md-immersive`（状态栏透明）或 `md-standard`（状态栏不透明）；`md-section-head`；列表优先 `md-card md-card--row`；触屏 `md-search` 仅左图标+输入（无「搜索」文案、无右侧搜索按钮）；`viewport-fit=cover`；左右下及四角走 `--md-safe-*` |
 | 桌面端 | 必须有 `md-breadcrumb`（内容区顶部，**不要** `md-page-head` 大标题）；表格首列可用 `md-row-goods` + `md-thumb md-media-ph--n`。D1-1 列表：页内签在筛选上方且整区切换；`md-d1--list` 让分页与表横条贴底，并走 **紧凑密度**；勾选列 `md-col-check` 左冻、操作列 `md-col-actions` 右冻定宽；中间列按语义加 `md-col-name` / `md-col-price` / `md-col-status` / `md-col-date`（名称吃剩余，金额/状态/日期窄，禁止均分或被 `min-width` 拉长）；操作过多用 `md-actions` + `data-menu`「更多」下拉；`md-d1__stats` 靠左、`md-d1__pager` 靠右。规格出现的弹窗/签/下拉/日期/按钮组必须用本节 AD 控件，禁止裸 `alert` / 无样式 `<select>` |
 | 间距 | 只用套件：分区头 / 栅格 / `md-d1`，禁止用内联 `margin` 当排版 |
 
@@ -194,7 +194,43 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 </div>
 ```
 
-有 TabBar 时 **不要**再写 `md-appbar`。列表横卡用 `md-card md-card--row`（封面 **1:1**）；宫格卡同样 **1:1**。详情/内容页主图用 `md-swiper md-swiper--wide`（**16:9**），介绍配图用 `md-media--16x9`。评论附图用 `md-comment__photos` + `md-comment__photo`（**1:1**、圆角、横向排布超出换行）。触屏表单页输入右侧须有安全距（套件已给 `.md-mobile-page:has(form) .md-mobile-body`）。左/底/右半屏：`md-drawer--left/bottom/right`。移动页 `<meta viewport>` 须带 `viewport-fit=cover`。**禁止**在页内手写 `md-status-bar`：由 `proto-page.js` 注入固定顶演示层。页根必须标 **`md-immersive`**（状态栏背景透明）或 **`md-standard`**（状态栏背景不透明）。可点文案与 Tab 走套件安全距（左右下及四角）。
+有 TabBar 时 **不要**再写 `md-appbar`。列表横卡用 `md-card md-card--row`（封面 **1:1**、触屏为内缩圆角缩略图 + **弹性正文**：`__main` 标题/副标题/摘要 + `__foot` 元信息与价；标题最多两行、副标题一行、摘要两行截断；禁止厚重浮块大阴影）。宫格卡同样 **1:1**。详情/内容页主图用 `md-swiper md-swiper--wide`（**16:9**），介绍配图用 `md-media--16x9`。评论附图用 `md-comment__photos` + `md-comment__photo`（**1:1**、圆角、横向排布超出换行）。触屏正文左右下走 `--md-safe-*`；标准顶栏同样走安全距，MP 另避让胶囊。触屏 `md-search` 仅左图标+输入（无「搜索」文案、无右侧搜索按钮）。左/底/右半屏：`md-drawer--left/bottom/right`。移动页 `<meta viewport>` 须带 `viewport-fit=cover`。**禁止**在页内手写 `md-status-bar`：由 `proto-page.js` 注入固定顶演示层。页根必须标 **`md-immersive`**（状态栏背景透明）或 **`md-standard`**（状态栏背景不透明）。可点文案与 Tab 走套件安全距（左右下及四角）。
+
+### 触屏列表卡片排版（弹性布局）
+
+横卡正文必须可伸缩：左图（或 `__leading` 小图标）固定，右 `__body` 用 flex 列把主文与底栏撑开。规格有字段才写对应节点，**禁止**为好看编造业务字段。
+
+```html
+<a class="md-card md-card--row" href="…">
+  <div class="md-card__media md-media-ph md-media-ph--1"></div>
+  <!-- 无封面时可用：<span class="md-card__leading"><span class="md-icon" data-icon="goods"></span></span> -->
+  <div class="md-card__body">
+    <div class="md-card__main">
+      <h2 class="md-card__title">标题最多两行截断</h2>
+      <p class="md-card__subtitle">副标题一行</p>
+      <p class="md-card__text">摘要最多两行；也可用 md-line-clamp-1/2/3</p>
+    </div>
+    <div class="md-card__foot">
+      <div class="md-card__meta">
+        <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule"></span>昨天</span>
+        <span class="md-card__meta-item"><span class="md-icon" data-icon="view"></span>1.2万</span>
+        <span class="md-card__meta-item"><span class="md-icon" data-icon="favorite"></span>328</span>
+        <!-- 带头像：<span class="md-card__meta-item"><span class="md-card__thumb md-media-ph--n"></span>店铺名</span> -->
+      </div>
+      <p class="md-price">¥19.90</p>
+    </div>
+  </div>
+</a>
+```
+
+| 节点 | 规则 |
+|------|------|
+| `__title` | 主标题；横卡默认两行截断 |
+| `__subtitle` | 次级一行；颜色次要 |
+| `__text` | 多行摘要；横卡默认两行截断；通用用 `md-line-clamp-*` |
+| `__meta` / `__meta-item` | 时间、浏览、点赞等小字；可带 14px 图标或 `__thumb` 小图 |
+| `__foot` | 底栏：左 meta、右价格（或仅一侧）；`flex` 两端对齐 |
+| `__leading` | 无大封面时的左侧小图标容器 |
 
 触屏顶栏四种（规格点名一种，禁止混用、禁止把封面顶栏拉成 16:9）：
 
@@ -520,7 +556,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 图标 | `span.md-icon` + `data-icon`（闭集见 [`reference-icons.md`](reference-icons.md)） |
 | 图标按钮 | `md-icon-btn` 内放 `span.md-icon` |
 | 输入 | `md-field` + `md-field__label` + `md-field__input` |
-| 卡片 | `md-card` `md-card--row` `md-card__media` `md-media-ph md-media-ph--n` `md-card__body` `md-card__title` `md-price` |
+| 卡片 | `md-card` `md-card--row` `md-card__media` `md-card__leading` `md-media-ph--n` `md-card__body` `md-card__main` `md-card__title` `md-card__subtitle` `md-card__text` `md-card__foot` `md-card__meta` `md-card__meta-item` `md-card__thumb` `md-price` `md-line-clamp-1/2/3` |
 | 详情 16:9 图 | `md-swiper--wide`；介绍配图 `md-media--16x9`；评论 `md-comment` `__user` `__time` `__text` `__photos` `__photo`（一排最多五张） |
 | 分区头 | `md-section-head` `md-section-head__title` |
 | 系统栏 | `md-status-bar`（`proto-page.js` 固定顶注入；页内禁止手写） |

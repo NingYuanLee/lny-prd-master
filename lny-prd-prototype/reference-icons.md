@@ -49,6 +49,9 @@ python <skillDir>/scripts/search-icons.py 客服 --pick 0 --name kefu --out <prd
 | category | 分类 | TabBar |
 | settings | 设置 | 设置页 |
 | search | 搜索 | 顶栏 / 搜索栏 |
+| schedule | 时间 / 时钟 | 列表元信息 |
+| favorite | 点赞 / 喜欢 | 列表元信息 |
+| view | 查看 / 浏览 | 列表元信息 / 详情 |
 | filter | 筛选 | 工具栏 |
 | add | 添加、新增 | 功能栏 |
 | edit | 编辑 | 操作列 |
