@@ -23,7 +23,7 @@
           tabBarExempt: true,
           comps: [],
           spec: {
-            layout: "D1-1：顶为面包屑无大标题；页内签在筛选上方整区切换；搜索栏+功能栏+勾选左冻/操作右冻定宽「更多」；汇总左分页右贴底；三类弹窗。",
+            layout: "D1-1：顶为面包屑无大标题；页内签在筛选上方整区切换；搜索栏含日期段；功能栏+勾选左冻/操作右冻定宽「更多」；汇总左分页右贴底；三类弹窗。",
             comps: "无",
             apis: "API-AD-001 列表；API-AD-002 详情；API-AD-003 快捷保存\n进页、查询、翻页、页内签、打开弹窗。",
             features: "FEATURE-001 · 后台核对\nFEATURE-002 · 弹窗维护",
@@ -39,13 +39,77 @@
           tabBarExempt: true,
           comps: [],
           spec: {
-            layout: "D1-2：顶为面包屑无大标题；名称、售价、库存状态下拉、上架日期、上架时间、简介；保存/取消。",
+            layout: "D1-2：顶为面包屑无大标题；资料完整度进度条；名称、售价、库存状态下拉、上架日期、上架时间、简介；保存/取消。",
             comps: "无",
             apis: "API-AD-003 · 保存商品\n点击保存。",
             features: "FEATURE-002 · 整页表单保存",
             actions: "点击 · 保存回列表、取消回列表\n输入失焦 · 无"
           },
           brief: "整页录入商品并保存后返回列表。"
+        },
+        {
+          id: "PAGE-AD-003",
+          name: "上架向导",
+          module: "商品",
+          file: "PAGE-AD-003.html",
+          tabBarExempt: true,
+          comps: [],
+          spec: {
+            layout: "D1-2：顶为面包屑无大标题；步骤条+进步条；当前步表单；最后一步才提交。",
+            comps: "无",
+            apis: "套件样例页，演示进步条与分步提交。",
+            features: "FEATURE-002 · 整页表单保存（分步）",
+            actions: "上一步/下一步 · 切换步骤\n提交 · Toast 已提交"
+          },
+          brief: "分步上架：步骤条与进步条随当前步更新，最后一步提交。"
+        },
+        {
+          id: "PAGE-AD-004",
+          name: "工作台",
+          module: "工作台",
+          file: "PAGE-AD-004.html",
+          tabBarExempt: true,
+          comps: [],
+          spec: {
+            layout: "D1-3：顶为面包屑无大标题；指标卡一排；趋势占位；下面待办短表。",
+            comps: "无",
+            apis: "套件样例页，演示工作台指标与短表。",
+            features: "无",
+            actions: "点击 · 无出页"
+          },
+          brief: "工作台：指标卡、近七日趋势与待办短表。"
+        },
+        {
+          id: "PAGE-AD-005",
+          name: "分类管理",
+          module: "商品",
+          file: "PAGE-AD-005.html",
+          tabBarExempt: true,
+          comps: [],
+          spec: {
+            layout: "D1-3：顶为面包屑无大标题；左树右内容，点树只换右区标题。",
+            comps: "无",
+            apis: "套件样例页，演示左树右内容。",
+            features: "无",
+            actions: "点击树节点 · 更新右区标题"
+          },
+          brief: "分栏：左侧分类树，右侧随选中切换。"
+        },
+        {
+          id: "PAGE-AD-006",
+          name: "店铺设置",
+          module: "设置",
+          file: "PAGE-AD-006.html",
+          tabBarExempt: true,
+          comps: [],
+          spec: {
+            layout: "D1-2：顶为面包屑无大标题；分组一行一项开关；保存。",
+            comps: "无",
+            apis: "套件样例页，演示桌面设置分组。",
+            features: "无",
+            actions: "保存 · Toast 已保存"
+          },
+          brief: "设置类：分组开关，保存后 Toast。"
         }
       ]
     };

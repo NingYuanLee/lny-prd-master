@@ -35,9 +35,9 @@
               <option value="缺货">缺货</option>
             </select>
           </label>
-          <label class="md-field md-field--sm md-field--date">
+          <label class="md-field md-field--sm md-field--daterange">
             <span class="md-field__label">上架日期</span>
-            <input class="md-field__input" data-f="date" type="text" placeholder="年-月-日" autocomplete="off">
+            <input class="md-field__input" data-f="daterange" type="text" placeholder="开始日期 ~ 结束日期" autocomplete="off" readonly>
           </label>
           <label class="md-switch-row">
             <span class="md-switch">
@@ -227,9 +227,9 @@
             <span class="md-field__label">商品名称</span>
             <input class="md-field__input" data-f="name" type="text" placeholder="请输入商品名称">
           </label>
-          <label class="md-field md-field--sm md-field--date">
+          <label class="md-field md-field--sm md-field--daterange">
             <span class="md-field__label">上架日期</span>
-            <input class="md-field__input" data-f="date" type="text" placeholder="年-月-日" autocomplete="off">
+            <input class="md-field__input" data-f="daterange" type="text" placeholder="开始日期 ~ 结束日期" autocomplete="off" readonly>
           </label>
           <label class="md-switch-row">
             <span class="md-switch">
@@ -304,9 +304,9 @@
             <span class="md-field__label">商品名称</span>
             <input class="md-field__input" data-f="name" type="text" placeholder="请输入商品名称">
           </label>
-          <label class="md-field md-field--sm md-field--date">
+          <label class="md-field md-field--sm md-field--daterange">
             <span class="md-field__label">上架日期</span>
-            <input class="md-field__input" data-f="date" type="text" placeholder="年-月-日" autocomplete="off">
+            <input class="md-field__input" data-f="daterange" type="text" placeholder="开始日期 ~ 结束日期" autocomplete="off" readonly>
           </label>
           <label class="md-switch-row">
             <span class="md-switch">
@@ -495,12 +495,15 @@
       var lock = pane.getAttribute("data-stock") || "";
       var q = val(pane, "name");
       var stock = lock || val(pane, "stock");
-      var date = val(pane, "date");
+      var rangeEl = pane.querySelector('[data-f="daterange"]');
+      var dateStart = rangeEl ? (rangeEl.getAttribute("data-start") || "") : "";
+      var dateEnd = rangeEl ? (rangeEl.getAttribute("data-end") || "") : "";
       var onlyOn = val(pane, "on");
       return GOODS.filter(function (g) {
         if (q && g.name.indexOf(q) === -1) return false;
         if (stock && g.stock !== stock) return false;
-        if (date && g.date < date) return false;
+        if (dateStart && g.date < dateStart) return false;
+        if (dateEnd && g.date > dateEnd) return false;
         if (onlyOn && !g.on) return false;
         return true;
       });
@@ -638,6 +641,8 @@
         pane.querySelectorAll("[data-f]").forEach(function (el) {
           if (el.type === "checkbox") el.checked = false;
           else el.value = "";
+          el.removeAttribute("data-start");
+          el.removeAttribute("data-end");
         });
         renderPane(pane);
       });

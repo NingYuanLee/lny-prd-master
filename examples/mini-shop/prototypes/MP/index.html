@@ -25,7 +25,7 @@
             { id: "COMP-001", name: "商品卡片", states: ["loading", "empty", "error", "default"] }
           ],
           spec: {
-            layout: "L0 沉浸式（状态栏透明）叠在下沉 Banner 上（胶囊避让）；无页内顶栏；L1 TabBar 贴底；L2 金刚区+推荐；L3 商品卡片 1:1；L5 底半屏分类。",
+            layout: "L0 沉浸式（状态栏透明）叠在下沉 Banner 上（胶囊避让）；无页内顶栏；L1 TabBar 贴底；L2 金刚区（5列宫格+一排两张大卡）+推荐；L3 商品卡片 1:1；L5 底半屏分类。",
             comps: "COMP-001 · 商品卡片\n状态切换入口：壳层状态演示（loading / empty / error / default）。",
             apis: "API-MP-001 · 查询推荐商品\n进页请求；失败由状态演示 error 演示。",
             features: "FEATURE-001 · 浏览商品 · 首页推荐入口",
@@ -43,7 +43,7 @@
             { id: "COMP-001", name: "商品卡片", states: ["loading", "empty", "error", "default"] }
           ],
           spec: {
-            layout: "L0 标准模式（状态栏不透明）；L1 搜索行+筛选行贴顶固定；TabBar 贴底；L2 仅滚横卡 1:1；L5 左店铺/右筛选半屏、确认清空、Toast。",
+            layout: "L0 标准模式（状态栏不透明）；L1 搜索行+筛选行贴顶固定；TabBar 贴底；L2 仅滚横卡 1:1；L5 左店铺/右筛选半屏（日期段+类目下拉）、确认清空、Toast。",
             comps: "COMP-001 · 商品卡片\n状态切换入口：壳层状态演示。",
             apis: "API-MP-001 · 分页查询商品\n进页、搜索、筛选；失败 Toast 由状态演示 error 演示。",
             features: "FEATURE-001 · 浏览商品 · 列表浏览",
@@ -75,13 +75,61 @@
           tabBarExempt: true,
           comps: [],
           spec: {
-            layout: "L0 标准模式；L1 返回+标题；输入独立成行且右侧安全距；五步/无极滑动条、下拉、底半屏日期与省市区、单图更换/多图可删/文件上传；主操作条贴底提交。",
+            layout: "L0 标准模式；L1 返回+标题；输入独立成行且右侧安全距；填写进度条、五步/无极滑动条、下拉中间弹窗、底半屏单日与省市区、单图更换/多图可删/文件上传与上传进度；主操作条贴底提交。",
             comps: "本页无局部自定义组件。",
             apis: "API-MP-003 · 提交到货提醒\n点击提交；缺必填 Toast。",
             features: "FEATURE-003 · 登记到货提醒",
             actions: "取消/返回 · 商品详情\n提交 · Toast 已登记"
           },
           brief: "表单类：填写联系方式与到货偏好，提交到货提醒（非下单）。"
+        },
+        {
+          id: "PAGE-MP-005",
+          name: "上架向导",
+          module: "商品",
+          file: "PAGE-MP-005.html",
+          tabBarExempt: true,
+          comps: [],
+          spec: {
+            layout: "L0 标准模式；L1 返回+标题；步骤条+进步条；当前步表单；贴底上一步/下一步，最后一步才提交。",
+            comps: "本页无局部自定义组件。",
+            apis: "套件样例页，演示进步条与分步提交。",
+            features: "FEATURE-002 · 整页表单保存（分步）",
+            actions: "上一步/下一步 · 切换步骤\n提交 · Toast 已提交"
+          },
+          brief: "分步上架：步骤条与进步条随当前步更新，最后一步提交。"
+        },
+        {
+          id: "PAGE-MP-006",
+          name: "设置",
+          module: "设置",
+          file: "PAGE-MP-006.html",
+          tabBarExempt: true,
+          comps: [],
+          spec: {
+            layout: "L0 沉浸式；L1 两倍高度封面顶栏（背景图+返回+标题）；分组列表一行一项开关。",
+            comps: "本页无局部自定义组件。",
+            apis: "套件样例页，演示封面顶栏与设置分组。",
+            features: "无",
+            actions: "返回 · 首页\n开关 · 仅页内演示"
+          },
+          brief: "设置类：封面顶栏下分组开关。"
+        },
+        {
+          id: "PAGE-MP-007",
+          name: "按钮",
+          module: "套件",
+          file: "PAGE-MP-007.html",
+          tabBarExempt: true,
+          comps: [],
+          spec: {
+            layout: "L0 标准模式；L1 返回+标题；三档按钮：线框、色块、置灰、角标。",
+            comps: "本页无局部自定义组件。",
+            apis: "套件样例页，演示触屏按钮尺寸与状态。",
+            features: "无",
+            actions: "返回 · 首页"
+          },
+          brief: "套件样例：小/中/大按钮的线框、色块、置灰与角标。"
         }
       ]
     };

@@ -41,6 +41,91 @@
     return "check";
   }
 
+  function clampPct(pct) {
+    var n = Number(pct);
+    if (isNaN(n)) n = 0;
+    return Math.max(0, Math.min(100, n));
+  }
+
+  function setMeterText(el, n, valueText, valueSel) {
+    el.setAttribute("aria-valuenow", String(Math.round(n)));
+    var val = el.querySelector(valueSel);
+    if (val) val.textContent = valueText != null ? valueText : Math.round(n) + "%";
+  }
+
+  function setProgress(root, pct, valueText) {
+    var el = typeof root === "string" ? document.querySelector(root) : root;
+    if (!el) return;
+    var n = clampPct(pct);
+    var bar = el.querySelector(".md-progress__bar");
+    if (bar && el.className.indexOf("md-progress--indeterminate") === -1) {
+      bar.style.width = n + "%";
+    }
+    setMeterText(el, n, valueText, ".md-progress__value");
+  }
+
+  function advanceSegCount(el) {
+    var n = Number(el.getAttribute("data-segments"));
+    if (!n || n < 2) n = 4;
+    if (n > 12) n = 12;
+    return n;
+  }
+
+  function ensureAdvanceSegs(el) {
+    var track = el.querySelector(".md-advance__track");
+    if (!track) return [];
+    var count = advanceSegCount(el);
+    var segs = track.querySelectorAll(".md-advance__seg");
+    if (segs.length === count) return segs;
+    track.innerHTML = "";
+    var i;
+    for (i = 0; i < count; i += 1) {
+      var seg = document.createElement("div");
+      seg.className = "md-advance__seg";
+      var bar = document.createElement("div");
+      bar.className = "md-advance__bar";
+      seg.appendChild(bar);
+      track.appendChild(seg);
+    }
+    return track.querySelectorAll(".md-advance__seg");
+  }
+
+  function paintAdvance(el, pct) {
+    var n = clampPct(pct);
+    var segs = ensureAdvanceSegs(el);
+    var count = segs.length;
+    var units = (n / 100) * count;
+    if (Math.abs(units - Math.round(units)) < 0.02) units = Math.round(units);
+    segs.forEach(function (seg, i) {
+      var bar = seg.querySelector(".md-advance__bar");
+      if (!bar) return;
+      var fill = 0;
+      if (units >= i + 1) fill = 100;
+      else if (units > i) fill = (units - i) * 100;
+      bar.style.width = fill + "%";
+    });
+    return n;
+  }
+
+  function setAdvance(root, pct, valueText) {
+    var el = typeof root === "string" ? document.querySelector(root) : root;
+    if (!el) return;
+    var n = paintAdvance(el, pct);
+    setMeterText(el, n, valueText, ".md-advance__value");
+  }
+
+  function bindProgress() {
+    document.querySelectorAll(".md-progress").forEach(function (el) {
+      var now = el.getAttribute("aria-valuenow");
+      setProgress(el, now == null ? 0 : now, (el.querySelector(".md-progress__value") || {}).textContent);
+    });
+    document.querySelectorAll(".md-advance").forEach(function (el) {
+      var now = el.getAttribute("aria-valuenow");
+      var val = el.querySelector(".md-advance__value");
+      setAdvance(el, now == null ? 0 : now, val ? val.textContent : null);
+    });
+  }
+
   function snackbar(text, msOrOpts) {
     var opts = typeof msOrOpts === "object" && msOrOpts ? msOrOpts : {};
     var ms = typeof msOrOpts === "number" ? msOrOpts : opts.ms || 2400;
@@ -222,7 +307,8 @@
       if (
         !ev.target.closest(".md-menu") &&
         !ev.target.closest(".md-cal-pop") &&
-        !ev.target.closest(".md-field--date")
+        !ev.target.closest(".md-field--date") &&
+        !ev.target.closest(".md-field--daterange")
       ) {
         closeMenus();
       }
@@ -244,6 +330,45 @@
     return y + "-" + pad(m + 1) + "-" + pad(d);
   }
 
+  function parseRange(input) {
+    var start = (input.getAttribute("data-start") || "").trim();
+    var end = (input.getAttribute("data-end") || "").trim();
+    if (!start && input.value) {
+      var parts = String(input.value).split(/\s*[~～]\s*/);
+      start = (parts[0] || "").trim();
+      end = (parts[1] || "").trim();
+    }
+    return { start: start, end: end };
+  }
+
+  function writeRange(input, start, end) {
+    if (start && end && start > end) {
+      var tmp = start;
+      start = end;
+      end = tmp;
+    }
+    input.setAttribute("data-start", start || "");
+    input.setAttribute("data-end", end || "");
+    input.value = start && end ? start + " ~ " + end : start || "";
+  }
+
+  function calDayClass(val, todayStr, rangeMode, range, selected) {
+    var cls = "md-cal__day";
+    if (val === todayStr) cls += " is-today";
+    if (rangeMode && range) {
+      if (range.start && range.end) {
+        if (val === range.start) cls += " is-active is-range-start";
+        else if (val === range.end) cls += " is-active is-range-end";
+        else if (val > range.start && val < range.end) cls += " is-in-range";
+      } else if (range.start && val === range.start) {
+        cls += " is-active is-range-start";
+      }
+    } else if (selected === val) {
+      cls += " is-active";
+    }
+    return cls;
+  }
+
   function renderCal(pop, input, view) {
     var y = view.getFullYear();
     var m = view.getMonth();
@@ -251,7 +376,13 @@
     var start = first.getDay();
     var days = new Date(y, m + 1, 0).getDate();
     var prevDays = new Date(y, m, 0).getDate();
-    var selected = (input.value || "").split("-");
+    var rangeMode = !!pop._rangeMode;
+    var range = rangeMode ? pop._range || parseRange(input) : null;
+    var selected = rangeMode ? "" : (input.value || "").trim();
+    var hint = "";
+    if (rangeMode) {
+      hint = range && range.start && !range.end ? "再点结束日期" : "先点开始日期，再点结束日期";
+    }
     var html =
       '<div class="md-cal"><div class="md-cal__head">' +
       '<button type="button" class="md-icon-btn" data-cal="prev">‹</button>' +
@@ -267,38 +398,40 @@
       }).join("") +
       "</div><div class=\"md-cal__grid\">";
     var i;
+    var today = new Date();
+    var todayStr = ymd(today.getFullYear(), today.getMonth(), today.getDate());
     for (i = 0; i < start; i += 1) {
+      var prevVal = ymd(y, m - 1, prevDays - start + i + 1);
       html +=
-        '<button type="button" class="md-cal__day is-muted" data-day="' +
-        ymd(y, m - 1, prevDays - start + i + 1) +
+        '<button type="button" class="' +
+        calDayClass(prevVal, todayStr, rangeMode, range, selected) +
+        ' is-muted" data-day="' +
+        prevVal +
         '">' +
         (prevDays - start + i + 1) +
         "</button>";
     }
-    var today = new Date();
-    var todayStr = ymd(today.getFullYear(), today.getMonth(), today.getDate());
     for (i = 1; i <= days; i += 1) {
       var val = ymd(y, m, i);
-      var cls = "md-cal__day";
-      if (val === todayStr) cls += " is-today";
-      if (
-        selected.length === 3 &&
-        Number(selected[0]) === y &&
-        Number(selected[1]) === m + 1 &&
-        Number(selected[2]) === i
-      ) {
-        cls += " is-active";
-      }
       html +=
-        '<button type="button" class="' + cls + '" data-day="' + val + '">' + i + "</button>";
+        '<button type="button" class="' +
+        calDayClass(val, todayStr, rangeMode, range, selected) +
+        '" data-day="' +
+        val +
+        '">' +
+        i +
+        "</button>";
     }
-    html += "</div></div>";
+    html += "</div>";
+    if (hint) html += '<p class="md-cal__hint">' + hint + "</p>";
+    html += "</div>";
     pop.innerHTML = html;
     pop._view = view;
   }
 
   function bindCals() {
-    document.querySelectorAll(".md-field--date").forEach(function (field) {
+    document.querySelectorAll(".md-field--date, .md-field--daterange").forEach(function (field) {
+      var rangeMode = field.classList.contains("md-field--daterange");
       var input = field.querySelector('input[type="date"], input.md-field__input');
       if (!input) return;
       var pop = field.querySelector(".md-cal-pop");
@@ -310,7 +443,14 @@
       function openPop() {
         closeMenus(pop);
         if (pop.classList.contains("is-open")) return;
-        var base = input.value ? new Date(input.value + "T00:00:00") : new Date();
+        pop._rangeMode = rangeMode;
+        var base;
+        if (rangeMode) {
+          pop._range = parseRange(input);
+          base = pop._range.start ? new Date(pop._range.start + "T00:00:00") : new Date();
+        } else {
+          base = input.value ? new Date(input.value + "T00:00:00") : new Date();
+        }
         if (isNaN(base.getTime())) base = new Date();
         renderCal(pop, input, base);
         pop.classList.add("is-open");
@@ -333,11 +473,24 @@
           return;
         }
         var day = ev.target.closest("[data-day]");
-        if (day) {
-          input.value = day.getAttribute("data-day");
+        if (!day) return;
+        var picked = day.getAttribute("data-day");
+        if (rangeMode) {
+          var r = pop._range || { start: "", end: "" };
+          if (!r.start || r.end) {
+            pop._range = { start: picked, end: "" };
+            renderCal(pop, input, pop._view || new Date());
+            return;
+          }
+          writeRange(input, r.start, picked);
+          pop._range = parseRange(input);
           pop.classList.remove("is-open");
           input.dispatchEvent(new Event("change", { bubbles: true }));
+          return;
         }
+        input.value = picked;
+        pop.classList.remove("is-open");
+        input.dispatchEvent(new Event("change", { bubbles: true }));
       });
     });
   }
@@ -453,6 +606,19 @@
     }).join("");
   }
 
+  function fmtDateParts(sel) {
+    return sel[0] + "-" + pad(Number(sel[1])) + "-" + pad(Number(sel[2]));
+  }
+
+  function parseDateParts(s, fallback) {
+    var cur = (s || "").split("-");
+    return [
+      cur[0] || fallback[0],
+      String(Number(cur[1]) || fallback[1]),
+      String(Number(cur[2]) || fallback[2])
+    ];
+  }
+
   function ensureWheel() {
     if (document.getElementById("mdWheelSheet")) return;
     var mask = document.createElement("div");
@@ -467,6 +633,10 @@
       '<button type="button" class="md-btn md-btn--text" data-wheel-cancel>取消</button>' +
       '<h2 class="md-wheel__title" id="mdWheelTitle">请选择</h2>' +
       '<button type="button" class="md-btn md-btn--text" data-wheel-ok>确定</button>' +
+      "</div>" +
+      '<div class="md-wheel__tabs" hidden>' +
+      '<button type="button" class="md-wheel__tab is-active" data-range-tab="start">开始日期</button>' +
+      '<button type="button" class="md-wheel__tab" data-range-tab="end">结束日期</button>' +
       "</div>" +
       '<div class="md-wheel__cols">' +
       '<div class="md-wheel__col" data-col="0"></div>' +
@@ -485,16 +655,41 @@
       var trig = sheet._trigger;
       if (trig) {
         var text;
-        if (sheet._kind === "date") {
-          text = sheet._sel[0] + "-" + pad(Number(sheet._sel[1])) + "-" + pad(Number(sheet._sel[2]));
+        if (sheet._kind === "daterange") {
+          var a = fmtDateParts(sheet._start);
+          var b = fmtDateParts(sheet._end);
+          if (a > b) {
+            var swap = a;
+            a = b;
+            b = swap;
+          }
+          text = a + " ~ " + b;
+          trig.setAttribute("data-start", a);
+          trig.setAttribute("data-end", b);
+          trig.setAttribute("data-value", a + "~" + b);
+        } else if (sheet._kind === "date") {
+          text = fmtDateParts(sheet._sel);
+          trig.setAttribute("data-value", sheet._sel.join("-"));
         } else {
           text = sheet._sel.join(" ");
+          trig.setAttribute("data-value", sheet._sel.join("-"));
         }
         trig.textContent = text;
         trig.classList.add("has-value");
-        trig.setAttribute("data-value", sheet._sel.join("-"));
+        trig.dispatchEvent(new Event("change", { bubbles: true }));
       }
       closeDrawer("mdWheelSheet");
+    });
+    sheet.querySelectorAll("[data-range-tab]").forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        var next = tab.getAttribute("data-range-tab");
+        sheet._rangeTab = next;
+        sheet._sel = next === "start" ? sheet._start : sheet._end;
+        sheet.querySelectorAll("[data-range-tab]").forEach(function (t) {
+          t.classList.toggle("is-active", t === tab);
+        });
+        paintWheel(sheet);
+      });
     });
     sheet.querySelectorAll(".md-wheel__col").forEach(function (col) {
       col.addEventListener("click", function (ev) {
@@ -554,15 +749,36 @@
     ensureWheel();
     var sheet = document.getElementById("mdWheelSheet");
     var kind = trigger.getAttribute("data-wheel");
+    var tabs = sheet.querySelector(".md-wheel__tabs");
     sheet._kind = kind;
     sheet._trigger = trigger;
-    var cur = (trigger.getAttribute("data-value") || "").split("-");
-    if (kind === "region") {
-      document.getElementById("mdWheelTitle").textContent = "选择地区";
-      sheet._sel = [cur[0] || "浙江省", cur[1] || "杭州市", cur[2] || "西湖区"];
+    if (kind === "daterange") {
+      document.getElementById("mdWheelTitle").textContent = "选择日期段";
+      var start = trigger.getAttribute("data-start") || "";
+      var end = trigger.getAttribute("data-end") || "";
+      if (!start && trigger.getAttribute("data-value")) {
+        var pair = trigger.getAttribute("data-value").split("~");
+        start = pair[0] || "";
+        end = pair[1] || "";
+      }
+      sheet._start = parseDateParts(start, ["2026", "8", "1"]);
+      sheet._end = parseDateParts(end || start, ["2026", "8", "14"]);
+      sheet._rangeTab = "start";
+      sheet._sel = sheet._start;
+      tabs.hidden = false;
+      sheet.querySelectorAll("[data-range-tab]").forEach(function (t) {
+        t.classList.toggle("is-active", t.getAttribute("data-range-tab") === "start");
+      });
     } else {
-      document.getElementById("mdWheelTitle").textContent = "选择日期";
-      sheet._sel = [cur[0] || "2026", cur[1] || "8", cur[2] || "14"];
+      tabs.hidden = true;
+      var cur = (trigger.getAttribute("data-value") || "").split("-");
+      if (kind === "region") {
+        document.getElementById("mdWheelTitle").textContent = "选择地区";
+        sheet._sel = [cur[0] || "浙江省", cur[1] || "杭州市", cur[2] || "西湖区"];
+      } else {
+        document.getElementById("mdWheelTitle").textContent = "选择日期";
+        sheet._sel = [cur[0] || "2026", cur[1] || "8", cur[2] || "14"];
+      }
     }
     paintWheel(sheet);
     openDrawer("mdWheelSheet");
@@ -684,6 +900,135 @@
     });
   }
 
+  var SELECT_CENTER_MAX = 6;
+
+  function closeSelectSheet() {
+    var sheet = document.getElementById("mdSelectSheet");
+    var mask = document.getElementById("mdSelectSheetBackdrop");
+    if (sheet) {
+      sheet.classList.remove("is-open");
+      sheet.setAttribute("aria-hidden", "true");
+    }
+    if (mask) mask.classList.remove("is-open");
+    syncDialogLock();
+  }
+
+  function selectSheetTitle(sel) {
+    var field = sel.closest(".md-field");
+    var label = field && field.querySelector(".md-field__label");
+    if (label && label.textContent) return label.textContent.replace(/\s+/g, " ").trim();
+    return sel.getAttribute("aria-label") || "请选择";
+  }
+
+  function selectSheetMode(sel) {
+    var forced = sel.getAttribute("data-sheet");
+    if (forced === "center" || forced === "bottom") return forced;
+    return sel.querySelectorAll("option:not([disabled])").length <= SELECT_CENTER_MAX
+      ? "center"
+      : "bottom";
+  }
+
+  function ensureSelectSheet() {
+    if (document.getElementById("mdSelectSheet")) return;
+    var mask = document.createElement("div");
+    mask.id = "mdSelectSheetBackdrop";
+    mask.className = "md-backdrop md-select-sheet-backdrop";
+    var sheet = document.createElement("div");
+    sheet.id = "mdSelectSheet";
+    sheet.className = "md-select-sheet";
+    sheet.setAttribute("role", "dialog");
+    sheet.setAttribute("aria-hidden", "true");
+    sheet.innerHTML =
+      '<div class="md-select-sheet__handle" aria-hidden="true"></div>' +
+      '<h2 class="md-select-sheet__title" id="mdSelectSheetTitle">请选择</h2>' +
+      '<div class="md-select-sheet__list" role="listbox"></div>' +
+      '<button type="button" class="md-btn md-btn--text md-select-sheet__cancel">取消</button>';
+    document.body.appendChild(mask);
+    document.body.appendChild(sheet);
+    mask.addEventListener("click", closeSelectSheet);
+    sheet.querySelector(".md-select-sheet__cancel").addEventListener("click", closeSelectSheet);
+    sheet.querySelector(".md-select-sheet__list").addEventListener("click", function (ev) {
+      var opt = ev.target.closest("[data-opt]");
+      if (!opt || opt.disabled) return;
+      var sel = sheet._select;
+      if (!sel) return;
+      sel.value = opt.getAttribute("data-opt");
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+      closeSelectSheet();
+    });
+  }
+
+  function openSelectSheet(sel) {
+    ensureSelectSheet();
+    var sheet = document.getElementById("mdSelectSheet");
+    var mask = document.getElementById("mdSelectSheetBackdrop");
+    var list = sheet.querySelector(".md-select-sheet__list");
+    var mode = selectSheetMode(sel);
+    sheet._select = sel;
+    sheet.className = "md-select-sheet md-select-sheet--" + mode;
+    sheet.setAttribute("aria-labelledby", "mdSelectSheetTitle");
+    document.getElementById("mdSelectSheetTitle").textContent = selectSheetTitle(sel);
+    list.innerHTML = "";
+    Array.prototype.forEach.call(sel.options, function (opt) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "md-select-sheet__opt";
+      btn.setAttribute("data-opt", opt.value);
+      btn.setAttribute("role", "option");
+      btn.textContent = opt.text;
+      if (opt.disabled) {
+        btn.disabled = true;
+        btn.classList.add("is-disabled");
+      }
+      if (opt.selected) {
+        btn.classList.add("is-active");
+        btn.setAttribute("aria-selected", "true");
+      }
+      list.appendChild(btn);
+    });
+    mask.classList.add("is-open");
+    sheet.classList.add("is-open");
+    sheet.setAttribute("aria-hidden", "false");
+    syncDialogLock();
+    var on = list.querySelector(".is-active");
+    if (on) on.scrollIntoView({ block: "nearest" });
+  }
+
+  function bindMobileSelects() {
+    if (!isMobilePage()) return;
+    document.querySelectorAll("select.md-select").forEach(function (sel) {
+      if (sel.getAttribute("data-native") === "1") return;
+      if (sel.getAttribute("data-md-bound") === "1") return;
+      sel.setAttribute("data-md-bound", "1");
+      sel.setAttribute("tabindex", "-1");
+      var field = sel.closest(".md-field") || sel.parentElement;
+      var trigger = field.querySelector(".md-select-trigger");
+      if (!trigger) {
+        trigger = document.createElement("button");
+        trigger.type = "button";
+        trigger.className = "md-select md-select-trigger";
+        trigger.setAttribute("aria-haspopup", "listbox");
+        sel.insertAdjacentElement("afterend", trigger);
+      }
+      function paint() {
+        var opt = sel.options[sel.selectedIndex];
+        trigger.textContent = opt ? opt.text : "请选择";
+      }
+      paint();
+      sel.addEventListener("change", paint);
+      sel.addEventListener("mousedown", function (ev) {
+        ev.preventDefault();
+      });
+      sel.addEventListener("focus", function () {
+        sel.blur();
+        openSelectSheet(sel);
+      });
+      trigger.addEventListener("click", function () {
+        openSelectSheet(sel);
+      });
+    });
+  }
+
   function bindUi() {
     ensureStatusBar();
     bindTabs();
@@ -693,11 +1038,15 @@
     bindWheels();
     bindSliders();
     bindUploads();
+    bindMobileSelects();
+    bindProgress();
   }
 
   global.ProtoPage = {
     applyCompState: applyCompState,
     snackbar: snackbar,
+    setProgress: setProgress,
+    setAdvance: setAdvance,
     openDialog: openDialog,
     closeDialog: closeDialog,
     openDrawer: openDrawer,

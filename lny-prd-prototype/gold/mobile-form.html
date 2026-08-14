@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 金样：标准顶栏 + 输入独立成行且右侧安全距 + 五步/无极滑动条 + 下拉 + 底半屏日期/省市区三级联动 + 单图更换/多图可删/文件上传 + 贴底提交。写触屏表单前必 Read。 -->
+<!-- LNY-PRD gold: 金样：标准顶栏 + 输入独立成行且右侧安全距 + 五步/无极滑动条 + 下拉（少选项中间弹窗） + 进度条 + 底半屏日期/省市区 + 单图更换/多图可删/文件上传 + 贴底提交。写触屏表单前必 Read。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -18,6 +18,15 @@
     <main class="md-mobile-body">
       <div class="md-section-head">
         <h2 class="md-section-head__title">填写资料</h2>
+      </div>
+      <div class="md-progress md-progress--lg" id="formProg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="md-progress__head">
+          <span class="md-progress__label">填写进度</span>
+          <span class="md-progress__value">0%</span>
+        </div>
+        <div class="md-progress__track">
+          <div class="md-progress__bar" style="width:0%"></div>
+        </div>
       </div>
       <form id="notifyForm">
         <label class="md-field">
@@ -110,6 +119,15 @@
           <p class="md-upload__hint">支持 PDF / Word / 图片</p>
           <span class="md-upload__name"></span>
         </label>
+        <div class="md-progress is-hidden" id="fileProg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="md-progress__head">
+            <span class="md-progress__label">凭证上传</span>
+            <span class="md-progress__value">0%</span>
+          </div>
+          <div class="md-progress__track">
+            <div class="md-progress__bar" style="width:0%"></div>
+          </div>
+        </div>
         <label class="md-switch-row">
           <span class="md-switch">
             <input type="checkbox" id="fAgree" checked>
@@ -133,6 +151,27 @@
   <script src="assets/icons-extra.js"></script>
   <script src="assets/proto-page.js"></script>
   <script>
+    function formProgress() {
+      var n = 0;
+      if ((document.getElementById("fName").value || "").trim()) n += 1;
+      if ((document.getElementById("fPhone").value || "").trim()) n += 1;
+      if ((document.getElementById("fArrive").getAttribute("data-value") || "").trim()) n += 1;
+      if ((document.getElementById("fRegion").getAttribute("data-value") || "").trim()) n += 1;
+      ProtoPage.setProgress("#formProg", Math.round((n / 4) * 100));
+    }
+    document.getElementById("notifyForm").addEventListener("input", formProgress);
+    document.getElementById("notifyForm").addEventListener("change", formProgress);
+    document.querySelector(".md-upload--file input").addEventListener("change", function () {
+      var box = document.getElementById("fileProg");
+      box.classList.remove("is-hidden");
+      var p = 0;
+      ProtoPage.setProgress("#fileProg", 0);
+      var t = setInterval(function () {
+        p += 25;
+        ProtoPage.setProgress("#fileProg", Math.min(p, 100));
+        if (p >= 100) clearInterval(t);
+      }, 120);
+    });
     document.getElementById("notifyForm").addEventListener("submit", function (ev) {
       ev.preventDefault();
       var name = (document.getElementById("fName").value || "").trim();
@@ -143,6 +182,7 @@
       }
       ProtoPage.snackbar("已登记到货提醒");
     });
+    formProgress();
   </script>
 </body>
 </html>

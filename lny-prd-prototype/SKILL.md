@@ -38,22 +38,24 @@ disable-model-invocation: true
 
 | 夹具页 | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
-| PAGE-MP-001 首页 | `gold/mobile-grid.html` | `md-immersive` `md-hero` `md-swiper` `md-king`；有 TabBar 则无 `md-appbar` |
-| PAGE-MP-002 列表 | `gold/mobile-list.html` | `md-standard`；搜索+筛选贴顶；`md-card--row` 封面 1:1 |
+| PAGE-MP-001 首页 | `gold/mobile-grid.html` | `md-immersive` `md-hero` `md-swiper` `md-king`（5 列）+ `md-king--pair`（一排两张大卡、内容与小图标靠左）；有 TabBar 则无 `md-appbar` |
+| PAGE-MP-002 列表 | `gold/mobile-list.html` | `md-standard`；搜索+筛选贴顶；`md-card--row` 封面 1:1；筛选半屏含 `data-wheel="daterange"` 与类目下拉 |
 | PAGE-MP-003 详情 | `gold/mobile-detail.html` | `md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 一排最多五张 |
-| PAGE-MP-004 表单 | `gold/mobile-form.html` | 返回顶栏；输入独立成行+右侧 inset；`md-slider--steps` / `--fluid`；`data-wheel` 日期或省市区；`md-upload--single` / `md-upload-grid` / `md-upload--file`；`md-action-bar` 贴底 |
-| 移动设置 | `gold/mobile-settings.html` | 分组 `md-set-group`；一行一项开关 |
+| PAGE-MP-004 表单 | `gold/mobile-form.html` | 返回顶栏；无极 `md-progress` 填写/上传；`md-select` 少选项中间弹窗；`data-wheel="date"` 单日；`data-wheel="region"` 省市区（无开始/结束签）；滑动条；上传；`md-action-bar` 贴底 |
+| PAGE-MP-005 向导 | `gold/mobile-wizard.html` | `md-stepper` + 分段 `md-advance md-advance--lg`；最后一步才提交 |
+| PAGE-MP-006 设置 | `gold/mobile-settings.html` | 沉浸式；`md-appbar--cover` 两倍高度封面顶栏；分组 `md-set-group`；一行一项开关 |
+| PAGE-MP-007 按钮 | `gold/mobile-buttons.html` | 小 `--sm` / 中默认 / 大 `--lg`；每档线框、色块、置灰、`md-badge` 角标 |
 
 **桌面端**
 
 | 夹具页 | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
-| PAGE-AD-001 列表 | `gold/desktop-list.html` | `md-d1 md-d1--list`（**紧凑密度**）；`md-breadcrumb` 无 `md-page-head`；签 `md-tabs--page` 在筛上整区切换；列类 `md-col-check` `md-col-name` `md-col-price` `md-col-status` `md-col-date` `md-col-actions`（**按字段语义，禁止均分**）；「更多」`md-menu--fixed`；`md-d1__stats` 左 / `md-d1__pager` 右 |
-| PAGE-AD-002 表单 | `gold/desktop-form.html` | `md-breadcrumb`；`md-field--sm`。**不要**加 `md-d1--list` |
-| 工作台 / 仪表盘 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
-| 树 + 内容 / 分栏 | `gold/desktop-split.html` | `md-d1--split` 左树右内容 |
-| 桌面设置 | `gold/desktop-settings.html` | 分组 `md-set-group`；一行一项开关 |
-| 桌面向导 | `gold/desktop-wizard.html` | `md-stepper`；最后一步才提交 |
+| PAGE-AD-001 列表 | `gold/desktop-list.html` | `md-d1 md-d1--list`（**紧凑密度**）；`md-breadcrumb` 无 `md-page-head`；签 `md-tabs--page` 在筛上整区切换；列类 `md-col-check` `md-col-name` `md-col-price` `md-col-status` `md-col-date` `md-col-actions`（**按字段语义，禁止均分**）；筛选用 `md-field--daterange`；「更多」`md-menu--fixed`；`md-d1__stats` 左 / `md-d1__pager` 右 |
+| PAGE-AD-002 表单 | `gold/desktop-form.html` | `md-breadcrumb`；`md-field--sm`；无极 `md-progress` 资料完整度。**不要**加 `md-d1--list` |
+| PAGE-AD-003 向导 | `gold/desktop-wizard.html` | `md-stepper` + 分段 `md-advance`；最后一步才提交 |
+| PAGE-AD-004 工作台 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
+| PAGE-AD-005 分类 | `gold/desktop-split.html` | `md-d1--split` 左树右内容 |
+| PAGE-AD-006 设置 | `gold/desktop-settings.html` | 分组 `md-set-group`；一行一项开关 |
 | 关系图 | `prototypes/{端}/map.html` | `ProtoMap.boot`；预览区 **375×812**；连线端口错开 + 线中 `label`；底部色线图例；拖动写入 localStorage；「导出图片」 |
 
 ## 开笔前
@@ -84,7 +86,7 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 3. ASCII = 分区顺序；金样 = 密度。`ui/PAGE`「视觉细节」只给 ⑨ 估点，⑥ 一律按金样。触屏 §1.3.3；桌面 D1-1 §1.4.3。
 4. **舒适默认（§2.3 漏写也要落地）**：按 `lny-prd-ui` **§1.7.0**。骨架、空态插图、失败可重试、一个主按钮、按下态、浮层过渡、D1-1 语义列宽+`md-d1--list`、评论时间行+附图一排最多五张。禁止发明新跳转/新字段/新弹窗。用户未给设计规范 ≠ 可以画线框。
 5. 重画不得删 Chip / 面包屑 / 横卡 / `data-icon` / `md-dialog`。未 Read 金样 = 本页未完成。
-6. 不是那六种夹具页：按金样表选 dashboard / split / settings / wizard，禁止拿 `desktop-list` 硬套工作台。
+6. 不是夹具表里已有的页型：按金样表选最接近的金样（dashboard / split / settings / wizard），禁止拿 `desktop-list` 硬套工作台。
 
 ## 职责与禁止
 

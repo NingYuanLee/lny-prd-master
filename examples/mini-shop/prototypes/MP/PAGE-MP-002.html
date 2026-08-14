@@ -110,6 +110,26 @@
           <label class="md-check"><input type="checkbox" checked> 有货</label>
           <label class="md-check"><input type="checkbox"> 缺货</label>
         </div>
+        <label class="md-field md-field--select">
+          <span class="md-field__label">商品类目</span>
+          <select class="md-select" id="fCat">
+            <option value="">全部</option>
+            <option>水果</option>
+            <option>坚果</option>
+            <option>饮品</option>
+            <option>烘焙</option>
+            <option>咖啡</option>
+            <option>茶</option>
+            <option>粮油</option>
+            <option>调味</option>
+            <option>日用</option>
+            <option>其他</option>
+          </select>
+        </label>
+        <label class="md-field">
+          <span class="md-field__label">上架日期</span>
+          <button type="button" class="md-field__input md-picker-trigger" id="fDateRange" data-wheel="daterange">请选择日期段</button>
+        </label>
       </div>
       <div class="md-drawer__actions">
         <button type="button" class="md-btn md-btn--text" id="btnClearFilter">清空</button>
@@ -130,6 +150,17 @@
         title: "清空",
         body: "确定清空当前筛选条件？",
         onOk: function () {
+          var cat = document.getElementById("fCat");
+          if (cat) {
+            cat.value = "";
+            cat.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+          var range = document.getElementById("fDateRange");
+          range.textContent = "请选择日期段";
+          range.classList.remove("has-value");
+          range.removeAttribute("data-start");
+          range.removeAttribute("data-end");
+          range.removeAttribute("data-value");
           ProtoPage.closeDrawer("filterSheet");
           ProtoPage.snackbar("已清空筛选");
         }
