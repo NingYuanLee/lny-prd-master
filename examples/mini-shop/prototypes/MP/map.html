@@ -5,24 +5,7 @@
   <title>MP 关系图</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="assets/mui-kit.css">
-  <style>
-    html, body { height: 100%; margin: 0; }
-    #map-shell { display: flex; flex-direction: column; height: 100%; }
-    #viewport { flex: 1; min-height: 0; overflow: hidden; background: #f5f5f5; position: relative; cursor: grab; }
-    #world { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
-    #connections { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
-    .page-node {
-      position: absolute; width: 200px; background: #fff; border-radius: 4px;
-      box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
-    }
-    .node-header { padding: 8px 12px; cursor: move; border-bottom: 1px solid rgba(0,0,0,0.12); }
-    .node-id { font-size: 0.75rem; color: rgba(0,0,0,0.6); }
-    .node-name { font-size: 1rem; font-weight: 500; }
-    .phone-wrap { height: 120px; overflow: hidden; position: relative; background: #eee; }
-    .phone-wrap iframe { width: 375px; height: 812px; border: 0; transform: scale(0.5333); transform-origin: top left; pointer-events: none; }
-    .phone-overlay { position: absolute; inset: 0; cursor: pointer; }
-    .hint { padding: 8px 16px; font-size: 0.75rem; color: rgba(0,0,0,0.6); }
-  </style>
+  <link rel="stylesheet" href="assets/proto-shell.css">
 </head>
 <body>
   <div id="map-shell">
@@ -30,121 +13,38 @@
       <div class="md-appbar__title">关系图</div>
       <a class="md-btn md-btn--text" href="index.html">单页预览</a>
       <button type="button" class="md-btn md-btn--text" id="btnFit">适应</button>
+      <button type="button" class="md-btn md-btn--text" id="btnReset">重置布局</button>
+      <button type="button" class="md-btn md-btn--text" id="btnExport">导出图片</button>
+      <button type="button" class="md-btn md-btn--text" id="btnFull">全屏</button>
     </header>
     <div id="viewport">
       <div id="world">
         <svg id="connections" width="2000" height="2000"></svg>
       </div>
     </div>
-    <div class="hint">拖动画布空白处平移；拖标题栏移动节点。绿实线=跳转，蓝虚线=TabBar。</div>
+    <div id="map-legend" class="map-legend"></div>
   </div>
+  <script src="assets/proto-map.js"></script>
   <script>
-    var PAGES = [
-      { id: "PAGE-MP-001", name: "首页", module: "主包 · home", file: "PAGE-MP-001.html", x: 80, y: 80 },
-      { id: "PAGE-MP-002", name: "商品列表", module: "主包 · goods", file: "PAGE-MP-002.html", x: 420, y: 80 }
-    ];
-    var LINKS = [
-      { from: "PAGE-MP-001", to: "PAGE-MP-002", type: "tab", label: "TabBar" },
-      { from: "PAGE-MP-002", to: "PAGE-MP-001", type: "tab", label: "TabBar" }
-    ];
-    var STYLE = {
-      forward: { stroke: "#3fb950", dash: "", width: 2 },
-      back: { stroke: "#8b949e", dash: "6 4", width: 1.5 },
-      tab: { stroke: "#58a6ff", dash: "8 4", width: 2 },
-      embed: { stroke: "#d2a8ff", dash: "2 4", width: 1.5 }
-    };
-    var scale = 1, panX = 40, panY = 20;
-    var world = document.getElementById("world");
-    var svg = document.getElementById("connections");
-    var NODE_W = 200, NODE_H = 168;
-
-    function applyTransform() {
-      world.style.transform = "translate(" + panX + "px," + panY + "px) scale(" + scale + ")";
-    }
-    function pageMap() {
-      var m = {};
-      PAGES.forEach(function (p) { m[p.id] = p; });
-      return m;
-    }
-    function drawConnections() {
-      var m = pageMap();
-      svg.innerHTML = "";
-      LINKS.forEach(function (lk) {
-        var a = m[lk.from], b = m[lk.to];
-        if (!a || !b) return;
-        var st = STYLE[lk.type] || STYLE.forward;
-        var x1 = a.x + NODE_W, y1 = a.y + NODE_H / 2;
-        var x2 = b.x, y2 = b.y + NODE_H / 2;
-        var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        var mx = (x1 + x2) / 2;
-        path.setAttribute("d", "M" + x1 + " " + y1 + " C" + mx + " " + y1 + "," + mx + " " + y2 + "," + x2 + " " + y2);
-        path.setAttribute("fill", "none");
-        path.setAttribute("stroke", st.stroke);
-        path.setAttribute("stroke-width", st.width);
-        if (st.dash) path.setAttribute("stroke-dasharray", st.dash);
-        svg.appendChild(path);
-      });
-    }
-    function createNodes() {
-      PAGES.forEach(function (p) {
-        var n = document.createElement("div");
-        n.className = "page-node";
-        n.dataset.id = p.id;
-        n.style.left = p.x + "px";
-        n.style.top = p.y + "px";
-        n.innerHTML = '<div class="node-header"><div class="node-id">' + p.id + '</div><div class="node-name">' + p.name + '</div><div class="md-caption">' + p.module + '</div></div><div class="phone-wrap"><iframe src="' + p.file + '" loading="lazy" title="' + p.id + '"></iframe><div class="phone-overlay"></div></div>';
-        n.querySelector(".phone-overlay").addEventListener("click", function () {
-          window.open(p.file, "_blank");
-        });
-        var hd = n.querySelector(".node-header");
-        hd.addEventListener("mousedown", function (ev) {
-          ev.preventDefault();
-          var sx = ev.clientX, sy = ev.clientY, ox = p.x, oy = p.y;
-          function move(e) {
-            p.x = ox + (e.clientX - sx) / scale;
-            p.y = oy + (e.clientY - sy) / scale;
-            n.style.left = p.x + "px";
-            n.style.top = p.y + "px";
-            drawConnections();
-          }
-          function up() {
-            document.removeEventListener("mousemove", move);
-            document.removeEventListener("mouseup", up);
-          }
-          document.addEventListener("mousemove", move);
-          document.addEventListener("mouseup", up);
-        });
-        world.appendChild(n);
-      });
-    }
-    var vp = document.getElementById("viewport");
-    vp.addEventListener("mousedown", function (ev) {
-      if (ev.target !== vp && ev.target !== world && ev.target !== svg) return;
-      var sx = ev.clientX, sy = ev.clientY, ox = panX, oy = panY;
-      function move(e) {
-        panX = ox + (e.clientX - sx);
-        panY = oy + (e.clientY - sy);
-        applyTransform();
-      }
-      function up() {
-        document.removeEventListener("mousemove", move);
-        document.removeEventListener("mouseup", up);
-      }
-      document.addEventListener("mousemove", move);
-      document.addEventListener("mouseup", up);
+    ProtoMap.boot({
+      project: "mini-shop",
+      terminal: "MP",
+      pages: [
+        { id: "PAGE-MP-001", name: "首页", module: "首页", file: "PAGE-MP-001.html", x: 80, y: 80 },
+        { id: "PAGE-MP-002", name: "商品列表", module: "商品", file: "PAGE-MP-002.html", x: 400, y: 80 },
+        { id: "PAGE-MP-003", name: "商品详情", module: "商品", file: "PAGE-MP-003.html", x: 400, y: 680 },
+        { id: "PAGE-MP-004", name: "到货提醒", module: "商品", file: "PAGE-MP-004.html", x: 720, y: 680 }
+      ],
+      links: [
+        { from: "PAGE-MP-001", to: "PAGE-MP-002", type: "tab", label: "TabBar" },
+        { from: "PAGE-MP-002", to: "PAGE-MP-001", type: "tab", label: "TabBar" },
+        { from: "PAGE-MP-001", to: "PAGE-MP-002", type: "forward", label: "去商品列表" },
+        { from: "PAGE-MP-002", to: "PAGE-MP-003", type: "forward", label: "商品卡片" },
+        { from: "PAGE-MP-003", to: "PAGE-MP-002", type: "back", label: "返回" },
+        { from: "PAGE-MP-003", to: "PAGE-MP-004", type: "forward", label: "到货提醒" },
+        { from: "PAGE-MP-004", to: "PAGE-MP-003", type: "back", label: "返回" }
+      ]
     });
-    vp.addEventListener("wheel", function (ev) {
-      ev.preventDefault();
-      var next = Math.min(2.5, Math.max(0.15, scale * (ev.deltaY > 0 ? 0.9 : 1.1)));
-      scale = next;
-      applyTransform();
-    }, { passive: false });
-    document.getElementById("btnFit").addEventListener("click", function () {
-      scale = 1; panX = 40; panY = 20; applyTransform();
-    });
-    createNodes();
-    drawConnections();
-    applyTransform();
   </script>
 </body>
 </html>

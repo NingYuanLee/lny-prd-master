@@ -1,0 +1,50 @@
+<!-- LNY-PRD gold: 金样：桌面设置。分组纸面，一行一项。写设置页前必 Read。 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>设置</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/mui-kit.css">
+</head>
+<body>
+  <div class="md-d1">
+    <div class="md-breadcrumb">
+      <span class="is-current">店铺设置</span>
+    </div>
+    <div class="md-set-group">
+      <div class="md-set-group__title">通知</div>
+      <div class="md-set-row">
+        <span>订单推送</span>
+        <span class="md-switch"><input type="checkbox" checked><span class="md-switch__track"></span><span class="md-switch__thumb"></span></span>
+      </div>
+      <div class="md-set-row">
+        <span>库存预警</span>
+        <span class="md-switch"><input type="checkbox" checked><span class="md-switch__track"></span><span class="md-switch__thumb"></span></span>
+      </div>
+    </div>
+    <div class="md-set-group">
+      <div class="md-set-group__title">展示</div>
+      <div class="md-set-row">
+        <span>前台展示已下架商品</span>
+        <span class="md-switch"><input type="checkbox"><span class="md-switch__track"></span><span class="md-switch__thumb"></span></span>
+      </div>
+      <div class="md-set-row">
+        <span>评论需审核后公开</span>
+        <span class="md-switch"><input type="checkbox" checked><span class="md-switch__track"></span><span class="md-switch__thumb"></span></span>
+      </div>
+    </div>
+    <div class="md-btn-group">
+      <button type="button" class="md-btn md-btn--contained" id="btnSave">保存</button>
+    </div>
+  </div>
+  <script src="assets/md-icons.js"></script>
+  <script src="assets/icons-extra.js"></script>
+  <script src="assets/proto-page.js"></script>
+  <script>
+    document.getElementById("btnSave").addEventListener("click", function () {
+      ProtoPage.snackbar("已保存");
+    });
+  </script>
+</body>
+</html>

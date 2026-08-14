@@ -1,67 +1,74 @@
+<!-- LNY-PRD gold: 金样：标准不透明状态栏 + 搜索行/筛选行贴顶 + 1:1 横卡 + 左/右半屏。写列表前必 Read。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <title>PAGE-MP-002 商品列表</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <link rel="stylesheet" href="assets/mui-kit.css">
 </head>
 <body>
-  <div class="md-mobile-page">
-    <div class="md-status-bar" aria-hidden="true">
-      <span>9:41</span>
-      <span class="md-status-bar__signals"></span>
-    </div>
-    <header class="md-appbar md-appbar--mobile">
-      <div class="md-appbar__title">商品</div>
-    </header>
-    <main class="md-mobile-body">
+  <div class="md-mobile-page md-mp md-standard">
+    <header class="md-list-toolbar">
+      <form class="md-search-row" id="searchForm">
+        <label class="md-search">
+          <span class="md-icon" data-icon="search" aria-hidden="true"></span>
+          <span class="md-caption">搜索</span>
+          <input class="md-search__input" type="search" name="q" placeholder="搜索在售商品" aria-label="搜索">
+        </label>
+      </form>
       <div class="md-section-head">
         <h1 class="md-section-head__title">在售商品</h1>
+        <div class="md-btn-group">
+          <button type="button" class="md-btn md-btn--text" onclick="ProtoPage.openDrawer('shopSheet')">店铺</button>
+          <button type="button" class="md-btn md-btn--text" onclick="ProtoPage.openDrawer('filterSheet')">筛选</button>
+        </div>
       </div>
+    </header>
+    <main class="md-mobile-body">
       <div class="md-stack" data-section="商品卡片列表">
-        <article class="md-card md-card--row" data-comp="COMP-001" data-state="default">
+        <a class="md-card md-card--row" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
           <div class="md-card__media md-media-ph md-media-ph--1"></div>
           <div class="md-card__body">
             <h2 class="md-card__title">有机草莓 250g</h2>
             <p class="md-price">¥19.90</p>
           </div>
-        </article>
-        <article class="md-card md-card--row" data-comp="COMP-001" data-state="default">
+        </a>
+        <a class="md-card md-card--row" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
           <div class="md-card__media md-media-ph md-media-ph--2"></div>
           <div class="md-card__body">
             <h2 class="md-card__title">云南小粒咖啡 227g</h2>
             <p class="md-price">¥29.90</p>
           </div>
-        </article>
-        <article class="md-card md-card--row" data-comp="COMP-001" data-state="default">
+        </a>
+        <a class="md-card md-card--row" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
           <div class="md-card__media md-media-ph md-media-ph--3"></div>
           <div class="md-card__body">
             <h2 class="md-card__title">青柠蜂蜜茶 500ml</h2>
             <p class="md-price">¥12.50</p>
           </div>
-        </article>
-        <article class="md-card md-card--row" data-comp="COMP-001" data-state="default">
+        </a>
+        <a class="md-card md-card--row" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
           <div class="md-card__media md-media-ph md-media-ph--4"></div>
           <div class="md-card__body">
             <h2 class="md-card__title">全麦吐司 400g</h2>
             <p class="md-price">¥9.90</p>
           </div>
-        </article>
-        <article class="md-card md-card--row" data-comp="COMP-001" data-state="default">
+        </a>
+        <a class="md-card md-card--row" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
           <div class="md-card__media md-media-ph md-media-ph--5"></div>
           <div class="md-card__body">
             <h2 class="md-card__title">巴旦木仁 200g</h2>
             <p class="md-price">¥36.00</p>
           </div>
-        </article>
-        <article class="md-card md-card--row" data-comp="COMP-001" data-state="default">
+        </a>
+        <a class="md-card md-card--row" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
           <div class="md-card__media md-media-ph md-media-ph--6"></div>
           <div class="md-card__body">
             <h2 class="md-card__title">冷萃美式 250ml</h2>
             <p class="md-price">¥15.80</p>
           </div>
-        </article>
+        </a>
       </div>
       <div class="md-skel-host is-hidden" data-skel-for="COMP-001">
         <div class="md-skeleton md-skeleton--media"></div>
@@ -84,9 +91,50 @@
         <span>商品</span>
       </a>
     </nav>
+    <div id="shopSheetBackdrop" class="md-backdrop" onclick="ProtoPage.closeDrawer('shopSheet')"></div>
+    <aside id="shopSheet" class="md-drawer md-drawer--left">
+      <h2 class="md-drawer__title">店铺</h2>
+      <div class="md-drawer__body">
+        <p class="md-body2">迷你小店 · 当日鲜配。点卡片可看商品详情。</p>
+      </div>
+      <div class="md-drawer__actions">
+        <button type="button" class="md-btn md-btn--text" onclick="ProtoPage.closeDrawer('shopSheet')">关闭</button>
+      </div>
+    </aside>
+    <div id="filterSheetBackdrop" class="md-backdrop" onclick="ProtoPage.closeDrawer('filterSheet')"></div>
+    <aside id="filterSheet" class="md-drawer md-drawer--right">
+      <h2 class="md-drawer__title">筛选</h2>
+      <div class="md-drawer__body">
+        <div class="md-choice-group">
+          <span class="md-choice-group__label">库存</span>
+          <label class="md-check"><input type="checkbox" checked> 有货</label>
+          <label class="md-check"><input type="checkbox"> 缺货</label>
+        </div>
+      </div>
+      <div class="md-drawer__actions">
+        <button type="button" class="md-btn md-btn--text" id="btnClearFilter">清空</button>
+        <button type="button" class="md-btn md-btn--contained" onclick="ProtoPage.closeDrawer('filterSheet'); ProtoPage.snackbar('已应用筛选');">确定</button>
+      </div>
+    </aside>
   </div>
   <script src="assets/md-icons.js"></script>
   <script src="assets/icons-extra.js"></script>
   <script src="assets/proto-page.js"></script>
+  <script>
+    document.getElementById("searchForm").addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      ProtoPage.snackbar("已搜索");
+    });
+    document.getElementById("btnClearFilter").addEventListener("click", function () {
+      ProtoPage.confirm({
+        title: "清空",
+        body: "确定清空当前筛选条件？",
+        onOk: function () {
+          ProtoPage.closeDrawer("filterSheet");
+          ProtoPage.snackbar("已清空筛选");
+        }
+      });
+    });
+  </script>
 </body>
 </html>

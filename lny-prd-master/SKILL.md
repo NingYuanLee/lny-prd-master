@@ -24,11 +24,11 @@ description: >-
 | 步 | Read | 产物 | 禁止 |
 |----|------|------|------|
 | ① | 本文 | `versions/v1.0.0/`、根规范初稿、变更记录首行、第4章终端 | 续跑不得重建 v1.0.0；② 不得改第4章 |
-| ② | `lny-prd-ui/SKILL.md` | `ui_manifest` + `ui/`；`main_spec` §5 | 不改第4章、api 字段、`prototypes/` |
+| ② | `lny-prd-ui/SKILL.md` | `ui_manifest` + `ui/`（含 PAGE **§2.3 交互体验设计**）；`main_spec` §5 | 不改第4章、api 字段、`prototypes/`；只列控件不设计体验 |
 | ③ | `lny-prd-api/SKILL.md` | `api_spec` 索引 + `api/API-*`/`EXT-*`（禁路由/JSON/code） | 不写 UI 线框；不改 `prototypes/` |
 | ④ | `lny-prd-feature/SKILL.md` | `feature_spec` + `feature/`；FEATURE↔PAGE/API 闭环 | 不写接口字段、UI 线框 |
 | ⑤ | `lny-prd-page/SKILL.md` | `pages_prd/`；PC/AD 必产 `_shell` | 不替代 ②③④；不依赖原型 |
-| ⑥ | `lny-prd-prototype/SKILL.md` | `prototypes/`（总入口 `index.html` + `{终端}/`）+ 版本镜像（含 `assets/`）；**每轮最多 3 个业务页**，逐页对照 `pages_prd` | 用 HTML 代替规格；改根规格或 `iteration_notes`；npm / `prototypes-mui-app/`；同轮画完全部页 |
+| ⑥ | `lny-prd-prototype/SKILL.md` | `prototypes/`（总入口 `index.html` + `{终端}/`）+ 版本镜像（含 `assets/`）；**每轮最多 3 个业务页**，逐页对照 `pages_prd` 与 `gold/` 金样 | 用 HTML 代替规格；改根规格或 `iteration_notes`；npm / `prototypes-mui-app/`；同轮画完全部页；按 ASCII 线框降质 |
 | ⑦ | `lny-prd-check/SKILL.md` | 只读报告 | 改任何 PRD 正文 |
 | ⑧ | `lny-prd-iter/SKILL.md` | 新版本目录、台账、`eval_signals`、变更记录新行 | 写规格正文、生成 `pages_prd` |
 | ⑨ | `lny-prd-sp/SKILL.md` | `sp_report.md`；落盘后同轮交 ⑥ **只刷总入口**（§3.3） | 改规格/台账/各端原型页；不可估则停算（仍刷总入口） |

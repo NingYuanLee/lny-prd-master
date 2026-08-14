@@ -253,13 +253,15 @@
             type: "button",
             className: "md-list-item" + (p.id === currentId ? " is-active" : ""),
             "data-page": p.id,
-            text: p.name || p.id,
             on: {
               click: function () {
                 loadPage(p.id);
               },
             },
-          })
+          }, [
+            el("span", { className: "proto-nav-item__name", text: p.name || p.id }),
+            el("span", { className: "proto-nav-item__id", text: p.id }),
+          ])
         );
       });
       var head = el("button", {

@@ -1,6 +1,6 @@
 # LNY-PRD — 李宁远产品工作流
 
-**工具包版本：2.5.0**
+**工具包版本：2.6.19**
 
 ## 背景
 
@@ -43,7 +43,7 @@ LNY-PRD 做的是 **vibe-spec-coding** 里的 **vibe-spec**：把已经想清楚
 | 步骤 | 命令 | 职责 |
 |------|------|------|
 | ① | `/lny-prd-master` | 总控入口与立项，生成项目骨架（`main_spec.md` 等） |
-| ② | `/lny-prd-ui` | 页面架构与 UI 清单（`ui_manifest.md` + `ui/` 明细） |
+| ② | `/lny-prd-ui` | 交互体验设计：`ui_manifest.md` + `ui/`（布局怎么好看、好用、丝滑；动效/微反馈/收纳） |
 | ③ | `/lny-prd-api` | 接口需求（`api_spec.md` + `api/API-*.md`） |
 | ④ | `/lny-prd-feature` | 功能规格拆分（`feature_spec.md` + `feature/FEATURE-*.md`） |
 | ⑤ | `/lny-prd-page` | 单页 PRD 生成（`versions/{v}/pages_prd/`；PC/AD 必产 `_shell`） |
@@ -73,7 +73,7 @@ LNY-PRD 做的是 **vibe-spec-coding** 里的 **vibe-spec**：把已经想清楚
 | **接口需求定义** | 按终端拆解 API 需求（含第三方），产出带请求/响应语义的接口明细文档 |
 | **功能拆分** | 将整体需求拆为独立的功能模块，每个功能有目标、流程、验收标准 |
 | **单页 PRD** | 面向具体页面的回归式需求文档，强制写明依赖路径与数据来源 |
-| **可交互原型** | 全端静态 HTML + MUI 套件，**默认高保真**；AD 含弹窗/确认、Toast、页内签、按钮组、下拉、日期时间；每轮最多 3 个业务页 |
+| **可交互原型** | 全端静态 HTML + MUI 套件，**默认高保真**；触屏：TabBar 贴底无顶栏、胶囊避让、1:1 图、下沉 Banner、金刚区、左/底/右半屏；AD 含弹窗/签/下拉/日期；每轮最多 3 个业务页 |
 | **文档检查** | 对已有 PRD 做只读一致性校验（引用闭环、编号规范、统计对齐），输出审计报告 |
 | **迭代管理** | 创建新版本目录骨架、变更台账（ui/api/feature），标注委派清单 |
 | **版本故事点** | 按版本汇总 FE/BE（及迭代系数）SP，落盘 `sp_report.md` |
@@ -410,7 +410,8 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 │   ├── reference-icons.md          #     闭集 + search-icons.py
 │   ├── reference-shell.md
 │   ├── reference-quality.md
-│   ├── kit/                        #     mui-kit.css / proto-shell.* / md-icons.js
+│   ├── gold/                       #     视觉金样（六种夹具页 + 工作台/树/设置/向导）
+│   ├── kit/                        #     mui-kit.css / proto-shell.* / proto-map.js / md-icons.js
 │   └── scripts/                    #     copy-kit.py、search-icons.py、verify-prototype-utf8.py、verify-prototype-coverage.py
 ├── lny-prd-check/SKILL.md + reference-checks.md
 ├── lny-prd-iter/SKILL.md + reference.md

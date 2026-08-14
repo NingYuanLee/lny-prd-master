@@ -1,0 +1,63 @@
+<!-- LNY-PRD gold: 金样：桌面向导。步骤条 + 当前步表单，最后一步才提交。 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>上架向导</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/mui-kit.css">
+</head>
+<body>
+  <div class="md-d1">
+    <div class="md-breadcrumb">
+      <span>商品</span><span>/</span><span class="is-current">上架向导</span>
+    </div>
+    <div class="md-stepper" id="steps">
+      <div class="md-step is-active" data-step="1">基本信息</div>
+      <div class="md-step" data-step="2">售卖设置</div>
+      <div class="md-step" data-step="3">确认提交</div>
+    </div>
+    <form class="md-d1__form" id="wiz">
+      <div data-step="0">
+        <label class="md-field md-field--sm"><span class="md-field__label">商品名称</span><input class="md-field__input" id="fName" type="text" placeholder="请输入商品名称"></label>
+        <label class="md-field md-field--sm"><span class="md-field__label">售价</span><input class="md-field__input" id="fPrice" type="text" placeholder="请输入售价"></label>
+      </div>
+      <div data-step="1" hidden>
+        <label class="md-field md-field--sm md-field--select"><span class="md-field__label">库存状态</span><select class="md-select" id="fStock"><option>有货</option><option>缺货</option></select></label>
+        <label class="md-switch-row"><span class="md-switch"><input type="checkbox" id="fOn" checked><span class="md-switch__track"></span><span class="md-switch__thumb"></span></span><span>上架</span></label>
+      </div>
+      <div data-step="2" hidden>
+        <p class="md-body2">确认名称、售价与上架状态无误后提交。</p>
+      </div>
+      <div class="md-btn-group">
+        <button type="button" class="md-btn md-btn--text" id="btnPrev">上一步</button>
+        <button type="button" class="md-btn md-btn--contained" id="btnNext">下一步</button>
+      </div>
+    </form>
+  </div>
+  <script src="assets/md-icons.js"></script>
+  <script src="assets/icons-extra.js"></script>
+  <script src="assets/proto-page.js"></script>
+  <script>
+    var step = 0;
+    function paint() {
+      document.querySelectorAll("[data-step]").forEach(function (el) {
+        el.hidden = Number(el.getAttribute("data-step")) !== step;
+      });
+      document.querySelectorAll(".md-step").forEach(function (el, i) {
+        el.classList.toggle("is-active", i === step);
+      });
+      document.getElementById("btnPrev").disabled = step === 0;
+      document.getElementById("btnNext").textContent = step === 2 ? "提交" : "下一步";
+    }
+    document.getElementById("btnPrev").addEventListener("click", function () {
+      if (step > 0) { step -= 1; paint(); }
+    });
+    document.getElementById("btnNext").addEventListener("click", function () {
+      if (step < 2) { step += 1; paint(); return; }
+      ProtoPage.snackbar("已提交");
+    });
+    paint();
+  </script>
+</body>
+</html>

@@ -10,7 +10,7 @@
 
 ## 硬规则（套件已实现，禁止改布局）
 
-- 左菜单通顶；按模块分组，分组标题可点收缩，当前页所在组保持展开。AppBar 只在主内容区上方、让出侧栏宽度。
+- 左菜单通顶；按模块分组，分组标题可点收缩，当前页所在组保持展开。菜单项显示页面名称，下方小字 PAGE 编码。AppBar 只在主内容区上方、让出侧栏宽度。
 - 页单收起、状态演示收起按钮在顶栏；收起后宽度 0、不留窄条。
 - 状态演示在 iframe **左侧**并排（固定 200px），禁止放 iframe 上方或顶栏内。
 - 移动端预览：375×812 设备框，`scale ≤ 1`，外围无滚动条；iframe 内滚动保留。
@@ -110,38 +110,44 @@
 | `tab` | TabBar | 蓝色虚线 + 箭头 |
 | `embed` | 弹窗/Sheet 嵌入 | 紫色点线，无箭头 |
 
-`label` 为触发点简称；TabBar 可省略。检索：`rg "href=\"PAGE-|location\\.href" prototypes/MP/`。
+`label` 为触发点简称，画在连线中点（TabBar 可写 `TabBar`）。检索：`rg "href=\"PAGE-|location\\.href" prototypes/MP/`。
 
 #### E.5 初始布局
 
-按业务簇排布。间距水平 ≥ 240px、垂直 ≥ 280px；节点宽 **200px**（375×812 缩至 0.5333）。可保留用户拖过的 `x/y`。
+按业务簇排布。节点预览区宽高比与真机预览一致（默认 **375×812**，与 `fitPhoneFrame` 同源）；节点宽 **200px**，预览区高 `200 × 812 / 375 ≈ 433px`，禁止把缩略裁成扁条。原点水平间距 ≥ **320px**、垂直 ≥ **680px**（预览总高 + 标题栏 + 空隙）。`x,y` 为默认值；用户拖过的位置由套件写入 localStorage，刷新后仍在，**不要**把缓存坐标写回规格。
 
 #### E.6 结构与能力
 
 单文件 HTML。`#map-shell` flex 纵向（工具栏 + `#viewport` flex:1）；禁止工具栏与 viewport 双 `position: fixed`。
 
-须具备：空白拖拽平移；滚轮缩放（光标中心，`scale` ∈ `[0.15, 2.5]`）；拖标题栏移节点并重绘连线；iframe `pointer-events: none`，点击 overlay 新标签打开单页；SVG 二次贝塞尔、边到边、平行错开。
+须具备：空白拖拽平移；滚轮缩放（光标中心，`scale` ∈ `[0.15, 2.5]`）；拖标题栏移节点并重绘连线；**预览区按真机比例完整显示**（iframe `375×812` 缩放到节点宽）；iframe `pointer-events: none`，点击 overlay 新标签打开单页；SVG **三次贝塞尔**、边到边**端口错开**（同一侧多条线沿边分布，同对节点再垂直错开），**线中点写 `label`**；底部 **图例为色线样本+名称**（由 `proto-map.js` 注入 `#map-legend`，禁止只写「绿实线=跳转」）。
 
-核心函数：`applyTransform`、`getNodeBox`、`getEdgePoint`、`drawConnections`、`createNodes`、`fitAll`、`zoomAt`、`getContentBounds`、`exportCanvasImage`、`toggleFullscreen`、`updateFullscreenButton`。
+`map.html` **只填数据**：`ProtoMap.boot({ project, terminal, pages, links })`。拖拽、缓存、缩放、导出、全屏由 `assets/proto-map.js` 实现，禁止在 `map.html` 手写第二套画布逻辑。
+
+核心入口：`ProtoMap.boot`（内部含 `applyTransform`、`getNodeBox`、`drawConnections`、`createNodes`、`fitAll`、`zoomAt`、`exportCanvasImage`、`toggleFullscreen`）。
 
 ```javascript
-var STYLE = {
-  forward: { stroke: '#3fb950', dash: '', width: 2 },
-  back:    { stroke: '#8b949e', dash: '6 4', width: 1.5 },
-  tab:     { stroke: '#58a6ff', dash: '8 4', width: 2 },
-  embed:   { stroke: '#d2a8ff', dash: '2 4', width: 1.5 }
-};
+ProtoMap.boot({
+  project: "mini-shop",
+  terminal: "MP",
+  pages: [
+    { id: "PAGE-MP-001", name: "首页", module: "首页", file: "PAGE-MP-001.html", x: 80, y: 80 }
+  ],
+  links: [
+    { from: "PAGE-MP-001", to: "PAGE-MP-002", type: "tab", label: "TabBar" }
+  ]
+});
 ```
 
-iframe `loading="lazy"`；>15 页可改为占位 + 双击加载。参考 `examples/mini-shop/prototypes/MP/map.html`。
+线型由套件内置：`forward` 绿实线、`back` 灰虚线、`tab` 蓝虚线、`embed` 紫点线。iframe `loading="lazy"`；>15 页可改为占位 + 双击加载。参考 `examples/mini-shop/prototypes/MP/map.html`。
 
 #### E.6b 布局持久化
 
-localStorage（debounce 300ms，键 `{项目}-{终端}-map-layout-v1`，含 `pages[{id,x,y}]` + `viewport`）+ 工具栏「导出坐标」。须有：全屏、导出坐标、导出图片、重置布局。禁止只放内存；禁止用 localStorage 改规格。
+localStorage（debounce 300ms，键 `{project}-{终端}-map-layout-v1`，含 `pages[{id,x,y}]` + `viewport`）。拖节点、平移、缩放后自动写入；刷新或下次打开同一浏览器仍在原位，清站点数据才恢复默认。工具栏须有：全屏、导出图片、重置布局（清除该键并回到 `boot` 里的默认 `x,y`）。禁止只放内存；禁止把缓存坐标写回规格或 `map.html`。
 
 #### E.6c 导出 PNG
 
-文件名 `{终端编码}-map-{YYYY-MM-DD}.png`；全 PAGES 包围盒 + 48px；`html2canvas@1.4.1` `scale: 2`（懒加载 CDN）；iframe 换成编号+名称占位；生成中 Toast。离屏 `#export-snapshot` 克隆 SVG 与节点。禁止要求手动截图。
+工具栏「导出图片」调用 `ProtoMap.exportCanvasImage`。文件名 `{终端编码}-map-{YYYY-MM-DD}.png`；全 PAGES 包围盒 + 48px；Canvas 2D `scale: 2` 离屏绘制节点占位（编号+名称+真机比例手机框）、错开连线与线标签。**不**依赖 html2canvas / CDN，`file://` 可用。iframe 真机画面不进 PNG。生成中 Toast。禁止要求用户手动截图。
 
 #### E.6d 全屏
 

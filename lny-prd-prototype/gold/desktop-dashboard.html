@@ -1,0 +1,76 @@
+<!-- LNY-PRD gold: 金样：桌面工作台。指标卡一排 + 趋势 + 短表。写仪表盘前必 Read。禁止拿 D1-1 列表硬套。 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>工作台</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/mui-kit.css">
+</head>
+<body>
+  <div class="md-d1">
+    <div class="md-breadcrumb">
+      <span class="is-current">工作台</span>
+    </div>
+    <div class="md-stat-grid">
+      <div class="md-stat-card">
+        <span class="md-caption">今日订单</span>
+        <p class="md-h3">128</p>
+        <span class="md-caption">较昨日 +12%</span>
+      </div>
+      <div class="md-stat-card">
+        <span class="md-caption">待发货</span>
+        <p class="md-h3">16</p>
+        <span class="md-caption">需今日处理</span>
+      </div>
+      <div class="md-stat-card">
+        <span class="md-caption">库存预警</span>
+        <p class="md-h3">3</p>
+        <span class="md-caption">低于安全库存</span>
+      </div>
+      <div class="md-stat-card">
+        <span class="md-caption">到货提醒</span>
+        <p class="md-h3">9</p>
+        <span class="md-caption">待联系</span>
+      </div>
+    </div>
+    <div class="md-section-head"><span class="md-section-head__title">近七日趋势</span></div>
+    <div class="md-chart-ph" aria-hidden="true">
+      <span style="height:40%"></span><span style="height:55%"></span><span style="height:48%"></span>
+      <span style="height:70%"></span><span style="height:62%"></span><span style="height:80%"></span>
+      <span style="height:74%"></span>
+    </div>
+    <div class="md-section-head"><span class="md-section-head__title">待办</span></div>
+    <div class="md-paper">
+      <table class="md-table">
+        <thead>
+          <tr>
+            <th class="md-col-name">事项</th>
+            <th class="md-col-status">状态</th>
+            <th class="md-col-date">截止</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="md-col-name">补货：有机草莓</td><td class="md-col-status"><span class="md-chip md-chip--error">紧急</span></td><td class="md-col-date">2026-08-14</td></tr>
+          <tr><td class="md-col-name">回复到货提醒 4 条</td><td class="md-col-status"><span class="md-chip md-chip--primary">进行中</span></td><td class="md-col-date">2026-08-15</td></tr>
+          <tr><td class="md-col-name">核对缺货 SKU</td><td class="md-col-status"><span class="md-chip">待开始</span></td><td class="md-col-date">2026-08-16</td></tr>
+          <tr><td class="md-col-name">更新首页 Banner</td><td class="md-col-status"><span class="md-chip md-chip--success">已完成</span></td><td class="md-col-date">2026-08-12</td></tr>
+        </tbody>
+      </table>
+      <div class="md-skel-host is-hidden" data-skel-for="COMP-001">
+        <div class="md-skeleton md-skeleton--row"></div>
+        <div class="md-skeleton md-skeleton--row"></div>
+        <div class="md-skeleton md-skeleton--row"></div>
+      </div>
+      <div class="md-empty md-empty--illus is-hidden" data-empty-for="COMP-001" data-empty-text="暂无待办" data-error-text="待办加载失败">
+        <div class="md-empty__art" aria-hidden="true"></div>
+        <p class="md-empty__title">暂无内容</p>
+        <p class="md-empty__text">暂无待办</p>
+      </div>
+    </div>
+  </div>
+  <script src="assets/md-icons.js"></script>
+  <script src="assets/icons-extra.js"></script>
+  <script src="assets/proto-page.js"></script>
+</body>
+</html>

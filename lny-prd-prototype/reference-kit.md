@@ -6,18 +6,23 @@
 
 **原型默认高保真**：与 `ui/PAGE`「视觉细节」估点档位无关。⑥ 必须按本节「高保真落地」出图，禁止线框式两张灰卡、禁止「示例商品 A」。
 
+`pages_prd` ASCII **只定分区上下顺序**，不是视觉稿。写页前必须 Read [`gold/README.md`](gold/README.md) 与对应金样，复制骨架再换文案。禁止把 `┌─┐` 画成带边框空盒子。
+
 ## 高保真落地（必守）
 
 写每一页 HTML 时按此表。未达则不得交付。
 
 | 项 | 要求 |
 |----|------|
+| 金样 | 按页类型 Read `gold/`：`mobile-grid` / `mobile-list` / `mobile-detail` / `mobile-form` / `mobile-settings` / `desktop-list` / `desktop-form` / `desktop-dashboard` / `desktop-split` / `desktop-settings` / `desktop-wizard`。复制骨架含 script。密度不得低于金样。禁止用 `desktop-list` 硬套工作台 |
+| 估点档 | 忽略「视觉细节=粗糙」；⑥ 不降档 |
+| 舒适默认 | §2.3 漏写也要落地：隐藏 `md-skel-host`、插画 `md-empty`、失败可重试、按下态、浮层过渡、D1-1 `md-d1--list`+`md-col-*`。禁止发明新跳转/字段/弹窗 |
 | 夹具数据 | 用符合业务域的中文名称与真实量级价格（如 `有机草莓 250g` / `¥19.90`）。**禁止** `示例商品 A/B`、`测试数据`、`xxx`、`Item 1` |
 | 条数 | 列表/卡片/表格默认态 **≥4 条**（规格写明空态、或 API 写死更少条数时从其规定；首页有「每页条数」则按其值） |
 | 字段 | API/COMP 已列的展示字段都要出现（名称、图、价、库存状态等）；**不**发明规格没有的字段（如无「销量」就不要写已售） |
 | 图片 | `md-card__media md-media-ph md-media-ph--{1-6}` 轮换；禁止无编号的纯灰 `md-media-ph`、禁止随机色块 |
-| 移动端 | 必须有 `md-status-bar`（L0 系统栏）；`md-section-head` 写分区标题；列表优先 `md-card md-card--row` |
-| 桌面端 | 必须有 `md-page-head`；表格首列可用 `md-row-goods` + `md-thumb md-media-ph--n`。规格出现的弹窗/签/下拉/日期/按钮组必须用本节 AD 控件，禁止裸 `alert` / 无样式 `<select>` |
+| 移动端 | 状态栏由 `proto-page.js` 固定顶注入；页根须标 `md-immersive`（状态栏透明）或 `md-standard`（状态栏不透明）；`md-section-head`；列表优先 `md-card md-card--row`；`viewport-fit=cover`；左右下及四角走 `--md-safe-*` |
+| 桌面端 | 必须有 `md-breadcrumb`（内容区顶部，**不要** `md-page-head` 大标题）；表格首列可用 `md-row-goods` + `md-thumb md-media-ph--n`。D1-1 列表：页内签在筛选上方且整区切换；`md-d1--list` 让分页与表横条贴底，并走 **紧凑密度**；勾选列 `md-col-check` 左冻、操作列 `md-col-actions` 右冻定宽；中间列按语义加 `md-col-name` / `md-col-price` / `md-col-status` / `md-col-date`（名称吃剩余，金额/状态/日期窄，禁止均分或被 `min-width` 拉长）；操作过多用 `md-actions` + `data-menu`「更多」下拉；`md-d1__stats` 靠左、`md-d1__pager` 靠右。规格出现的弹窗/签/下拉/日期/按钮组必须用本节 AD 控件，禁止裸 `alert` / 无样式 `<select>` |
 | 间距 | 只用套件：分区头 / 栅格 / `md-d1`，禁止用内联 `margin` 当排版 |
 
 ## 复制
@@ -28,7 +33,7 @@
 python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 ```
 
-写入 `prototypes/{终端}/assets/`：`mui-kit.css`、`proto-shell.css`、`proto-shell.js`、`proto-page.js`、`md-icons.js`；若尚无 `icons-extra.js` 则补空文件（已有 extras 不覆盖）。镜像 `versions/{v}/prototypes/{终端}/` 时 **须连同 `assets/`**（含 extras 与 `icons/`）。禁止改 kit 源文件来迁就某一页。
+写入 `prototypes/{终端}/assets/`：`mui-kit.css`、`proto-shell.css`、`proto-shell.js`、`proto-page.js`、`proto-map.js`、`md-icons.js`；若尚无 `icons-extra.js` 则补空文件（已有 extras 不覆盖）。镜像 `versions/{v}/prototypes/{终端}/` 时 **须连同 `assets/`**（含 extras 与 `icons/`）。禁止改 kit 源文件来迁就某一页。
 
 ## 引用（硬性）
 
@@ -36,7 +41,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 |------|------|
 | 所有 `PAGE-*.html` | `assets/mui-kit.css` + `assets/md-icons.js` + `assets/icons-extra.js` + `assets/proto-page.js` |
 | `index.html` 汇总壳 | 上表 + `assets/proto-shell.css` + `assets/proto-shell.js`（`md-icons.js` → `icons-extra.js` → `proto-shell.js`） |
-| `map.html` | 建议 `assets/mui-kit.css` 做工具栏；画布逻辑仍按 `reference-shell.md` §E |
+| `map.html` | `assets/mui-kit.css` + `assets/proto-shell.css` + `assets/proto-map.js`；只填 `ProtoMap.boot({ project, terminal, pages, links })`，禁止手写拖拽/缩放/导出 |
 
 禁止：页内 `<style>` 改 `--md-primary` / 另写一套按钮色；内联 `style` 仅允许布局占位（宽高/显示），不得当主题。
 
@@ -50,7 +55,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 <head>
   <meta charset="utf-8">
   <title>MP 原型</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <link rel="stylesheet" href="assets/mui-kit.css">
   <link rel="stylesheet" href="assets/proto-shell.css">
 </head>
@@ -101,59 +106,55 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 **桌面 D1-1**
 
 ```html
-<div class="md-d1">
-  <div class="md-page-head">
-    <h1 class="md-h3">商品列表</h1>
-    <span class="md-caption">共 6 条</span>
+<div class="md-d1 md-d1--list">
+  <div class="md-breadcrumb">
+    <span>商品</span>
+    <span>/</span>
+    <span class="is-current">商品列表</span>
   </div>
   <nav class="md-tabs md-tabs--page">
     <button type="button" class="md-tab is-active" data-panel="panelAll">全部</button>
-    <button type="button" class="md-tab" data-panel="panelOn">在售</button>
+    <button type="button" class="md-tab" data-panel="panelOn">有货</button>
   </nav>
-  <div class="md-d1__search">
-    <label class="md-field md-field--sm">
-      <span class="md-field__label">商品名称</span>
-      <input class="md-field__input" type="text" placeholder="请输入商品名称">
-    </label>
-    <label class="md-field md-field--sm md-field--select">
-      <span class="md-field__label">库存状态</span>
-      <select class="md-select">
-        <option>全部</option>
-        <option>有货</option>
-        <option>缺货</option>
-      </select>
-    </label>
-    <label class="md-field md-field--sm md-field--date">
-      <span class="md-field__label">上架日期</span>
-      <input class="md-field__input" type="text" placeholder="年-月-日" autocomplete="off">
-    </label>
-    <div class="md-btn-group">
-      <button type="button" class="md-btn md-btn--contained">查询</button>
-      <button type="button" class="md-btn md-btn--outlined">重置</button>
+  <div class="md-tab-panels md-d1__workspace">
+    <div id="panelAll" class="md-tab-panel is-active">
+      <div class="md-d1__search">
+        <label class="md-field md-field--sm">
+          <span class="md-field__label">商品名称</span>
+          <input class="md-field__input" type="text" placeholder="请输入商品名称">
+        </label>
+        <div class="md-filter__actions md-btn-group">
+          <button type="button" class="md-btn md-btn--contained">查询</button>
+          <button type="button" class="md-btn md-btn--outlined">重置</button>
+        </div>
+      </div>
+      <div class="md-d1__toolbar">
+        <div class="md-btn-group">
+          <button type="button" class="md-btn md-btn--contained">新增</button>
+        </div>
+      </div>
+      <div class="md-d1__list">
+        <div class="md-table-wrap">
+          <table class="md-table">
+            <thead>
+              <tr>
+                <th class="md-col-check"><label class="md-check"><input type="checkbox"></label></th>
+                <th class="md-col-name">商品名称</th>
+                <th class="md-col-price">售价</th>
+                <th class="md-col-actions">操作</th>
+              </tr>
+            </thead>
+            <tbody>…</tbody>
+          </table>
+        </div>
+        <div class="md-d1__footer">
+          <span class="md-d1__stats md-caption">共 6 条</span>
+          <div class="md-d1__pager">
+            <nav class="md-pagination">…</nav>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="md-d1__toolbar">
-    <div class="md-btn-group">
-      <button type="button" class="md-btn md-btn--contained">新增</button>
-      <button type="button" class="md-btn md-btn--outlined">导出</button>
-    </div>
-    <div class="md-select-wrap">
-      <button type="button" class="md-select-btn" data-menu="moreMenu">更多操作</button>
-      <ul id="moreMenu" class="md-menu">
-        <li><button type="button" class="md-menu__item">批量上架</button></li>
-        <li><button type="button" class="md-menu__item">批量下架</button></li>
-      </ul>
-    </div>
-  </div>
-  <div id="panelAll" class="md-tab-panel is-active">
-    <!-- 表格 -->
-  </div>
-  <div class="md-d1__footer">
-    <label class="md-field md-field--sm md-field--select">
-      <span class="md-field__label">每页条数</span>
-      <select class="md-select"><option>10</option><option selected>20</option></select>
-    </label>
-    <nav class="md-pagination">…</nav>
   </div>
 </div>
 <div id="editBackdrop" class="md-backdrop"></div>
@@ -172,31 +173,27 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 **移动页**
 
 ```html
-<div class="md-mobile-page">
-  <div class="md-status-bar" aria-hidden="true">
-    <span>9:41</span>
-    <span class="md-status-bar__signals"></span>
+<div class="md-mobile-page md-mp md-immersive">
+  <div class="md-hero">
+    <div class="md-swiper">…Banner 下沉…</div>
   </div>
-  <header class="md-appbar md-appbar--mobile">
-    <div class="md-appbar__title">首页</div>
-  </header>
   <main class="md-mobile-body">
+    <nav class="md-king">…金刚区…</nav>
     <div class="md-section-head">
       <h1 class="md-section-head__title">推荐</h1>
     </div>
     <div class="md-grid-2">
       <article class="md-card" data-comp="COMP-001" data-state="default">
         <div class="md-card__media md-media-ph md-media-ph--1"></div>
-        <div class="md-card__body">
-          <h2 class="md-card__title">有机草莓 250g</h2>
-          <p class="md-price">¥19.90</p>
-        </div>
+        …
       </article>
     </div>
   </main>
   <nav class="md-tabbar">…</nav>
 </div>
 ```
+
+有 TabBar 时 **不要**再写 `md-appbar`。列表横卡用 `md-card md-card--row`（封面 **1:1**）；宫格卡同样 **1:1**。详情/内容页主图用 `md-swiper md-swiper--wide`（**16:9**），介绍配图用 `md-media--16x9`。评论附图用 `md-comment__photos` + `md-comment__photo`（**1:1**、圆角、横向排布超出换行）。触屏表单页输入右侧须有安全距（套件已给 `.md-mobile-page:has(form) .md-mobile-body`）。左/底/右半屏：`md-drawer--left/bottom/right`。移动页 `<meta viewport>` 须带 `viewport-fit=cover`。**禁止**在页内手写 `md-status-bar`：由 `proto-page.js` 注入固定顶演示层。页根必须标 **`md-immersive`**（状态栏背景透明）或 **`md-standard`**（状态栏背景不透明）。可点文案与 Tab 走套件安全距（左右下及四角）。
 
 **COMP 切态**（iframe 内）
 
@@ -252,15 +249,17 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 弹窗、确认、Toast、页内签、按钮组、下拉、日期/时间 **禁止**再用浏览器原生丑控件或 `alert()`。
 
-**页内分页签**
+**页内分页签**（放在搜索栏上方；`data-panel` 对应的面板里装筛选+功能+列表+分页整区）
 
 ```html
 <nav class="md-tabs md-tabs--page">
   <button type="button" class="md-tab is-active" data-panel="p1">全部</button>
   <button type="button" class="md-tab" data-panel="p2">已下架</button>
 </nav>
-<div id="p1" class="md-tab-panel is-active">…</div>
-<div id="p2" class="md-tab-panel">…</div>
+<div class="md-tab-panels md-d1__workspace">
+  <div id="p1" class="md-tab-panel is-active">…筛选/功能/列表/分页…</div>
+  <div id="p2" class="md-tab-panel">…</div>
+</div>
 ```
 
 **按钮组 / 分裂按钮**
@@ -338,6 +337,8 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 </div>
 ```
 
+触屏页：`.md-choice-group` 自动变成标签（选中右上对号角标），且每个输入组独立成行。列表行内的 `md-radio` / `md-check`（或 `.md-choice-group--list`）仍用左侧圆圈/方块。桌面不变。
+
 表单弹窗、整页表单、筛选栏规格出现开关/单选/多选时必须用上表，禁止裸 `input` 或自造 toggle。
 
 **弹窗 / 确认 / Toast / 气泡**
@@ -372,6 +373,8 @@ ProtoPage.snackbar("失败", { severity: "error" });
 ProtoPage.confirm({ title: "删除确认", body: "删除后不可恢复", onOk: function () {} });
 ```
 
+触屏页 `ProtoPage.snackbar` 为居中 Toast（半透明黑底圆角、白图标+白字）。桌面仍为底部条。
+
 ```html
 <button type="button" class="md-btn md-btn--text md-tooltip" data-tip="刷新列表">刷新</button>
 ```
@@ -383,8 +386,14 @@ ProtoPage.confirm({ title: "删除确认", body: "删除后不可恢复", onOk: 
 | 规格里出现 | 必须用 | 禁止 |
 |------------|--------|------|
 | 筛选 / 搜索栏 | `md-filter` 或 `md-d1__search` | 无 class 的 `<form>` |
-| 侧滑 / 抽屉 | `md-drawer` + `md-backdrop` | 自造 `position:fixed` 面板 |
-| 上传 | `md-upload` | 裸 `<input type="file">` |
+| 侧滑 / 抽屉 | `md-drawer md-drawer--left/right/bottom` + `md-backdrop` | 自造 `position:fixed` 面板；`display` 瞬切 |
+| 轮播 Banner | `md-swiper` + `__track` + `__slide` + `__dots` | 自造横向滚动无指示点 |
+| 金刚区 | `md-king` + `md-king__item`（图标+文字上下排、同一底、有内边距） | 图标单独色块、文字露在底外；无热区的纯文字宫格 |
+| 方形图标按钮 | `md-btn--stack` 或金刚项同款：图标上、文字下、共一块底 | 图标独立成钮、文字在旁或底外 |
+| 贴底主操作 | `md-action-bar` 或 `md-tabbar` | 主按钮写在滚动内容末尾 |
+| 上传 | `md-upload`；单图 `md-upload--single`；多图 `md-upload-grid`；文件 `md-upload--file` | 裸 `<input type="file">` |
+| 触屏滑动条 | `md-slider`（`--steps` 五步 / `--fluid` 无极） | 无刻度无当前值的裸 range |
+| 触屏日期/省市区 | `data-wheel="date|region"` 底半屏三级联动 | 原生 `type=date`；三个独立下拉 |
 | 空态 | `md-empty md-empty--illus` | 一行灰字 / 空白 |
 | 加载 | `md-skeleton` / `data-state="loading"` + `md-skel-host` | 纯文字「加载中」 |
 | 封面 / 图片位 | `md-card__media md-media-ph md-media-ph--1`～`--6` 轮换 | `style="background:#xxx"` 色块；无编号灰块 |
@@ -397,8 +406,8 @@ ProtoPage.confirm({ title: "删除确认", body: "删除后不可恢复", onOk: 
 | 下拉 | `md-field--select` + `md-select`，或 `md-select-btn` + `md-menu` | 未包 `md-field` 的裸 `<select>` |
 | 日期 / 时间 | `md-field--date` / `md-field--time` + `type="date|time|datetime-local"` | 自造日历、纯文本日期 |
 | 开关 | `md-switch-row` + `md-switch` | 自造滑块 / 裸 checkbox 当开关 |
-| 单选 | `md-choice-group` + `md-radio` | 未包 `md-radio` 的裸 `<input type="radio">` |
-| 多选 | `md-choice-group` + `md-check` | 未包 `md-check` 的裸 `<input type="checkbox">` |
+| 单选 | 桌面/列表：`md-choice-group` + `md-radio`；触屏表单：同上（自动标签角标） | 未包 `md-radio` 的裸 `<input type="radio">` |
+| 多选 | 桌面/列表：`md-choice-group` + `md-check`；触屏表单：同上（自动标签角标）；列表行勿包成标签 | 未包 `md-check` 的裸 `<input type="checkbox">` |
 | 弹窗 / 确认 | `md-dialog` + `md-backdrop`；确认用 `ProtoPage.confirm` | `alert()` / `confirm()` |
 | Toast / 提示 | `ProtoPage.snackbar` / `md-alert` / `md-tooltip` | 页内红字当提示 |
 
@@ -413,22 +422,34 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 图标按钮 | `md-icon-btn` 内放 `span.md-icon` |
 | 输入 | `md-field` + `md-field__label` + `md-field__input` |
 | 卡片 | `md-card` `md-card--row` `md-card__media` `md-media-ph md-media-ph--n` `md-card__body` `md-card__title` `md-price` |
+| 详情 16:9 图 | `md-swiper--wide`；介绍配图 `md-media--16x9`；评论 `md-comment` `__user` `__time` `__text` `__photos` `__photo`（一排最多五张） |
 | 分区头 | `md-section-head` `md-section-head__title` |
-| 系统栏 | `md-status-bar`（移动端必有） |
-| 桌面页头 | `md-page-head`；表内缩略图 `md-row-goods` `md-thumb` |
-| 纸面/表格 | `md-paper` `md-table` `md-pagination` `md-page-btn` |
+| 系统栏 | `md-status-bar`（`proto-page.js` 固定顶注入；页内禁止手写） |
+| 桌面面包屑 | `md-breadcrumb`（D1 内容区顶部，禁止再写 `md-page-head`） |
+| 操作列 | `md-col-actions` 定宽；过多操作用 `md-actions` + `data-menu`「更多」+ `md-menu md-menu--fixed`（打开时抬高当前行，菜单留在单元格内，避免被后续表行挡住，也避免点菜单打不开弹窗） |
+| 语义列宽 | `md-col-check` 勾选；`md-col-name` 名称吃剩余；`md-col-price` 金额窄右齐；`md-col-status` 状态/短枚举；`md-col-date` 日期；`md-col-id` 短码；`md-col-num` 数量。禁止所有列均分 |
+| D1-1 紧凑 | 根节点 `md-d1 md-d1--list`（矮行、小内外距）；**不要**套到 D1-2 表单页 |
+| 工作台 | `md-stat-grid` `md-stat-card`；趋势 `md-chart-ph` |
+| 分栏 | `md-d1--split` `md-split` `__side` `__main`；树 `md-tree` `__item is-active` |
+| 设置分组 | `md-set-group` `__title` `md-set-row`；一行一项开关 |
+| 汇总分页 | `md-d1__footer`：`md-d1__stats` 靠左，`md-d1__pager` 靠右 |
+| 纸面/表格 | `md-paper` `md-table` `md-table-wrap` `md-col-check` `md-col-name` `md-col-price` `md-col-status` `md-col-date` `md-col-actions` `md-pagination` `md-page-btn` |
 | 筛选栏 | `md-filter` / `md-d1__search`；动作区 `md-filter__actions` |
-| 抽屉 | `md-drawer` `md-drawer--left/right`；`ProtoPage.openDrawer` |
-| 上传 | `md-upload` |
+| 抽屉 | `md-drawer` `--left/--right/--bottom`；`ProtoPage.openDrawer` |
+| 轮播 / 金刚区 | `md-swiper` `md-king`（项内图标+文字上下同底）；沉浸式 `md-immersive` + `md-hero`；标准 `md-standard`；方形图标钮 `md-btn--stack` |
+| 主操作条 | `md-action-bar`（无 TabBar 的提交/购买） |
+| 上传 | `md-upload` `md-upload--single` `md-upload-grid` `md-upload--file` |
+| 滑动条 | `md-slider` `--steps` `--fluid` |
+| 底半屏三级 | `data-wheel="date"` / `data-wheel="region"` |
 | 空态 | `md-empty md-empty--illus` + `__art` `__title` `__text` |
 | 骨架 | `md-skeleton` `--text/--title/--media/--row`；`md-skel-host` |
-| 步骤/树/图 | `md-stepper` `md-tree` `md-chart-ph` |
+| 步骤/树/图 | `md-stepper` `md-step` `md-tree` `md-chart-ph` `md-stat-grid` `md-stat-card` |
 | Chip/Alert | `md-chip` `md-alert md-alert--error/--info/--success/--warning` |
 | 状态组 | `md-toggle md-toggle--vert`（状态演示已内置） |
 | 按钮组 | `md-btn-group` `md-btn-group--split` `md-d1__toolbar` |
 | 下拉 | `md-field--select` `md-select` `md-select-btn` `md-menu` `md-menu__item` |
 | 日期时间 | `md-field--date` `md-field--time` `md-cal` |
-| 开关/单选/多选 | `md-switch` `md-switch-row` `md-radio` `md-check` `md-choice-group` |
-| 页内签 | `md-tabs md-tabs--page` `md-tab` `md-tab-panel` |
+| 开关/单选/多选 | `md-switch` `md-switch-row` `md-radio` `md-check` `md-choice-group`；触屏表单标签角标，列表 `--list` 或行内圆/方 |
+| 页内签 | `md-tabs md-tabs--page` `md-tab` `md-tab-panel` `md-tab-panels` `md-d1__workspace` |
 | 弹窗/确认 | `md-dialog` `md-dialog--sm/--lg`；`ProtoPage.openDialog` / `confirm` |
-| 提示 | `md-snackbar` `--success/--error`；`md-tooltip` `data-tip` |
+| 提示 | 触屏：居中 `md-snackbar--toast`（半透明黑底、白图标白字）；桌面：底部 `md-snackbar`；`md-tooltip` `data-tip` |

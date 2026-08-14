@@ -151,8 +151,9 @@
 | 原型套件引用 | 各端 `PAGE-*.html` 引用同端 `assets/mui-kit.css`、`md-icons.js`、`icons-extra.js`；`index.html` 另引 `proto-shell.css` + `proto-shell.js`；不得存在 `prototypes-mui-app/`；缺闭集图标须由 `search-icons.py` 写入 extras | `/lny-prd-prototype` 按 kit 补齐 | 中 |
 | 演示按钮归位 | `PAGE-*.html` 内不得含 `demo-*`/`setDemo*`/`mock-*`（后端状态切换须归位状态演示） | `/lny-prd-prototype` 移至状态演示 | 中 |
 | 原型 JS 引用 | 静态无残留调用；可选 Console 无 ReferenceError | `/lny-prd-prototype` 按 G.1 修 | 高 |
+| 交互体验设计 §2.3 | 每个 `ui/PAGE-*` 含观感与舒适、动效与过渡、微反馈、收纳与浮层；不得只列控件 | `/lny-prd-ui` 补 §2.3 | 高 |
 | 布局与 COMP 态 | 布局与 `ui/PAGE-*` 一致；COMP 态与矩阵可演示 | ② 或 ⑥ | 中 |
-| 逐页对照 G.4 | 每个业务 `PAGE-*.html` 对照 `pages_prd`：ASCII/分区、结构与控件、§4 跳转、COMP 态；须能过 `verify-prototype-coverage.py`（含高保真：无「示例 A/B」、≥4 条、封面变体、移动端状态栏） | `/lny-prd-prototype` 按 G.4/G.5 补页（每轮最多 3 页） | 高 |
+| 逐页对照 G.4 | 每个业务 `PAGE-*.html` 对照 `pages_prd`：ASCII 只定分区；视觉须达 `gold/` 金样密度；须能过 `verify-prototype-coverage.py`（含高保真与视觉地板：无「示例 A/B」、≥4 条、封面变体、状态栏、无 ASCII 残留、桌面表有 Chip/缩略图） | `/lny-prd-prototype` 按 G.4/G.5 对照金样补页（每轮最多 3 页） | 高 |
 | 接口与 Feature | 展示字段能在 `api/API-*` 找到；主操作有 API；流程与 FEATURE/AC 可对照 | ③④ 或 ⑥ | 中 |
 | 跨层编号 | 原型中的 `PAGE-*` / `API-*` / `FEATURE-*` 可回溯索引 | 对应步补引用 | 高 |
 | 跳转 | 页面间跳转无死路；目标在 manifest | ⑥ 修跳转 | 低 |

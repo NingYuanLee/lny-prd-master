@@ -25,7 +25,7 @@
             { id: "COMP-001", name: "商品卡片", states: ["loading", "empty", "error", "default"] }
           ],
           spec: {
-            layout: "L0 状态栏与 TabBar；L1 顶栏「首页」；L2 推荐商品区；L3 商品卡片栅格。",
+            layout: "L0 沉浸式（状态栏透明）叠在下沉 Banner 上（胶囊避让）；无页内顶栏；L1 TabBar 贴底；L2 金刚区+推荐；L3 商品卡片 1:1；L5 底半屏分类。",
             comps: "COMP-001 · 商品卡片\n状态切换入口：壳层状态演示（loading / empty / error / default）。",
             apis: "API-MP-001 · 查询推荐商品\n进页请求；失败由状态演示 error 演示。",
             features: "FEATURE-001 · 浏览商品 · 首页推荐入口",
@@ -43,13 +43,45 @@
             { id: "COMP-001", name: "商品卡片", states: ["loading", "empty", "error", "default"] }
           ],
           spec: {
-            layout: "L0 TabBar；L1 顶栏「商品」；L2 列表滚动；L3 商品卡片纵向排列。",
+            layout: "L0 标准模式（状态栏不透明）；L1 搜索行+筛选行贴顶固定；TabBar 贴底；L2 仅滚横卡 1:1；L5 左店铺/右筛选半屏、确认清空、Toast。",
             comps: "COMP-001 · 商品卡片\n状态切换入口：壳层状态演示。",
-            apis: "API-MP-001 · 分页查询商品\n进页请求；失败 Toast 由状态演示 error 演示。",
+            apis: "API-MP-001 · 分页查询商品\n进页、搜索、筛选；失败 Toast 由状态演示 error 演示。",
             features: "FEATURE-001 · 浏览商品 · 列表浏览",
-            actions: "滚动 · 列表区内滚动\n壳层 · 组件状态切换"
+            actions: "点击卡片 · 进入商品详情\n滚动 · 列表区内滚动\n壳层 · 组件状态切换"
           },
-          brief: "商品列表分页浏览在售商品，失败可重试。"
+          brief: "搜索与筛选贴顶，列表分页浏览在售商品，点卡片进详情。"
+        },
+        {
+          id: "PAGE-MP-003",
+          name: "商品详情",
+          module: "商品",
+          file: "PAGE-MP-003.html",
+          tabBarExempt: true,
+          comps: [],
+          spec: {
+            layout: "L0 沉浸式；L1 返回叠在下沉 16:9 图上，右侧避让胶囊；贴底到货提醒；L2 图文商品说明+评论。",
+            comps: "本页无局部自定义组件。",
+            apis: "API-MP-002 · 查询详情（含介绍与评论）\n进页请求。",
+            features: "FEATURE-001 · 浏览商品 · 详情展示",
+            actions: "返回 · 商品列表\n到货提醒 · 打开表单页"
+          },
+          brief: "展示类：看清商品图、图文说明与评论，可去登记到货提醒。"
+        },
+        {
+          id: "PAGE-MP-004",
+          name: "到货提醒",
+          module: "商品",
+          file: "PAGE-MP-004.html",
+          tabBarExempt: true,
+          comps: [],
+          spec: {
+            layout: "L0 标准模式；L1 返回+标题；输入独立成行且右侧安全距；五步/无极滑动条、下拉、底半屏日期与省市区、单图更换/多图可删/文件上传；主操作条贴底提交。",
+            comps: "本页无局部自定义组件。",
+            apis: "API-MP-003 · 提交到货提醒\n点击提交；缺必填 Toast。",
+            features: "FEATURE-003 · 登记到货提醒",
+            actions: "取消/返回 · 商品详情\n提交 · Toast 已登记"
+          },
+          brief: "表单类：填写联系方式与到货偏好，提交到货提醒（非下单）。"
         }
       ]
     };

@@ -11,6 +11,7 @@ KIT_FILES = (
     "proto-shell.css",
     "proto-shell.js",
     "proto-page.js",
+    "proto-map.js",
     "md-icons.js",
 )
 

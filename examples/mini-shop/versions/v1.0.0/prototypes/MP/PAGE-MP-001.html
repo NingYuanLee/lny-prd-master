@@ -3,19 +3,53 @@
 <head>
   <meta charset="utf-8">
   <title>PAGE-MP-001 首页</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <link rel="stylesheet" href="assets/mui-kit.css">
 </head>
 <body>
-  <div class="md-mobile-page">
-    <div class="md-status-bar" aria-hidden="true">
-      <span>9:41</span>
-      <span class="md-status-bar__signals"></span>
+  <div class="md-mobile-page md-mp md-immersive">
+    <div class="md-hero" data-section="Banner">
+      <div class="md-swiper">
+        <div class="md-swiper__track">
+          <div class="md-swiper__slide md-media-ph md-media-ph--1">
+            <p class="md-hero__slogan">季节鲜选</p>
+            <p class="md-hero__sub">当季水果直达</p>
+          </div>
+          <div class="md-swiper__slide md-media-ph md-media-ph--3">
+            <p class="md-hero__slogan">季节鲜选</p>
+            <p class="md-hero__sub">手冲与冷萃</p>
+          </div>
+          <div class="md-swiper__slide md-media-ph md-media-ph--5">
+            <p class="md-hero__slogan">季节鲜选</p>
+            <p class="md-hero__sub">烘焙刚出炉</p>
+          </div>
+        </div>
+        <div class="md-swiper__dots"></div>
+      </div>
     </div>
-    <header class="md-appbar md-appbar--mobile">
-      <div class="md-appbar__title">首页</div>
-    </header>
     <main class="md-mobile-body">
+      <nav class="md-king" data-section="金刚区" aria-label="分类">
+        <button type="button" class="md-king__item" data-cat="全部">
+          <span class="md-king__icon"><span class="md-icon" data-icon="category" aria-hidden="true"></span></span>
+          全部
+        </button>
+        <button type="button" class="md-king__item" data-cat="水果">
+          <span class="md-king__icon"><span class="md-icon" data-icon="goods" aria-hidden="true"></span></span>
+          水果
+        </button>
+        <button type="button" class="md-king__item" data-cat="饮品">
+          <span class="md-king__icon"><span class="md-icon" data-icon="star" aria-hidden="true"></span></span>
+          饮品
+        </button>
+        <button type="button" class="md-king__item" data-cat="烘焙">
+          <span class="md-king__icon"><span class="md-icon" data-icon="home" aria-hidden="true"></span></span>
+          烘焙
+        </button>
+        <button type="button" class="md-king__item" data-cat="坚果">
+          <span class="md-king__icon"><span class="md-icon" data-icon="cart" aria-hidden="true"></span></span>
+          坚果
+        </button>
+      </nav>
       <div class="md-section-head">
         <h1 class="md-section-head__title">推荐</h1>
       </div>
@@ -70,9 +104,30 @@
         <span>商品</span>
       </a>
     </nav>
+    <div id="catSheetBackdrop" class="md-backdrop" onclick="ProtoPage.closeDrawer('catSheet')"></div>
+    <aside id="catSheet" class="md-drawer md-drawer--bottom" aria-hidden="true">
+      <h2 class="md-drawer__title">分类</h2>
+      <div class="md-drawer__body">
+        <p class="md-body2" id="catHint">选择分类后可前往商品列表。</p>
+      </div>
+      <div class="md-drawer__actions">
+        <button type="button" class="md-btn md-btn--text" onclick="ProtoPage.closeDrawer('catSheet')">取消</button>
+        <a class="md-btn md-btn--contained" href="PAGE-MP-002.html">去商品列表</a>
+      </div>
+    </aside>
   </div>
   <script src="assets/md-icons.js"></script>
   <script src="assets/icons-extra.js"></script>
   <script src="assets/proto-page.js"></script>
+  <script>
+    document.querySelectorAll(".md-king__item").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var name = btn.getAttribute("data-cat") || "分类";
+        document.getElementById("catHint").textContent = "当前分类：" + name;
+        ProtoPage.openDrawer("catSheet");
+        ProtoPage.snackbar("已选择分类");
+      });
+    });
+  </script>
 </body>
 </html>

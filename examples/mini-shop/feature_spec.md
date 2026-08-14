@@ -30,12 +30,13 @@
 
 | 功能编号 | 功能名称 | 所属模块 | 优先级 | 状态 | 分支数 | 关联页面 | 关联接口 | 明细路径 |
 |----------|----------|----------|--------|------|--------|----------|----------|----------|
-| FEATURE-001 | 浏览在售商品 | 商品 | P0 | active | 2 | PAGE-MP-001, PAGE-MP-002, PAGE-AD-001 | API-MP-001, API-AD-001 | feature/FEATURE-001.md |
+| FEATURE-001 | 浏览在售商品 | 商品 | P0 | active | 3 | PAGE-MP-001, PAGE-MP-002, PAGE-MP-003, PAGE-AD-001 | API-MP-001, API-MP-002, API-AD-001 | feature/FEATURE-001.md |
 | FEATURE-002 | 维护后台商品 | 商品 | P0 | active | 3 | PAGE-AD-001, PAGE-AD-002 | API-AD-001, API-AD-002, API-AD-003 | feature/FEATURE-002.md |
+| FEATURE-003 | 登记到货提醒 | 商品 | P1 | active | 1 | PAGE-MP-004 | API-MP-003 | feature/FEATURE-003.md |
 
 | 统计项 | 数值 |
 |--------|------|
-| 有效 Feature 个数 | 2 |
+| 有效 Feature 个数 | 3 |
 
 ## 4. 特殊说明（如有）
 

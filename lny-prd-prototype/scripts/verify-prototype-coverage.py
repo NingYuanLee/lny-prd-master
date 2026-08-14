@@ -85,7 +85,9 @@ class PageParser(HTMLParser):
         self.is_desktop = False
         self.has_status_bar = False
         self.has_section_head = False
-        self.has_page_head = False
+        self.has_breadcrumb = False
+        self.has_tabbar = False
+        self.has_mobile_appbar = False
         self.card_count = 0
         self.table_rows = 0
         self.bare_media = 0
@@ -102,8 +104,14 @@ class PageParser(HTMLParser):
             self.has_status_bar = True
         if "md-section-head" in classes:
             self.has_section_head = True
-        if "md-page-head" in classes:
-            self.has_page_head = True
+        if "md-breadcrumb" in classes:
+            self.has_breadcrumb = True
+        if "md-tabbar" in classes:
+            self.has_tabbar = True
+        if "md-appbar--mobile" in classes or (
+            tag in {"header"} and "md-appbar" in classes
+        ):
+            self.has_mobile_appbar = True
         if "md-card" in classes:
             self.card_count += 1
         if "md-media-ph" in classes:
@@ -224,12 +232,75 @@ def check_html(path: Path, page_id: str, comps: set[str], jumps: set[str], quote
         errors.append(str(path) + ": need ≥4 cards in default state (got " + str(parser.card_count) + ")")
     if parser.table_rows and parser.table_rows < 4:
         errors.append(str(path) + ": need ≥4 table rows (got " + str(parser.table_rows) + ")")
-    if parser.is_mobile and not parser.has_status_bar:
-        errors.append(str(path) + ": mobile page missing md-status-bar")
+    if parser.is_mobile and "proto-page.js" not in parser.scripts:
+        errors.append(str(path) + ": mobile page missing proto-page.js (injects fixed status bar)")
     if parser.is_mobile and not parser.has_section_head:
         errors.append(str(path) + ": mobile page missing md-section-head")
-    if parser.is_desktop and not parser.has_page_head:
-        errors.append(str(path) + ": desktop page missing md-page-head")
+    if parser.is_desktop and not parser.has_breadcrumb:
+        errors.append(str(path) + ": desktop page missing md-breadcrumb")
+    errors.extend(check_visual_floor(path, text, parser))
+    return errors
+
+
+BOX_DRAW_RE = re.compile(r"[┌┐└┘├┤┬┴┼│─]|[+][-]{2,}")
+NATIVE_DATE_RE = re.compile(r"""type\s*=\s*["']date["']""", re.I)
+
+
+def check_visual_floor(path: Path, text: str, parser: PageParser) -> list[str]:
+    """Block wireframe-like HTML that still passes quote/count checks."""
+    errors: list[str] = []
+    prefix = str(path) + ": "
+    if BOX_DRAW_RE.search(text):
+        errors.append(prefix + "ASCII wireframe leaked into HTML")
+    if not parser.is_mobile and not parser.is_desktop:
+        errors.append(prefix + "missing md-mobile-page or md-d1 root")
+    if NATIVE_DATE_RE.search(text):
+        errors.append(prefix + "use md-field--date + type=text, not type=date")
+    if parser.is_desktop and parser.table_rows:
+        if "md-chip" not in text and "md-thumb" not in text and "md-row-goods" not in text:
+            errors.append(prefix + "desktop table missing md-chip/md-thumb/md-row-goods")
+    if parser.is_desktop and "md-d1__form" in text and "md-field--sm" not in text:
+        errors.append(prefix + "form fields must use md-field--sm")
+    if parser.is_mobile and "md-stack" in text and parser.card_count and "md-card--row" not in text:
+        errors.append(prefix + "mobile list cards must use md-card--row")
+    if parser.is_mobile and "md-tabbar" in text and "data-icon" not in text:
+        errors.append(prefix + "tabbar missing data-icon")
+    if parser.has_tabbar and parser.has_mobile_appbar:
+        errors.append(prefix + "tabbar page must not use md-appbar (L1 title)")
+    if parser.is_mobile and "viewport-fit=cover" not in text:
+        errors.append(prefix + "mobile page missing viewport-fit=cover")
+    if parser.is_mobile and "md-immersive" not in text and "md-sink" not in text and "md-standard" not in text:
+        errors.append(prefix + "mobile page must declare md-immersive or md-standard")
+    if "md-d1__list" in text:
+        if "md-d1--list" not in text:
+            errors.append(prefix + "D1-1 list must use md-d1--list compact density")
+        if not any(
+            cls in text
+            for cls in (
+                "md-col-name",
+                "md-col-price",
+                "md-col-status",
+                "md-col-date",
+                "md-col-id",
+                "md-col-num",
+            )
+        ):
+            errors.append(prefix + "D1-1 columns must use semantic md-col-* (not equal widths)")
+        if "md-empty" not in text:
+            errors.append(prefix + "list page missing md-empty (hidden empty state)")
+        if "md-skel-host" not in text and "md-skeleton" not in text:
+            errors.append(prefix + "list page missing skeleton (md-skel-host / md-skeleton)")
+    if "md-comment" in text:
+        if "md-comment__time" not in text:
+            errors.append(prefix + "comments must include md-comment__time")
+        if "md-comment__photos" not in text:
+            errors.append(prefix + "comments must include md-comment__photos (max 5 per row)")
+    if "data-menu" in text and "md-menu--fixed" not in text:
+        errors.append(prefix + "data-menu requires md-menu--fixed (keep gold more-menu behavior)")
+    if "md-tabs--page" in text and "data-panel" not in text:
+        errors.append(prefix + "md-tabs--page requires data-panel (keep gold tab switching)")
+    if "data-wheel" in text and "proto-page.js" not in parser.scripts:
+        errors.append(prefix + "data-wheel requires proto-page.js (keep gold picker behavior)")
     return errors
 
 
