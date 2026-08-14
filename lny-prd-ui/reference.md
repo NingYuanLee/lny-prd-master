@@ -239,7 +239,7 @@
 
 #### 1.7.5 舒适默认（② 必写，⑥ 必落地）
 
-即使页很简单，下列默认也成立。② 用一句话点名；⑥ 用套件实现。② 漏写时 ⑥ **仍须落地**，不算发明业务。
+即使页很简单，下列默认也成立。② 用一句话点名；⑥ 用套件实现。② 漏写时 ⑥ **仍须落地**，不算发明业务。点图放大阅览 **不是**舒适默认：仅当本页功能需要看大图才写入 §2.3，⑥ 仅在该页根加 `data-lightbox`。
 
 | 默认 | ② 怎么写 | ⑥ 用什么 |
 |------|----------|----------|
@@ -248,7 +248,6 @@
 | 失败能接着干 | 「可重试；列表 Alert，轻操作 Toast」 | `md-alert` / `ProtoPage.snackbar` |
 | 点得有回馈 | 「按下缩放；禁止只靠 hover」 | 套件按钮已有按下态 |
 | 浮层不瞬切 | 「半屏/弹窗/签过渡」 | `ProtoPage.openDrawer` / `openDialog` |
-| 点图放大阅览 | 「同页图片一组；翻页到头不循环」 | 套件注入 `.md-lightbox`（封面/头像/空态/图表除外） |
 | 表列宽与密度 | D1-1 语义列宽+紧凑 | `md-col-*` + `md-d1--list` |
 | 键盘与焦点 | 「Tab 顺序合理；主按钮回车；焦点可见」 | 套件 `:focus-visible`；触屏不靠 hover |
 | 首次进入 | 「没数据/没权限时第一眼；无则写无」 | 用空态/Alert 说清现状；禁止另造引导层（除非 §2.3 写了） |
@@ -261,7 +260,7 @@
 | 树 + 内容 | 触屏左树右内容 / D1-3 | 当前项高亮；箭头展开收起；右区随选中切换。金样 `gold/mobile-tree.html` / `gold/desktop-split.html`；夹具 `PAGE-MP-008.html` / `PAGE-AD-005.html` |
 | 设置 | 移动分组列表 / D1-2 分组 | 一行一项。金样 `gold/mobile-settings.html` / `gold/desktop-settings.html`；夹具 `PAGE-MP-006.html` / `PAGE-AD-006.html` |
 | 向导 | 表单 + 步骤条 + 进步条 | 当前步清晰，最后一步才提交。金样 `gold/desktop-wizard.html` / `gold/mobile-wizard.html`；夹具 `PAGE-AD-003.html` / `PAGE-MP-005.html` |
-| 展示 / 详情（桌面） | D1-3 | 面包屑；主图 16:9；图文；评论时间行+附图；点图片放大阅览，同页一组，翻页到头不循环。金样 `gold/desktop-detail.html`；夹具 `PAGE-AD-008.html`。禁止沉浸式叠层、禁止 1:1 列表卡 |
+| 展示 / 详情（桌面） | D1-3 | 面包屑；主图 16:9；图文；评论时间行+附图。需要看大图才写点图放大阅览（⑥ 页根 `data-lightbox`）。金样 `gold/desktop-detail.html`；夹具 `PAGE-AD-008.html`。禁止沉浸式叠层、禁止 1:1 列表卡 |
 | 时间轴 | 左竖轨 + 右图文 | 节点已完成/当前/待办。金样 `gold/mobile-timeline.html` / `gold/desktop-timeline.html`；夹具 `PAGE-MP-009.html` / `PAGE-AD-007.html` |
 | 分栏对照 | D1-3 | 两栏职责分离，主操作落在主栏 |
 

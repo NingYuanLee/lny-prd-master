@@ -1,8 +1,13 @@
-# 原型视觉金样（地板，不是业务内容）
+# 原型视觉金样（视觉下限，不是业务功能）
 
-⑥ 写任何 `PAGE-*.html` **之前**必须 Read 下表对应文件，**复制骨架再换文案/条数/跳转**。触屏另扫 [`../reference-mobile-design.md`](../reference-mobile-design.md) 审美必做。
+⑥ 写任何 `PAGE-*.html` **之前**必须 Read 下表对应文件，**对标视觉下限**（密度、比例、套件类名、顶栏/底栏）。金样方便快速对照，保证不画出比它更瘦的线框。
 
-`pages_prd` 的 ASCII 线框只定**分区顺序**。金样定**控件密度与套件类名**。二者冲突时以金样为准。
+`pages_prd` 的 ASCII 线框只定**分区顺序**。金样定**控件密度与套件类名**。视觉冲突以金样为准；**功能**以本页 `pages_prd` / `ui` §2.3 / feature 为准。
+
+禁止两个极端：
+
+1. **照搬**：金样有图就做成可点预览；套件样例铺了全控件就把整页搬进业务表单。点图灯箱等 **规格写了才用**（页根加 `data-lightbox`）。有图 ≠ 要预览。
+2. **忽略**：按 ASCII 空盒子、不 Read 对应金样、密度低于金样。未 Read = 本页未完成。
 
 金样 HTML 写 `assets/mui-kit.css`（以及 `md-icons.js` / `icons-extra.js` / `proto-page.js`）是**故意**的：复制到 `prototypes/{终端}/` 后与 `copy-kit.py` 写入的 `assets/` 对齐。禁止改成 `../kit/`，否则业务页会丢样式。本目录 `gold/assets/` 只供直接打开金样预览；改过 `kit/` 后执行：
 
@@ -14,11 +19,11 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 |----------|------|
 | 移动宫格 / 推荐 / 双列卡片 | `mobile-grid.html`（**沉浸式**；`md-hero` 钉底层；`md-mobile-sheet`；`md-module`；**封面叠字** `md-card--cover` + **双列瓷砖** `md-card--tile`；金刚 5 列或 `md-king--pair`） |
 | 移动列表 / 动态流 / 横卡 | `mobile-list.html`（**标准** + 搜索/筛选贴顶；**横卡** `md-card--row` / 头像 / **纯文** `--plain`+`__photos`；左/右半屏；`data-wheel="daterange"`） |
-| 移动展示 / 详情 | `mobile-detail.html`（**沉浸式**；16:9 `md-hero` 钉底层 + 返回叠层；`md-mobile-sheet` 白底正文上层滚过；评论 + 贴底次要操作；点图灯箱同页一组翻页不循环） |
+| 移动展示 / 详情 | `mobile-detail.html`（**沉浸式**；16:9 `md-hero` 钉底层 + 返回叠层；`md-mobile-sheet` 白底正文上层滚过；评论 + 贴底次要操作。夹具演示可加 `data-lightbox`；业务页仅当规格要看大图才加） |
 | 移动表单 | `mobile-form.html`（夹具 `PAGE-MP-004.html`；**套件样例**，一页铺齐触屏表单控件：文本/选择/滑动条/单日/日期段/省市区/三类上传 + 贴底提交；进度条见步骤向导） |
 | 桌面表格 / 筛选列表 / 弹窗维护 | `desktop-list.html`（内容区顶面包屑无大标题；页内签在筛选上方整区切换；分页与表横条贴底；勾选左冻 / 操作右冻定宽「更多」下拉；汇总左分页右；**列宽按字段语义**；**紧凑密度一屏多行**；隐藏骨架+插画空态；筛选用 `md-field--daterange`） |
 | 桌面整页表单 | `desktop-form.html`（夹具 `PAGE-AD-009.html`；**套件样例**，一页铺齐桌面表单控件：文本/选择/滑动条/单日/时间/日期段/省市区/三类上传。业务商品表单 `PAGE-AD-002` 按规格裁字段；进度条见步骤向导） |
-| 桌面展示 / 详情 | `desktop-detail.html`（夹具 `PAGE-AD-008.html`；面包屑；16:9 `md-swiper--wide`；图文介绍；`md-comment` 时间行 + 附图；点图灯箱同页一组翻页不循环。禁止沉浸式叠层，禁止拿列表卡 1:1） |
+| 桌面展示 / 详情 | `desktop-detail.html`（夹具 `PAGE-AD-008.html`；面包屑；16:9 `md-swiper--wide`；图文介绍；`md-comment` 时间行 + 附图。灯箱仅当规格要看大图。禁止沉浸式叠层，禁止拿列表卡 1:1） |
 | 工作台 / 仪表盘 | `desktop-dashboard.html`（夹具 `PAGE-AD-004.html`；`md-stat-grid` 指标卡 + `md-chart-ph` + 短表。禁止拿 `desktop-list` 硬套） |
 | 树 + 内容 / 分栏 | `desktop-split.html`（夹具 `PAGE-AD-005.html`；`md-d1--split` 左树右内容；箭头展开收起，点树只换右区） |
 | 桌面设置 | `desktop-settings.html`（夹具 `PAGE-AD-006.html`；分组 `md-set-group`，一行一项开关） |
@@ -39,7 +44,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 3. **标准高度 + 返回和标题**：`mobile-form.html` / `mobile-wizard.html` / `mobile-tree.html` / `mobile-timeline.html`（`md-appbar--mobile`）
 4. **两倍标准高度 + 背景 + 标题**：`mobile-settings.html`（`md-appbar--cover`）
 
-复制时 **整份含 `<script>`**：轮盘 `data-wheel`、更多 `data-menu`、页内签 `data-panel` 由 `proto-page.js` 驱动，禁止删成静态壳。§2.3 漏写时仍须落地舒适默认（骨架、空态插图、失败可重试、按下态、浮层过渡、语义列宽）。
+对标时抄**视觉骨架**（类名、密度、本页规格需要的控件脚本：轮盘 `data-wheel`、更多 `data-menu`、页内签 `data-panel`）。禁止把金样演示交互整页搬来；禁止删掉本页规格需要的套件行为。§2.3 漏写时仍须落地舒适默认（骨架、空态插图、失败可重试、按下态、浮层过渡、语义列宽）。灯箱不算舒适默认。
 
 禁止：
 

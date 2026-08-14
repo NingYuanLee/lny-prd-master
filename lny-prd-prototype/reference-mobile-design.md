@@ -72,7 +72,7 @@
 |------|----------|
 | 按下 | 套件默认 `transform`/`filter` |
 | 半屏/弹窗 | `ProtoPage.openDrawer` / `openDialog`（有过渡） |
-| 点图放大阅览 | 套件注入 `.md-lightbox`；同页图片一组，翻页到头不循环 |
+| 点图放大阅览 | 仅当本页规格要看大图：页根 `data-lightbox`；套件注入 `.md-lightbox`；同页一组，翻页到头不循环。有图 ≠ 可点预览 |
 | 轻成功 | `ProtoPage.snackbar`（触屏居中） |
 | 确认 | `ProtoPage.confirm` |
 | 加载/空/失败 | `data-state` + `md-skel-host` / `md-empty` |
@@ -86,7 +86,7 @@
 
 ## 写页自检（触屏）
 
-- [ ] Read 了本页类型金样并复制骨架（含 script）  
+- [ ] Read 了本页类型金样并对标视觉下限（密度/类名不得低于金样）；规格需要的控件脚本保留；不要搬金样演示功能  
 - [ ] 审美必做 5 条满足  
 - [ ] 搜索/顶栏/安全距符合词典  
 - [ ] 列表卡三形态与规格一致（`--cover` / `--tile` / `--row` 或 `--plain`；字段按规格增减）  

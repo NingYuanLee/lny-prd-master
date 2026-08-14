@@ -38,7 +38,7 @@
 | 字体 | 「标题强于副文；元信息最小可读」 | `.md-h*` / `__title` / `__subtitle` / `__meta` |
 | 图标 | 「与文案同组；元信息用小图标」 | `data-icon`；闭集见 `reference-icons` |
 | 间距圆角 | 「区块有呼吸；卡片勿厚重浮块」 | `--md-space: 8px` 倍数；触屏卡 12px 圆角 |
-| 图片 | 「列表卡三形态；详情主图 16:9；点图放大阅览」 | `--cover` / `--tile` 1:1 / `--row`；`md-swiper--wide`；同页 `.md-lightbox` 一组翻页不循环 |
+| 图片 | 「列表卡三形态；详情主图 16:9；需要看大图才写点图放大」 | `--cover` / `--tile` 1:1 / `--row`；`md-swiper--wide`；要看大图才页根 `data-lightbox` |
 
 列表卡三形态（有字段才写）：①封面叠字单行标题；②双列标题两行+可选标签/金额/时间；③横卡或纯文。详见 prototype `reference-kit`。
 

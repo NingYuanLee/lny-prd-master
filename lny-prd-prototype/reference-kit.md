@@ -6,7 +6,7 @@
 
 **原型默认高保真**：与 `ui/PAGE`「视觉细节」估点档位无关。⑥ 必须按本节「高保真落地」出图，禁止线框式两张灰卡、禁止「示例商品 A」。
 
-`pages_prd` ASCII **只定分区上下顺序**，不是视觉稿。写页前必须 Read [`gold/README.md`](gold/README.md) 与对应金样，复制骨架再换文案。禁止把 `┌─┐` 画成带边框空盒子。
+`pages_prd` ASCII **只定分区上下顺序**，不是视觉稿。写页前必须 Read [`gold/README.md`](gold/README.md) 与对应金样，**对标视觉下限**再换文案。禁止把 `┌─┐` 画成带边框空盒子，也禁止把金样演示功能（凡图即灯箱、全套表单样例）搬进规格没写的业务页。
 
 ## 高保真落地（必守）
 
@@ -14,13 +14,13 @@
 
 | 项 | 要求 |
 |----|------|
-| 金样 | 按页类型 Read `gold/`：`mobile-grid` / `mobile-list` / `mobile-detail` / `mobile-form` / `mobile-settings` / `mobile-wizard` / `mobile-timeline` / `mobile-buttons` / `mobile-tree` / `desktop-list` / `desktop-form` / `desktop-dashboard` / `desktop-split` / `desktop-settings` / `desktop-wizard` / `desktop-timeline`。复制骨架含 script。密度不得低于金样。禁止用 `desktop-list` 硬套工作台；禁止用 `mobile-list` 硬套触屏树 |
+| 金样 | 按页类型 Read `gold/`（表见该文）。**对标视觉下限**（密度/类名不得低于金样），不要整页照搬演示功能。禁止用 `desktop-list` 硬套工作台；禁止用 `mobile-list` 硬套触屏树 |
 | 估点档 | 忽略「视觉细节=粗糙」；⑥ 不降档；须满足 `reference-mobile-design.md` 审美必做 |
 | 舒适默认 | §2.3 漏写也要落地：隐藏 `md-skel-host`、插画 `md-empty`、失败可重试、按下态、浮层过渡、D1-1 `md-d1--list`+`md-col-*`。禁止发明新跳转/字段/弹窗；**有字段时必须按层级排版** |
 | 夹具数据 | 用符合业务域的中文名称与真实量级价格（如 `有机草莓 250g` / `¥19.90`）。**禁止** `示例商品 A/B`、`测试数据`、`xxx`、`Item 1` |
 | 条数 | 列表/卡片/表格默认态 **≥4 条**（规格写明空态、或 API 写死更少条数时从其规定；首页有「每页条数」则按其值） |
 | 字段 | API/COMP 已列的展示字段都要出现（名称、图、价、库存状态等）；**不**发明规格没有的字段（如无「销量」就不要写已售） |
-| 图片 | `md-card__media md-media-ph md-media-ph--{1-6}` 轮换；禁止无编号的纯灰 `md-media-ph`、禁止随机色块。点图由 `proto-page.js` 注入 `.md-lightbox` 放大阅览（同页一组、翻页不循环；封面/头像/空态/图表除外） |
+| 图片 | `md-card__media md-media-ph md-media-ph--{1-6}` 轮换；禁止无编号的纯灰 `md-media-ph`、禁止随机色块。点图放大阅览 **仅当本页规格要看大图**：页根加 `data-lightbox`，由 `proto-page.js` 注入 `.md-lightbox`（同页一组、翻页不循环）。有图 ≠ 可点预览 |
 | 移动端 | 状态栏由 `proto-page.js` 固定顶注入；页根须标 `md-immersive` 或 `md-standard`；`md-section-head`；列表卡三形态择一：`md-card--cover` / `md-card--tile`（`md-grid-2`）/ `md-card--row` 或 `--plain`；触屏 `md-search` 仅左图标+输入；`viewport-fit=cover`；左右下及四角走 `--md-safe-*` |
 | 桌面端 | 必须有 `md-breadcrumb`（内容区顶部，**不要** `md-page-head` 大标题）；表格首列可用 `md-row-goods` + `md-thumb md-media-ph--n`。D1-1 列表：页内签在筛选上方且整区切换；`md-d1--list` 让分页与表横条贴底，并走 **紧凑密度**；勾选列 `md-col-check` 左冻、操作列 `md-col-actions` 右冻定宽；中间列按语义加 `md-col-name` / `md-col-price` / `md-col-status` / `md-col-date`（名称吃剩余，金额/状态/日期窄，禁止均分或被 `min-width` 拉长）；操作过多用 `md-actions` + `data-menu`「更多」下拉；`md-d1__stats` 靠左、`md-d1__pager` 靠右。规格出现的弹窗/签/下拉/日期/按钮组必须用本节 AD 控件，禁止裸 `alert` / 无样式 `<select>` |
 | 间距 | 触屏滚动区模块间距走 `--md-module-gap`（`md-module`）；卡片/栅格内距走套件；禁止内联 `margin` 当排版 |
@@ -626,7 +626,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | 触屏日期段 | `data-wheel="daterange"` 底半屏，开始/结束两个签 | 两个独立日期框硬凑；原生 `type=date` |
 | 空态 | `md-empty md-empty--illus` | 一行灰字 / 空白 |
 | 加载 | `md-skeleton` / `data-state="loading"` + `md-skel-host` | 纯文字「加载中」 |
-| 封面 / 图片位 | `md-card__media md-media-ph md-media-ph--1`～`--6` 轮换；点图 `.md-lightbox` 同页一组翻页不循环 | `style="background:#xxx"` 色块；无编号灰块 |
+| 封面 / 图片位 | `md-card__media md-media-ph md-media-ph--1`～`--6` 轮换；要看大图才加页根 `data-lightbox` | `style="background:#xxx"` 色块；无编号灰块；凡图都做成可点预览 |
 | D1-2 表单 | `md-d1` + `md-d1__form` + `md-field--sm` | 无纸面的裸 label 堆叠；弹窗内 56px 大输入框 |
 | 步骤条 | `md-stepper` + `md-step`；已完成 `is-done`；当前 `is-active` | 纯数字列表 |
 | 进步条 | `md-advance` + `__head` + `__track` + `__seg` + `__bar`；`data-segments`；触屏可 `--lg` | 用无极 `md-progress` 冒充分步 |

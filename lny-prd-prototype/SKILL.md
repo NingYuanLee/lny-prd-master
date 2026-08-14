@@ -1,7 +1,8 @@
 ---
 name: lny-prd-prototype
 description: >-
-  按规格生成高保真可交互原型。写每一页前必须 Read 并复制 gold/ 金样骨架，禁止按 ASCII 线框降质。
+  按规格生成高保真可交互原型。写每一页前必须 Read gold/ 金样以对标视觉下限（密度/类名），
+  禁止按 ASCII 线框降质，也禁止把金样里的演示功能整页搬进业务页。
   全端静态 HTML + MUI 套件；每轮最多 3 个业务页。Use when the user mentions
   /lny-prd-prototype, @lny-prd-prototype, 原型, prototypes.
 disable-model-invocation: true
@@ -33,7 +34,7 @@ disable-model-invocation: true
 
 ## 夹具速查（写 HTML 前扫一眼）
 
-夹具 `examples/mini-shop/` → 金样 + 套件类。复制金样骨架（**含 `<script>` 行为**）再换文案。夹具是地板：还须落地舒适默认与 [`reference-mobile-design.md`](reference-mobile-design.md) **审美必做**。类名细则 [`reference-kit.md`](reference-kit.md)。
+夹具 `examples/mini-shop/` → 金样 + 套件类。金样用来**快速对标视觉下限**（密度、比例、类名），不是业务功能清单。按页类型对照金样落地视觉，再按本页规格换文案/跳转/控件。夹具还须落地舒适默认与 [`reference-mobile-design.md`](reference-mobile-design.md) **审美必做**。类名细则 [`reference-kit.md`](reference-kit.md)。
 
 **移动端**
 
@@ -41,7 +42,7 @@ disable-model-invocation: true
 |--------|------|----------------|
 | PAGE-MP-001 首页 | `gold/mobile-grid.html` | `md-immersive` `md-hero`；`md-module`；`md-card--cover` 精选 + `md-card--tile` 双列推荐；`md-king` 5 列 + `--pair`；有 TabBar 则无 `md-appbar` |
 | PAGE-MP-002 列表 | `gold/mobile-list.html` | `md-standard`；搜索+筛选贴顶；`md-card--row` 左图/左图标/头像 + `md-card--plain` 纯文附图；筛选半屏 `data-wheel="daterange"` |
-| PAGE-MP-003 详情 | `gold/mobile-detail.html` | `md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 一排最多五张；点图 `.md-lightbox` 同页一组翻页不循环 |
+| PAGE-MP-003 详情 | `gold/mobile-detail.html` | `md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 一排最多五张。点图灯箱 **仅当本页规格要看大图**（页根 `data-lightbox`），有图 ≠ 可点预览 |
 | PAGE-MP-004 表单 | `gold/mobile-form.html` | 返回顶栏；**全部触屏表单控件**：文本/数字/电话/多行/只读、单选多选标签、开关、少选项中间弹窗、多选项底半屏、五步/无极滑动条、`data-wheel` 单日/日期段/省市区、单图更换/多图可删/文件上传；`md-action-bar` 贴底。进度条不在本页，见步骤向导 |
 | PAGE-MP-005 步骤向导 | `gold/mobile-wizard.html` | 横向 `md-stepper`；分段 `md-advance md-advance--lg`；无极 `md-progress md-progress--lg`；当前步表单；`md-action-bar` 贴底，最后一步才提交 |
 | PAGE-MP-006 设置 | `gold/mobile-settings.html` | 沉浸式；`md-appbar--cover` 两倍高度封面顶栏；分组 `md-set-group`；一行一项开关 |
@@ -56,7 +57,7 @@ disable-model-invocation: true
 | PAGE-AD-001 列表 | `gold/desktop-list.html` | `md-d1 md-d1--list`（**紧凑密度**）；`md-breadcrumb` 无 `md-page-head`；签 `md-tabs--page` 在筛上整区切换；列类 `md-col-check` `md-col-name` `md-col-price` `md-col-status` `md-col-date` `md-col-actions`（**按字段语义，禁止均分**）；筛选用 `md-field--daterange`；「更多」`md-menu--fixed`；`md-d1__stats` 左 / `md-d1__pager` 右 |
 | PAGE-AD-002 商品表单 | `gold/desktop-form.html` | `md-breadcrumb`；`md-field--sm`。**按规格裁字段**，不要把套件样例整页搬来；进度条不在本页，见步骤向导 |
 | PAGE-AD-009 表单 | `gold/desktop-form.html` | **全部桌面表单控件**：文本/数字/电话/多行/只读、单选多选、开关、少/多选项下拉、五步/无极滑动条、`md-field--date` / `--time` / `--daterange`、省市区三级下拉、单图更换/多图可删/文件上传。**不要**加 `md-d1--list`，不要触屏 `data-wheel` |
-| PAGE-AD-008 详情 | `gold/desktop-detail.html` | `md-breadcrumb`；`md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 一排最多五张；点图 `.md-lightbox` 同页一组翻页不循环。不要 `md-d1--list`、不要沉浸式叠层 |
+| PAGE-AD-008 详情 | `gold/desktop-detail.html` | `md-breadcrumb`；`md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 一排最多五张。点图灯箱 **仅当规格要看大图**。不要 `md-d1--list`、不要沉浸式叠层 |
 | PAGE-AD-003 向导 | `gold/desktop-wizard.html` | `md-stepper` + 分段 `md-advance`；最后一步才提交 |
 | PAGE-AD-004 工作台 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
 | PAGE-AD-005 分类 | `gold/desktop-split.html` | `md-d1--split` 左树右内容；`md-tree` `__toggle` 展开收起；点树只换右区 |
@@ -83,21 +84,31 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 
 **禁止**：初始化 npm/Vite/React；查询 mui-mcp；调用 `user-search-iconfont-mcp`（改用本技能 `search-icons.py`）；页内自造主题色、手绘图标 path 或第二套组件 CSS。
 
-## 视觉地板（降质禁令）
+## 金样怎么用（视觉下限，不是功能清单）
 
-真实项目没有样例店可看时，模型会按 ASCII 线框画出空盒子。用 `gold/` 钉死地板，用 [`reference-mobile-design.md`](reference-mobile-design.md) 钉死审美必做，再用舒适默认抬高：
+金样只做一件事：**方便快速对标，保证视觉效果下限**（密度、图文比例、套件类名、顶栏/底栏结构）。不是业务功能清单，也不是可以跳过的参考图。
 
-1. 写页前只做三件事：Read [`gold/README.md`](gold/README.md) → Read **本页类型**金样全文 → **整份复制**（含 `<script>`）。禁止凭记忆、禁止按 ASCII 从零画。
-2. 只替换业务文案、条数、跳转、本页规格里的分区。**保留金样脚本行为**（轮盘 `data-wheel`、`data-menu` 更多、页内签 `data-panel`、筛选渲染）。换业务时禁止把 JS 删成静态壳。
-3. ASCII = 分区顺序；金样 = 密度。`ui/PAGE`「视觉细节」只给 ⑨ 估点，⑥ 一律按金样。触屏 §1.3.3；桌面 D1-1 §1.4.3。
-4. **舒适默认（§2.3 漏写也要落地）**：按 `lny-prd-ui` **§1.7.0**。骨架、空态插图、失败可重试、一个主按钮、按下态、浮层过渡、D1-1 语义列宽+`md-d1--list`、评论时间行+附图一排最多五张。禁止发明新跳转/新字段/新弹窗。**有字段时必须按层级排版**。用户未给设计规范 ≠ 可以画线框。
+禁止两个极端：
+
+1. **照搬功能**：金样里有图片就把每张图做成可点预览；金样表单铺了全套控件就把样例整页搬进业务页。点图灯箱、一页铺齐控件等 **只在本页 `pages_prd` / `ui` §2.3 / feature 写了才用**。有图 ≠ 要灯箱；页根加 `data-lightbox` 才启用。
+2. **忽略金样**：按 ASCII 画空盒子、比金样更瘦、不 Read 对应金样。未 Read 金样 = 本页未完成。
+
+该对标的：分区疏密、卡片形态与 16:9 / 1:1、Chip / 面包屑 / 横卡、`md-*` 类名、本页规格需要的控件行为（轮盘 / 下拉 / 签）。
+不该搬的：夹具商品名与跳转、套件样例才有的演示交互。
+
+真实项目没有样例店可看时，模型会按 ASCII 线框画出空盒子。用 `gold/` 钉死视觉下限，用 [`reference-mobile-design.md`](reference-mobile-design.md) 钉死审美必做，再用舒适默认抬高：
+
+1. 写页前：Read [`gold/README.md`](gold/README.md) → Read **本页类型**金样全文 → **按视觉骨架落地**（类名与密度不得低于金样）。禁止凭记忆、禁止按 ASCII 从零画。
+2. 只替换业务文案、条数、跳转、本页规格里的分区。规格需要的套件行为要保留（轮盘 `data-wheel`、`data-menu` 更多、页内签 `data-panel`）。规格没有的金样演示交互不要搬；换业务时禁止把本页需要的 JS 删成静态壳。
+3. ASCII = 分区顺序；金样 = 视觉密度。功能以本页规格为准。`ui/PAGE`「视觉细节」只给 ⑨ 估点，⑥ 视觉不降档。触屏 §1.3.3；桌面 D1-1 §1.4.3。
+4. **舒适默认（§2.3 漏写也要落地）**：按 `lny-prd-ui` **§1.7.0**。骨架、空态插图、失败可重试、一个主按钮、按下态、浮层过渡、D1-1 语义列宽+`md-d1--list`、评论时间行+附图一排最多五张。禁止发明新跳转/新字段/新弹窗。**有字段时必须按层级排版**。用户未给设计规范 ≠ 可以画线框。灯箱等套件能力不算舒适默认，规格点名才用。
 5. 重画不得删 Chip / 面包屑 / 横卡 / `data-icon` / `md-dialog`。未 Read 金样 = 本页未完成。
 6. 不是夹具表里已有的页型：按金样表选最接近的金样（dashboard / split / settings / wizard / timeline），禁止拿 `desktop-list` 硬套工作台。
 
 ## 职责与禁止
 
 - **负责**：按端分批生成/更新 **高保真** 原型与静态镜像；逐页对照 `pages_prd`；UTF-8 与 coverage 验收；BUG 自检。
-- **禁止**：用 HTML 编造规格；改根规范或流水；交付已知 BUG；页内保留演示专用按钮（须归位状态演示）；同一轮画完超过 3 个业务页；未 Read 该页 `pages_prd` 或未 Read `gold/` 就写 HTML；按 ASCII 线框降质。
+- **禁止**：用 HTML 编造规格；改根规范或流水；交付已知 BUG；页内保留演示专用按钮（须归位状态演示）；同一轮画完超过 3 个业务页；未 Read 该页 `pages_prd` 或未 Read `gold/` 就写 HTML；按 ASCII 线框降质；把金样演示功能（如凡图即灯箱）搬进规格没写的业务页。
 
 ## 写产物纪律
 
@@ -137,7 +148,7 @@ python <skillDir>/scripts/verify-prototype-coverage.py <prdRoot> --version vX.Y.
 1. 校验版本目录。有未清委派或缺规格 → 先补链（见开笔前），不要停。
 2. 列出本轮目标页：`ui_manifest` 中 **active** 且 `prototypes/{终端}/PAGE-*.html` 尚不存在的页（用户给了 `页面编号列表` 则从其截取）。**截取最多 3 个**。其余记入「本轮不做」。
 3. 复制 kit 到本批每个 `prototypes/{终端}/assets/`（续批若 assets 已齐可跳过 copy-kit）。
-4. **逐页**：对该页完整 Read `pages_prd`（无则须 `ui直出`）+ `ui/PAGE-*` **§2.3** + COMP。按页类型 Read 金样全文，**复制骨架含 script**，再落地 §2.3 与舒适默认。写完立刻过 [`reference-quality.md`](reference-quality.md) **§G.4 / G.5**。禁止凭记忆、禁止按 ASCII 降质、禁止删金样 JS、禁止发明业务交互。
+4. **逐页**：对该页完整 Read `pages_prd`（无则须 `ui直出`）+ `ui/PAGE-*` **§2.3** + COMP。按页类型 Read 金样全文，**对标视觉骨架**（密度/类名不得低于金样），再按本页规格换文案并落地 §2.3 与舒适默认。写完立刻过 [`reference-quality.md`](reference-quality.md) **§G.4 / G.5**。禁止凭记忆、禁止按 ASCII 降质、禁止忽略金样、禁止把金样演示功能搬进规格没写的页。
 5. 按 [`reference-shell.md`](reference-shell.md) 写/刷新各端 `index.html`（及移动端 `map.html`）：**只挂已落盘**的 `PAGE-*.html`。按 [`reference-scope.md`](reference-scope.md) 写 `prototypes/index.html`。镜像到 `versions/{v}/prototypes/`（各端含 `assets/`，总入口放在该目录根下）。不写 `scope.html`。
 6. 对本批页跑 UTF-8 脚本 + `verify-prototype-coverage.py` + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）。任一步失败则重写，不得交付。
 7. 输出：本批路径列表、验收通过说明、**剩余未生成 PAGE 编号**（无则写「全部已齐」）。有剩余时明确下一步：「继续」只续 ⑥。

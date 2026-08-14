@@ -1285,7 +1285,9 @@
     return el;
   }
 
+  // Opt-in: only pages with [data-lightbox] get image preview.
   function bindLightbox() {
+    if (!document.querySelector("[data-lightbox]")) return;
     if (document.documentElement.getAttribute("data-md-lightbox") === "1") {
       markPreviewables();
       return;
