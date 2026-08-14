@@ -46,7 +46,8 @@ disable-model-invocation: true
 | PAGE-MP-004 表单 | `gold/mobile-form.html` | 返回顶栏；**全部触屏表单控件**：文本/数字/电话/多行/只读、单选多选标签、开关、少选项中间弹窗、多选项底半屏、五步/无极滑动条、`data-wheel` 单日/日期段/省市区、单图更换/多图可删/文件上传；`md-action-bar` 贴底。进度条不在本页，见步骤向导 |
 | PAGE-MP-005 步骤向导 | `gold/mobile-wizard.html` | 横向 `md-stepper`；分段 `md-advance md-advance--lg`；无极 `md-progress md-progress--lg`；当前步表单；`md-action-bar` 贴底，最后一步才提交 |
 | PAGE-MP-006 设置 | `gold/mobile-settings.html` | 沉浸式；`md-appbar--cover` 两倍高度封面顶栏；分组 `md-set-group`；一行一项开关 |
-| PAGE-MP-007 按钮 | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、文字、**`--link` 纯文字**、置灰、`md-badge` |
+| PAGE-MP-010 功能入口 | `gold/mobile-menu.html` | 标准顶栏；分组 `md-set-group`。**通栏** `md-set-row`：左图标+名称，右短说明（可无）+箭头。**一行两个** `md-set-pair` 包两格。禁止金刚宫格、禁止一排 `md-btn`、禁止商品横卡 |
+| PAGE-MP-007 按钮 | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、文字、**`--link` 纯文字**、置灰、`md-badge`。禁止裸 `<button>` 带浏览器皮肤 |
 | PAGE-MP-008 分类 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左树右内容；`md-tree` `__toggle` 展开收起；点节点只换右区 |
 | PAGE-MP-009 时间轴 | `gold/mobile-timeline.html` | `md-timeline` 左 `__rail` 竖轨，右 `md-card--row` 图文；`is-done` / `is-active`；点节点切高亮 |
 
@@ -62,6 +63,7 @@ disable-model-invocation: true
 | PAGE-AD-004 工作台 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
 | PAGE-AD-005 分类 | `gold/desktop-split.html` | `md-d1--split` 左树右内容；`md-tree` `__toggle` 展开收起；点树只换右区 |
 | PAGE-AD-006 设置 | `gold/desktop-settings.html` | 分组 `md-set-group`；一行一项开关 |
+| PAGE-AD-010 功能入口 | `gold/desktop-menu.html` | `md-breadcrumb`；通栏 `md-set-row` 或一行两个 `md-set-pair`。不要 `md-d1--list`、不要一排按钮 |
 | PAGE-AD-007 时间轴 | `gold/desktop-timeline.html` | `md-breadcrumb`；`md-timeline` 左竖轨右图文；点节点切高亮 |
 | 关系图 | `prototypes/{端}/map.html` | `ProtoMap.boot`；预览区 **375×812**；连线端口错开 + 线中 `label`；底部色线图例；拖动写入 localStorage；「导出图片」 |
 
@@ -103,12 +105,12 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 3. ASCII = 分区顺序；金样 = 视觉密度。功能以本页规格为准。`ui/PAGE`「视觉细节」只给 ⑨ 估点，⑥ 视觉不降档。触屏 §1.3.3；桌面 D1-1 §1.4.3。
 4. **舒适默认（§2.3 漏写也要落地）**：按 `lny-prd-ui` **§1.7.0**。骨架、空态插图、失败可重试、一个主按钮、按下态、浮层过渡、D1-1 语义列宽+`md-d1--list`、评论时间行+附图一排最多五张。禁止发明新跳转/新字段/新弹窗。**有字段时必须按层级排版**。用户未给设计规范 ≠ 可以画线框。灯箱等套件能力不算舒适默认，规格点名才用。
 5. 重画不得删 Chip / 面包屑 / 横卡 / `data-icon` / `md-dialog`。未 Read 金样 = 本页未完成。
-6. 不是夹具表里已有的页型：按金样表选最接近的金样（dashboard / split / settings / wizard / timeline），禁止拿 `desktop-list` 硬套工作台。
+6. 不是夹具表里已有的页型：按金样表选最接近的金样（dashboard / split / settings / menu / wizard / timeline），禁止拿 `desktop-list` 硬套工作台，禁止拿金刚或按钮堆硬套功能入口。
 
 ## 职责与禁止
 
 - **负责**：按端分批生成/更新 **高保真** 原型与静态镜像；逐页对照 `pages_prd`；UTF-8 与 coverage 验收；BUG 自检。
-- **禁止**：用 HTML 编造规格；改根规范或流水；交付已知 BUG；页内保留演示专用按钮（须归位状态演示）；同一轮画完超过 3 个业务页；未 Read 该页 `pages_prd` 或未 Read `gold/` 就写 HTML；按 ASCII 线框降质；把金样演示功能（如凡图即灯箱）搬进规格没写的业务页。
+- **禁止**：用 HTML 编造规格；改根规范或流水；交付已知 BUG；页内保留演示专用按钮（须归位状态演示）；同一轮画完超过 3 个业务页；未 Read 该页 `pages_prd` 或未 Read `gold/` 就写 HTML；按 ASCII 线框降质；把金样演示功能（如凡图即灯箱）搬进规格没写的业务页；裸 `<button>` / `<input type="submit">` 露出浏览器原生皮肤（必须 `md-btn` 等套件类）。
 
 ## 写产物纪律
 

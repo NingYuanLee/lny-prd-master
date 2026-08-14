@@ -145,7 +145,9 @@ class PageParser(HTMLParser):
             allowed = any(c.startswith("md-") or c.startswith("proto-") for c in classes)
             in_toggle = any("md-toggle" in prev for prev in self.stack[:-1])
             if not allowed and not in_toggle:
-                self.errors.append("naked <button> without md-* class")
+                self.errors.append(
+                    "naked <button> without md-* class (browser chrome; use md-btn / md-icon-btn / md-tab)"
+                )
         if tag in {"input", "select", "textarea"}:
             if ad.get("type") == "hidden":
                 return

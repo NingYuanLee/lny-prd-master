@@ -258,7 +258,8 @@
 |------|--------|----------|
 | 工作台 / 仪表盘 | D1-3 | 指标卡 3～4 张一排；趋势用 `md-chart-ph`；下面短表或待办。金样 `gold/desktop-dashboard.html`；夹具 `PAGE-AD-004.html` |
 | 树 + 内容 | 触屏左树右内容 / D1-3 | 当前项高亮；箭头展开收起；右区随选中切换。金样 `gold/mobile-tree.html` / `gold/desktop-split.html`；夹具 `PAGE-MP-008.html` / `PAGE-AD-005.html` |
-| 设置 | 移动分组列表 / D1-2 分组 | 一行一项。金样 `gold/mobile-settings.html` / `gold/desktop-settings.html`；夹具 `PAGE-MP-006.html` / `PAGE-AD-006.html` |
+| 设置 | 移动分组列表 / D1-2 分组 | 一行一项开关。金样 `gold/mobile-settings.html` / `gold/desktop-settings.html`；夹具 `PAGE-MP-006.html` / `PAGE-AD-006.html` |
+| 功能入口 / 我的 / 服务 | 移动分组列表 / D1-2 分组 | 通栏或一行两个；左图标+名称；右短说明可无+箭头。金样 `gold/mobile-menu.html` / `gold/desktop-menu.html`。禁止金刚、禁止 `md-king--pair`、禁止按钮堆、禁止商品横卡 |
 | 向导 | 表单 + 步骤条 + 进步条 | 当前步清晰，最后一步才提交。金样 `gold/desktop-wizard.html` / `gold/mobile-wizard.html`；夹具 `PAGE-AD-003.html` / `PAGE-MP-005.html` |
 | 展示 / 详情（桌面） | D1-3 | 面包屑；主图 16:9；图文；评论时间行+附图。需要看大图才写点图放大阅览（⑥ 页根 `data-lightbox`）。金样 `gold/desktop-detail.html`；夹具 `PAGE-AD-008.html`。禁止沉浸式叠层、禁止 1:1 列表卡 |
 | 时间轴 | 左竖轨 + 右图文 | 节点已完成/当前/待办。金样 `gold/mobile-timeline.html` / `gold/desktop-timeline.html`；夹具 `PAGE-MP-009.html` / `PAGE-AD-007.html` |

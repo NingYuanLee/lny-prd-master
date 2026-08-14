@@ -21,6 +21,7 @@
 | 条数 | 列表/卡片/表格默认态 **≥4 条**（规格写明空态、或 API 写死更少条数时从其规定；首页有「每页条数」则按其值） |
 | 字段 | API/COMP 已列的展示字段都要出现（名称、图、价、库存状态等）；**不**发明规格没有的字段（如无「销量」就不要写已售） |
 | 图片 | `md-card__media md-media-ph md-media-ph--{1-6}` 轮换；禁止无编号的纯灰 `md-media-ph`、禁止随机色块。点图放大阅览 **仅当本页规格要看大图**：页根加 `data-lightbox`，由 `proto-page.js` 注入 `.md-lightbox`（同页一组、翻页不循环）。有图 ≠ 可点预览 |
+| 按钮 | 可点操作用套件类：`md-btn` + `--contained` / `--outlined` / `--text` / `--link`，或 `md-icon-btn` / `md-tab` / `md-menu__item` / `md-page-btn` / `md-tree__item`。禁止裸 `<button>`、禁止 `<input type="submit">` 露出浏览器灰钮/立体边 |
 | 移动端 | 状态栏由 `proto-page.js` 固定顶注入；页根须标 `md-immersive` 或 `md-standard`；`md-section-head`；列表卡三形态择一：`md-card--cover` / `md-card--tile`（`md-grid-2`）/ `md-card--row` 或 `--plain`；触屏 `md-search` 仅左图标+输入；`viewport-fit=cover`；左右下及四角走 `--md-safe-*` |
 | 桌面端 | 必须有 `md-breadcrumb`（内容区顶部，**不要** `md-page-head` 大标题）；表格首列可用 `md-row-goods` + `md-thumb md-media-ph--n`。D1-1 列表：页内签在筛选上方且整区切换；`md-d1--list` 让分页与表横条贴底，并走 **紧凑密度**；勾选列 `md-col-check` 左冻、操作列 `md-col-actions` 右冻定宽；中间列按语义加 `md-col-name` / `md-col-price` / `md-col-status` / `md-col-date`（名称吃剩余，金额/状态/日期窄，禁止均分或被 `min-width` 拉长）；操作过多用 `md-actions` + `data-menu`「更多」下拉；`md-d1__stats` 靠左、`md-d1__pager` 靠右。规格出现的弹窗/签/下拉/日期/按钮组必须用本节 AD 控件，禁止裸 `alert` / 无样式 `<select>` |
 | 间距 | 触屏滚动区模块间距走 `--md-module-gap`（`md-module`）；卡片/栅格内距走套件；禁止内联 `margin` 当排版 |
@@ -379,7 +380,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 ## AD 常用控件（规格里有则必须用）
 
-弹窗、确认、Toast、页内签、按钮组、下拉、日期/时间 **禁止**再用浏览器原生丑控件或 `alert()`。
+弹窗、确认、Toast、页内签、按钮组、下拉、日期/时间 **禁止**再用浏览器原生丑控件或 `alert()`。可点按钮 **禁止**裸 `<button>` / `<input type="submit">`（系统灰钮、立体边）；必须 `md-btn` + 形态类，对照金样 `gold/mobile-buttons.html`。
 
 **页内分页签**（放在搜索栏上方；`data-panel` 对应的面板里装筛选+功能+列表+分页整区）
 
@@ -556,6 +557,30 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 <button type="button" class="md-btn md-btn--contained md-btn--sm">角标<span class="md-badge">8</span></button>
 ```
 
+功能入口对照金样 `gold/mobile-menu.html` / `gold/desktop-menu.html`。短说明可省略，箭头保留。
+
+```html
+<a class="md-set-row" href="PAGE-MP-002.html">
+  <span class="md-set-row__lead">
+    <span class="md-icon" data-icon="goods" aria-hidden="true"></span>
+    <span class="md-set-row__label">我的订单</span>
+  </span>
+  <span class="md-set-row__trail">
+    <span class="md-set-row__hint">查看全部</span>
+    <span class="md-icon" data-icon="chevron-right" aria-hidden="true"></span>
+  </span>
+</a>
+```
+
+一行两个用 `md-set-pair` 包两格（不要用首页 `md-king--pair`）：
+
+```html
+<div class="md-set-pair">
+  <a class="md-set-row" href="#">…左格…</a>
+  <a class="md-set-row" href="#">…右格…</a>
+</div>
+```
+
 ```html
 <div class="md-advance" data-segments="3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33">
   <div class="md-advance__head">
@@ -635,10 +660,12 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | 树 | `md-tree` + `__item` `__toggle` `__label`；分支 `li.is-open`；当前 `is-active` | 无类名嵌套 `ul`；触屏用列表硬套分类树 |
 | 图表 | `md-chart-ph` 占位条 | 手写 canvas / 自造柱 |
 | 页内分页签 | `md-tabs md-tabs--page` + `md-tab` + `md-tab-panel` | 自造下划线 `div` / 裸 `<a>` 签 |
+| 主/线/字/链接按钮 | `md-btn md-btn--contained` / `--outlined` / `--text` / `--link`；图标钮 `md-icon-btn` | 裸 `<button>`、`<input type="submit">`、Bootstrap/`btn`、浏览器灰钮 |
 | 按钮组 / 工具栏按钮 | `md-btn-group` / `md-d1__toolbar` | 无 class 的一排 `<button>` |
 | 下拉 | `md-field--select` + `md-select`，或 `md-select-btn` + `md-menu` | 未包 `md-field` 的裸 `<select>`；触屏用系统原生选择器 |
 | 日期 / 时间 | `md-field--date` / `md-field--daterange` / `md-field--time` + `type="date|time|datetime-local"` | 自造日历、两个裸日期框冒充日期段 |
 | 开关 | `md-switch-row` + `md-switch` | 自造滑块 / 裸 checkbox 当开关 |
+| 功能入口 / 我的 / 服务列表 | 通栏：分组 `md-set-group` + `<a class="md-set-row">`；一行两个：`md-set-pair` 包两格。左图标+名称，右短说明可无+箭头 | 金刚宫格冒充；`md-king--pair` 冒充；一排 `md-btn`；商品 `md-card--row` |
 | 单选 | 桌面/列表：`md-choice-group` + `md-radio`；触屏表单：同上（自动标签角标） | 未包 `md-radio` 的裸 `<input type="radio">` |
 | 多选 | 桌面/列表：`md-choice-group` + `md-check`；触屏表单：同上（自动标签角标）；列表行勿包成标签 | 未包 `md-check` 的裸 `<input type="checkbox">` |
 | 弹窗 / 确认 | `md-dialog` + `md-backdrop`；确认用 `ProtoPage.confirm` | `alert()` / `confirm()` |
@@ -665,7 +692,8 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | D1-1 紧凑 | 根节点 `md-d1 md-d1--list`（矮行、小内外距）；**不要**套到 D1-2 表单页 |
 | 工作台 | `md-stat-grid` `md-stat-card`；趋势 `md-chart-ph` |
 | 分栏 | `md-d1--split` / 触屏 `md-tree-page`；`md-split` `__side` `__main`；树 `md-tree` `__item` `__toggle` `__label` `is-open` `is-active` |
-| 设置分组 | `md-set-group` `__title` `md-set-row`；一行一项开关 |
+| 设置分组 | `md-set-group` `__title` `md-set-row`；开关行右置 `md-switch` |
+| 功能入口行 | `md-set-row`：`__lead`（图标+`__label`）+ `__trail`（可选 `__hint` + `chevron-right`）；通栏直接放组内；**一行两个** 用 `md-set-pair` 包两格 |
 | 汇总分页 | `md-d1__footer`：`md-d1__stats` 靠左，`md-d1__pager` 靠右 |
 | 纸面/表格 | `md-paper` `md-table` `md-table-wrap` `md-col-check` `md-col-name` `md-col-price` `md-col-status` `md-col-date` `md-col-actions` `md-pagination` `md-page-btn` |
 | 筛选栏 | `md-filter` / `md-d1__search`；动作区 `md-filter__actions` |

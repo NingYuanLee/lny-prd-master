@@ -48,10 +48,10 @@
 
 | 类别 | 规格用语 | ⑥ 类名（摘要） |
 |------|----------|----------------|
-| 基础 | 按钮主/次/线框/文字/纯链接、输入、列表卡三形态 | `md-btn`；`md-field`；`md-card--cover` / `--tile` / `--row` / `--plain` |
+| 基础 | 按钮主/次/线框/文字/纯链接、输入、列表卡三形态 | `md-btn` + `--contained`/`--outlined`/`--text`/`--link`；`md-field`；`md-card--cover` / `--tile` / `--row` / `--plain`。禁止裸 `<button>` 带浏览器皮肤 |
 | 表单 | 开关、单选多选、下拉、轮盘 | `md-switch` `md-check` `md-radio` `md-select` `data-wheel` |
 | 反馈 | 对话框、Toast、骨架、空态 | `md-dialog` `snackbar` `md-skeleton` `md-empty` |
-| 展示 | 标签（含卡片角标）、头像/缩略、轮播、进步/进度、时间轴 | `md-chip` `md-card__tag` `--tl/--tr`；`md-card__thumb` `md-swiper` `md-advance` `md-progress` `md-timeline` |
+| 展示 | 标签（含卡片角标）、头像/缩略、轮播、进步/进度、时间轴、功能入口行 | `md-chip` `md-card__tag`；`md-swiper` `md-advance` `md-progress` `md-timeline`；入口通栏 `md-set-row` / 一行两个 `md-set-pair` |
 | 导航 | TabBar、返回顶栏、宫格 | `md-tabbar` `md-appbar` `md-king` |
 
 触屏搜索框：**仅左图标 + 输入**，无「搜索」文案、无右侧搜索按钮。

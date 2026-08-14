@@ -27,15 +27,17 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 工作台 / 仪表盘 | `desktop-dashboard.html`（夹具 `PAGE-AD-004.html`；`md-stat-grid` 指标卡 + `md-chart-ph` + 短表。禁止拿 `desktop-list` 硬套） |
 | 树 + 内容 / 分栏 | `desktop-split.html`（夹具 `PAGE-AD-005.html`；`md-d1--split` 左树右内容；箭头展开收起，点树只换右区） |
 | 桌面设置 | `desktop-settings.html`（夹具 `PAGE-AD-006.html`；分组 `md-set-group`，一行一项开关） |
+| 桌面功能入口 | `desktop-menu.html`（夹具 `PAGE-AD-010.html`；面包屑；通栏 `md-set-row` 或一行两个 `md-set-pair`。禁止套商品表） |
 | 桌面向导 | `desktop-wizard.html`（夹具 `PAGE-AD-003.html`；`md-stepper` + 分段 `md-advance`，最后一步才提交） |
-| 移动设置 / 偏好 | `mobile-settings.html`（夹具 `PAGE-MP-006.html`；**沉浸式**；`md-appbar--cover` 两倍标题栏高度背景图+标题；分组列表一行一项） |
+| 移动设置 / 偏好 | `mobile-settings.html`（夹具 `PAGE-MP-006.html`；**沉浸式**；`md-appbar--cover` 两倍标题栏高度背景图+标题；分组列表一行一项开关） |
+| 移动功能入口 / 我的 / 服务 | `mobile-menu.html`（夹具 `PAGE-MP-010.html`；标准顶栏；通栏 `md-set-row` 或一行两个 `md-set-pair`。禁止金刚、禁止按钮堆、禁止商品横卡） |
 | 移动步骤向导 | `mobile-wizard.html`（夹具 `PAGE-MP-005.html`；横向 `md-stepper` + 分段 `md-advance--lg` + 无极 `md-progress` + 当前步表单，贴底上一步/下一步） |
 | 移动时间轴 | `mobile-timeline.html`（夹具 `PAGE-MP-009.html`；`md-timeline` 左竖轨右图文） |
 | 桌面时间轴 | `desktop-timeline.html`（夹具 `PAGE-AD-007.html`；面包屑 + `md-timeline` 左竖轨右图文） |
 | 移动按钮样例 | `mobile-buttons.html`（夹具 `PAGE-MP-007.html`；小/中/大三档：线框、色块、线框置灰、色块置灰、带角标） |
 | 移动树 + 内容 | `mobile-tree.html`（夹具 `PAGE-MP-008.html`；`md-tree-page` 左树右内容；箭头展开收起，点节点只换右区） |
 | 其它桌面页 | 先按上表选最接近的金样；对不上再读 `desktop-list.html` 只借控件，禁止整页套成商品表 |
-| 其它移动页 | 先读 `mobile-list.html`；宫格叠加 `mobile-grid.html`；展示/表单/设置/步骤向导/时间轴/树用上表对应金样 |
+| 其它移动页 | 先读 `mobile-list.html`；宫格叠加 `mobile-grid.html`；展示/表单/设置/功能入口/步骤向导/时间轴/树用上表对应金样 |
 
 触屏顶栏四种（⑥ 按规格点名复制对应金样）：
 
@@ -52,4 +54,4 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 - 因 `ui/PAGE`「视觉细节=粗糙」而少画控件
 - 重画已有页时删掉 Chip、面包屑、横卡、图标、弹窗套件、金样脚本
 - 从零手写一套比金样更瘦的布局
-- 用 `desktop-list.html` 硬套工作台 / 树 / 设置 / 向导 / 详情；用 `mobile-list.html` 硬套触屏树
+- 用 `desktop-list.html` 硬套工作台 / 树 / 设置 / 功能入口 / 向导 / 详情；用 `mobile-list.html` 硬套触屏树；用金刚或一排按钮冒充功能入口
