@@ -2017,7 +2017,7 @@ button.md-tree__item {
 }
 
 /* —— 真机预览：系统状态栏为固定顶演示组件，不参与页滚。
-   时间/信号贴顶、电量信号贴右，不为胶囊或安全距留空；页内可点控件仍走安全距与胶囊避让 —— */
+   时间/信号靠顶；左右各收约一个图标身位，不为胶囊留空；页内可点控件仍走安全距与胶囊避让 —— */
 .md-status-bar {
   display: flex;
   align-items: flex-start;
@@ -2028,8 +2028,8 @@ button.md-tree__item {
   right: 0;
   z-index: var(--md-z-status);
   height: var(--md-status-h);
-  padding: 3px 8px 0;
-  font-size: 0.75rem;
+  padding: 5px 28px 0;
+  font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--md-text);
@@ -2053,8 +2053,8 @@ button.md-tree__item {
 .md-status-bar__signals {
   display: flex;
   align-items: center;
-  gap: 6px;
-  height: 12px;
+  gap: 8px;
+  height: 16px;
 }
 .md-status-bar__signals::before,
 .md-status-bar__signals::after {
@@ -2063,17 +2063,17 @@ button.md-tree__item {
   background: currentColor;
 }
 .md-status-bar__signals::before {
-  width: 16px;
-  height: 10px;
+  width: 22px;
+  height: 12px;
   border: 1.5px solid currentColor;
-  border-radius: 2px;
+  border-radius: 3px;
   background:
     linear-gradient(90deg, currentColor 70%, transparent 70%);
   box-sizing: border-box;
 }
 .md-status-bar__signals::after {
-  width: 4px;
-  height: 4px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
 }
 

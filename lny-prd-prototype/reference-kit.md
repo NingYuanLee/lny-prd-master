@@ -657,7 +657,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 卡片 | `md-card` **`--cover`（大图叠字）`--tile`（双列 1:1）`--row`（左图右文）`--plain`（纯文/评论）** `md-card__media` `md-card__leading` `--avatar` `md-card__body` `md-card__main` `md-card__title` `md-card__subtitle` `md-card__text` `md-card__chips` `md-card__time` `md-card__foot` `md-card__meta` `md-card__photos` `md-card__photo` `md-card__tag` `--tl/--tr` `md-price` |
 | 详情 16:9 图 | `md-swiper--wide`；介绍配图 `md-media--16x9`；评论 `md-comment` `__user` `__time` `__text` `__photos` `__photo`（一排最多五张） |
 | 分区 / 模块 | `md-module`（L3，模块间距 `--md-module-gap`）`md-section-head` `md-section-head__title` |
-| 系统栏 | `md-status-bar`（`proto-page.js` 固定顶注入；页内禁止手写；时间/信号贴顶、电量信号贴右，不为胶囊留空） |
+| 系统栏 | `md-status-bar`（`proto-page.js` 固定顶注入；页内禁止手写；时间/信号靠顶略放大，左右各收一个图标身位，不为胶囊留空） |
 | 触屏顶栏 | ① `md-hero` 16:9+slogan ② `--overlay` 叠 16:9 ③ 标准 `md-appbar--mobile` ④ `--cover` 两倍高度封面 |
 | 桌面面包屑 | `md-breadcrumb`（D1 内容区顶部，禁止再写 `md-page-head`） |
 | 操作列 | `md-col-actions` 定宽；过多操作用 `md-actions` + `data-menu`「更多」+ `md-menu md-menu--fixed`（打开时抬高当前行，菜单留在单元格内，避免被后续表行挡住，也避免点菜单打不开弹窗） |
