@@ -41,13 +41,13 @@ disable-model-invocation: true
 | 夹具页 | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
 | PAGE-MP-001 首页 | `gold/mobile-grid.html` | `md-immersive` `md-hero`；`md-module`；`md-card--cover` 精选 + `md-card--tile` 双列推荐；`md-king` 5 列 + `--pair`；有 TabBar 则无 `md-appbar` |
-| PAGE-MP-002 列表 | `gold/mobile-list.html` | `md-standard`；搜索+筛选贴顶；`md-card--row` 左图/左图标/头像 + `md-card--plain` 纯文附图；筛选半屏 `data-wheel="daterange"` |
+| PAGE-MP-002 列表 | `gold/mobile-list.html` | `md-standard`；搜索+筛选贴顶；**页签 `md-tabs` 按钮组**（浅底/选中色块，禁止下划线签）；`md-card--row` 左图/左图标/头像 + `md-card--plain` 纯文附图；筛选半屏 `data-wheel="daterange"` |
 | PAGE-MP-003 详情 | `gold/mobile-detail.html` | `md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 一排最多五张。点图灯箱 **仅当本页规格要看大图**（页根 `data-lightbox`），有图 ≠ 可点预览 |
 | PAGE-MP-004 表单 | `gold/mobile-form.html` | 返回顶栏；**全部触屏表单控件**：文本/数字/电话/多行/只读、单选多选标签、开关、少选项中间弹窗、多选项底半屏、五步/无极滑动条、`data-wheel` 单日/日期段/省市区、单图更换/多图可删/文件上传；`md-action-bar` 贴底。进度条不在本页，见步骤向导 |
 | PAGE-MP-005 步骤向导 | `gold/mobile-wizard.html` | 横向 `md-stepper`；分段 `md-advance md-advance--lg`；无极 `md-progress md-progress--lg`；当前步表单；`md-action-bar` 贴底，最后一步才提交 |
 | PAGE-MP-006 设置 | `gold/mobile-settings.html` | 沉浸式；`md-appbar--cover` 两倍高度封面顶栏；分组 `md-set-group`；一行一项开关 |
 | PAGE-MP-010 功能入口 | `gold/mobile-menu.html` | 标准顶栏；分组 `md-set-group`。**通栏** `md-set-row`：左图标+名称，右短说明（可无）+箭头。**一行两个** `md-set-pair` 包两格。禁止金刚宫格、禁止一排 `md-btn`、禁止商品横卡 |
-| PAGE-MP-007 按钮 | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、文字、**`--link` 纯文字**、置灰、`md-badge`。禁止裸 `<button>` 带浏览器皮肤 |
+| PAGE-MP-007 按钮 | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、**浅底 `--soft`**、文字、**`--link` 纯文字**、置灰、`md-badge`；页签按钮组。禁止裸 `<button>` 带浏览器皮肤 |
 | PAGE-MP-008 分类 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左树右内容；`md-tree` `__toggle` 展开收起；点节点只换右区 |
 | PAGE-MP-009 时间轴 | `gold/mobile-timeline.html` | `md-timeline` 左 `__rail` 竖轨，右 `md-card--row` 图文；`is-done` / `is-active`；点节点切高亮 |
 

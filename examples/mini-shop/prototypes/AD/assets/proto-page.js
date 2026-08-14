@@ -266,11 +266,9 @@
           t.classList.toggle("is-active", t === tab);
         });
         if (!panelId) return;
-        var next = bar.nextElementSibling;
+        var pane = document.getElementById(panelId);
         var root =
-          next && next.classList.contains("md-tab-panels")
-            ? next
-            : bar.parentElement || document;
+          pane && pane.parentElement ? pane.parentElement : document;
         root.querySelectorAll(".md-tab-panel").forEach(function (p) {
           p.classList.toggle("is-active", p.id === panelId);
         });

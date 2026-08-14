@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 金样：标准不透明状态栏 + 搜索行/筛选行贴顶 + 横卡弹性排版（标题/副标题/摘要截断/元信息）+ 左/右半屏。写列表前必 Read。 -->
+<!-- LNY-PRD gold: 金样：标准不透明状态栏 + 搜索行/筛选行/页签按钮组贴顶 + 横卡弹性排版（标题/副标题/摘要截断/元信息）+ 左/右半屏。写列表前必 Read。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -23,8 +23,15 @@
           <button type="button" class="md-btn md-btn--text" onclick="ProtoPage.openDrawer('filterSheet')">筛选</button>
         </div>
       </div>
+      <nav class="md-tabs">
+        <button type="button" class="md-tab is-active" data-panel="listAll">全部</button>
+        <button type="button" class="md-tab" data-panel="listIn">有货</button>
+        <button type="button" class="md-tab" data-panel="listOut">售罄</button>
+      </nav>
     </header>
     <main class="md-mobile-body">
+      <div class="md-tab-panels">
+      <div id="listAll" class="md-tab-panel is-active">
       <div class="md-module md-stack" data-section="商品卡片列表">
         <a class="md-card md-card--row" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
           <div class="md-card__media md-media-ph md-media-ph--1">
@@ -150,6 +157,56 @@
         <div class="md-empty__art" aria-hidden="true"></div>
         <p class="md-empty__title">暂无内容</p>
         <p class="md-empty__text">暂无商品</p>
+      </div>
+      </div>
+      </div>
+      <div id="listIn" class="md-tab-panel">
+        <div class="md-module md-stack">
+          <a class="md-card md-card--row" href="PAGE-MP-003.html">
+            <div class="md-card__media md-media-ph md-media-ph--1">
+              <span class="md-card__tag md-chip md-chip--success">有货</span>
+            </div>
+            <div class="md-card__body">
+              <div class="md-card__main">
+                <h2 class="md-card__title">有机草莓 250g</h2>
+                <p class="md-card__subtitle">当季鲜果 · 冷链直达</p>
+              </div>
+              <div class="md-card__foot">
+                <p class="md-price">¥19.90</p>
+              </div>
+            </div>
+          </a>
+          <a class="md-card md-card--row" href="PAGE-MP-003.html">
+            <div class="md-card__media md-media-ph md-media-ph--3"></div>
+            <div class="md-card__body">
+              <div class="md-card__main">
+                <h2 class="md-card__title">青柠蜂蜜茶 500ml</h2>
+                <p class="md-card__subtitle">冷饮优选</p>
+              </div>
+              <div class="md-card__foot">
+                <p class="md-price">¥12.50</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div id="listOut" class="md-tab-panel">
+        <div class="md-module md-stack">
+          <a class="md-card md-card--row" href="PAGE-MP-003.html">
+            <div class="md-card__media md-media-ph md-media-ph--2">
+              <span class="md-card__tag md-card__tag--tr md-chip md-chip--error">售罄</span>
+            </div>
+            <div class="md-card__body">
+              <div class="md-card__main">
+                <h2 class="md-card__title">云南小粒咖啡 227g</h2>
+                <p class="md-card__text">中度烘焙，花香与坚果尾韵。</p>
+              </div>
+              <div class="md-card__foot">
+                <p class="md-price">¥29.90</p>
+              </div>
+            </div>
+          </a>
+        </div>
       </div>
       </div>
     </main>

@@ -40,13 +40,13 @@
 
 | 规范里的组件 | 套件 |
 |--------------|------|
-| Button | `md-btn` `--contained`/`--outlined`/`--text`/`--link`；`--sm`/`--lg` |
+| Button | `md-btn` `--contained`/`--outlined`/`--soft`/`--text`/`--link`；`--sm`/`--lg` |
 | Input / Cell | `md-field`；列表卡 `--cover` / `--tile` / `--row` / `--plain` |
 | Checkbox / Radio / Switch | `md-check` `md-radio` `md-switch` |
 | Picker | `data-wheel="date|region|daterange"`；下拉 `md-select` |
 | Dialog / Toast / Loading | `md-dialog`；触屏 Toast；`md-skeleton` |
 | Tag / Avatar / Swipe / Progress | `md-chip`；**`md-card__tag` `--tl/--tr`**（封面角）；`md-card__thumb`；`md-swiper`；`md-progress`/`md-advance`；时间轴 `md-timeline` |
-| TabBar / NavBar / Grid | `md-tabbar`；`md-appbar--*`；`md-king` / `md-king--pair` |
+| TabBar / NavBar / Grid / 页内签 | `md-tabbar`；`md-appbar--*`；`md-king` / `md-king--pair`；触屏页内签 `md-tabs` 按钮组（禁止下划线） |
 
 搜索：`md-search` = 左 `search` 图标 + `md-search__input`，无 caption、无右侧搜索按钮。
 

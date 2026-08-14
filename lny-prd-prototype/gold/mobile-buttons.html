@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 金样：触屏按钮三档尺寸 + 纯文字链接钮。每档含线框、色块、文字、置灰、角标。写按钮前对照本页。 -->
+<!-- LNY-PRD gold: 金样：触屏按钮三档尺寸 + 浅底色字 + 纯文字链接钮 + 页签按钮组。每档含线框、色块、浅底、文字、置灰、角标。写按钮前对照本页。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -21,9 +21,11 @@
         <div class="md-btn-demo__row">
           <button type="button" class="md-btn md-btn--outlined md-btn--sm">线框</button>
           <button type="button" class="md-btn md-btn--contained md-btn--sm">色块</button>
+          <button type="button" class="md-btn md-btn--soft md-btn--sm">浅底</button>
           <button type="button" class="md-btn md-btn--text md-btn--sm">文字</button>
           <button type="button" class="md-btn md-btn--outlined md-btn--sm" disabled>线框置灰</button>
           <button type="button" class="md-btn md-btn--contained md-btn--sm" disabled>色块置灰</button>
+          <button type="button" class="md-btn md-btn--soft md-btn--sm" disabled>浅底置灰</button>
           <button type="button" class="md-btn md-btn--contained md-btn--sm">角标<span class="md-badge">8</span></button>
         </div>
       </section>
@@ -34,9 +36,11 @@
         <div class="md-btn-demo__row">
           <button type="button" class="md-btn md-btn--outlined">线框</button>
           <button type="button" class="md-btn md-btn--contained">色块</button>
+          <button type="button" class="md-btn md-btn--soft">浅底</button>
           <button type="button" class="md-btn md-btn--text">文字</button>
           <button type="button" class="md-btn md-btn--outlined" disabled>线框置灰</button>
           <button type="button" class="md-btn md-btn--contained" disabled>色块置灰</button>
+          <button type="button" class="md-btn md-btn--soft" disabled>浅底置灰</button>
           <button type="button" class="md-btn md-btn--contained">角标<span class="md-badge">8</span></button>
         </div>
       </section>
@@ -47,9 +51,11 @@
         <div class="md-btn-demo__row">
           <button type="button" class="md-btn md-btn--outlined md-btn--lg">线框</button>
           <button type="button" class="md-btn md-btn--contained md-btn--lg">色块</button>
+          <button type="button" class="md-btn md-btn--soft md-btn--lg">浅底</button>
           <button type="button" class="md-btn md-btn--text md-btn--lg">文字</button>
           <button type="button" class="md-btn md-btn--outlined md-btn--lg" disabled>线框置灰</button>
           <button type="button" class="md-btn md-btn--contained md-btn--lg" disabled>色块置灰</button>
+          <button type="button" class="md-btn md-btn--soft md-btn--lg" disabled>浅底置灰</button>
           <button type="button" class="md-btn md-btn--contained md-btn--lg">角标<span class="md-badge">8</span></button>
         </div>
       </section>
@@ -65,6 +71,27 @@
           <button type="button" class="md-btn md-btn--link" disabled>不可点</button>
         </div>
         <p class="md-body2">`md-btn--link`：无线框、无背景、无阴影；分区头「查看全部」也用这一形态，不要做成线框/色块。</p>
+      </section>
+      <section class="md-module md-btn-demo">
+        <div class="md-section-head">
+          <h2 class="md-section-head__title">页签</h2>
+        </div>
+        <nav class="md-tabs">
+          <button type="button" class="md-tab is-active" data-panel="tabAll">全部</button>
+          <button type="button" class="md-tab" data-panel="tabIn">有货</button>
+          <button type="button" class="md-tab" data-panel="tabOut">售罄</button>
+        </nav>
+        <div class="md-tab-panels">
+          <div id="tabAll" class="md-tab-panel is-active">
+            <p class="md-body2">触屏页签是一组等宽按钮：未选中浅底色字，选中色块白字。不要做成桌面下划线签。</p>
+          </div>
+          <div id="tabIn" class="md-tab-panel">
+            <p class="md-body2">有货：只列出可售商品。</p>
+          </div>
+          <div id="tabOut" class="md-tab-panel">
+            <p class="md-body2">售罄：只列出已售完商品。</p>
+          </div>
+        </div>
       </section>
     </main>
   </div>

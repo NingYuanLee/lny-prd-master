@@ -18,7 +18,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 本页类型 | 必读 |
 |----------|------|
 | 移动宫格 / 推荐 / 双列卡片 | `mobile-grid.html`（**沉浸式**；`md-hero` 钉底层；`md-mobile-sheet`；`md-module`；**封面叠字** `md-card--cover` + **双列瓷砖** `md-card--tile`；金刚 5 列或 `md-king--pair`） |
-| 移动列表 / 动态流 / 横卡 | `mobile-list.html`（**标准** + 搜索/筛选贴顶；**横卡** `md-card--row` / 头像 / **纯文** `--plain`+`__photos`；左/右半屏；`data-wheel="daterange"`） |
+| 移动列表 / 动态流 / 横卡 | `mobile-list.html`（**标准** + 搜索/筛选/页签按钮组贴顶；**横卡** `md-card--row` / 头像 / **纯文** `--plain`+`__photos`；左/右半屏；`data-wheel="daterange"`） |
 | 移动展示 / 详情 | `mobile-detail.html`（**沉浸式**；16:9 `md-hero` 钉底层 + 返回叠层；`md-mobile-sheet` 白底正文上层滚过；评论 + 贴底次要操作。夹具演示可加 `data-lightbox`；业务页仅当规格要看大图才加） |
 | 移动表单 | `mobile-form.html`（夹具 `PAGE-MP-004.html`；**套件样例**，一页铺齐触屏表单控件：文本/选择/滑动条/单日/日期段/省市区/三类上传 + 贴底提交；进度条见步骤向导） |
 | 桌面表格 / 筛选列表 / 弹窗维护 | `desktop-list.html`（内容区顶面包屑无大标题；页内签在筛选上方整区切换；分页与表横条贴底；勾选左冻 / 操作右冻定宽「更多」下拉；汇总左分页右；**列宽按字段语义**；**紧凑密度一屏多行**；隐藏骨架+插画空态；筛选用 `md-field--daterange`） |
@@ -34,7 +34,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 移动步骤向导 | `mobile-wizard.html`（夹具 `PAGE-MP-005.html`；横向 `md-stepper` + 分段 `md-advance--lg` + 无极 `md-progress` + 当前步表单，贴底上一步/下一步） |
 | 移动时间轴 | `mobile-timeline.html`（夹具 `PAGE-MP-009.html`；`md-timeline` 左竖轨右图文） |
 | 桌面时间轴 | `desktop-timeline.html`（夹具 `PAGE-AD-007.html`；面包屑 + `md-timeline` 左竖轨右图文） |
-| 移动按钮样例 | `mobile-buttons.html`（夹具 `PAGE-MP-007.html`；小/中/大三档：线框、色块、线框置灰、色块置灰、带角标） |
+| 移动按钮样例 | `mobile-buttons.html`（夹具 `PAGE-MP-007.html`；小/中/大三档：线框、色块、浅底 `--soft`、线框/色块/浅底置灰、带角标；页签按钮组） |
 | 移动树 + 内容 | `mobile-tree.html`（夹具 `PAGE-MP-008.html`；`md-tree-page` 左树右内容；箭头展开收起，点节点只换右区） |
 | 其它桌面页 | 先按上表选最接近的金样；对不上再读 `desktop-list.html` 只借控件，禁止整页套成商品表 |
 | 其它移动页 | 先读 `mobile-list.html`；宫格叠加 `mobile-grid.html`；展示/表单/设置/功能入口/步骤向导/时间轴/树用上表对应金样 |

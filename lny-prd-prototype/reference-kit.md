@@ -21,7 +21,7 @@
 | 条数 | 列表/卡片/表格默认态 **≥4 条**（规格写明空态、或 API 写死更少条数时从其规定；首页有「每页条数」则按其值） |
 | 字段 | API/COMP 已列的展示字段都要出现（名称、图、价、库存状态等）；**不**发明规格没有的字段（如无「销量」就不要写已售） |
 | 图片 | `md-card__media md-media-ph md-media-ph--{1-6}` 轮换；禁止无编号的纯灰 `md-media-ph`、禁止随机色块。点图放大阅览 **仅当本页规格要看大图**：页根加 `data-lightbox`，由 `proto-page.js` 注入 `.md-lightbox`（同页一组、翻页不循环）。有图 ≠ 可点预览 |
-| 按钮 | 可点操作用套件类：`md-btn` + `--contained` / `--outlined` / `--text` / `--link`，或 `md-icon-btn` / `md-tab` / `md-menu__item` / `md-page-btn` / `md-tree__item`。禁止裸 `<button>`、禁止 `<input type="submit">` 露出浏览器灰钮/立体边 |
+| 按钮 | 可点操作用套件类：`md-btn` + `--contained` / `--outlined` / `--soft` / `--text` / `--link`，或 `md-icon-btn` / `md-tab` / `md-menu__item` / `md-page-btn` / `md-tree__item`。禁止裸 `<button>`、禁止 `<input type="submit">` 露出浏览器灰钮/立体边 |
 | 移动端 | 状态栏由 `proto-page.js` 固定顶注入；页根须标 `md-immersive` 或 `md-standard`；`md-section-head`；列表卡三形态择一：`md-card--cover` / `md-card--tile`（`md-grid-2`）/ `md-card--row` 或 `--plain`；触屏 `md-search` 仅左图标+输入；`viewport-fit=cover`；左右下及四角走 `--md-safe-*` |
 | 桌面端 | 必须有 `md-breadcrumb`（内容区顶部，**不要** `md-page-head` 大标题）；表格首列可用 `md-row-goods` + `md-thumb md-media-ph--n`。D1-1 列表：页内签在筛选上方且整区切换；`md-d1--list` 让分页与表横条贴底，并走 **紧凑密度**；勾选列 `md-col-check` 左冻、操作列 `md-col-actions` 右冻定宽；中间列按语义加 `md-col-name` / `md-col-price` / `md-col-status` / `md-col-date`（名称吃剩余，金额/状态/日期窄，禁止均分或被 `min-width` 拉长）；操作过多用 `md-actions` + `data-menu`「更多」下拉；`md-d1__stats` 靠左、`md-d1__pager` 靠右。规格出现的弹窗/签/下拉/日期/按钮组必须用本节 AD 控件，禁止裸 `alert` / 无样式 `<select>` |
 | 间距 | 触屏滚动区模块间距走 `--md-module-gap`（`md-module`）；卡片/栅格内距走套件；禁止内联 `margin` 当排版 |
@@ -395,6 +395,21 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 </div>
 ```
 
+**触屏页内签**（贴在搜索/筛选下方，不进滚动区；未选中浅底色字、选中色块白字。禁止桌面 `md-tabs--page` 下划线）
+
+```html
+<nav class="md-tabs">
+  <button type="button" class="md-tab is-active" data-panel="listAll">全部</button>
+  <button type="button" class="md-tab" data-panel="listIn">有货</button>
+  <button type="button" class="md-tab" data-panel="listOut">售罄</button>
+</nav>
+<div class="md-tab-panels">
+  <div id="listAll" class="md-tab-panel is-active">…</div>
+  <div id="listIn" class="md-tab-panel">…</div>
+  <div id="listOut" class="md-tab-panel">…</div>
+</div>
+```
+
 **按钮组 / 分裂按钮**
 
 ```html
@@ -547,11 +562,12 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 <button type="button" class="md-btn md-btn--text md-tooltip" data-tip="刷新列表">刷新</button>
 ```
 
-触屏按钮对照金样 `gold/mobile-buttons.html`：小 `--sm` / 中默认 / 大 `--lg`；形态含线框 `--outlined`、色块 `--contained`、文字 `--text`、**纯文字链接 `--link`（无线框无背景，用于查看更多/了解全部）**、置灰 `disabled`、角标内嵌 `md-badge`。
+触屏按钮对照金样 `gold/mobile-buttons.html`：小 `--sm` / 中默认 / 大 `--lg`；形态含线框 `--outlined`、色块 `--contained`、**浅底 `--soft`（无边框、浅色底+有色字）**、文字 `--text`、**纯文字链接 `--link`（无线框无背景，用于查看更多/了解全部）**、置灰 `disabled`、角标内嵌 `md-badge`。
 
 ```html
 <button type="button" class="md-btn md-btn--outlined md-btn--sm">线框</button>
 <button type="button" class="md-btn md-btn--contained md-btn--sm">色块</button>
+<button type="button" class="md-btn md-btn--soft md-btn--sm">浅底</button>
 <button type="button" class="md-btn md-btn--outlined md-btn--sm" disabled>线框置灰</button>
 <button type="button" class="md-btn md-btn--contained md-btn--sm" disabled>色块置灰</button>
 <button type="button" class="md-btn md-btn--contained md-btn--sm">角标<span class="md-badge">8</span></button>
@@ -659,8 +675,8 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | 时间轴 | `md-timeline` + `__item` `__rail` `__node` `__line` `__body`；右图文 `md-card--row`；`is-done` / `is-active` | 用列表硬套竖轨；左图右线反过来 |
 | 树 | `md-tree` + `__item` `__toggle` `__label`；分支 `li.is-open`；当前 `is-active` | 无类名嵌套 `ul`；触屏用列表硬套分类树 |
 | 图表 | `md-chart-ph` 占位条 | 手写 canvas / 自造柱 |
-| 页内分页签 | `md-tabs md-tabs--page` + `md-tab` + `md-tab-panel` | 自造下划线 `div` / 裸 `<a>` 签 |
-| 主/线/字/链接按钮 | `md-btn md-btn--contained` / `--outlined` / `--text` / `--link`；图标钮 `md-icon-btn` | 裸 `<button>`、`<input type="submit">`、Bootstrap/`btn`、浏览器灰钮 |
+| 页内分页签 | 桌面：`md-tabs md-tabs--page` 下划线；触屏：`md-tabs`（自动按钮组，浅底/选中色块） | 触屏用桌面下划线签；自造下划线 `div` / 裸 `<a>` 签 |
+| 主/线/浅底/字/链接按钮 | `md-btn md-btn--contained` / `--outlined` / **`--soft`（无边框浅底色字）** / `--text` / `--link`；图标钮 `md-icon-btn` | 裸 `<button>`、`<input type="submit">`、Bootstrap/`btn`、浏览器灰钮 |
 | 按钮组 / 工具栏按钮 | `md-btn-group` / `md-d1__toolbar` | 无 class 的一排 `<button>` |
 | 下拉 | `md-field--select` + `md-select`，或 `md-select-btn` + `md-menu` | 未包 `md-field` 的裸 `<select>`；触屏用系统原生选择器 |
 | 日期 / 时间 | `md-field--date` / `md-field--daterange` / `md-field--time` + `type="date|time|datetime-local"` | 自造日历、两个裸日期框冒充日期段 |
@@ -677,7 +693,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 
 | 用途 | 类名 |
 |------|------|
-| 主/线/字/链接按钮 | `md-btn md-btn--contained` / `--outlined` / `--text` / **`--link`（纯文字无线框无背景，查看更多/了解全部）**；`--sm` `--lg`；置灰 `disabled`；角标内嵌 `md-badge` |
+| 主/线/浅底/字/链接按钮 | `md-btn md-btn--contained` / `--outlined` / **`--soft`（无边框浅底色字）** / `--text` / **`--link`（纯文字无线框无背景，查看更多/了解全部）**；`--sm` `--lg`；置灰 `disabled`；角标内嵌 `md-badge` |
 | 图标 | `span.md-icon` + `data-icon`（闭集见 [`reference-icons.md`](reference-icons.md)） |
 | 图标按钮 | `md-icon-btn` 内放 `span.md-icon` |
 | 输入 | `md-field` + `md-field__label` + `md-field__input`；只读加 `md-field--readonly` + `readonly`（灰底淡字）。日期段 `readonly` 触发器不要加 `--readonly` |
