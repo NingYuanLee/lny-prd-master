@@ -74,7 +74,7 @@
 |------|----------|
 | 按下 | 套件默认 `transform`/`filter` |
 | 半屏/弹窗 | `ProtoPage.openDrawer` / `openDialog`（有过渡） |
-| 点图放大阅览 | 默认只给详情页图（页根 `data-lightbox`，同页一组）与横卡多行卡内图（每卡一组）。封面叠字 / 双列 / Banner / 上传图不可预览 |
+| 点图放大阅览 | 默认只给详情页图（页根 `data-lightbox`；**轮播 / 图文 / 评论各一组**）与横卡多行卡内图（每卡一组）。封面叠字 / 双列 / Banner / 上传图不可预览 |
 | 轻成功 | `ProtoPage.snackbar`（触屏居中） |
 | 确认 | `ProtoPage.confirm` |
 | 加载/空/失败 | `data-state` + `md-skel-host` / `md-empty` |

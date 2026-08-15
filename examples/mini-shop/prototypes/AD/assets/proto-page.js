@@ -1117,7 +1117,7 @@
     if (el.closest("[data-preview=off]")) return true;
     if (
       el.closest(
-        ".md-appbar__cover, .md-card__leading, .md-empty__art, .md-chart-ph, .md-upload-grid__add, .md-upload-grid__del, .md-upload-grid__thumb, .md-upload__preview"
+        ".md-appbar__cover, .md-card__leading, .md-profile__media, .md-empty__art, .md-chart-ph, .md-upload-grid__add, .md-upload-grid__del, .md-upload-grid__thumb, .md-upload__preview"
       )
     ) {
       return true;
@@ -1144,12 +1144,34 @@
 
   var lightboxRoot = null;
 
+  /**
+   * Preview groups stay separate by zone:
+   * - md-card--row: one group per card
+   * - detail [data-lightbox]: swiper / article / comment-list each their own group
+   * - optional [data-lightbox-group] overrides the container
+   */
   function previewGroupRoot(el) {
     if (!el) return lightboxRoot || document;
     var row = el.closest(".md-card--row");
     if (row) return row;
+    var named = el.closest("[data-lightbox-group]");
+    if (named) return named;
     var page = el.closest("[data-lightbox]");
-    if (page) return page;
+    if (page) {
+      var swiper = el.closest(".md-swiper");
+      if (swiper) return swiper;
+      var hero = el.closest(".md-hero, .md-detail-hero");
+      if (hero) return hero;
+      var article = el.closest(".md-article, .md-article-block");
+      if (article) return article;
+      var comments = el.closest(".md-comment-list");
+      if (comments) return comments;
+      var comment = el.closest(".md-comment");
+      if (comment) return comment;
+      var mod = el.closest(".md-module");
+      if (mod) return mod;
+      return page;
+    }
     return document;
   }
 
@@ -1400,6 +1422,169 @@
     });
   }
 
+  function detailScrollRoot(page) {
+    if (!page) return document.scrollingElement || document.documentElement;
+    if (page.classList.contains("md-mobile-page")) {
+      return page.querySelector(".md-mobile-body") || page;
+    }
+    return document.scrollingElement || document.documentElement;
+  }
+
+  function scrollDetailTop(page) {
+    var root = detailScrollRoot(page);
+    if (root === document.scrollingElement || root === document.documentElement || root === document.body) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    if (root.scrollTo) root.scrollTo({ top: 0, behavior: "smooth" });
+    else root.scrollTop = 0;
+  }
+
+  function scrollDetailTo(page, el) {
+    if (!el) return;
+    var root = detailScrollRoot(page);
+    if (root === document.scrollingElement || root === document.documentElement || root === document.body) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    var rootRect = root.getBoundingClientRect();
+    var elRect = el.getBoundingClientRect();
+    var top = root.scrollTop + (elRect.top - rootRect.top) - 8;
+    if (root.scrollTo) root.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    else root.scrollTop = Math.max(0, top);
+  }
+
+  function detailSectionTitle(el) {
+    if (!el) return "";
+    var named = el.getAttribute("data-section");
+    if (named) return named.trim();
+    var head =
+      el.querySelector(".md-section-head__title") ||
+      el.querySelector(".md-detail-head__title") ||
+      el.querySelector(".md-article__h2") ||
+      el.querySelector("h1, h2");
+    return head ? String(head.textContent || "").trim() : "";
+  }
+
+  function collectDetailSections(page) {
+    var out = [];
+    var seen = {};
+    function push(el) {
+      if (!el || seen[el]) return;
+      var title = detailSectionTitle(el);
+      if (!title) return;
+      seen[el] = true;
+      if (!el.id) {
+        el.id = "detail-sec-" + out.length;
+      }
+      out.push({ el: el, title: title });
+    }
+    page.querySelectorAll(".md-hero[data-section]").forEach(push);
+    page.querySelectorAll(".md-detail-hero").forEach(push);
+    page.querySelectorAll(".md-module").forEach(push);
+    return out;
+  }
+
+  function ensureDetailTocDrawer() {
+    var id = "mdDetailToc";
+    if (document.getElementById(id)) return id;
+    var mask = document.createElement("div");
+    mask.id = id + "Backdrop";
+    mask.className = "md-backdrop";
+    mask.addEventListener("click", function () {
+      closeDrawer(id);
+    });
+    var sheet = document.createElement("aside");
+    sheet.id = id;
+    sheet.className = "md-drawer md-drawer--bottom";
+    sheet.setAttribute("aria-hidden", "true");
+    sheet.innerHTML =
+      '<h2 class="md-drawer__title">目录</h2>' +
+      '<div class="md-drawer__body" id="mdDetailTocBody"></div>';
+    document.body.appendChild(mask);
+    document.body.appendChild(sheet);
+    ensureBottomDrawerClose(sheet);
+    paintIcon(sheet);
+    return id;
+  }
+
+  function openDetailToc(page) {
+    var id = ensureDetailTocDrawer();
+    var body = document.getElementById("mdDetailTocBody");
+    if (!body) return;
+    var sections = collectDetailSections(page);
+    body.innerHTML = "";
+    if (!sections.length) {
+      var empty = document.createElement("p");
+      empty.className = "md-body2";
+      empty.textContent = "本页暂无区块标题";
+      body.appendChild(empty);
+    } else {
+      sections.forEach(function (sec) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "md-drawer__opt";
+        btn.textContent = sec.title;
+        btn.addEventListener("click", function () {
+          closeDrawer(id);
+          scrollDetailTo(page, sec.el);
+        });
+        body.appendChild(btn);
+      });
+    }
+    openDrawer(id);
+  }
+
+  function ensureDetailNav() {
+    document.querySelectorAll(".md-detail-page").forEach(function (page) {
+      var mode = page.getAttribute("data-detail-nav");
+      if (mode === "off" || mode === "0" || mode === "false") return;
+      if (page.querySelector(".md-pod--detail-nav")) return;
+      var wantToc = true;
+      var wantTop = true;
+      if (mode === "toc") wantTop = false;
+      else if (mode === "top") wantToc = false;
+      else if (mode && mode !== "on") {
+        wantToc = mode.indexOf("toc") >= 0;
+        wantTop = mode.indexOf("top") >= 0;
+      }
+      if (!wantToc && !wantTop) return;
+
+      var isDesk = page.classList.contains("md-d1");
+      var pod = document.createElement("nav");
+      pod.className = isDesk
+        ? "md-pod md-pod--desk md-pod--br md-pod--detail-nav"
+        : "md-pod md-pod--br md-pod--detail-nav";
+      pod.setAttribute("aria-label", "页面导航");
+      if (wantToc) {
+        var tocBtn = document.createElement("button");
+        tocBtn.type = "button";
+        tocBtn.className = "md-pod__item";
+        tocBtn.setAttribute("aria-label", "目录");
+        tocBtn.setAttribute("data-detail-nav", "toc");
+        tocBtn.innerHTML = '<span class="md-icon" data-icon="list" aria-hidden="true"></span>';
+        tocBtn.addEventListener("click", function () {
+          openDetailToc(page);
+        });
+        pod.appendChild(tocBtn);
+      }
+      if (wantTop) {
+        var topBtn = document.createElement("button");
+        topBtn.type = "button";
+        topBtn.className = "md-pod__item";
+        topBtn.setAttribute("aria-label", "返回顶部");
+        topBtn.setAttribute("data-detail-nav", "top");
+        topBtn.innerHTML = '<span class="md-icon" data-icon="arrow-up" aria-hidden="true"></span>';
+        topBtn.addEventListener("click", function () {
+          scrollDetailTop(page);
+        });
+        pod.appendChild(topBtn);
+      }
+      page.appendChild(pod);
+      paintIcon(pod);
+    });
+  }
+
   function paintIcon(host) {
     if (global.ProtoIcons && typeof global.ProtoIcons.mount === "function") {
       global.ProtoIcons.mount(host);
@@ -1520,6 +1705,7 @@
 
   function bindUi() {
     ensureStatusBar();
+    ensureDetailNav();
     hoistPods();
     bindDeskPods();
     bindDeskWizards();

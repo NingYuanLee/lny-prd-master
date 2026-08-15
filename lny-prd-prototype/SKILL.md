@@ -58,7 +58,7 @@ disable-model-invocation: true
 |--------|------|----------------|
 | PAGE-MP-001 首页 | `gold/mobile-grid.html` | `md-immersive` `md-hero`；`md-module`；`md-card--cover` 精选 + `md-card--tile` 双列推荐；`md-king` 5 列 + `--pair`；有 TabBar 则无 `md-appbar` |
 | PAGE-MP-002 列表 | `gold/mobile-list.html` | `md-standard`；搜索+筛选贴顶；页签按钮组；**列表区**横卡多行 `md-card--row`（字段多或值长；字段少因值长再加 `md-card--long`：字号略大、高度随内容无 min-height；文本靠左，`__rail` 价格/距离右上，单按钮右下或 `--bar` 底栏；**卡内图默认可预览**；竖图定宽只加高）+ 横卡单行 `md-stack`>`md-set-row`（仅字段≤3 且值都短；每行独立有缝，不要 `md-set-group`）；非分组、数据可无限（分页无页边界）；卡统一 `--md-shadow-surface`；底角 `md-pod`（有顶栏故无左上）；筛选半屏 `data-wheel="daterange"` |
-| PAGE-MP-003 详情 | `gold/mobile-detail.html` | `md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 约 40px、一排最多五张。**本页图片默认可点预览**（页根 `data-lightbox`） |
+| PAGE-MP-003 详情 | `gold/mobile-detail.html` | 含 `md-profile`（店铺资料示例；同组件可用于个人/公司资料）；目录四项；右下目录+回顶 |
 | PAGE-MP-004 表单（套件样例） | `gold/mobile-form.html` | **样例才整页铺齐**。返回顶栏；全部触屏表单控件；`md-action-bar` 贴底。业务表单按规格裁字段。进度条见步骤向导 |
 | PAGE-MP-005 步骤向导 | `gold/mobile-wizard.html` | 横向 `md-stepper`；分段 `md-advance md-advance--lg`；无极 `md-progress md-progress--lg`；当前步表单；`md-action-bar` 贴底，最后一步才提交 |
 | PAGE-MP-006 设置 | `gold/mobile-settings.html` | 沉浸式；`md-appbar--cover`；**设置项**：开关可点；`md-set-picks` 选项面文字/图标/图片均可，未选显示 `radio-off`、已选 `check`；左图标可有可无；无极 / `data-menu` 改值 |
@@ -75,7 +75,7 @@ disable-model-invocation: true
 | PAGE-AD-001 列表 | `gold/desktop-list.html` | `md-d1 md-d1--list`（**紧凑密度**）；`md-breadcrumb` 无 `md-page-head`；签 `md-tabs--page` 在筛上整区切换；列类 `md-col-check` `md-col-name` `md-col-price` `md-col-status` `md-col-date` `md-col-actions`（**按字段语义，禁止均分**）；筛选用 `md-field--daterange`；「更多」`md-menu--fixed`；`md-d1__stats` 左 / `md-d1__pager` 右 |
 | PAGE-AD-002 商品表单 | `gold/desktop-form.html` | `md-breadcrumb`；`md-field--sm`。**按规格裁字段**，不要把套件样例整页搬来；进度条不在本页，见步骤向导 |
 | PAGE-AD-009 表单（套件样例） | `gold/desktop-form.html` | **样例才整页铺齐**。全部桌面表单控件。业务页用 AD-002 按规格裁。**不要**加 `md-d1--list`，不要触屏 `data-wheel` |
-| PAGE-AD-008 详情 | `gold/desktop-detail.html` | `md-breadcrumb`；`md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 约 40px、一排最多五张。**本页图片默认可点预览**。不要 `md-d1--list`、不要沉浸式叠层 |
+| PAGE-AD-008 详情 | `gold/desktop-detail.html` | 整页浅灰；白底区块；`md-profile`；灯箱分区；右下目录+回顶。不要沉浸式 |
 | PAGE-AD-003 向导 | `gold/desktop-wizard.html` | `md-stepper` + 分段 `md-advance`；当前步 `[data-step]` 包在 `md-d1__form` 内（套件会给步进容器双列间距，禁止裸堆字段贴死）；**数字步骤可点跳步**；最后一步才提交 |
 | PAGE-AD-004 工作台 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
 | PAGE-AD-005 分类 | `gold/desktop-split.html` | `md-d1--split` 左树右内容；`md-tree` `__toggle` 展开收起；点树只换右区 |

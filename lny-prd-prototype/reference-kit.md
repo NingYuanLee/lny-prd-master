@@ -20,7 +20,7 @@
 | 夹具数据 | 用符合业务域的中文名称与真实量级价格（如 `有机草莓 250g` / `¥19.90`）。**禁止** `示例商品 A/B`、`测试数据`、`xxx`、`Item 1` |
 | 条数 | 列表/卡片/表格默认态 **≥4 条**（规格写明空态、或 API 写死更少条数时从其规定；首页有「每页条数」则按其值） |
 | 字段 | API/COMP 已列的展示字段都要出现（名称、图、价、库存状态等）；**不**发明规格没有的字段（如无「销量」就不要写已售） |
-| 图片 | `md-card__media` **只能**出现在 `--cover` / `--tile` / `--row` 卡内（裸用默认 1:1，宽铺满会成大方块）。页顶大背景用 `md-hero`/`md-appbar--cover`；详情主图 `md-swiper--wide`；介绍配图 `md-media--16x9`。占位图 `md-media-ph--{1-6}` 轮换；禁止无编号纯灰、禁止随机色块。点图预览 **默认只给两类**：详情页图（页根 `data-lightbox`）与横卡多行卡内图。封面叠字 / 双列 / Banner / 表单上传默认不可预览（`data-preview=on/off` 例外） |
+| 图片 | `md-card__media` **只能**出现在 `--cover` / `--tile` / `--row` 卡内（裸用默认 1:1，宽铺满会成大方块）。页顶大背景用 `md-hero`/`md-appbar--cover`；详情主图 `md-swiper--wide`；介绍配图 `md-media--16x9`。占位图 `md-media-ph--{1-6}` 轮换；禁止无编号纯灰、禁止随机色块。点图预览 **默认只给两类**：详情页图（页根 `data-lightbox`；**轮播 / 图文 / 评论各一组**，翻页不跨区）与横卡多行卡内图（每卡一组）。封面叠字 / 双列 / Banner / 表单上传默认不可预览（`data-preview=on/off` 例外）；可用 `data-lightbox-group` 自定义组容器 |
 | 按钮 | 可点操作用套件类：`md-btn` + `--contained` / `--outlined` / `--soft` / `--text` / `--link`，或 `md-icon-btn` / `md-tab` / `md-menu__item` / `md-page-btn` / `md-tree__item`。禁止裸 `<button>`、禁止 `<input type="submit">` 露出浏览器灰钮/立体边 |
 | 移动端 | 状态栏由 `proto-page.js` 固定顶注入；页根须标 `md-immersive` 或 `md-standard`；`md-section-head`；**列表区** `md-card--cover` / `--tile` / `--row`（多行，可无左图+小图）/ `md-set-row`（单行）；**功能区** `md-king` / `--pair` / `md-set-row` 通栏 / `md-set-pair`；触屏 `md-search` 仅左图标+输入；`viewport-fit=cover`；正文左右下走 `--md-safe-*`；标准顶栏左右 4px |
 | 桌面端 | 必须有 `md-breadcrumb`（内容区顶部，**不要** `md-page-head` 大标题）；表格首列可用 `md-row-goods` + `md-thumb md-media-ph--n`。D1-1 列表：页内签在筛选上方且整区切换；`md-d1--list` 让分页与表横条贴底，并走 **紧凑密度**；勾选列 `md-col-check` 左冻、操作列 `md-col-actions` 右冻定宽；中间列按语义加 `md-col-name` / `md-col-price` / `md-col-status` / `md-col-date`（名称吃剩余，金额/状态/日期窄，禁止均分或被 `min-width` 拉长）；操作过多用 `md-actions` + `data-menu`「更多」下拉；`md-d1__stats` 靠左、`md-d1__pager` 靠右。**触屏弹窗/半屏内边距收紧**；底半屏高度随内容、最大 **70vh**、超出正文滚动、关闭钮在面板右上角（`md-drawer__close`）。规格出现的弹窗/签/下拉/日期/按钮组必须用本节 AD 控件，禁止裸 `alert` / 无样式 `<select>` |
@@ -735,6 +735,134 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 
 D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩放；禁止 `alert('原型：…')`。**触屏**弹窗内边距收紧；底半屏 `md-drawer--bottom` 高度随内容、最大 70vh、超出 `__body` 滚动，关闭用面板右上角 `md-drawer__close`（`openDrawer` 会自动补）。
 
+### 详情页：标题区 + 图文混排
+
+对照金样 `gold/mobile-detail.html` / `gold/desktop-detail.html`。页根加 **`md-detail-page`**。
+
+| 层级 | 写法 | 规则 |
+|------|------|------|
+| 页底 | `md-detail-page` | **整页浅灰**（`#f7f7f7`）；滚动盖住 Hero 的 sheet 也用同色 |
+| 内容壳 | `md-detail-content`（触屏可叠在 `md-mobile-sheet`） | **透底**；用 `gap`（`--md-detail-block-gap`）拉开区块，**漏出浅灰** |
+| 模块 | `md-module` | 标题/图文等为 **白底通栏区块**（有内边距、无圆角/阴影）；模块间靠间隙露灰 |
+| 标题区 | `md-detail-head` | 商品名（一级）/ 价+状态同行 / 短摘要；落在白底模块内 |
+| 图文混排 | `md-article` | **四级标题** `__h1`～`__h4`；**段落首行缩进**；配图 `__figures--1` 单图 / `--2` 双图；**图注** `__caption` **居中**；**表格** `__table-wrap` > `__table`（列多时横向滚动，可加 `caption` 居中说明） |
+| 评论 | `md-comment-list` > `md-comment` | 评论模块 **透底**；条目仍 **列表卡**（轻阴影 `--md-shadow-surface`、间距露灰） |
+| 点图预览 | 页根 `data-lightbox` | **分区成组**：轮播（`.md-swiper`）一组、图文（`.md-article`）一组、评论（`.md-comment-list`）一组；翻上一张/下一张不跨区。可选 `data-lightbox-group` 自定容器 |
+| 页内导航 | 右下 `md-pod--detail-nav`（脚本默认注入） | **目录** + **返回顶部**；点目录底半屏列出本页 `data-section`（金样：基本信息 / 店铺信息 / 商品介绍 / 商品评论），点选滚动定位。`data-detail-nav="off"` 关闭；`"toc"` / `"top"` 只留其一 |
+
+```html
+<div class="md-mobile-page md-immersive md-detail-page" data-lightbox>
+  <!-- 主图 md-hero … -->
+  <main class="md-mobile-body">
+    <div class="md-mobile-sheet md-detail-content">
+      <section class="md-module">
+        <div class="md-detail-head">
+          <h1 class="md-detail-head__title">有机草莓 250g</h1>
+          <div class="md-detail-head__bar">
+            <p class="md-price">¥19.90</p>
+            <span class="md-chip md-chip--success">有货</span>
+          </div>
+          <p class="md-detail-head__lead">短摘要</p>
+        </div>
+      </section>
+      <section class="md-module">
+        <div class="md-article">
+          <h2 class="md-article__h2">商品说明</h2>
+          <h3 class="md-article__h3">产地与口感</h3>
+          <p>段落首行缩进……</p>
+          <div class="md-article__figures md-article__figures--1">
+            <div class="md-article__figure">
+              <div class="md-media--16x9 md-media-ph md-media-ph--2"></div>
+              <p class="md-article__caption">图注居中</p>
+            </div>
+          </div>
+          <div class="md-article__figures md-article__figures--2">
+            <div class="md-article__figure">…</div>
+            <div class="md-article__figure">…</div>
+          </div>
+          <div class="md-article__table-wrap">
+            <table class="md-article__table">
+              <thead><tr><th>项目</th><th>规格</th><th>说明</th></tr></thead>
+              <tbody><tr><td>净含量</td><td>250g</td><td>约一盒</td></tr></tbody>
+              <caption>列多时可左右滑动</caption>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+```
+
+禁止：内容区/模块再套 `md-card` 式圆角阴影；说明配图用列表 1:1/竖图；段落不做首行缩进；图注左对齐当正文；详情规格表用 D1-1 冻结列表壳。
+
+### 资料卡片 `md-profile`
+
+**适用场景**：店铺资料、个人资料、公司资料，以及品牌/机构等同类主体卡；**不限详情页**（列表、主页、关于页等凡要展示主体摘要都可用）。同一套结构，按场景换左图与文案即可（个人用 `--avatar` 圆头像；店铺/公司用默认圆角方图作门头或 Logo）。
+
+分上中下三层，**中、下可选**。**最精简**：只留上层，且上层仅有左图 + 中间 `__title` + `__subtitle`（无 `__meta` / `__tags` / `__side`，也无中层统计、下层按钮）。
+
+| 层 | 类名 | 规则 |
+|----|------|------|
+| 根 | `md-profile` | 列表等场景带纸面轻阴影；详情白底模块内铺平（无双重卡片壳） |
+| 上（必选） | `__head` | 左 `__media` + 中 `__main`；右 `__side` **可选** |
+| 左图 | `__media` | **精简必留**。个人头像加 `--avatar`（圆）；店铺门头 / 公司 Logo 用默认圆角方图；尺寸 `--sm` / 默认 / `--lg`。**不进灯箱** |
+| 中文 | `__main` | 靠左：`__title`（**精简必留**）→ `__subtitle`（**精简必留作说明**）→ 可选 `__meta` → 可选 `__tags` |
+| 右钮 | `__side` | **可选**；有则靠上一个按钮（关注/收藏/详情/查看/编辑等），常用 `md-btn--outlined md-btn--sm` |
+| 中（可选） | `__stats` > `__stat` | 一排 **2～5** 项；`__stat-value` + `__stat-label`；项间 **不通顶** 细竖线 |
+| 下（可选） | `__foot` | **1～3** 个浅纯色底按钮（默认 `md-btn--soft`；强调可加 `md-btn--primary`） |
+
+```html
+<!-- 最精简：仅上层 · 左图 + 标题 + 说明 -->
+<article class="md-profile">
+  <div class="md-profile__head">
+    <div class="md-profile__media md-profile__media--avatar md-media-ph md-media-ph--1"></div>
+    <div class="md-profile__main">
+      <h2 class="md-profile__title">阿宁</h2>
+      <p class="md-profile__subtitle">果园主理人 · 冷链直达</p>
+    </div>
+  </div>
+</article>
+
+<!-- 完整示例（中层/下层/右钮/标签均可按需删） -->
+<article class="md-profile">
+  <div class="md-profile__head">
+    <div class="md-profile__media md-media-ph md-media-ph--3"></div>
+    <div class="md-profile__main">
+      <h2 class="md-profile__title">鲜果直达旗舰店</h2>
+      <p class="md-profile__subtitle">冷链鲜果 · 次日达</p>
+      <p class="md-profile__meta">
+        <span class="md-profile__rating">★★★★☆ 4.8</span>
+        <span>1.2万粉丝</span>
+      </p>
+      <div class="md-profile__tags">
+        <span class="md-chip md-chip--outlined">五年老店</span>
+        <span class="md-chip md-chip--primary">SVIP</span>
+      </div>
+    </div>
+    <div class="md-profile__side">
+      <button type="button" class="md-btn md-btn--outlined md-btn--sm">关注</button>
+    </div>
+  </div>
+  <div class="md-profile__stats">
+    <div class="md-profile__stat">
+      <p class="md-profile__stat-value">128</p>
+      <p class="md-profile__stat-label">在售</p>
+    </div>
+    <div class="md-profile__stat">
+      <p class="md-profile__stat-value">4.9</p>
+      <p class="md-profile__stat-label">评分</p>
+    </div>
+  </div>
+  <div class="md-profile__foot">
+    <button type="button" class="md-btn md-btn--soft md-btn--sm">进店逛逛</button>
+    <button type="button" class="md-btn md-btn--soft md-btn--sm">联系客服</button>
+  </div>
+</article>
+```
+
+禁止：中层竖线拉满整行高度；下层用描边主按钮冒充浅底；左图裸 `md-card__media`；把资料卡当成列表横卡 `--row`；精简形态再拆成裸头像+正文另排。
+
 ## 组件速查
 
 | 用途 | 类名 |
@@ -744,7 +872,8 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 图标按钮 | `md-icon-btn` 内放 `span.md-icon` |
 | 输入 | `md-field` + `md-field__label` + `md-field__input`；只读加 `md-field--readonly` + `readonly`（灰底淡字）。日期段 `readonly` 触发器不要加 `--readonly` |
 | 卡片 | `md-card` **`--cover` / `--tile`（可横可竖或 `--ratio-auto` 定宽随图）`--row`（左图仅 1:1 或竖图 `--ratio-3x4/2x3`；字段少因值长再加 `--long`）**；列表单行 `md-set-row`。`md-card__media` `md-card__leading` `--avatar` `md-card__body` `md-card__main` `md-card__title` `md-card__subtitle` `md-card__text` `md-card__chips` `md-card__rail` `md-card__aside` `md-card__dist` `md-card__actions` `--bar` `md-card__time` `md-card__foot` `md-card__meta` `md-card__photos` `md-card__photo` `md-card__tag` `--tl/--tr` `md-price` |
-| 详情 16:9 图 | `md-swiper--wide`；介绍配图 `md-media--16x9`；评论 `md-comment` `__user` `__time` `__text` `__photos` `__photo`（约 40px、1:1，一排最多五张，不要按正文宽五等分） |
+| 资料卡片 | `md-profile`（店铺/个人/公司）；**最精简**=仅 `__head`（`__media` + `__title` + `__subtitle`）；完整再加 `__side` / `__meta` / `__tags` / `__stats` / `__foot` |
+| 详情页 | 页根 `md-detail-page`（整页浅灰）；内容壳透底；标题/图文 **白底区块**、间隙露灰；`md-detail-head`；`md-article` 四级标题+首行缩进+`__figures--1/2`+居中 `__caption`+表格可横滑；**评论列表卡**坐浅灰上；可嵌 **资料卡片**；右下默认 **目录+返回顶部**（`data-detail-nav`） |
 | 分区 / 模块 | `md-module`（L3，模块间距 `--md-module-gap`）`md-section-head` `md-section-head__title` |
 | 系统栏 | `md-status-bar`（`proto-page.js` 固定顶注入；页内禁止手写；时间/信号靠顶略放大，左右各收一个图标身位，不为胶囊留空） |
 | 触屏顶栏 | ① `md-hero` 16:9+slogan ② `--overlay` 叠 16:9 ③ 标准 `md-appbar--mobile` ④ `--cover` 两倍高度封面 |

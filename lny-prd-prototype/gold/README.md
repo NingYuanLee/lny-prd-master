@@ -21,11 +21,11 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 |----------|------|
 | 移动宫格 / 推荐 / 双列卡片 | `mobile-grid.html`（**沉浸式**；`md-hero` 钉底层；`md-mobile-sheet`；`md-module`；**封面叠字** `md-card--cover` + **双列瓷砖** `md-card--tile`；金刚 5 列或 `md-king--pair`） |
 | 移动列表 / 动态流 / 横卡 | `mobile-list.html`（**标准** + 搜索/筛选/页签按钮组贴顶；**列表区**横卡多行 `md-card--row`（字段多或值长；字段少因值长再加 `md-card--long`）+ 横卡单行 `md-stack`>`md-set-row`（仅字段≤3 且值都短；每行独立有缝）；底角悬浮胶囊；左/右半屏；`data-wheel="daterange"`） |
-| 移动展示 / 详情 | `mobile-detail.html`（**沉浸式**；16:9 `md-hero` 钉底层 + 返回叠层；`md-mobile-sheet` 白底正文上层滚过；评论附图约 40px + 贴底次要操作。**本页图片默认可预览**，页根 `data-lightbox`） |
+| 移动展示 / 详情 | `mobile-detail.html`（含 `md-profile` 店铺资料示例；组件亦用于个人/公司资料） |
 | 移动表单 | `mobile-form.html`（夹具 `PAGE-MP-004.html`；**套件样例**，一页铺齐触屏表单控件：文本/选择/滑动条/单日/日期段/省市区/三类上传 + 贴底提交；进度条见步骤向导） |
 | 桌面表格 / 筛选列表 / 弹窗维护 | `desktop-list.html`（内容区顶面包屑无大标题；页内签在筛选上方整区切换；分页与表横条贴底；勾选左冻 / 操作右冻定宽「更多」下拉；汇总左分页右；**列宽按字段语义**；**紧凑密度一屏多行**；隐藏骨架+插画空态；筛选用 `md-field--daterange`） |
 | 桌面整页表单 | `desktop-form.html`（夹具 `PAGE-AD-009.html`；**套件样例**，一页铺齐桌面表单控件：文本/选择/滑动条/单日/时间/日期段/省市区/三类上传。业务商品表单 `PAGE-AD-002` 按规格裁字段；进度条见步骤向导） |
-| 桌面展示 / 详情 | `desktop-detail.html`（夹具 `PAGE-AD-008.html`；面包屑；16:9 `md-swiper--wide`；图文介绍；`md-comment` 时间行 + 附图。**本页图片默认可预览**。禁止沉浸式叠层，禁止拿列表卡 1:1） |
+| 桌面展示 / 详情 | `desktop-detail.html`（夹具 `PAGE-AD-008.html`；整页浅灰+白底区块；资料卡片；灯箱分区；右下目录+回顶。禁止沉浸式） |
 | 工作台 / 仪表盘 | `desktop-dashboard.html`（夹具 `PAGE-AD-004.html`；`md-stat-grid` 指标卡 + `md-chart-ph` + 短表。禁止拿 `desktop-list` 硬套） |
 | 树 + 内容 / 分栏 | `desktop-split.html`（夹具 `PAGE-AD-005.html`；`md-d1--split` 左树右内容；箭头展开收起，点树只换右区） |
 | 桌面设置 | `desktop-settings.html`（夹具 `PAGE-AD-006.html`；**设置项**：当页当行直接操作；左图标可有可无） |
