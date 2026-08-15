@@ -20,7 +20,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 本页类型 | 必读 |
 |----------|------|
 | 移动宫格 / 推荐 / 双列卡片 | `mobile-grid.html`（**沉浸式**；`md-hero` 钉底层；`md-mobile-sheet`；`md-module`；**封面叠字** `md-card--cover` + **双列瓷砖** `md-card--tile`；金刚 5 列或 `md-king--pair`） |
-| 移动列表 / 动态流 / 横卡 | `mobile-list.html`（**标准** + 搜索/筛选/页签按钮组贴顶；**列表区**横卡多行 `md-card--row`（字段多或值长）+ 横卡单行 `md-stack`>`md-set-row`（仅字段≤3 且值都短；每行独立有缝）；底角悬浮胶囊；左/右半屏；`data-wheel="daterange"`） |
+| 移动列表 / 动态流 / 横卡 | `mobile-list.html`（**标准** + 搜索/筛选/页签按钮组贴顶；**列表区**横卡多行 `md-card--row`（字段多或值长；字段少因值长再加 `md-card--long`）+ 横卡单行 `md-stack`>`md-set-row`（仅字段≤3 且值都短；每行独立有缝）；底角悬浮胶囊；左/右半屏；`data-wheel="daterange"`） |
 | 移动展示 / 详情 | `mobile-detail.html`（**沉浸式**；16:9 `md-hero` 钉底层 + 返回叠层；`md-mobile-sheet` 白底正文上层滚过；评论附图约 40px + 贴底次要操作。**本页图片默认可预览**，页根 `data-lightbox`） |
 | 移动表单 | `mobile-form.html`（夹具 `PAGE-MP-004.html`；**套件样例**，一页铺齐触屏表单控件：文本/选择/滑动条/单日/日期段/省市区/三类上传 + 贴底提交；进度条见步骤向导） |
 | 桌面表格 / 筛选列表 / 弹窗维护 | `desktop-list.html`（内容区顶面包屑无大标题；页内签在筛选上方整区切换；分页与表横条贴底；勾选左冻 / 操作右冻定宽「更多」下拉；汇总左分页右；**列宽按字段语义**；**紧凑密度一屏多行**；隐藏骨架+插画空态；筛选用 `md-field--daterange`） |

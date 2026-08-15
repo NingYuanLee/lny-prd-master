@@ -212,7 +212,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 ### 触屏列表区
 
-同一模块只选一种（分区可各自点名）。规格有字段才写对应节点，**禁止**为好看编造业务字段。**横卡单行**仅当字段≤3 **且**各字段值都短、定高不换行；字段更多、会换行，或字段≤3 但**任一字段值很长**（单行放不下、需截断/换行）→ 用**横卡多行**。
+同一模块只选一种（分区可各自点名）。规格有字段才写对应节点，**禁止**为好看编造业务字段。**横卡单行**仅当字段≤3 **且**各字段值都短、定高不换行；字段更多、会换行，或字段≤3 但**任一字段值很长**（单行放不下、需截断/换行）→ 用**横卡多行**。字段少却因值长命中多行时，再加 **`md-card--long`**：标题/摘要字号略大，卡片与正文区 **高度随内容**，**不要**定 `min-height`。
 
 **① 封面叠字** `md-card--cover`：一行一列大图，单行标题悬图片底部。图 **可横可竖**，或 **定宽、高度随图**（`--ratio-auto`，须内嵌 `<img>`）。套件默认 **16:9**；点名 `--ratio-16x9` / `--ratio-2x1` / `--ratio-4x3` / `--ratio-3x4` / `--ratio-2x3` / `--ratio-1x1`；`--h-sm/md/lg` 固定高度。
 
@@ -243,12 +243,13 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 </article>
 ```
 
-**③ 横卡多行** `md-card--row`：左可为封面 / 图标 / 头像 / 无。**左图只允许 1:1 或竖图**（宽高比 ≤ 1：默认 1:1，竖图 `--ratio-3x4` / `--ratio-2x3`），**不要横图**。左图**定宽**（触屏 96px），竖图只加高、不加宽，文本仍在右侧同一栏，不要折到图下。**文本区**标题 / 副标题 / 摘要或说明 / 标签 / 时间浏览等 **靠左**。有价格、距离等右侧信息时，右侧留白给 `__rail`：`__aside` 里的价格 / 距离 **靠右上**，并留边框安全距。小按钮：仅一个放进轨内 `__actions`（**右下角**）；多个用 `__actions--bar` **底栏独一行、靠右、从右到左**（DOM 先次要后主按钮）。可见按钮建议 ≤3，超出收「更多」`data-menu` + `md-menu--fixed`。有按钮的卡用 `<article>`，不要把按钮塞进整卡 `<a>`。可选 `__photos` 小图一排（仍 **1:1**、最多五张）。字段多或换行撑高卡片。
+**③ 横卡多行** `md-card--row`：左可为封面 / 图标 / 头像 / 无。**左图只允许 1:1 或竖图**（宽高比 ≤ 1：默认 1:1，竖图 `--ratio-3x4` / `--ratio-2x3`），**不要横图**。左图**定宽**（触屏 96px），竖图只加高、不加宽，文本仍在右侧同一栏，不要折到图下。**文本区**标题 / 副标题 / 摘要或说明 / 标签 / 时间浏览等 **靠左**。有价格、距离等右侧信息时，右侧留白给 `__rail`：`__aside` 里的价格 / 距离 **靠右上**，并留边框安全距。小按钮：仅一个放进轨内 `__actions`（**右下角**）；多个用 `__actions--bar` **底栏独一行、靠右、从右到左**（DOM 先次要后主按钮）。可见按钮建议 ≤3，超出收「更多」`data-menu` + `md-menu--fixed`。有按钮的卡用 `<article>`，不要把按钮塞进整卡 `<a>`。可选 `__photos` 小图一排（仍 **1:1**、最多五张）。字段多或换行撑高卡片。**字段≤3 却因值长才走多行**时再加 `md-card--long`（字号略大、高度随内容、无 min-height）；字段本身很多的密集多行卡不要加。
 
 ```html
 <article class="md-card md-card--row">
   <a class="md-card__media md-media-ph md-media-ph--1" href="…"></a>
   <!-- 竖图：卡片再加 md-card--ratio-3x4 ；不要用 16:9 / 2:1 -->
+  <!-- 字段少但值长：再加 md-card--long -->
   <!-- 无封面：<span class="md-card__leading">…</span> -->
   <div class="md-card__body">
     <div class="md-card__main">
@@ -287,7 +288,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 </article>
 ```
 
-**④ 横卡单行**（列表区内容行）`md-set-row`：定高、不换行；左图标→标题；右说明/计数/小标签。最多 3 个**短**字段；**任一字段值很长（单行放不下）改走横卡多行**。**每行独立纸面，上下有缝**（放进 `md-stack`，**不要**包进 `md-set-group`）。列表区与功能区的差别：**列表非分组**，条目可无限（即便分页加载，叠在一起也看不出页边界）；**功能成组**，每组入口有限。视觉上：通栏挤在一组纸面里、行间只有分割线；列表单行各自独立有缝。列表卡（封面/双列/横卡多行/单行）与功能通栏·一行两个统一用 **轻阴影** `--md-shadow-surface`；**金刚两种不加阴影**。**不要**用 `md-set-pair`（一行两个只属功能区）。
+**④ 横卡单行**（列表区内容行）`md-set-row`：定高、不换行；左图标→标题；右说明/计数/小标签。最多 3 个**短**字段；**任一字段值很长（单行放不下）改走横卡多行 + `md-card--long`**。**每行独立纸面，上下有缝**（放进 `md-stack`，**不要**包进 `md-set-group`）。列表区与功能区的差别：**列表非分组**，条目可无限（即便分页加载，叠在一起也看不出页边界）；**功能成组**，每组入口有限。视觉上：通栏挤在一组纸面里、行间只有分割线；列表单行各自独立有缝。列表卡（封面/双列/横卡多行/单行）与功能通栏·一行两个统一用 **轻阴影** `--md-shadow-surface`；**金刚两种不加阴影**。**不要**用 `md-set-pair`（一行两个只属功能区）。
 
 ```html
 <div class="md-stack">
@@ -723,7 +724,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 图标 | `span.md-icon` + `data-icon`（闭集见 [`reference-icons.md`](reference-icons.md)） |
 | 图标按钮 | `md-icon-btn` 内放 `span.md-icon` |
 | 输入 | `md-field` + `md-field__label` + `md-field__input`；只读加 `md-field--readonly` + `readonly`（灰底淡字）。日期段 `readonly` 触发器不要加 `--readonly` |
-| 卡片 | `md-card` **`--cover` / `--tile`（可横可竖或 `--ratio-auto` 定宽随图）`--row`（左图仅 1:1 或竖图 `--ratio-3x4/2x3`）**；列表单行 `md-set-row`。`md-card__media` `md-card__leading` `--avatar` `md-card__body` `md-card__main` `md-card__title` `md-card__subtitle` `md-card__text` `md-card__chips` `md-card__rail` `md-card__aside` `md-card__dist` `md-card__actions` `--bar` `md-card__time` `md-card__foot` `md-card__meta` `md-card__photos` `md-card__photo` `md-card__tag` `--tl/--tr` `md-price` |
+| 卡片 | `md-card` **`--cover` / `--tile`（可横可竖或 `--ratio-auto` 定宽随图）`--row`（左图仅 1:1 或竖图 `--ratio-3x4/2x3`；字段少因值长再加 `--long`）**；列表单行 `md-set-row`。`md-card__media` `md-card__leading` `--avatar` `md-card__body` `md-card__main` `md-card__title` `md-card__subtitle` `md-card__text` `md-card__chips` `md-card__rail` `md-card__aside` `md-card__dist` `md-card__actions` `--bar` `md-card__time` `md-card__foot` `md-card__meta` `md-card__photos` `md-card__photo` `md-card__tag` `--tl/--tr` `md-price` |
 | 详情 16:9 图 | `md-swiper--wide`；介绍配图 `md-media--16x9`；评论 `md-comment` `__user` `__time` `__text` `__photos` `__photo`（约 40px、1:1，一排最多五张，不要按正文宽五等分） |
 | 分区 / 模块 | `md-module`（L3，模块间距 `--md-module-gap`）`md-section-head` `md-section-head__title` |
 | 系统栏 | `md-status-bar`（`proto-page.js` 固定顶注入；页内禁止手写；时间/信号靠顶略放大，左右各收一个图标身位，不为胶囊留空） |
@@ -735,7 +736,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 工作台 | `md-stat-grid` `md-stat-card`；趋势 `md-chart-ph` |
 | 分栏 | `md-d1--split` / 触屏 `md-tree-page`；`md-split` `__side` `__main`；树 `md-tree` `__item` `__toggle` `__label` `is-open` `is-active` |
 | 设置分组 | `md-set-group` `__title` `md-set-row`（**设置项**：当页当行直接操作；左 `md-icon` 可有可无 + `__label`；右开关/值/本行菜单）；开关 `md-switch`（热区铺满，可点）；无极 `md-set-block` + `md-slider--fluid`；横向多选 `md-set-picks` / `md-set-pick`（`__face` 可为 `__label` 文字 / 图标 / `__media` 图片；`__mark` 含 `__off`+`__on`，未选也显示空圈）；下拉 `md-set-row` + `data-menu` |
-| 列表单行 | `md-stack` > `md-set-row`：每行独立有缝；**仅**字段≤3 且值都短；值长改 `--row`；非分组无限流；轻阴影；`__lead`（图标+`__label`）+ `__trail`（说明/计数/小标签，一般无箭头） |
+| 列表单行 | `md-stack` > `md-set-row`：每行独立有缝；**仅**字段≤3 且值都短；值长改 `--row` + `--long`；非分组无限流；轻阴影；`__lead`（图标+`__label`）+ `__trail`（说明/计数/小标签，一般无箭头） |
 | 功能区通栏 / 一行两个 | **功能入口**：通栏包在 `md-set-group`（成组有限、连成一片、轻阴影；组内淡色内缩分割线）；一行两个 `md-set-pair`；**只跳转或开半屏/弹窗**（常带 `chevron-right`）；分组标题可无。与设置项同壳不同行为 |
 | 汇总分页 | `md-d1__footer`：`md-d1__stats` 靠左，`md-d1__pager` 靠右 |
 | 纸面/表格 | `md-paper` `md-table` `md-table-wrap` `md-col-check` `md-col-name` `md-col-price` `md-col-status` `md-col-date` `md-col-actions` `md-pagination` `md-page-btn` |

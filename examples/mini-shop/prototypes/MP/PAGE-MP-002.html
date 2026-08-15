@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 列表区：横卡多行（字段多或值长；左图/图标/头像/无 + 文本靠左；价格/距离右上轨；单按钮右下或底栏多按钮靠右，过多收更多；卡内图默认可预览，整页不要 data-lightbox）与横卡单行（仅字段≤3 且值都短；每行独立、上下有缝，不要包进 md-set-group）。页签按钮组；左/右半屏。底角悬浮胶囊（有搜索顶栏故无左上）。功能区通栏见 mobile-menu。 -->
+<!-- LNY-PRD gold: 列表区：横卡多行（字段多或值长；值长且字段少再加 md-card--long：字号略大、高度随内容无 min-height；左图/图标/头像/无 + 文本靠左；价格/距离右上轨；单按钮右下或底栏多按钮靠右，过多收更多；卡内图默认可预览，整页不要 data-lightbox）与横卡单行（仅字段≤3 且值都短；每行独立、上下有缝，不要包进 md-set-group）。页签按钮组；左/右半屏。底角悬浮胶囊（有搜索顶栏故无左上）。功能区通栏见 mobile-menu。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -55,24 +55,19 @@
             </div>
           </div>
         </a>
-        <a class="md-card md-card--row md-card--ratio-3x4" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
+        <a class="md-card md-card--row md-card--long md-card--ratio-3x4" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
           <div class="md-card__media md-media-ph md-media-ph--2">
             <span class="md-card__tag md-card__tag--tr md-chip md-chip--error">售罄</span>
           </div>
           <div class="md-card__body">
             <div class="md-card__main">
               <h2 class="md-card__title">云南小粒咖啡 227g 精选烘焙手冲豆袋装超长标题示例</h2>
-              <p class="md-card__text">中度烘焙，花香与坚果尾韵，适合手冲与法压；多行摘要超出两行会截断。</p>
-            </div>
-            <div class="md-card__meta">
-              <span class="md-card__meta-item"><span class="md-icon" data-icon="favorite" aria-hidden="true"></span>328</span>
-              <span class="md-card__meta-item"><span class="md-icon" data-icon="view" aria-hidden="true"></span>8.6千</span>
+              <p class="md-card__text">字段少但值很长：走横卡多行并加 md-card--long；字号略大，卡片高度随内容，不设最小高度。中度烘焙，花香与坚果尾韵，适合手冲与法压。</p>
             </div>
           </div>
           <div class="md-card__rail">
             <div class="md-card__aside">
               <p class="md-price">¥29.90</p>
-              <p class="md-card__dist">3.4km</p>
             </div>
           </div>
         </a>
@@ -258,14 +253,14 @@
       </div>
       <div id="listOut" class="md-tab-panel">
         <div class="md-module md-stack">
-          <a class="md-card md-card--row" href="PAGE-MP-003.html">
+          <a class="md-card md-card--row md-card--long" href="PAGE-MP-003.html">
             <div class="md-card__media md-media-ph md-media-ph--2">
               <span class="md-card__tag md-card__tag--tr md-chip md-chip--error">售罄</span>
             </div>
             <div class="md-card__body">
               <div class="md-card__main">
-                <h2 class="md-card__title">云南小粒咖啡 227g</h2>
-                <p class="md-card__text">中度烘焙，花香与坚果尾韵。</p>
+                <h2 class="md-card__title">云南小粒咖啡 227g 精选烘焙手冲豆袋装</h2>
+                <p class="md-card__text">字段少但摘要很长：中度烘焙，花香与坚果尾韵，适合手冲与法压；高度随内容。</p>
               </div>
             </div>
             <div class="md-card__rail">

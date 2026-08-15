@@ -3073,6 +3073,31 @@ button.md-set-row:active { background: var(--md-selected); }
   min-height: 0;
   padding: 12px 14px;
 }
+/* 字段少但因值长改走横卡多行：字号略大，高度随内容，不要定 min-height */
+.md-mobile-page .md-card--row.md-card--long {
+  min-height: 0;
+}
+.md-mobile-page .md-card--row.md-card--long .md-card__body {
+  min-height: 0;
+}
+.md-mobile-page .md-card--row.md-card--long .md-card__title {
+  font-size: 1.0625rem;
+  line-height: 1.4;
+  -webkit-line-clamp: 3;
+}
+.md-mobile-page .md-card--row.md-card--long .md-card__subtitle {
+  font-size: 0.875rem;
+  line-height: 1.45;
+  -webkit-line-clamp: 2;
+}
+.md-mobile-page .md-card--row.md-card--long .md-card__text {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  -webkit-line-clamp: 4;
+}
+.md-mobile-page .md-card--row.md-card--long .md-card__aside .md-price {
+  font-size: 1.125rem;
+}
 .md-mobile-page .md-stack:has(> .md-card--row),
 .md-mobile-page .md-stack:has(> .md-card--cover),
 .md-mobile-page .md-stack:has(> .md-card--plain) {
