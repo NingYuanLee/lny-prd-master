@@ -168,12 +168,20 @@
     </nav>
     <div id="catSheetBackdrop" class="md-backdrop" onclick="ProtoPage.closeDrawer('catSheet')"></div>
     <aside id="catSheet" class="md-drawer md-drawer--bottom" aria-hidden="true">
+      <button type="button" class="md-drawer__close" aria-label="关闭" onclick="ProtoPage.closeDrawer('catSheet')">
+        <span class="md-icon" data-icon="close" aria-hidden="true"></span>
+      </button>
       <h2 class="md-drawer__title">分类</h2>
       <div class="md-drawer__body">
-        <p class="md-body2" id="catHint">选择分类后可前往商品列表。</p>
+        <p class="md-body2" id="catHint" hidden>选择分类后可前往商品列表。</p>
+        <div class="md-choice-group" role="listbox" aria-label="商品分类">
+          <label class="md-radio"><input type="radio" name="catPick" value="水果" checked> 水果</label>
+          <label class="md-radio"><input type="radio" name="catPick" value="坚果"> 坚果</label>
+          <label class="md-radio"><input type="radio" name="catPick" value="饮品"> 饮品</label>
+          <label class="md-radio"><input type="radio" name="catPick" value="烘焙"> 烘焙</label>
+        </div>
       </div>
       <div class="md-drawer__actions">
-        <button type="button" class="md-btn md-btn--text" onclick="ProtoPage.closeDrawer('catSheet')">取消</button>
         <a class="md-btn md-btn--contained" href="PAGE-MP-002.html">去商品列表</a>
       </div>
     </aside>
@@ -185,9 +193,22 @@
     document.querySelectorAll(".md-king__item").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var name = btn.getAttribute("data-cat") || "分类";
-        document.getElementById("catHint").textContent = "当前分类：" + name;
+        var hint = document.getElementById("catHint");
+        if (hint) hint.textContent = "当前分类：" + name;
+        var radios = document.querySelectorAll('#catSheet input[name="catPick"]');
+        radios.forEach(function (r) {
+          r.checked = r.value === name;
+        });
         ProtoPage.openDrawer("catSheet");
         ProtoPage.snackbar("已选择分类");
+      });
+    });
+    document.querySelectorAll('#catSheet input[name="catPick"]').forEach(function (r) {
+      r.addEventListener("change", function () {
+        if (!r.checked) return;
+        var hint = document.getElementById("catHint");
+        if (hint) hint.textContent = "当前分类：" + r.value;
+        ProtoPage.snackbar("已选择 " + r.value);
       });
     });
   </script>

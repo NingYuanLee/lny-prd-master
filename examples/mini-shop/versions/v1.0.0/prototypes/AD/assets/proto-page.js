@@ -196,11 +196,30 @@
     if (mask) mask.classList.remove("is-open");
   }
 
+  function ensureBottomDrawerClose(el) {
+    if (!el || !el.classList.contains("md-drawer--bottom")) return;
+    if (el.classList.contains("md-wheel")) return;
+    if (el.querySelector(":scope > .md-drawer__close")) return;
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "md-drawer__close";
+    btn.setAttribute("aria-label", "关闭");
+    btn.innerHTML = '<span class="md-icon" data-icon="close" aria-hidden="true"></span>';
+    btn.addEventListener("click", function () {
+      if (el.id) closeDrawer(el.id);
+    });
+    el.insertBefore(btn, el.firstChild);
+    if (global.ProtoIcons && global.ProtoIcons.mount) global.ProtoIcons.mount(btn);
+  }
+
   function openDrawer(id) {
     var el = document.getElementById(id);
     var mask = document.getElementById(id + "Backdrop");
     if (mask) mask.classList.add("is-open");
-    if (el) el.classList.add("is-open");
+    if (el) {
+      ensureBottomDrawerClose(el);
+      el.classList.add("is-open");
+    }
   }
 
   function ensureConfirm() {
@@ -1516,6 +1535,7 @@
     bindMobileSelects();
     bindProgress();
     bindLightbox();
+    document.querySelectorAll(".md-drawer.md-drawer--bottom").forEach(ensureBottomDrawerClose);
   }
 
   global.ProtoPage = {

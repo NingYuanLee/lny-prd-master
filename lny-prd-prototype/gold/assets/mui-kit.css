@@ -1996,7 +1996,8 @@ body.md-lightbox-open { overflow: hidden; }
   bottom: 0;
   top: auto;
   width: 100%;
-  height: min(72vh, 560px);
+  height: auto;
+  max-height: 70vh;
   border-radius: 16px 16px 0 0;
   transform: translateY(100%);
 }
@@ -2005,9 +2006,176 @@ body.md-lightbox-open { overflow: hidden; }
   pointer-events: auto;
   transform: none;
 }
-.md-drawer__title { padding: 16px 24px 8px; font-size: 1.25rem; font-weight: 500; margin: 0; }
-.md-drawer__body { padding: 8px 24px 16px; overflow-y: auto; flex: 1; }
-.md-drawer__actions { padding: 8px; display: flex; justify-content: flex-end; gap: 8px; }
+.md-drawer__title { padding: 16px 24px 8px; font-size: 1.25rem; font-weight: 500; margin: 0; flex-shrink: 0; }
+.md-drawer__body { padding: 8px 24px 16px; overflow-y: auto; flex: 1 1 auto; min-height: 0; }
+.md-drawer__actions { padding: 8px; display: flex; justify-content: flex-end; gap: 8px; flex-shrink: 0; }
+.md-drawer__close {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--md-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.md-drawer__close:hover,
+.md-drawer__close:focus-visible {
+  background: var(--md-grey-100);
+  color: var(--md-text-primary);
+  outline: none;
+}
+.md-drawer__close .md-icon {
+  width: 20px;
+  height: 20px;
+}
+.md-drawer--bottom > .md-drawer__close ~ .md-drawer__title,
+.md-drawer--bottom:has(> .md-drawer__close) > .md-drawer__title {
+  padding-right: 48px;
+}
+.md-drawer--bottom .md-drawer__body {
+  -webkit-overflow-scrolling: touch;
+}
+/* 底半屏选项：每项独占一行（不走表单标签换行） */
+.md-drawer--bottom .md-drawer__opt {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 48px;
+  margin: 0;
+  padding: 12px 16px;
+  border: 0;
+  border-top: 1px solid var(--md-divider);
+  border-radius: 0;
+  background: transparent;
+  color: var(--md-text);
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: none;
+}
+.md-drawer--bottom .md-drawer__opt:first-child,
+.md-drawer--bottom .md-drawer__body > .md-choice-group:first-child,
+.md-drawer--bottom .md-drawer__body > .md-set-picks:first-child {
+  border-top: 0;
+}
+.md-drawer--bottom .md-drawer__opt.is-active,
+.md-drawer--bottom .md-drawer__opt[aria-selected="true"] {
+  color: var(--md-primary);
+  font-weight: 500;
+}
+.md-drawer--bottom .md-choice-group,
+.md-drawer--bottom .md-choice-group:not(.md-choice-group--list) {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 0;
+  width: 100%;
+}
+.md-drawer--bottom .md-choice-group > .md-choice-group__label {
+  flex: 0 0 auto;
+  width: 100%;
+  padding: 8px 16px 4px;
+  margin: 0;
+  box-sizing: border-box;
+}
+.md-drawer--bottom .md-choice-group > .md-check,
+.md-drawer--bottom .md-choice-group > .md-radio,
+.md-drawer--bottom .md-choice-group:not(.md-choice-group--list) > .md-check,
+.md-drawer--bottom .md-choice-group:not(.md-choice-group--list) > .md-radio {
+  position: relative;
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  min-height: 48px;
+  margin: 0;
+  padding: 12px 16px;
+  border: 0;
+  border-top: 1px solid var(--md-divider);
+  border-radius: 0;
+  background: transparent;
+  color: var(--md-text);
+  overflow: visible;
+}
+.md-drawer--bottom .md-choice-group > .md-check input,
+.md-drawer--bottom .md-choice-group > .md-radio input,
+.md-drawer--bottom .md-choice-group:not(.md-choice-group--list) > .md-check input,
+.md-drawer--bottom .md-choice-group:not(.md-choice-group--list) > .md-radio input {
+  position: static;
+  opacity: 1;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  pointer-events: auto;
+  flex-shrink: 0;
+}
+.md-drawer--bottom .md-choice-group > .md-check:has(input:checked),
+.md-drawer--bottom .md-choice-group > .md-radio:has(input:checked),
+.md-drawer--bottom .md-choice-group:not(.md-choice-group--list) > .md-check:has(input:checked),
+.md-drawer--bottom .md-choice-group:not(.md-choice-group--list) > .md-radio:has(input:checked) {
+  background: transparent;
+  border-color: transparent;
+  color: var(--md-primary);
+}
+.md-drawer--bottom .md-choice-group > .md-check:has(input:checked)::before,
+.md-drawer--bottom .md-choice-group > .md-radio:has(input:checked)::before,
+.md-drawer--bottom .md-choice-group > .md-check:has(input:checked)::after,
+.md-drawer--bottom .md-choice-group > .md-radio:has(input:checked)::after,
+.md-drawer--bottom .md-choice-group:not(.md-choice-group--list) > .md-check:has(input:checked)::before,
+.md-drawer--bottom .md-choice-group:not(.md-choice-group--list) > .md-radio:has(input:checked)::before,
+.md-drawer--bottom .md-choice-group:not(.md-choice-group--list) > .md-check:has(input:checked)::after,
+.md-drawer--bottom .md-choice-group:not(.md-choice-group--list) > .md-radio:has(input:checked)::after {
+  content: none;
+  display: none;
+}
+.md-drawer--bottom .md-set-picks {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 0;
+  width: 100%;
+  padding: 0;
+  border: 0;
+}
+.md-drawer--bottom .md-set-pick {
+  flex: 0 0 auto;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--md-divider);
+  box-sizing: border-box;
+}
+.md-drawer--bottom .md-set-pick__face {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  min-height: 0;
+  max-width: none;
+  flex: 1 1 auto;
+}
+.md-drawer--bottom .md-set-pick__label {
+  text-align: left;
+}
 
 .md-upload {
   display: flex;
@@ -4056,7 +4224,23 @@ body:has(.md-mobile-page) .md-snackbar__text {
   max-height: calc(100% - var(--md-status-h) - var(--md-safe-b) - 48px);
 }
 body:has(.md-mobile-page) .md-dialog {
-  width: min(600px, calc(100% - var(--md-safe-l) - var(--md-safe-r) - 32px));
+  width: min(600px, calc(100% - var(--md-safe-l) - var(--md-safe-r) - 24px));
+  max-height: calc(100% - var(--md-status-h) - var(--md-safe-b) - 24px);
+}
+/* 触屏弹窗/半屏内边距收紧，多留给内容；桌面保持更松默认 */
+body:has(.md-mobile-page) .md-dialog__title { padding: 12px 16px 6px; font-size: 1.125rem; }
+body:has(.md-mobile-page) .md-dialog__body { padding: 4px 16px 12px; font-size: 0.875rem; }
+body:has(.md-mobile-page) .md-dialog__actions { padding: 4px 8px 8px; }
+body:has(.md-mobile-page) .md-dialog__form { gap: 12px 10px; }
+body:has(.md-mobile-page) .md-drawer__title { padding: 12px 16px 6px; font-size: 1.125rem; }
+body:has(.md-mobile-page) .md-drawer__body { padding: 4px 16px 12px; }
+body:has(.md-mobile-page) .md-drawer__actions { padding: 4px 8px 8px; }
+body:has(.md-mobile-page) .md-drawer--bottom > .md-drawer__close ~ .md-drawer__title,
+body:has(.md-mobile-page) .md-drawer--bottom:has(> .md-drawer__close) > .md-drawer__title {
+  padding-right: 44px;
+}
+body:has(.md-mobile-page) .md-drawer--bottom {
+  max-height: 70vh;
 }
 
 /* 触屏输入：独立成行防误触；表单单选/多选为标签+右上对号角标；列表仍用左侧圆/方 */
@@ -4779,8 +4963,10 @@ button.md-select.md-select-trigger {
   max-height: min(52vh, 360px);
 }
 .md-select-sheet__opt {
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
+  box-sizing: border-box;
   min-height: 48px;
   padding: 12px 20px;
   border: 0;
