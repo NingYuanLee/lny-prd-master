@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 列表区：横卡多行（左图/图标/头像/无 + 文本靠左；价格/距离右上轨；单按钮右下或底栏多按钮靠右，过多收更多；卡内图默认可预览，整页不要 data-lightbox）与横卡单行；页签按钮组；左/右半屏。底角悬浮胶囊（有搜索顶栏故无左上）。功能区通栏见 mobile-menu。 -->
+<!-- LNY-PRD gold: 列表区：横卡多行（左图/图标/头像/无 + 文本靠左；价格/距离右上轨；单按钮右下或底栏多按钮靠右，过多收更多；卡内图默认可预览，整页不要 data-lightbox）与横卡单行（每行独立、上下有缝，不要包进 md-set-group）。页签按钮组；左/右半屏。底角悬浮胶囊（有搜索顶栏故无左上）。功能区通栏见 mobile-menu。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -191,7 +191,7 @@
         <div class="md-section-head">
           <h2 class="md-section-head__title">今日上架</h2>
         </div>
-        <div class="md-set-group">
+        <div class="md-stack">
           <a class="md-set-row" href="PAGE-MP-003.html">
             <span class="md-set-row__lead">
               <span class="md-icon" data-icon="goods" aria-hidden="true"></span>

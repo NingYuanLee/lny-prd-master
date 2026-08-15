@@ -41,14 +41,14 @@
 | 规范里的组件 | 套件 |
 |--------------|------|
 | Button | `md-btn` `--contained`/`--outlined`/`--soft`/`--text`/`--link`；`--sm`/`--lg` |
-| Input / Cell | `md-field`；列表区 `--cover` / `--tile` / `--row`（多行，可小图）/ `md-set-row`（单行） |
+| Input / Cell | `md-field`；列表区 `--cover` / `--tile` / `--row`（多行，可小图）/ `md-stack`>`md-set-row`（单行独立有缝）；非分组、可无限流；卡统一轻阴影 |
 | Checkbox / Radio / Switch | `md-check` `md-radio` `md-switch` |
 | Picker | `data-wheel="date|region|daterange"`；下拉 `md-select` |
 | Dialog / Toast / Loading | `md-dialog`；触屏 Toast；`md-skeleton` |
 | Tag / Avatar / Swipe / Progress | `md-chip`；**`md-card__tag` `--tl/--tr`**（封面角）；`md-card__thumb`；`md-swiper`；`md-progress`/`md-advance`；时间轴 `md-timeline` |
 | TabBar / NavBar / 页内签 | `md-tabbar`；`md-appbar--*`；触屏页内签 `md-tabs` 按钮组（禁止下划线） |
 | 悬浮胶囊 | `md-pod` 钉在页根、不进滚动层；`--tl` 横向且与标题栏互斥 / `--bl` `--br` 竖向并避开底栏。规格点名才画，不要右上 |
-| 功能区 | `md-king` / `md-king--pair`；通栏 `md-set-row`；一行两个 `md-set-pair`（分组标题可无） |
+| 功能区 | `md-king` / `md-king--pair`（无阴影）；通栏 `md-set-group`>`md-set-row`（连成一片、轻阴影）；一行两个 `md-set-pair`（分组标题可无、轻阴影）。成组、每组入口有限 |
 
 搜索：`md-search` = 左 `search` 图标 + `md-search__input`，无 caption、无右侧搜索按钮。
 
@@ -59,7 +59,7 @@
 | 设计逻辑宽 | 预览 **375**；`viewport-fit=cover` |
 | 页面骨架 | 状态栏（脚本注入）+ 顶栏/Hero + `md-mobile-body` + Tab/操作条 |
 | 沉浸下沉 | `md-immersive`+`md-hero`：Hero 固定底层；`md-mobile-body` > **`md-mobile-sheet` 白底** 上层滚过盖住 Banner（顶距可点穿） |
-| 弹性列表卡 | `--cover` / `--tile` 可横可竖或 `--ratio-auto`；`--row` 左图仅 1:1 或竖图 / `md-set-row` 单行 |
+| 弹性列表卡 | `--cover` / `--tile` 可横可竖或 `--ratio-auto`；`--row` 左图仅 1:1 或竖图 / `md-stack`>`md-set-row` 单行独立有缝 |
 | 安全区 | 正文 `--md-safe-l/r` 左右 16；标准顶栏左右 4（不预留 96 胶囊空）；状态栏 28 贴上边框；底栏 48 贴下边框；overlay/cover 仍避让胶囊 |
 | 栅格 | 双列 `md-grid-2`（配 `--tile`）；金刚 4/5 列 |
 | 树 + 内容 | `md-tree-page` + `md-split`；`md-tree` `__toggle` 展开收起，点节点只换右区 |
@@ -91,5 +91,5 @@
 - [ ] Read 了本页类型金样并对标视觉下限（密度/类名不得低于金样）；规格需要的控件脚本保留；不要搬金样演示功能  
 - [ ] 审美必做 5 条满足  
 - [ ] 搜索/顶栏/安全距符合词典  
-- [ ] 列表区/功能区与规格一致（列表：`--cover` / `--tile` / `--row` / 单行；功能：金刚/通栏/一行两个）  
+- [ ] 列表区/功能区与规格一致（列表：非分组无限流、`--cover` / `--tile` / `--row` / 单行独立有缝、轻阴影；功能：成组有限入口、金刚无阴影、通栏连成一片/一行两个轻阴影）  
 - [ ] 加载/空/失败/按下可感知  

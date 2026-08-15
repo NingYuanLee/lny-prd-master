@@ -20,7 +20,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 本页类型 | 必读 |
 |----------|------|
 | 移动宫格 / 推荐 / 双列卡片 | `mobile-grid.html`（**沉浸式**；`md-hero` 钉底层；`md-mobile-sheet`；`md-module`；**封面叠字** `md-card--cover` + **双列瓷砖** `md-card--tile`；金刚 5 列或 `md-king--pair`） |
-| 移动列表 / 动态流 / 横卡 | `mobile-list.html`（**标准** + 搜索/筛选/页签按钮组贴顶；**列表区**横卡多行 `md-card--row`（左图/图标/头像/无 + 文本靠左 + `__rail` 价格/距离右上 + 单按钮右下或 `--bar` 底栏；竖图定宽只加高；**卡内图默认可预览**）+ 横卡单行 `md-set-row`；底角悬浮胶囊；左/右半屏；`data-wheel="daterange"`） |
+| 移动列表 / 动态流 / 横卡 | `mobile-list.html`（**标准** + 搜索/筛选/页签按钮组贴顶；**列表区**横卡多行 `md-card--row`（左图/图标/头像/无 + 文本靠左 + `__rail` 价格/距离右上 + 单按钮右下或 `--bar` 底栏；竖图定宽只加高；**卡内图默认可预览**）+ 横卡单行 `md-stack`>`md-set-row`（每行独立有缝）；底角悬浮胶囊；左/右半屏；`data-wheel="daterange"`） |
 | 移动展示 / 详情 | `mobile-detail.html`（**沉浸式**；16:9 `md-hero` 钉底层 + 返回叠层；`md-mobile-sheet` 白底正文上层滚过；评论附图约 40px + 贴底次要操作。**本页图片默认可预览**，页根 `data-lightbox`） |
 | 移动表单 | `mobile-form.html`（夹具 `PAGE-MP-004.html`；**套件样例**，一页铺齐触屏表单控件：文本/选择/滑动条/单日/日期段/省市区/三类上传 + 贴底提交；进度条见步骤向导） |
 | 桌面表格 / 筛选列表 / 弹窗维护 | `desktop-list.html`（内容区顶面包屑无大标题；页内签在筛选上方整区切换；分页与表横条贴底；勾选左冻 / 操作右冻定宽「更多」下拉；汇总左分页右；**列宽按字段语义**；**紧凑密度一屏多行**；隐藏骨架+插画空态；筛选用 `md-field--daterange`） |
@@ -28,11 +28,11 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 桌面展示 / 详情 | `desktop-detail.html`（夹具 `PAGE-AD-008.html`；面包屑；16:9 `md-swiper--wide`；图文介绍；`md-comment` 时间行 + 附图。**本页图片默认可预览**。禁止沉浸式叠层，禁止拿列表卡 1:1） |
 | 工作台 / 仪表盘 | `desktop-dashboard.html`（夹具 `PAGE-AD-004.html`；`md-stat-grid` 指标卡 + `md-chart-ph` + 短表。禁止拿 `desktop-list` 硬套） |
 | 树 + 内容 / 分栏 | `desktop-split.html`（夹具 `PAGE-AD-005.html`；`md-d1--split` 左树右内容；箭头展开收起，点树只换右区） |
-| 桌面设置 | `desktop-settings.html`（夹具 `PAGE-AD-006.html`；分组 `md-set-group`；开关 / 无极调节 / 横向多选项勾在下方 / 点击下拉） |
-| 桌面我的 / 服务 | `desktop-menu.html`（夹具 `PAGE-AD-010.html`；面包屑；**功能区**通栏或一行两个，分组标题可无。禁止套商品表） |
+| 桌面设置 | `desktop-settings.html`（夹具 `PAGE-AD-006.html`；**设置项**：当页当行直接操作；左图标可有可无） |
+| 桌面我的 / 服务 | `desktop-menu.html`（夹具 `PAGE-AD-010.html`；**功能入口**：只跳转或开抽屉/弹窗；通栏或一行两个。禁止套商品表） |
 | 桌面向导 | `desktop-wizard.html`（夹具 `PAGE-AD-003.html`；`md-stepper` + 分段 `md-advance`；数字步骤可点跳步；当前步 `[data-step]` 吃表单双列间距，最后一步才提交） |
-| 移动设置 / 偏好 | `mobile-settings.html`（夹具 `PAGE-MP-006.html`；**沉浸式**；`md-appbar--cover` 两倍标题栏高度背景图+标题；分组一行一项：开关 / 无极调节 / 横向多选项勾在下方 / 点击下拉） |
-| 移动我的 / 服务 | `mobile-menu.html`（夹具 `PAGE-MP-010.html`；标准顶栏；**功能区**通栏或一行两个，分组标题可无。金刚见首页。禁止按钮堆） |
+| 移动设置 / 偏好 | `mobile-settings.html`（夹具 `PAGE-MP-006.html`；**设置项**：当页当行直接操作；沉浸式封面顶栏；左图标可有可无） |
+| 移动我的 / 服务 | `mobile-menu.html`（夹具 `PAGE-MP-010.html`；**功能入口**：只跳转或开半屏/弹窗。金刚见首页。禁止按钮堆） |
 | 移动步骤向导 | `mobile-wizard.html`（夹具 `PAGE-MP-005.html`；横向 `md-stepper` + 分段 `md-advance--lg` + 无极 `md-progress` + 当前步表单，贴底上一步/下一步） |
 | 移动时间轴 | `mobile-timeline.html`（夹具 `PAGE-MP-009.html`；`md-timeline` 左竖轨右图文） |
 | 桌面时间轴 | `desktop-timeline.html`（夹具 `PAGE-AD-007.html`；面包屑 + `md-timeline` 左竖轨右图文） |
