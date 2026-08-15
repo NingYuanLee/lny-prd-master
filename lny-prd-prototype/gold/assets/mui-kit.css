@@ -321,7 +321,10 @@ a:hover { text-decoration: none; }
   color: var(--md-text-disabled);
   background: transparent;
 }
-.md-btn--text { background: transparent; }
+.md-btn--text {
+  background: transparent;
+  color: var(--md-primary); /* 必须区别于紧邻正文色，禁止跟正文同色 */
+}
 .md-btn--soft {
   border: 0;
   box-shadow: none;
@@ -343,7 +346,7 @@ a:hover { text-decoration: none; }
   color: var(--md-error);
 }
 .md-btn--error.md-btn--soft:hover { background: rgba(211, 47, 47, 0.18); }
-/* 纯文字：无线框无背景，适合「查看更多 / 了解全部」等弱操作 */
+/* 纯文字：无线框无背景，适合「查看更多 / 了解全部」等弱操作；字色须区别于紧邻正文 */
 .md-btn--link {
   min-width: 0;
   height: auto;
@@ -352,15 +355,15 @@ a:hover { text-decoration: none; }
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0;
   line-height: 1.4;
-  color: var(--md-text-secondary);
+  color: var(--md-primary);
   overflow: visible;
 }
 .md-btn--link:hover {
   background: transparent;
-  color: var(--md-primary);
+  color: var(--md-primary-dark);
   text-decoration: none;
 }
 .md-btn--link:active {
@@ -2820,11 +2823,11 @@ button.md-set-row:active { background: var(--md-selected); }
 .md-section-head__action,
 .md-section-head .md-btn--link {
   font-size: 0.8125rem;
-  color: var(--md-text-secondary);
-  font-weight: 400;
+  color: var(--md-primary);
+  font-weight: 500;
 }
 .md-section-head .md-btn--link:hover {
-  color: var(--md-primary);
+  color: var(--md-primary-dark);
 }
 
 .md-mobile-page .md-appbar--mobile {

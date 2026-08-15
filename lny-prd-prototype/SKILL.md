@@ -57,7 +57,7 @@ disable-model-invocation: true
 | 夹具页 | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
 | PAGE-MP-001 首页 | `gold/mobile-grid.html` | `md-immersive` `md-hero`；`md-module`；`md-card--cover` 精选 + `md-card--tile` 双列推荐；`md-king` 5 列 + `--pair`；有 TabBar 则无 `md-appbar` |
-| PAGE-MP-002 列表 | `gold/mobile-list.html` | `md-standard`；搜索+筛选贴顶；页签按钮组；**列表区**横卡多行 `md-card--row`（文本靠左，`__rail` 价格/距离右上，单按钮右下或 `--bar` 底栏；**卡内图默认可预览**；竖图定宽只加高）+ 横卡单行 `md-stack`>`md-set-row`（每行独立有缝，不要 `md-set-group`）；非分组、数据可无限（分页无页边界）；卡统一 `--md-shadow-surface`；底角 `md-pod`（有顶栏故无左上）；筛选半屏 `data-wheel="daterange"` |
+| PAGE-MP-002 列表 | `gold/mobile-list.html` | `md-standard`；搜索+筛选贴顶；页签按钮组；**列表区**横卡多行 `md-card--row`（字段多或值长；文本靠左，`__rail` 价格/距离右上，单按钮右下或 `--bar` 底栏；**卡内图默认可预览**；竖图定宽只加高）+ 横卡单行 `md-stack`>`md-set-row`（仅字段≤3 且值都短；每行独立有缝，不要 `md-set-group`）；非分组、数据可无限（分页无页边界）；卡统一 `--md-shadow-surface`；底角 `md-pod`（有顶栏故无左上）；筛选半屏 `data-wheel="daterange"` |
 | PAGE-MP-003 详情 | `gold/mobile-detail.html` | `md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 约 40px、一排最多五张。**本页图片默认可点预览**（页根 `data-lightbox`） |
 | PAGE-MP-004 表单（套件样例） | `gold/mobile-form.html` | **样例才整页铺齐**。返回顶栏；全部触屏表单控件；`md-action-bar` 贴底。业务表单按规格裁字段。进度条见步骤向导 |
 | PAGE-MP-005 步骤向导 | `gold/mobile-wizard.html` | 横向 `md-stepper`；分段 `md-advance md-advance--lg`；无极 `md-progress md-progress--lg`；当前步表单；`md-action-bar` 贴底，最后一步才提交 |

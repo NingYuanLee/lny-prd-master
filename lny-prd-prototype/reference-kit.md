@@ -212,7 +212,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 ### 触屏列表区
 
-同一模块只选一种（分区可各自点名）。规格有字段才写对应节点，**禁止**为好看编造业务字段。字段多或会换行走横卡多行；不超过 3 个短字段、定高不换行走横卡单行。
+同一模块只选一种（分区可各自点名）。规格有字段才写对应节点，**禁止**为好看编造业务字段。**横卡单行**仅当字段≤3 **且**各字段值都短、定高不换行；字段更多、会换行，或字段≤3 但**任一字段值很长**（单行放不下、需截断/换行）→ 用**横卡多行**。
 
 **① 封面叠字** `md-card--cover`：一行一列大图，单行标题悬图片底部。图 **可横可竖**，或 **定宽、高度随图**（`--ratio-auto`，须内嵌 `<img>`）。套件默认 **16:9**；点名 `--ratio-16x9` / `--ratio-2x1` / `--ratio-4x3` / `--ratio-3x4` / `--ratio-2x3` / `--ratio-1x1`；`--h-sm/md/lg` 固定高度。
 
@@ -287,7 +287,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 </article>
 ```
 
-**④ 横卡单行**（列表区内容行）`md-set-row`：定高、不换行；左图标→标题；右说明/计数/小标签。最多 3 个短字段。**每行独立纸面，上下有缝**（放进 `md-stack`，**不要**包进 `md-set-group`）。列表区与功能区的差别：**列表非分组**，条目可无限（即便分页加载，叠在一起也看不出页边界）；**功能成组**，每组入口有限。视觉上：通栏挤在一组纸面里、行间只有分割线；列表单行各自独立有缝。列表卡（封面/双列/横卡多行/单行）与功能通栏·一行两个统一用 **轻阴影** `--md-shadow-surface`；**金刚两种不加阴影**。**不要**用 `md-set-pair`（一行两个只属功能区）。
+**④ 横卡单行**（列表区内容行）`md-set-row`：定高、不换行；左图标→标题；右说明/计数/小标签。最多 3 个**短**字段；**任一字段值很长（单行放不下）改走横卡多行**。**每行独立纸面，上下有缝**（放进 `md-stack`，**不要**包进 `md-set-group`）。列表区与功能区的差别：**列表非分组**，条目可无限（即便分页加载，叠在一起也看不出页边界）；**功能成组**，每组入口有限。视觉上：通栏挤在一组纸面里、行间只有分割线；列表单行各自独立有缝。列表卡（封面/双列/横卡多行/单行）与功能通栏·一行两个统一用 **轻阴影** `--md-shadow-surface`；**金刚两种不加阴影**。**不要**用 `md-set-pair`（一行两个只属功能区）。
 
 ```html
 <div class="md-stack">
@@ -587,7 +587,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 <button type="button" class="md-btn md-btn--text md-tooltip" data-tip="刷新列表">刷新</button>
 ```
 
-触屏按钮对照金样 `gold/mobile-buttons.html`：小 `--sm` / 中默认 / 大 `--lg`；形态含线框 `--outlined`、色块 `--contained`、**浅底 `--soft`（无边框、浅色底+有色字）**、文字 `--text`、**纯文字链接 `--link`（无线框无背景，用于查看更多/了解全部）**、置灰 `disabled`、角标内嵌 `md-badge`。
+触屏按钮对照金样 `gold/mobile-buttons.html`：小 `--sm` / 中默认 / 大 `--lg`；形态含线框 `--outlined`、色块 `--contained`、**浅底 `--soft`（无边框、浅色底+有色字）**、文字 `--text`、**纯文字链接 `--link`（无线框无背景，用于查看更多/了解全部；字色须区别紧邻正文，默认主色）**、置灰 `disabled`、角标内嵌 `md-badge`。
 
 ```html
 <button type="button" class="md-btn md-btn--outlined md-btn--sm">线框</button>
@@ -719,7 +719,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 
 | 用途 | 类名 |
 |------|------|
-| 主/线/浅底/字/链接按钮 | `md-btn md-btn--contained` / `--outlined` / **`--soft`（无边框浅底色字）** / `--text` / **`--link`（纯文字无线框无背景，查看更多/了解全部）**；`--sm` `--lg`；置灰 `disabled`；角标内嵌 `md-badge` |
+| 主/线/浅底/字/链接按钮 | `md-btn md-btn--contained` / `--outlined` / **`--soft`（无边框浅底色字）** / `--text` / **`--link`（纯文字无线框无背景，查看更多/了解全部）**；`--sm` `--lg`；置灰 `disabled`；角标内嵌 `md-badge`。**`--text`/`--link` 字色须区别紧邻正文**（默认主色，禁止跟正文同色） |
 | 图标 | `span.md-icon` + `data-icon`（闭集见 [`reference-icons.md`](reference-icons.md)） |
 | 图标按钮 | `md-icon-btn` 内放 `span.md-icon` |
 | 输入 | `md-field` + `md-field__label` + `md-field__input`；只读加 `md-field--readonly` + `readonly`（灰底淡字）。日期段 `readonly` 触发器不要加 `--readonly` |
@@ -735,7 +735,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 工作台 | `md-stat-grid` `md-stat-card`；趋势 `md-chart-ph` |
 | 分栏 | `md-d1--split` / 触屏 `md-tree-page`；`md-split` `__side` `__main`；树 `md-tree` `__item` `__toggle` `__label` `is-open` `is-active` |
 | 设置分组 | `md-set-group` `__title` `md-set-row`（**设置项**：当页当行直接操作；左 `md-icon` 可有可无 + `__label`；右开关/值/本行菜单）；开关 `md-switch`（热区铺满，可点）；无极 `md-set-block` + `md-slider--fluid`；横向多选 `md-set-picks` / `md-set-pick`（`__face` 可为 `__label` 文字 / 图标 / `__media` 图片；`__mark` 含 `__off`+`__on`，未选也显示空圈）；下拉 `md-set-row` + `data-menu` |
-| 列表单行 | `md-stack` > `md-set-row`：每行独立有缝；非分组无限流；轻阴影；`__lead`（图标+`__label`）+ `__trail`（说明/计数/小标签，一般无箭头） |
+| 列表单行 | `md-stack` > `md-set-row`：每行独立有缝；**仅**字段≤3 且值都短；值长改 `--row`；非分组无限流；轻阴影；`__lead`（图标+`__label`）+ `__trail`（说明/计数/小标签，一般无箭头） |
 | 功能区通栏 / 一行两个 | **功能入口**：通栏包在 `md-set-group`（成组有限、连成一片、轻阴影；组内淡色内缩分割线）；一行两个 `md-set-pair`；**只跳转或开半屏/弹窗**（常带 `chevron-right`）；分组标题可无。与设置项同壳不同行为 |
 | 汇总分页 | `md-d1__footer`：`md-d1__stats` 靠左，`md-d1__pager` 靠右 |
 | 纸面/表格 | `md-paper` `md-table` `md-table-wrap` `md-col-check` `md-col-name` `md-col-price` `md-col-status` `md-col-date` `md-col-actions` `md-pagination` `md-page-btn` |
