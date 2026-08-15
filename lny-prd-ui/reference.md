@@ -250,7 +250,7 @@
 | 加载不是白屏 | 「先骨架再出数」 | `md-skeleton` / `md-skel-host` |
 | 空不是一行灰字 | 「插图+人话+一个动作」 | `md-empty md-empty--illus` |
 | 失败能接着干 | 「可重试；列表 Alert，轻操作 Toast」 | `md-alert` / `ProtoPage.snackbar` |
-| 主体资料摘要 | 「店铺/个人/公司资料用资料卡片；最精简仅左图+标题+说明」 | `md-profile`（个人 `--avatar`；店/司门头或 Logo） |
+| 主体资料摘要 | 「店铺/个人/公司资料用资料卡片；最精简仅左图+标题+说明；页顶避让状态栏」 | `md-profile` / `--top`（个人 `--avatar`） |
 | 浮层不瞬切 | 「半屏/弹窗/签过渡」 | `ProtoPage.openDrawer` / `openDialog` |
 | 表列宽与密度 | D1-1 语义列宽+紧凑 | `md-col-*` + `md-d1--list` |
 | 键盘与焦点 | 「Tab 顺序合理；主按钮回车；焦点可见」 | 套件 `:focus-visible`；触屏不靠 hover |

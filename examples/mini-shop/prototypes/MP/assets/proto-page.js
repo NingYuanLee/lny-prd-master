@@ -1117,7 +1117,7 @@
     if (el.closest("[data-preview=off]")) return true;
     if (
       el.closest(
-        ".md-appbar__cover, .md-card__leading, .md-profile__media, .md-empty__art, .md-chart-ph, .md-upload-grid__add, .md-upload-grid__del, .md-upload-grid__thumb, .md-upload__preview"
+        ".md-appbar__cover, .md-card__leading, .md-profile__media, .md-set-row__thumb, .md-empty__art, .md-chart-ph, .md-upload-grid__add, .md-upload-grid__del, .md-upload-grid__thumb, .md-upload__preview"
       )
     ) {
       return true;
@@ -1468,20 +1468,20 @@
 
   function collectDetailSections(page) {
     var out = [];
-    var seen = {};
+    var seen = [];
     function push(el) {
-      if (!el || seen[el]) return;
+      if (!el || seen.indexOf(el) >= 0) return;
       var title = detailSectionTitle(el);
       if (!title) return;
-      seen[el] = true;
+      seen.push(el);
       if (!el.id) {
         el.id = "detail-sec-" + out.length;
       }
       out.push({ el: el, title: title });
     }
     page.querySelectorAll(".md-hero[data-section]").forEach(push);
-    page.querySelectorAll(".md-detail-hero").forEach(push);
-    page.querySelectorAll(".md-module").forEach(push);
+    page.querySelectorAll(".md-detail-hero[data-section], .md-detail-hero").forEach(push);
+    page.querySelectorAll(".md-module[data-section], .md-module").forEach(push);
     return out;
   }
 

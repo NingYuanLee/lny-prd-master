@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 功能入口（功能服务）。只跳转或开抽屉/弹窗；通栏 md-set-group 包 md-set-row；一行两个 md-set-pair。分组标题可有可无。与设置项同壳：设置项是当页当行直接操作。禁止套 D1-1 商品表、禁止一排按钮。 -->
+<!-- LNY-PRD gold: 功能入口。通栏/一行两个；右侧可为文字说明或方形配图（md-set-row--thumb / __thumb，行更高）。禁止套 D1-1。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -109,6 +109,39 @@
           </span>
         </a>
       </div>
+    </div>
+    <div class="md-set-group">
+      <div class="md-set-group__title">精选服务</div>
+      <a class="md-set-row md-set-row--thumb" href="#">
+        <span class="md-set-row__lead">
+          <span class="md-icon" data-icon="star" aria-hidden="true"></span>
+          <span class="md-set-row__label">会员专享</span>
+        </span>
+        <span class="md-set-row__trail">
+          <span class="md-set-row__thumb md-media-ph md-media-ph--2" aria-hidden="true"></span>
+          <span class="md-icon" data-icon="chevron-right" aria-hidden="true"></span>
+        </span>
+      </a>
+      <a class="md-set-row md-set-row--thumb" href="#">
+        <span class="md-set-row__lead">
+          <span class="md-icon" data-icon="goods" aria-hidden="true"></span>
+          <span class="md-set-row__label">新品尝鲜</span>
+        </span>
+        <span class="md-set-row__trail">
+          <span class="md-set-row__thumb md-media-ph md-media-ph--4" aria-hidden="true"></span>
+          <span class="md-icon" data-icon="chevron-right" aria-hidden="true"></span>
+        </span>
+      </a>
+      <a class="md-set-row md-set-row--thumb" href="#">
+        <span class="md-set-row__lead">
+          <span class="md-icon" data-icon="share" aria-hidden="true"></span>
+          <span class="md-set-row__label">邀请有礼</span>
+        </span>
+        <span class="md-set-row__trail">
+          <span class="md-set-row__thumb md-media-ph md-media-ph--6" aria-hidden="true"></span>
+          <span class="md-icon" data-icon="chevron-right" aria-hidden="true"></span>
+        </span>
+      </a>
     </div>
   </div>
   <script src="assets/md-icons.js"></script>

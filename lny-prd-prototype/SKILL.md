@@ -62,7 +62,7 @@ disable-model-invocation: true
 | PAGE-MP-004 表单（套件样例） | `gold/mobile-form.html` | **样例才整页铺齐**。返回顶栏；全部触屏表单控件；`md-action-bar` 贴底。业务表单按规格裁字段。进度条见步骤向导 |
 | PAGE-MP-005 步骤向导 | `gold/mobile-wizard.html` | 横向 `md-stepper`；分段 `md-advance md-advance--lg`；无极 `md-progress md-progress--lg`；当前步表单；`md-action-bar` 贴底，最后一步才提交 |
 | PAGE-MP-006 设置 | `gold/mobile-settings.html` | 沉浸式；`md-appbar--cover`；**设置项**：开关可点；`md-set-picks` 选项面文字/图标/图片均可，未选显示 `radio-off`、已选 `check`；左图标可有可无；无极 / `data-menu` 改值 |
-| PAGE-MP-010 我的/服务 | `gold/mobile-menu.html` | 标准顶栏；**功能入口**（只跳转或开半屏/弹窗）：通栏 `md-set-group`>`md-set-row` 或 `md-set-pair`；常带箭头。金刚见首页（无阴影）。禁止一排 `md-btn` |
+| PAGE-MP-010 我的/服务 | `gold/mobile-menu.html` | 功能入口通栏/`md-set-pair`；右可为文字或 **方形配图 `--thumb`**（行更高） |
 | PAGE-MP-007 按钮（套件样例） | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、**浅底 `--soft`**、文字、**`--link`**、置灰、`md-badge`。禁止当业务首页。禁止裸 `<button>` |
 | PAGE-MP-011 悬浮胶囊（套件样例） | `gold/mobile-pod.html` | 规格点名才画到**业务页**，不要每个项目都做本页。`md-pod` + `--tl` / `--bl` / `--br`；写在页根。不要右上，不要用 `md-fab` 冒充成组 |
 | PAGE-MP-008 分类 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左树右内容；`md-tree` `__toggle` 展开收起；点节点只换右区 |
@@ -80,7 +80,7 @@ disable-model-invocation: true
 | PAGE-AD-004 工作台 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
 | PAGE-AD-005 分类 | `gold/desktop-split.html` | `md-d1--split` 左树右内容；`md-tree` `__toggle` 展开收起；点树只换右区 |
 | PAGE-AD-006 设置 | `gold/desktop-settings.html` | **设置项**：开关可点；`md-set-picks` 文字/图标/图片 + 未选空圈；左图标可有可无；无极 / `data-menu` 改值 |
-| PAGE-AD-010 我的/服务 | `gold/desktop-menu.html` | **功能入口**（只跳转或开抽屉/弹窗）：通栏 `md-set-group`>`md-set-row` 或 `md-set-pair`。不要 `md-d1--list`、不要一排按钮 |
+| PAGE-AD-010 我的/服务 | `gold/desktop-menu.html` | 功能入口通栏/`md-set-pair`；右可为文字或方形配图 `--thumb`。不要 `md-d1--list` |
 | PAGE-AD-007 时间轴 | `gold/desktop-timeline.html` | `md-breadcrumb`；`md-timeline` 左竖轨右图文；点节点切高亮 |
 | PAGE-AD-011 悬浮按钮（套件样例） | `gold/desktop-pod.html` | 规格点名才画到**业务页**。`md-pod md-pod--desk` 只右下、`position:fixed`。单个圆形；多个独立圆钮竖排（不要细线胶囊）。满 4 个写 `md-pod--fold` + `__toggle`（脚本也会补），点「+」错开弹出、再点收起。功能钮按下下沉/加深，不要缩放回弹。不要 `--tl/--bl`，不要 `md-fab` |
 | 关系图 | `prototypes/{端}/map.html` | `ProtoMap.boot`；预览区 **375×812**；连线端口错开 + 线中 `label`；底部色线图例；拖动写入 localStorage；「导出图片」 |

@@ -618,7 +618,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 <button type="button" class="md-btn md-btn--contained md-btn--sm">角标<span class="md-badge">8</span></button>
 ```
 
-功能区通栏 / 一行两个对照金样 `gold/mobile-menu.html` / `gold/desktop-menu.html`。分组标题可无。短说明可省略，通栏箭头保留。字段多改列表区横卡多行。
+功能区通栏 / 一行两个对照金样 `gold/mobile-menu.html` / `gold/desktop-menu.html`。分组标题可无。短说明可省略，通栏箭头保留。**右侧说明位也可换成方形配图**：`md-set-row--thumb` + `__thumb`（1:1，约 52px），行高随之加高；有图时不再叠文字 `__hint`。字段多改列表区横卡多行。
 
 ```html
 <a class="md-set-row" href="PAGE-MP-002.html">
@@ -628,6 +628,18 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
   </span>
   <span class="md-set-row__trail">
     <span class="md-set-row__hint">查看全部</span>
+    <span class="md-icon" data-icon="chevron-right" aria-hidden="true"></span>
+  </span>
+</a>
+
+<!-- 右侧方形配图（行更高） -->
+<a class="md-set-row md-set-row--thumb" href="#">
+  <span class="md-set-row__lead">
+    <span class="md-icon" data-icon="star" aria-hidden="true"></span>
+    <span class="md-set-row__label">会员专享</span>
+  </span>
+  <span class="md-set-row__trail">
+    <span class="md-set-row__thumb md-media-ph md-media-ph--2" aria-hidden="true"></span>
     <span class="md-icon" data-icon="chevron-right" aria-hidden="true"></span>
   </span>
 </a>
@@ -727,7 +739,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | 下拉 | `md-field--select` + `md-select`，或 `md-select-btn` + `md-menu` | 未包 `md-field` 的裸 `<select>`；触屏用系统原生选择器 |
 | 日期 / 时间 | `md-field--date` / `md-field--daterange` / `md-field--time` + `type="date|time|datetime-local"` | 自造日历、两个裸日期框冒充日期段 |
 | 开关 | `md-switch-row` + `md-switch` | 自造滑块 / 裸 checkbox 当开关 |
-| 功能区通栏 / 一行两个 | 通栏包 `md-set-group` 连成一片（轻阴影）；一行两个 `md-set-pair`。成组、每组入口有限。分组标题可无。左图标+标题，右说明/计数/小标签可无+箭头 | 一排 `md-btn`；字段多却用通栏；用 `md-king--pair` 冒充 `md-set-pair`；列表单行也包进 `md-set-group` 连成一片；金刚加阴影；通栏/列表阴影过重 |
+| 功能区通栏 / 一行两个 | 通栏包 `md-set-group`；一行两个 `md-set-pair`。右说明可为文字 `__hint` 或方形 `__thumb`（`--thumb`，整行加高） | 一排 `md-btn`；右图用列表横卡冒充；功能入口右图进灯箱 |
 | 单选 | 桌面/列表：`md-choice-group` + `md-radio`；触屏表单：同上（自动标签角标） | 未包 `md-radio` 的裸 `<input type="radio">` |
 | 多选 | 桌面/列表：`md-choice-group` + `md-check`；触屏表单：同上（自动标签角标）；列表行勿包成标签 | 未包 `md-check` 的裸 `<input type="checkbox">` |
 | 弹窗 / 确认 | `md-dialog` + `md-backdrop`；确认用 `ProtoPage.confirm` | `alert()` / `confirm()` |
@@ -804,7 +816,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 
 | 层 | 类名 | 规则 |
 |----|------|------|
-| 根 | `md-profile` | 列表等场景带纸面轻阴影；详情白底模块内铺平（无双重卡片壳） |
+| 根 | `md-profile` | 列表等场景带纸面轻阴影；详情白底模块内铺平（无双重卡片壳）。**页顶使用**加 `--top`（或沉浸式无 Hero/顶栏时自动）：`padding-top` = 状态栏高 + 顶部安全区，避免贴状态栏 |
 | 上（必选） | `__head` | 左 `__media` + 中 `__main`；右 `__side` **可选** |
 | 左图 | `__media` | **精简必留**。个人头像加 `--avatar`（圆）；店铺门头 / 公司 Logo 用默认圆角方图；尺寸 `--sm` / 默认 / `--lg`。**不进灯箱** |
 | 中文 | `__main` | 靠左：`__title`（**精简必留**）→ `__subtitle`（**精简必留作说明**）→ 可选 `__meta` → 可选 `__tags` |
@@ -813,8 +825,8 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 下（可选） | `__foot` | **1～3** 个浅纯色底按钮（默认 `md-btn--soft`；强调可加 `md-btn--primary`） |
 
 ```html
-<!-- 最精简：仅上层 · 左图 + 标题 + 说明 -->
-<article class="md-profile">
+<!-- 最精简：仅上层 · 左图 + 标题 + 说明；页顶再加 md-profile--top -->
+<article class="md-profile md-profile--top">
   <div class="md-profile__head">
     <div class="md-profile__media md-profile__media--avatar md-media-ph md-media-ph--1"></div>
     <div class="md-profile__main">
@@ -861,7 +873,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 </article>
 ```
 
-禁止：中层竖线拉满整行高度；下层用描边主按钮冒充浅底；左图裸 `md-card__media`；把资料卡当成列表横卡 `--row`；精简形态再拆成裸头像+正文另排。
+禁止：中层竖线拉满整行高度；下层用描边主按钮冒充浅底；左图裸 `md-card__media`；把资料卡当成列表横卡 `--row`；精简形态再拆成裸头像+正文另排；**页顶资料卡顶到状态栏**（须 `--top` 或依赖自动避让）。
 
 ## 组件速查
 
@@ -872,7 +884,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 图标按钮 | `md-icon-btn` 内放 `span.md-icon` |
 | 输入 | `md-field` + `md-field__label` + `md-field__input`；只读加 `md-field--readonly` + `readonly`（灰底淡字）。日期段 `readonly` 触发器不要加 `--readonly` |
 | 卡片 | `md-card` **`--cover` / `--tile`（可横可竖或 `--ratio-auto` 定宽随图）`--row`（左图仅 1:1 或竖图 `--ratio-3x4/2x3`；字段少因值长再加 `--long`）**；列表单行 `md-set-row`。`md-card__media` `md-card__leading` `--avatar` `md-card__body` `md-card__main` `md-card__title` `md-card__subtitle` `md-card__text` `md-card__chips` `md-card__rail` `md-card__aside` `md-card__dist` `md-card__actions` `--bar` `md-card__time` `md-card__foot` `md-card__meta` `md-card__photos` `md-card__photo` `md-card__tag` `--tl/--tr` `md-price` |
-| 资料卡片 | `md-profile`（店铺/个人/公司）；**最精简**=仅 `__head`（`__media` + `__title` + `__subtitle`）；完整再加 `__side` / `__meta` / `__tags` / `__stats` / `__foot` |
+| 资料卡片 | `md-profile`（店铺/个人/公司）；**最精简**=仅 `__head`（`__media` + `__title` + `__subtitle`）；完整再加 `__side` / `__meta` / `__tags` / `__stats` / `__foot`；**页顶**加 `--top` 避让状态栏与顶部安全区 |
 | 详情页 | 页根 `md-detail-page`（整页浅灰）；内容壳透底；标题/图文 **白底区块**、间隙露灰；`md-detail-head`；`md-article` 四级标题+首行缩进+`__figures--1/2`+居中 `__caption`+表格可横滑；**评论列表卡**坐浅灰上；可嵌 **资料卡片**；右下默认 **目录+返回顶部**（`data-detail-nav`） |
 | 分区 / 模块 | `md-module`（L3，模块间距 `--md-module-gap`）`md-section-head` `md-section-head__title` |
 | 系统栏 | `md-status-bar`（`proto-page.js` 固定顶注入；页内禁止手写；时间/信号靠顶略放大，左右各收一个图标身位，不为胶囊留空） |
@@ -885,7 +897,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 分栏 | `md-d1--split` / 触屏 `md-tree-page`；`md-split` `__side` `__main`；树 `md-tree` `__item` `__toggle` `__label` `is-open` `is-active` |
 | 设置分组 | `md-set-group` `__title` `md-set-row`（**设置项**：当页当行直接操作；左 `md-icon` 可有可无 + `__label`；右开关/值/本行菜单）；开关 `md-switch`（热区铺满，可点）；无极 `md-set-block` + `md-slider--fluid`；横向多选 `md-set-picks` / `md-set-pick`（`__face` 可为 `__label` 文字 / 图标 / `__media` 图片；`__mark` 含 `__off`+`__on`，未选也显示空圈）；下拉 `md-set-row` + `data-menu` |
 | 列表单行 | `md-stack` > `md-set-row`：每行独立有缝；**仅**字段≤3 且值都短；值长改 `--row` + `--long`；非分组无限流；轻阴影；`__lead`（图标+`__label`）+ `__trail`（说明/计数/小标签，一般无箭头） |
-| 功能区通栏 / 一行两个 | **功能入口**：通栏包在 `md-set-group`（成组有限、连成一片、轻阴影；组内淡色内缩分割线）；一行两个 `md-set-pair`；**只跳转或开半屏/弹窗**（常带 `chevron-right`）；分组标题可无。与设置项同壳不同行为 |
+| 功能区通栏 / 一行两个 | **功能入口**：通栏 `md-set-group`；一行两个 `md-set-pair`；右可为 `__hint` 或 **方形 `__thumb`**（`--thumb`，行更高）；常带箭头 |
 | 汇总分页 | `md-d1__footer`：`md-d1__stats` 靠左，`md-d1__pager` 靠右 |
 | 纸面/表格 | `md-paper` `md-table` `md-table-wrap` `md-col-check` `md-col-name` `md-col-price` `md-col-status` `md-col-date` `md-col-actions` `md-pagination` `md-page-btn` |
 | 筛选栏 | `md-filter` / `md-d1__search`；动作区 `md-filter__actions` |

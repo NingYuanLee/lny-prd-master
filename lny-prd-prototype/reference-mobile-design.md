@@ -48,7 +48,7 @@
 | Tag / Avatar / Swipe / Progress | `md-chip`；**`md-card__tag` `--tl/--tr`**（封面角）；`md-card__thumb`；`md-swiper`；`md-progress`/`md-advance`；时间轴 `md-timeline` |
 | TabBar / NavBar / 页内签 | `md-tabbar`；`md-appbar--*`；触屏页内签 `md-tabs` 按钮组（禁止下划线） |
 | 悬浮胶囊 | `md-pod` 钉在页根、不进滚动层；`--tl` 横向且与标题栏互斥 / `--bl` `--br` 竖向并避开底栏。规格点名才画，不要右上 |
-| 功能区 | `md-king` / `md-king--pair`（无阴影）；通栏 `md-set-group`>`md-set-row`（连成一片、轻阴影）；一行两个 `md-set-pair`（分组标题可无、轻阴影）。成组、每组入口有限 |
+| 功能区 | `md-king` / `md-king--pair`（无阴影）；通栏 `md-set-group`>`md-set-row`；一行两个 `md-set-pair`；右说明可为文字或 **方形 `__thumb`**（`--thumb`，行更高） |
 
 搜索：`md-search` = 左 `search` 图标 + `md-search__input`，无 caption、无右侧搜索按钮。
 

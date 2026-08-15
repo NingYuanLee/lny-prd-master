@@ -29,10 +29,10 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 工作台 / 仪表盘 | `desktop-dashboard.html`（夹具 `PAGE-AD-004.html`；`md-stat-grid` 指标卡 + `md-chart-ph` + 短表。禁止拿 `desktop-list` 硬套） |
 | 树 + 内容 / 分栏 | `desktop-split.html`（夹具 `PAGE-AD-005.html`；`md-d1--split` 左树右内容；箭头展开收起，点树只换右区） |
 | 桌面设置 | `desktop-settings.html`（夹具 `PAGE-AD-006.html`；**设置项**：当页当行直接操作；左图标可有可无） |
-| 桌面我的 / 服务 | `desktop-menu.html`（夹具 `PAGE-AD-010.html`；**功能入口**：只跳转或开抽屉/弹窗；通栏或一行两个。禁止套商品表） |
+| 桌面我的 / 服务 | `desktop-menu.html`（夹具 `PAGE-AD-010.html`；功能入口；右可为文字或方形配图 `--thumb`） |
 | 桌面向导 | `desktop-wizard.html`（夹具 `PAGE-AD-003.html`；`md-stepper` + 分段 `md-advance`；数字步骤可点跳步；当前步 `[data-step]` 吃表单双列间距，最后一步才提交） |
 | 移动设置 / 偏好 | `mobile-settings.html`（夹具 `PAGE-MP-006.html`；**设置项**：当页当行直接操作；沉浸式封面顶栏；左图标可有可无） |
-| 移动我的 / 服务 | `mobile-menu.html`（夹具 `PAGE-MP-010.html`；**功能入口**：只跳转或开半屏/弹窗。金刚见首页。禁止按钮堆） |
+| 移动我的 / 服务 | `mobile-menu.html`（功能入口；右可为文字或方形配图 `--thumb`） |
 | 移动步骤向导 | `mobile-wizard.html`（夹具 `PAGE-MP-005.html`；横向 `md-stepper` + 分段 `md-advance--lg` + 无极 `md-progress` + 当前步表单，贴底上一步/下一步） |
 | 移动时间轴 | `mobile-timeline.html`（夹具 `PAGE-MP-009.html`；`md-timeline` 左竖轨右图文） |
 | 桌面时间轴 | `desktop-timeline.html`（夹具 `PAGE-AD-007.html`；面包屑 + `md-timeline` 左竖轨右图文） |

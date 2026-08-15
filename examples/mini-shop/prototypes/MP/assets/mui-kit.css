@@ -2595,6 +2595,43 @@ button.md-set-row:active { background: var(--md-selected); }
   flex-shrink: 0;
   color: var(--md-text-disabled);
 }
+/* 功能入口：右侧说明位为方形图 → 行更高 */
+.md-set-row--thumb,
+.md-set-row:has(.md-set-row__thumb) {
+  min-height: 76px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  align-items: center;
+}
+.md-set-group > .md-set-row--thumb,
+.md-set-group > .md-set-row:has(.md-set-row__thumb),
+.md-set-pair > .md-set-row--thumb,
+.md-set-pair > .md-set-row:has(.md-set-row__thumb) {
+  min-height: 76px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.md-set-row__thumb {
+  width: 52px;
+  height: 52px;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+.md-set-row__trail:has(.md-set-row__thumb) {
+  max-width: none;
+  gap: 8px;
+}
+.md-set-pair > .md-set-row .md-set-row__trail:has(.md-set-row__thumb) {
+  max-width: none;
+}
+.md-set-row__trail:has(.md-set-row__thumb) .md-set-row__hint {
+  display: none;
+}
 .md-set-block {
   padding: 10px 16px 14px;
   border-top: 1px solid var(--md-divider);
@@ -4829,6 +4866,27 @@ a.md-card {
   background: transparent;
   border-radius: 0;
   box-shadow: none;
+}
+/* 页顶资料卡：避开状态栏 + 顶部安全区（显式 --top，或沉浸式无 Hero/顶栏时自动） */
+.md-profile--top {
+  padding-top: calc(var(--md-status-h) + max(12px, var(--md-safe-t)));
+  box-sizing: border-box;
+}
+.md-detail-page .md-module > .md-profile.md-profile--top {
+  padding-top: calc(var(--md-status-h) + max(12px, var(--md-safe-t)));
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 0;
+}
+.md-mobile-page.md-immersive:not(:has(> .md-hero)):not(:has(> .md-appbar)) > .md-mobile-body > .md-profile:first-child,
+.md-mobile-page.md-immersive:not(:has(> .md-hero)):not(:has(> .md-appbar)) > .md-mobile-body > .md-module:first-child > .md-profile,
+.md-mobile-page.md-immersive:not(:has(> .md-hero)):not(:has(> .md-appbar)) > .md-mobile-body > .md-mobile-sheet > .md-profile:first-child,
+.md-mobile-page.md-immersive:not(:has(> .md-hero)):not(:has(> .md-appbar)) > .md-mobile-body > .md-mobile-sheet > .md-module:first-child > .md-profile {
+  padding-top: calc(var(--md-status-h) + max(12px, var(--md-safe-t)));
+}
+.md-mobile-page.md-immersive:not(:has(> .md-hero)):not(:has(> .md-appbar)) > .md-mobile-body > .md-module:first-child:has(> .md-profile),
+.md-mobile-page.md-immersive:not(:has(> .md-hero)):not(:has(> .md-appbar)) > .md-mobile-body > .md-mobile-sheet > .md-module:first-child:has(> .md-profile) {
+  padding-top: calc(var(--md-status-h) + max(12px, var(--md-safe-t)));
 }
 .md-profile__head {
   display: flex;
