@@ -25,7 +25,7 @@
             { id: "COMP-001", name: "商品卡片", states: ["loading", "empty", "error", "default"] }
           ],
           spec: {
-            layout: "L0 沉浸式（状态栏透明）叠在下沉 Banner 上（胶囊避让）；无页内顶栏；L1 TabBar 贴底；L2 金刚区（5列宫格+一排两张大卡）+推荐；L3 商品卡片 1:1；L5 底半屏分类。",
+            layout: "L0 沉浸式（状态栏透明）叠在下沉 Banner 上；无页内顶栏；L1 TabBar 贴底；L2 金刚区（5列宫格+一排两张大卡）+推荐；L3 封面叠字+双列瓷砖（图可横可竖）；L5 底半屏分类。",
             comps: "COMP-001 · 商品卡片\n状态切换入口：壳层状态演示（loading / empty / error / default）。",
             apis: "API-MP-001 · 查询推荐商品\n进页请求；失败由状态演示 error 演示。",
             features: "FEATURE-001 · 浏览商品 · 首页推荐入口",
@@ -43,7 +43,7 @@
             { id: "COMP-001", name: "商品卡片", states: ["loading", "empty", "error", "default"] }
           ],
           spec: {
-            layout: "L0 标准模式（状态栏不透明）；L1 搜索行+筛选行贴顶固定；TabBar 贴底；L2 仅滚横卡 1:1；L5 左店铺/右筛选半屏（日期段+类目下拉）、确认清空、Toast。",
+            layout: "L0 标准模式（状态栏不透明）；L1 搜索行+筛选行贴顶固定（不是返回标题栏）；TabBar 贴底；L2 横卡多行（左图 1:1 或竖图）+横卡单行；L5 左店铺/右筛选半屏（日期段+类目下拉）、确认清空、Toast。",
             comps: "COMP-001 · 商品卡片\n状态切换入口：壳层状态演示。",
             apis: "API-MP-001 · 分页查询商品\n进页、搜索、筛选；失败 Toast 由状态演示 error 演示。",
             features: "FEATURE-001 · 浏览商品 · 列表浏览",
@@ -132,6 +132,22 @@
           brief: "套件样例：小/中/大按钮的线框、色块、置灰与角标。"
         },
         {
+          id: "PAGE-MP-011",
+          name: "悬浮胶囊",
+          module: "套件",
+          file: "PAGE-MP-011.html",
+          tabBarExempt: true,
+          comps: [],
+          spec: {
+            layout: "L0 沉浸式；无页内标题栏；左上横向胶囊、左下/右下竖向胶囊钉在页框，不进滚动层；底栏 TabBar 上方留缝。",
+            comps: "本页无局部自定义组件。",
+            apis: "套件样例页，演示悬浮胶囊。",
+            features: "无",
+            actions: "点胶囊格 · Toast"
+          },
+          brief: "套件样例：左上横向、左下竖向、右下圆形，钉在页框不随正文滚。"
+        },
+        {
           id: "PAGE-MP-008",
           name: "分类",
           module: "商品",
@@ -165,19 +181,19 @@
         },
         {
           id: "PAGE-MP-010",
-          name: "功能入口",
+          name: "我的服务",
           module: "套件",
           file: "PAGE-MP-010.html",
           tabBarExempt: true,
           comps: [],
           spec: {
-            layout: "L0 标准模式；L1 返回+标题；分组列表；通栏入口与一行两个入口。",
+            layout: "L0 标准模式；L1 返回+标题；功能区通栏与一行两个（分组标题可无）。",
             comps: "本页无局部自定义组件。",
-            apis: "套件样例页，演示功能入口列表。",
+            apis: "套件样例页，演示功能区通栏与一行两个。",
             features: "无",
             actions: "点入口行 · 进入对应页或停留本页\n返回 · 首页"
           },
-          brief: "套件样例：通栏入口与一行两个入口，左图标+名称，右说明+箭头。"
+          brief: "套件样例：功能区通栏与一行两个，分组标题可无。"
         }
       ]
     };

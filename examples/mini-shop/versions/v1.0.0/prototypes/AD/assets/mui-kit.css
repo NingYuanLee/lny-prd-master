@@ -40,13 +40,15 @@
   --md-duration: 250ms;
   --md-appbar-h: 64px;
   --md-appbar-h-mobile: 56px;
+  --md-tabbar-h: 48px;
+  --md-status-h: 28px;
   --md-drawer-w: 240px;
   --md-safe-edge: 16px;
-  --md-safe-t: max(var(--md-safe-edge), env(safe-area-inset-top, 0px));
+  --md-safe-edge-y: 0px;
+  --md-safe-t: max(var(--md-safe-edge-y), env(safe-area-inset-top, 0px));
   --md-safe-r: max(var(--md-safe-edge), env(safe-area-inset-right, 0px));
-  --md-safe-b: max(var(--md-safe-edge), env(safe-area-inset-bottom, 0px));
+  --md-safe-b: max(var(--md-safe-edge-y), env(safe-area-inset-bottom, 0px));
   --md-safe-l: max(var(--md-safe-edge), env(safe-area-inset-left, 0px));
-  --md-status-h: 44px;
   --md-spec-w: 375px;
   --md-state-w: 200px;
   --md-z-appbar: 1100;
@@ -430,6 +432,276 @@ a:hover { text-decoration: none; }
   justify-content: center;
 }
 .md-fab:hover { background: var(--md-secondary-dark); box-shadow: var(--md-shadow-8); }
+
+/* 悬浮胶囊：单个圆形；多个成组、细线分割。左上横向且与标题栏互斥；左下/右下竖向并避开底栏。不要右上。 */
+.md-pod {
+  --md-pod-size: 44px;
+  --md-pod-gap: 8px;
+  --md-pod-dock: var(--md-tabbar-h);
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.94);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--md-shadow-4);
+  z-index: 9;
+  box-sizing: border-box;
+}
+.md-pod:not(.md-pod--static) {
+  position: absolute;
+}
+.md-pod--static {
+  position: relative;
+  flex-shrink: 0;
+}
+.md-pod--tl { flex-direction: row; }
+.md-pod--bl,
+.md-pod--br { flex-direction: column; }
+.md-pod:not(:has(.md-pod__item:nth-child(2))) {
+  width: var(--md-pod-size);
+  height: var(--md-pod-size);
+  border-radius: 50%;
+}
+.md-pod--tl:has(.md-pod__item:nth-child(2)) {
+  height: var(--md-pod-size);
+  border-radius: calc(var(--md-pod-size) / 2);
+}
+.md-pod--bl:has(.md-pod__item:nth-child(2)),
+.md-pod--br:has(.md-pod__item:nth-child(2)) {
+  width: var(--md-pod-size);
+  border-radius: calc(var(--md-pod-size) / 2);
+}
+.md-pod:not(.md-pod--static).md-pod--tl {
+  top: calc(var(--md-status-h) + 8px);
+  left: var(--md-safe-l);
+}
+.md-mobile-page:has(.md-appbar) .md-pod--tl:not(.md-pod--static) {
+  display: none;
+}
+.md-pod:not(.md-pod--static).md-pod--bl {
+  bottom: calc(var(--md-safe-b) + var(--md-pod-gap));
+  left: var(--md-safe-l);
+}
+.md-pod:not(.md-pod--static).md-pod--br {
+  bottom: calc(var(--md-safe-b) + var(--md-pod-gap));
+  right: var(--md-safe-r);
+}
+.md-mobile-page:has(.md-tabbar) .md-pod:not(.md-pod--static).md-pod--bl,
+.md-mobile-page:has(.md-tabbar) .md-pod:not(.md-pod--static).md-pod--br,
+.md-mobile-page:has(.md-action-bar) .md-pod:not(.md-pod--static).md-pod--bl,
+.md-mobile-page:has(.md-action-bar) .md-pod:not(.md-pod--static).md-pod--br {
+  bottom: calc(var(--md-pod-dock) + var(--md-safe-b) + var(--md-pod-gap));
+}
+.md-mobile-page:has(.md-tabbar):has(.md-action-bar) .md-pod:not(.md-pod--static).md-pod--bl,
+.md-mobile-page:has(.md-tabbar):has(.md-action-bar) .md-pod:not(.md-pod--static).md-pod--br {
+  bottom: calc(2 * var(--md-pod-dock) + var(--md-safe-b) + var(--md-pod-gap));
+}
+.md-pod__item {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--md-pod-size);
+  height: var(--md-pod-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--md-text);
+  text-decoration: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+.md-pod__item:hover { background: var(--md-hover); }
+.md-pod__item:focus-visible { outline: 0; background: var(--md-selected); }
+.md-pod__item:active { transform: scale(0.96); }
+.md-pod__item:disabled { color: var(--md-text-disabled); pointer-events: none; }
+.md-pod__item .md-icon { width: 22px; height: 22px; }
+.md-pod--tl .md-pod__item + .md-pod__item::before,
+.md-pod--bl .md-pod__item + .md-pod__item::before,
+.md-pod--br .md-pod__item + .md-pod__item::before {
+  content: "";
+  position: absolute;
+  background: var(--md-divider);
+  pointer-events: none;
+}
+.md-pod--tl .md-pod__item + .md-pod__item::before {
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+}
+.md-pod--bl .md-pod__item + .md-pod__item::before,
+.md-pod--br .md-pod__item + .md-pod__item::before {
+  top: 0;
+  left: 10px;
+  right: 10px;
+  height: 1px;
+}
+.md-pod-demo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+/* 桌面：只右下；多功能是独立圆钮竖排，不要合成一颗胶囊。≥4 个收成可展开的一颗。 */
+.md-d1 .md-pod,
+.md-pod--desk {
+  --md-pod-size: 48px;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  width: var(--md-pod-size);
+  height: auto;
+  border-radius: 0;
+}
+.md-d1 .md-pod:not(.md-pod--static),
+.md-pod--desk:not(.md-pod--static) {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  left: auto;
+  top: auto;
+}
+.md-d1 .md-pod--tl:not(.md-pod--static),
+.md-d1 .md-pod--bl:not(.md-pod--static) {
+  display: none;
+}
+.md-d1 .md-pod:not(:has(.md-pod__item:nth-child(2))),
+.md-pod--desk:not(:has(.md-pod__item:nth-child(2))),
+.md-d1 .md-pod--br:has(.md-pod__item:nth-child(2)),
+.md-pod--desk:has(.md-pod__item:nth-child(2)) {
+  width: var(--md-pod-size);
+  height: auto;
+  border-radius: 0;
+}
+.md-d1 .md-pod .md-pod__item,
+.md-pod--desk .md-pod__item {
+  border-radius: 50%;
+  background: var(--md-bg-paper);
+  box-shadow: var(--md-shadow-4);
+}
+.md-d1 .md-pod .md-pod__item + .md-pod__item::before,
+.md-pod--desk .md-pod__item + .md-pod__item::before {
+  content: none;
+}
+.md-d1:has(.md-pod--fold),
+.md-d1--list:has(.md-pod--fold) {
+  overflow: visible;
+}
+.md-pod-demo--fold {
+  min-height: 360px;
+  align-items: flex-end;
+}
+.md-pod--desk.md-pod--fold {
+  --md-pod-gap: 12px;
+  --pod-n: 5;
+  flex-direction: column-reverse;
+  height: var(--md-pod-size);
+  overflow: visible;
+  z-index: 20;
+}
+.md-pod--desk.md-pod--fold > .md-pod__item:nth-last-child(2) { --pod-i: 1; }
+.md-pod--desk.md-pod--fold > .md-pod__item:nth-last-child(3) { --pod-i: 2; }
+.md-pod--desk.md-pod--fold > .md-pod__item:nth-last-child(4) { --pod-i: 3; }
+.md-pod--desk.md-pod--fold > .md-pod__item:nth-last-child(5) { --pod-i: 4; }
+.md-pod--desk.md-pod--fold > .md-pod__item:nth-last-child(6) { --pod-i: 5; }
+.md-pod--desk.md-pod--fold > .md-pod__item:nth-last-child(7) { --pod-i: 6; }
+.md-pod--desk.md-pod--fold > .md-pod__item:nth-last-child(8) { --pod-i: 7; }
+.md-pod--desk.md-pod--fold .md-pod__toggle {
+  position: relative;
+  z-index: 2;
+}
+.md-pod--desk.md-pod--fold .md-pod__item:not(.md-pod__toggle) {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: scale(0.28) translateY(18px);
+  transform-origin: center bottom;
+  animation: none;
+  transition:
+    transform 320ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 240ms linear,
+    bottom 320ms cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0ms linear 320ms;
+  transition-delay:
+    calc((var(--pod-n, 5) - var(--pod-i, 1)) * 40ms),
+    calc((var(--pod-n, 5) - var(--pod-i, 1)) * 40ms),
+    calc((var(--pod-n, 5) - var(--pod-i, 1)) * 40ms),
+    calc(320ms + (var(--pod-n, 5) - var(--pod-i, 1)) * 40ms);
+}
+.md-pod--desk.md-pod--fold.is-open .md-pod__item:not(.md-pod__toggle) {
+  bottom: calc(var(--pod-i, 1) * (var(--md-pod-size) + var(--md-pod-gap)));
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: scale(1) translateY(0);
+  transition:
+    background-color 120ms var(--md-ease),
+    box-shadow 120ms var(--md-ease);
+  animation: md-pod-pop 400ms cubic-bezier(0.2, 1.45, 0.32, 1) both;
+  animation-delay: calc((var(--pod-i, 1) - 1) * 48ms);
+}
+.md-d1 .md-pod .md-pod__item:not(.md-pod__toggle),
+.md-pod--desk .md-pod__item:not(.md-pod__toggle) {
+  transition:
+    background-color 120ms var(--md-ease),
+    box-shadow 120ms var(--md-ease);
+}
+.md-d1 .md-pod .md-pod__item:not(.md-pod__toggle):active,
+.md-pod--desk .md-pod__item:not(.md-pod__toggle):active {
+  transform: translateY(1px);
+  background: var(--md-selected);
+  box-shadow: var(--md-shadow-1);
+}
+.md-pod--desk .md-pod__toggle .md-icon {
+  transition: transform 240ms cubic-bezier(0.2, 1.45, 0.32, 1);
+}
+.md-pod--desk.md-pod--fold.is-open .md-pod__toggle .md-icon {
+  transform: rotate(45deg);
+}
+@keyframes md-pod-pop {
+  0% {
+    opacity: 0;
+    bottom: 0;
+    transform: scale(0.28) translateY(18px);
+  }
+  62% {
+    opacity: 1;
+    bottom: calc(var(--pod-i, 1) * (var(--md-pod-size) + var(--md-pod-gap)) + 10px);
+    transform: scale(1.22);
+  }
+  100% {
+    opacity: 1;
+    bottom: calc(var(--pod-i, 1) * (var(--md-pod-size) + var(--md-pod-gap)));
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-pod--desk.md-pod--fold .md-pod__item:not(.md-pod__toggle),
+  .md-pod--desk.md-pod--fold.is-open .md-pod__item:not(.md-pod__toggle),
+  .md-pod--desk .md-pod__toggle .md-icon {
+    transition: none;
+    animation: none;
+  }
+}
 
 .md-i {
   display: inline-block;
@@ -996,7 +1268,7 @@ textarea.md-field__input:disabled:focus,
 
 .md-tabbar {
   display: flex;
-  min-height: 56px;
+  min-height: var(--md-tabbar-h);
   padding-bottom: env(safe-area-inset-bottom, 0px);
   background: var(--md-bg-paper);
   box-shadow: 0px -1px 0 var(--md-divider);
@@ -1011,8 +1283,8 @@ textarea.md-field__input:disabled:focus,
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 8px 4px;
+  gap: 2px;
+  padding: 6px 4px 4px;
   color: var(--md-text-secondary);
   font-size: 0.75rem;
   text-decoration: none;
@@ -1540,13 +1812,14 @@ body.md-lightbox-open { overflow: hidden; }
 }
 
 .md-mobile-page {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
   min-height: 100vh;
   min-width: 0;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
   background: var(--md-bg-default);
 }
 .md-mobile-body {
@@ -1766,6 +2039,20 @@ body.md-lightbox-open { overflow: hidden; }
 .md-step.is-done:not(:last-child)::after { background: var(--md-primary); }
 .md-step.is-active { color: var(--md-primary); }
 .md-step.is-active::before { background: var(--md-primary); color: #fff; }
+/* 桌面：数字步骤可点，快速跳到该步 */
+.md-d1 .md-step {
+  cursor: pointer;
+  user-select: none;
+}
+.md-d1 .md-step:hover::before {
+  box-shadow: 0 0 0 4px var(--md-hover);
+}
+.md-d1 .md-step:focus-visible {
+  outline: none;
+}
+.md-d1 .md-step:focus-visible::before {
+  box-shadow: 0 0 0 3px var(--md-primary);
+}
 
 .md-timeline {
   list-style: none;
@@ -2003,6 +2290,7 @@ button.md-tree__item {
   border-radius: var(--md-radius);
   overflow: hidden;
 }
+.md-set-group:has(.md-menu) { overflow: visible; }
 .md-set-group + .md-set-group { margin-top: 0; }
 .md-set-group__title {
   padding: 12px 16px 4px;
@@ -2084,6 +2372,75 @@ button.md-set-row:active { background: var(--md-selected); }
   flex-shrink: 0;
   color: var(--md-text-disabled);
 }
+.md-set-block {
+  padding: 10px 16px 14px;
+  border-top: 1px solid var(--md-divider);
+  box-sizing: border-box;
+}
+.md-set-block__label {
+  display: block;
+  margin: 0 0 8px;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: var(--md-text);
+}
+.md-set-block .md-slider__label { display: none; }
+.md-set-picks {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 16px 12px;
+  border-top: 1px solid var(--md-divider);
+  box-sizing: border-box;
+}
+.md-set-pick {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  min-height: 52px;
+  padding: 4px 0 0;
+  margin: 0;
+  cursor: pointer;
+  user-select: none;
+}
+.md-set-pick input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.md-set-pick__label {
+  font-size: 0.875rem;
+  line-height: 1.3;
+  color: var(--md-text);
+  text-align: center;
+}
+.md-set-pick__mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: var(--md-primary);
+  visibility: hidden;
+}
+.md-set-pick__mark .md-icon {
+  width: 20px;
+  height: 20px;
+}
+.md-set-pick:has(input:checked) .md-set-pick__label {
+  color: var(--md-primary);
+  font-weight: 500;
+}
+.md-set-pick:has(input:checked) .md-set-pick__mark {
+  visibility: visible;
+}
 .md-set-pair {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -2128,6 +2485,18 @@ button.md-set-row:active { background: var(--md-selected); }
 .md-d1__form .md-btn-group {
   min-width: 0;
   width: 100%;
+}
+/* 向导用 [data-step] 包当前步时，必须自己吃双列栅格；否则字段贴死（gap 只作用在 form 直接子级） */
+.md-d1__form > [data-step] {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 12px;
+  align-items: start;
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+.md-d1__form > [data-step] .md-body2 {
+  grid-column: 1 / -1;
 }
 .md-d1__form .md-field:has(textarea),
 .md-d1__form .md-btn-group,
@@ -2211,8 +2580,8 @@ button.md-set-row:active { background: var(--md-selected); }
   right: 0;
   z-index: var(--md-z-status);
   height: var(--md-status-h);
-  padding: 5px 28px 0;
-  font-size: 0.875rem;
+  padding: 4px 20px 0;
+  font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--md-text);
@@ -2296,11 +2665,8 @@ button.md-set-row:active { background: var(--md-selected); }
   border-bottom: 1px solid var(--md-divider);
   background: var(--md-bg-paper);
   color: var(--md-text);
-  padding-left: var(--md-safe-l);
-  padding-right: var(--md-safe-r);
-}
-.md-mobile-page.md-mp .md-appbar--mobile:not(.md-appbar--overlay):not(.md-appbar--cover) {
-  padding-right: max(var(--md-safe-r), 96px);
+  padding-left: 4px;
+  padding-right: 4px;
 }
 .md-mobile-page .md-appbar--mobile .md-icon-btn,
 .md-mobile-page .md-appbar--mobile .md-btn {
@@ -2313,27 +2679,105 @@ button.md-set-row:active { background: var(--md-selected); }
 .md-mobile-body {
   width: 100%;
   margin: 0;
-  padding: 12px var(--md-safe-r) calc(24px + var(--md-safe-b)) var(--md-safe-l);
+  padding: 8px var(--md-safe-r) calc(12px + var(--md-safe-b)) var(--md-safe-l);
   background: var(--md-bg-paper);
 }
 
 .md-card--row {
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: stretch;
+  overflow: visible;
 }
 .md-card--row .md-card__media {
+  flex: 0 0 112px;
   width: 112px;
-  min-height: 112px;
+  max-width: 112px;
+  height: auto;
+  min-height: 0;
   aspect-ratio: 1;
   flex-shrink: 0;
 }
 .md-card--row .md-card__body {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: stretch;
   min-width: 0;
+  flex: 1 1 0%;
+  text-align: left;
 }
-/* 触屏列表三形态：①封面叠字 ②双列上图下文 ③左图/左图标/纯文 */
+.md-card--row .md-card__title,
+.md-card--row .md-card__subtitle,
+.md-card--row .md-card__text,
+.md-card--row .md-card__chips,
+.md-card--row .md-card__meta,
+.md-card--row .md-card__photos {
+  text-align: left;
+  align-self: flex-start;
+  width: auto;
+  max-width: 100%;
+}
+.md-card--row .md-card__photo {
+  width: 40px;
+  height: 40px;
+  aspect-ratio: 1;
+  border-radius: 6px;
+}
+.md-card--row .md-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+.md-card--row .md-card__rail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  flex: 0 0 auto;
+  align-self: stretch;
+  min-width: 4.5em;
+  padding: 16px 16px 16px 8px;
+  box-sizing: border-box;
+  text-align: right;
+}
+.md-card--row .md-card__rail:has(> .md-card__actions) {
+  justify-content: space-between;
+}
+.md-card--row .md-card__aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  text-align: right;
+}
+.md-card--row .md-card__aside .md-price {
+  margin: 0;
+  line-height: 1.2;
+}
+.md-card--row .md-card__dist {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: var(--md-text-secondary);
+  white-space: nowrap;
+}
+.md-card--row .md-card__rail .md-card__actions {
+  padding: 0;
+  margin-top: auto;
+  justify-content: flex-end;
+}
+.md-card--row > .md-card__actions,
+.md-card--row .md-card__actions--bar {
+  flex: 1 0 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px 16px;
+  box-sizing: border-box;
+}
+/* 触屏列表：①封面叠字 ②双列 ③a横卡多行 ③b单行走 md-set-row */
 .md-mobile-page .md-card--row {
   align-items: stretch;
   min-height: 112px;
@@ -2342,14 +2786,16 @@ button.md-set-row:active { background: var(--md-selected); }
   background: var(--md-bg-paper);
 }
 .md-mobile-page .md-card--row .md-card__media {
+  flex: 0 0 96px;
   width: 96px;
-  min-height: 96px;
-  height: 96px;
+  max-width: 96px;
+  height: auto;
+  min-height: 0;
   margin: 8px 0 8px 8px;
   border-radius: 10px;
   overflow: hidden;
   flex-shrink: 0;
-  align-self: center;
+  align-self: flex-start;
 }
 .md-mobile-page .md-card--row .md-card__leading {
   display: flex;
@@ -2369,12 +2815,36 @@ button.md-set-row:active { background: var(--md-selected); }
   height: 22px;
 }
 .md-mobile-page .md-card--row .md-card__body {
-  flex: 1;
+  flex: 1 1 0%;
   min-width: 0;
   min-height: 96px;
-  padding: 12px 14px 12px 12px;
-  justify-content: space-between;
-  gap: 8px;
+  padding: 12px 8px 12px 12px;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 6px;
+}
+.md-mobile-page .md-card--row:not(:has(> .md-card__rail)) .md-card__body {
+  padding-right: 14px;
+}
+.md-mobile-page .md-card--row .md-card__rail {
+  padding: 12px 12px 12px 4px;
+}
+.md-mobile-page .md-card--row .md-card__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-start;
+}
+.md-mobile-page .md-card--row .md-card__chips .md-chip {
+  height: 18px;
+  min-height: 18px;
+  padding: 0 6px;
+  font-size: 0.6875rem;
+  border-radius: 4px;
+}
+.md-mobile-page .md-card--row > .md-card__actions,
+.md-mobile-page .md-card--row .md-card__actions--bar {
+  padding: 0 12px 12px;
 }
 .md-mobile-page .md-card--row .md-card__title {
   margin: 0;
@@ -2404,17 +2874,33 @@ button.md-set-row:active { background: var(--md-selected); }
   -webkit-line-clamp: 2;
   overflow: hidden;
 }
-.md-mobile-page .md-card--row .md-card__foot .md-price,
-.md-mobile-page .md-card--row > .md-card__body > .md-price {
-  margin: 0;
-  margin-left: auto;
-  flex-shrink: 0;
+.md-mobile-page .md-card--row .md-card__foot {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 4px;
+}
+.md-mobile-page .md-card--row .md-card__aside .md-price {
   font-size: 1.0625rem;
   font-weight: 600;
-  line-height: 1.2;
 }
 .md-mobile-page .md-card--row .md-card__meta {
   gap: 6px 10px;
+}
+.md-mobile-page .md-card--row .md-card__photos {
+  width: auto;
+  max-width: 100%;
+  gap: 6px;
+}
+.md-mobile-page .md-card--row .md-card__photo {
+  width: 40px;
+  height: 40px;
+  aspect-ratio: 1;
+  border-radius: 6px;
+}
+.md-mobile-page .md-card--row:not(:has(> .md-card__media)):not(:has(> .md-card__leading)) .md-card__body {
+  min-height: 0;
+  padding: 12px 14px;
 }
 .md-mobile-page .md-stack:has(> .md-card--row),
 .md-mobile-page .md-stack:has(> .md-card--cover),
@@ -2446,8 +2932,6 @@ button.md-set-row:active { background: var(--md-selected); }
   align-items: flex-end;
   justify-content: flex-start;
 }
-.md-card--cover.md-card--ratio-2x1 .md-card__media { aspect-ratio: 2 / 1; }
-.md-card--cover.md-card--ratio-1x1 .md-card__media { aspect-ratio: 1; }
 .md-card--cover.md-card--h-sm .md-card__media { aspect-ratio: auto; height: 140px; }
 .md-card--cover.md-card--h-md .md-card__media { aspect-ratio: auto; height: 180px; }
 .md-card--cover.md-card--h-lg .md-card__media { aspect-ratio: auto; height: 220px; }
@@ -2479,7 +2963,7 @@ button.md-set-row:active { background: var(--md-selected); }
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
 }
 
-/* ② 一行两列：上图 1:1 + 标题最多两行 + 可选小标签/图标 + 可选金额 + 可选小字时间 */
+/* ② 一行两列：上图比例视情况（默认 1:1，--ratio-* 换）+ 标题最多两行 + 可选小标签/图标 + 可选金额 + 可选小字时间 */
 .md-card--tile {
   min-width: 0;
 }
@@ -2490,6 +2974,53 @@ button.md-set-row:active { background: var(--md-selected); }
 .md-card--tile .md-card__media {
   width: 100%;
   aspect-ratio: 1;
+}
+/* 叠字/瓷砖：可横可竖，或 --ratio-auto 定宽高度随图；横卡左图只允许 1:1 或竖图（宽高比 < 1） */
+.md-card--cover.md-card--ratio-16x9 .md-card__media,
+.md-card--tile.md-card--ratio-16x9 .md-card__media { aspect-ratio: 16 / 9; }
+.md-card--cover.md-card--ratio-2x1 .md-card__media,
+.md-card--tile.md-card--ratio-2x1 .md-card__media { aspect-ratio: 2 / 1; }
+.md-card--cover.md-card--ratio-4x3 .md-card__media,
+.md-card--tile.md-card--ratio-4x3 .md-card__media { aspect-ratio: 4 / 3; }
+.md-card--cover.md-card--ratio-3x4 .md-card__media,
+.md-card--tile.md-card--ratio-3x4 .md-card__media,
+.md-card--row.md-card--ratio-3x4 .md-card__media { aspect-ratio: 3 / 4; }
+.md-card--cover.md-card--ratio-2x3 .md-card__media,
+.md-card--tile.md-card--ratio-2x3 .md-card__media,
+.md-card--row.md-card--ratio-2x3 .md-card__media { aspect-ratio: 2 / 3; }
+.md-card--row.md-card--ratio-3x4 .md-card__media,
+.md-card--row.md-card--ratio-2x3 .md-card__media {
+  width: 112px;
+  max-width: 112px;
+  flex-basis: 112px;
+}
+.md-mobile-page .md-card--row.md-card--ratio-3x4 .md-card__media,
+.md-mobile-page .md-card--row.md-card--ratio-2x3 .md-card__media {
+  width: 96px;
+  max-width: 96px;
+  flex-basis: 96px;
+}
+.md-card--cover.md-card--ratio-1x1 .md-card__media,
+.md-card--tile.md-card--ratio-1x1 .md-card__media,
+.md-card--row.md-card--ratio-1x1 .md-card__media { aspect-ratio: 1; }
+.md-card--cover.md-card--ratio-auto .md-card__media,
+.md-card--tile.md-card--ratio-auto .md-card__media {
+  aspect-ratio: auto;
+  height: auto;
+}
+.md-card--cover .md-card__media > img,
+.md-card--tile .md-card__media > img,
+.md-card--row .md-card__media > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.md-card--cover.md-card--ratio-auto .md-card__media > img,
+.md-card--tile.md-card--ratio-auto .md-card__media > img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 .md-card--tile .md-card__body {
   padding: 10px 10px 12px;
@@ -2546,7 +3077,7 @@ button.md-set-row:active { background: var(--md-selected); }
   height: 12px;
 }
 
-/* ③ 纯文 / 评论式：无左图；可选底部小图一排 */
+/* 兼容旧页：纯文已并入横卡多行 md-card--row（无左图 + 可选 __photos） */
 .md-card--plain {
   flex-direction: column;
 }
@@ -3027,13 +3558,13 @@ button.md-set-row:active { background: var(--md-selected); }
   width: 100%;
   margin: 0;
   min-height: 0;
-  padding: 12px var(--md-safe-r) calc(24px + var(--md-safe-b)) var(--md-safe-l);
+  padding: 8px var(--md-safe-r) calc(12px + var(--md-safe-b)) var(--md-safe-l);
   background: var(--md-bg-paper);
   box-sizing: border-box;
   pointer-events: auto;
 }
 .md-mobile-page.md-immersive:has(> .md-hero):has(.md-tabbar) > .md-mobile-body > .md-mobile-sheet {
-  padding-bottom: 24px;
+  padding-bottom: 12px;
 }
 .md-mobile-page.md-immersive:has(> .md-hero) > .md-mobile-body > .md-mobile-sheet > * {
   pointer-events: auto;
@@ -3190,15 +3721,15 @@ button.md-set-row:active { background: var(--md-selected); }
   z-index: 7;
   display: flex;
   gap: 8px;
-  padding: 8px 16px calc(8px + env(safe-area-inset-bottom, 0px));
+  padding: 8px 16px calc(4px + env(safe-area-inset-bottom, 0px));
   background: var(--md-bg-paper);
   box-shadow: 0 -1px 0 var(--md-divider);
   flex-shrink: 0;
 }
-.md-mobile-page:has(.md-tabbar) .md-action-bar { bottom: 56px; }
-.md-mobile-page:has(.md-tabbar) .md-snackbar { bottom: 72px; }
+.md-mobile-page:has(.md-tabbar) .md-action-bar { bottom: var(--md-tabbar-h); }
+.md-mobile-page:has(.md-tabbar) .md-snackbar { bottom: calc(var(--md-tabbar-h) + 16px); }
 
-.md-btn, .md-icon-btn, .md-tabbar a, .md-king__item, .md-card, .md-list-item, .md-swiper__dot, .md-set-row {
+.md-btn, .md-icon-btn, .md-pod__item, .md-tabbar a, .md-king__item, .md-card, .md-list-item, .md-swiper__dot, .md-set-row {
   -webkit-tap-highlight-color: rgba(25, 118, 210, 0.16);
 }
 .md-icon-btn:active,
@@ -3210,8 +3741,7 @@ button.md-set-row:active { background: var(--md-selected); }
 .md-card:active { transform: scale(0.99); }
 .md-tabbar a, .md-tabbar a:hover { text-decoration: none; }
 
-/* 圆角 / 曲面屏：左右下 + 四角。状态栏是固定顶演示层，不套安全距。
-   真机用 env()；iframe 原型 env 常为 0，用 --md-safe-edge 兜底。 */
+/* 圆角 / 曲面屏：左右 16。状态栏扁、底栏贴下边框；iframe 上下安全距 0，真机跟 env()。 */
 .md-tabbar {
   padding-left: var(--md-safe-l);
   padding-right: var(--md-safe-r);
@@ -3231,7 +3761,7 @@ button.md-set-row:active { background: var(--md-selected); }
   gap: var(--md-module-gap);
   width: 100%;
   margin: 0;
-  padding: 12px var(--md-safe-r) calc(24px + var(--md-safe-b)) var(--md-safe-l);
+  padding: 8px var(--md-safe-r) calc(12px + var(--md-safe-b)) var(--md-safe-l);
   background: var(--md-bg-paper);
 }
 .md-mobile-page.md-immersive:has(> .md-hero) > .md-mobile-body {
@@ -3241,23 +3771,23 @@ button.md-set-row:active { background: var(--md-selected); }
   background-image: none;
 }
 .md-mobile-page:has(.md-tabbar) .md-mobile-body {
-  padding-bottom: 24px;
+  padding-bottom: 12px;
 }
 .md-mobile-page.md-immersive:has(> .md-hero):has(.md-tabbar) > .md-mobile-body {
   padding-bottom: 0;
 }
 .md-action-bar {
-  padding: 8px var(--md-safe-r) calc(8px + var(--md-safe-b)) var(--md-safe-l);
+  padding: 8px var(--md-safe-r) calc(4px + var(--md-safe-b)) var(--md-safe-l);
 }
 .md-mobile-page:has(.md-tabbar) .md-action-bar {
-  bottom: calc(56px + var(--md-safe-b));
+  bottom: calc(var(--md-tabbar-h) + var(--md-safe-b));
 }
 .md-snackbar {
   bottom: calc(24px + var(--md-safe-b));
   max-width: min(568px, calc(100% - var(--md-safe-l) - var(--md-safe-r) - 32px));
 }
 .md-mobile-page:has(.md-tabbar) .md-snackbar {
-  bottom: calc(72px + var(--md-safe-b));
+  bottom: calc(var(--md-tabbar-h) + 16px + var(--md-safe-b));
 }
 .md-snackbar--toast,
 body:has(.md-mobile-page) .md-snackbar {
@@ -3488,7 +4018,7 @@ body:has(.md-mobile-page) .md-dialog {
   pointer-events: auto;
 }
 
-/* 列表工具条贴顶；展示页叠图返回；列表卡 1:1、详情非列表图 16:9；卡片可点 */
+/* 列表工具条贴顶；展示页叠图返回；列表主图比例视情况；详情非列表图 16:9；卡片可点 */
 a.md-card {
   color: inherit;
   text-decoration: none;
@@ -3674,14 +4204,15 @@ a.md-card {
 .md-comment__photos {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   margin: 8px 0 0;
   padding: 0;
 }
 .md-comment__photo {
-  width: calc((100% - 32px) / 5);
+  width: 40px;
+  height: 40px;
   aspect-ratio: 1;
-  border-radius: 8px;
+  border-radius: 6px;
   flex-shrink: 0;
   box-sizing: border-box;
 }
@@ -3742,7 +4273,7 @@ a.md-card {
 }
 .md-mobile-page .md-action-bar + .md-mobile-body,
 .md-mobile-page .md-mobile-body:has(+ .md-action-bar) {
-  padding-bottom: 16px;
+  padding-bottom: 8px;
 }
 
 button.md-field__input,

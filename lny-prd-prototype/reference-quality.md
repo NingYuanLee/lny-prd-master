@@ -85,14 +85,14 @@ exit 0 才可继续；exit 1 不得交付，按 F.1 整文件重写（coverage �
 |------|--------|----------|
 | G5.1 | 夹具像真 | 无「示例商品 A/B」「测试数据」；名称/价格像业务数据 |
 | G5.2 | 密度 | 默认态列表/卡片/表 **≥4 条**（规格或 API 另有条数从其规定） |
-| G5.3 | 封面 | `md-media-ph--1`～`--6` 轮换，无纯灰块。灯箱 **仅当规格要看大图**：页根有 `data-lightbox`（同页一组、翻页不循环）。有图 ≠ 可点预览 |
-| G5.4 | 移动端 | 状态栏由 `proto-page.js` 固定注入；页根 `md-immersive` 或 `md-standard`；分区 `md-module` + `md-section-head`；列表卡三形态择一（`--cover` / `--tile` / `--row` 或 `--plain`）；详情非列表图默认 **16:9**；评论附图一排最多五张并有时间行；底栏图标 `data-icon`；有 TabBar 则无 `md-appbar`；MP 用 `md-mp`；`viewport-fit=cover` |
-| G5.5 | 桌面端 | 有 `md-breadcrumb`、无页内大标题；表格有 `md-thumb`/`md-chip`；表单字段 `md-field--sm`；操作列定宽，过多操作用「更多」下拉；汇总靠左、分页靠右；D1-1 列有语义宽度类（名称/金额/状态/日期），根节点 `md-d1--list` 紧凑多行 |
-| G5.6 | 金样 | 写前已 Read `gold/` 对应文件并对标视觉下限（密度/类名不得低于金样）；未把金样演示功能（凡图即灯箱、全套表单样例）搬进规格没写的页；HTML 无 `┌│└` 线框残留 |
+| G5.3 | 封面 | `md-media-ph--1`～`--6` 轮换，无纯灰块。灯箱 **默认只给详情页图**（页根 `data-lightbox`，同页一组）**与横卡多行卡内图**（每卡一组）。封面叠字 / 双列 / Banner / 上传图不可预览 |
+| G5.4 | 移动端 | 状态栏由 `proto-page.js` 固定注入；页根 `md-immersive` 或 `md-standard`；分区 `md-module` + `md-section-head`；列表区点名（`--cover` / `--tile` 可横可竖或 `--ratio-auto`；`--row` 左图仅 1:1 或竖图 `--ratio-3x4/2x3`；`md-set-row` 单行）；横卡多行文本靠左，价格/距离走 `__rail` 右上，单按钮轨内右下、多按钮 `--bar` 底栏靠右，过多 `data-menu` 更多；功能区点名（`md-king` / `--pair` / 通栏 / `md-set-pair`）；详情非列表图默认 **16:9**；评论附图约 40px、一排最多五张并有时间行；底栏图标 `data-icon`；有 TabBar 则无 `md-appbar`；MP 用 `md-mp`；`viewport-fit=cover`；规格点名才画触屏悬浮胶囊 `md-pod`（钉在页根；左上横向且与标题栏互斥；左下/右下竖向并避开底栏；单个圆、多个成组细线分，不要右上）。桌面规格点名才画 `md-pod--desk`（只右下、独立圆钮竖排，满 4 个 `md-pod--fold` 错开弹出，功能钮按下有反馈，不要细线胶囊） |
+| G5.5 | 桌面端 | 有 `md-breadcrumb`、无页内大标题；表格有 `md-thumb`/`md-chip`；表单字段 `md-field--sm`；操作列定宽，过多操作用「更多」下拉；汇总靠左、分页靠右；D1-1 列有语义宽度类（名称/金额/状态/日期），根节点 `md-d1--list` 紧凑多行；向导数字步骤可点跳步，不要只留下一步/下一步 |
+| G5.6 | 金样 | 写前已 Read `gold/` 对应文件并对标视觉下限（密度/类名不得低于金样）；未把金样演示功能（凡图即灯箱、全套表单样例）搬进规格没写的页；未给封面叠字 / 双列 / Banner / 上传图加预览；HTML 无 `┌│└` 线框残留 |
 | G5.7 | 不降质 | 重画不得删 Chip / 面包屑 / 横卡 / 图标 / `md-dialog`；不得因「粗糙」档简化 |
 | G5.8 | 舒适默认 | 列表/卡片页含隐藏骨架与插画空态；失败可重试；D1-1 有 `md-d1--list` + 语义 `md-col-*`；评论有时间行和附图槽。§2.3 漏写也要落地，不算发明业务 |
-| G5.9 | 金样脚本 | 本页规格需要的 `data-wheel` / `data-menu` + `md-menu--fixed` / `md-tabs--page` + `data-panel` 换业务时必须保留，禁止只剩静态壳。`data-lightbox` 仅规格要看大图才加 |
-| G5.10 | 夹具外页型 | 工作台/树/设置/功能入口/向导/时间轴/桌面详情用对应金样；功能入口用 `mobile-menu.html` / `desktop-menu.html`（通栏 `md-set-row` 或一行两个 `md-set-pair`，禁止 `md-king--pair`）；禁止拿列表金样硬套，禁止用金刚或按钮堆冒充功能入口 |
+| G5.9 | 金样脚本 | 本页规格需要的 `data-wheel` / `data-menu` + `md-menu--fixed` / `md-tabs--page` + `data-panel` 换业务时必须保留，禁止只剩静态壳。详情页根保留 `data-lightbox`；横卡多行图自动可预览，列表页不要整页加 `data-lightbox` |
+| G5.10 | 易误套页型 | 按页类型打开金样，禁止按 MP/AD 序号对齐。工作台/树/设置/我的/向导/时间轴/桌面详情用对应金样；禁止拿 `desktop-list` / `mobile-list` 整页硬套；禁止一排按钮冒充功能区 |
 | G5.11 | SKILL 标注 | 总入口 `prototypes/index.html` 页底右下有技能包地址小字（见 `reference-scope.md`）；各端 `index.html` 由 `proto-shell.js` 注入，禁止手写或删 |
 | G5.12 | 控件皮肤 | 可点操作用 `md-btn`（含 `--contained` / `--outlined` / `--soft` / `--text` / `--link`）或 `md-icon-btn` / `md-tab` / `md-menu__item` / `md-page-btn` / `md-tree__item`；无 `md-*` 的 `<button>` / `<input type="submit">` 不得交付（浏览器灰钮） |
 

@@ -9,9 +9,9 @@
 写每一页触屏 HTML 时必须做到；做不到则本页未完成：
 
 1. **有层级**：标题 / 副文 / 元信息字重与颜色有差别（用 `__title` `__subtitle` `__text` `__meta`），不要整页一种灰字。  
-2. **有节奏**：列表/表单走 `md-module` 间距；列表卡三形态择一，勿标题贴价格一团。  
+2. **有节奏**：列表/表单走 `md-module` 间距；列表区点名形态，多行字段分行靠左，勿标题贴价格一团。  
 3. **有反馈**：可点有按下态；等待有骨架；空有插画；轻成功 Toast、破坏性确认。  
-4. **有安全距**：左右下+四角；MP 顶栏避让胶囊；搜索仅左图标。  
+4. **有安全距**：正文左右下+四角；标准顶栏左右贴边（不预留 96 胶囊空）；overlay/cover 可点右上才避让胶囊；搜索仅左图标。  
 5. **对金样**：密度与结构不低于对应 `gold/mobile-*.html`。
 
 规格没有的业务字段仍禁止编造；**有字段时必须按层级排版**，不得为「省事」只留标题+价格。
@@ -41,12 +41,14 @@
 | 规范里的组件 | 套件 |
 |--------------|------|
 | Button | `md-btn` `--contained`/`--outlined`/`--soft`/`--text`/`--link`；`--sm`/`--lg` |
-| Input / Cell | `md-field`；列表卡 `--cover` / `--tile` / `--row` / `--plain` |
+| Input / Cell | `md-field`；列表区 `--cover` / `--tile` / `--row`（多行，可小图）/ `md-set-row`（单行） |
 | Checkbox / Radio / Switch | `md-check` `md-radio` `md-switch` |
 | Picker | `data-wheel="date|region|daterange"`；下拉 `md-select` |
 | Dialog / Toast / Loading | `md-dialog`；触屏 Toast；`md-skeleton` |
 | Tag / Avatar / Swipe / Progress | `md-chip`；**`md-card__tag` `--tl/--tr`**（封面角）；`md-card__thumb`；`md-swiper`；`md-progress`/`md-advance`；时间轴 `md-timeline` |
-| TabBar / NavBar / Grid / 页内签 | `md-tabbar`；`md-appbar--*`；`md-king` / `md-king--pair`；触屏页内签 `md-tabs` 按钮组（禁止下划线） |
+| TabBar / NavBar / 页内签 | `md-tabbar`；`md-appbar--*`；触屏页内签 `md-tabs` 按钮组（禁止下划线） |
+| 悬浮胶囊 | `md-pod` 钉在页根、不进滚动层；`--tl` 横向且与标题栏互斥 / `--bl` `--br` 竖向并避开底栏。规格点名才画，不要右上 |
+| 功能区 | `md-king` / `md-king--pair`；通栏 `md-set-row`；一行两个 `md-set-pair`（分组标题可无） |
 
 搜索：`md-search` = 左 `search` 图标 + `md-search__input`，无 caption、无右侧搜索按钮。
 
@@ -57,8 +59,8 @@
 | 设计逻辑宽 | 预览 **375**；`viewport-fit=cover` |
 | 页面骨架 | 状态栏（脚本注入）+ 顶栏/Hero + `md-mobile-body` + Tab/操作条 |
 | 沉浸下沉 | `md-immersive`+`md-hero`：Hero 固定底层；`md-mobile-body` > **`md-mobile-sheet` 白底** 上层滚过盖住 Banner（顶距可点穿） |
-| 弹性列表卡 | 三形态：`--cover` 叠字 / `--tile` 双列 1:1 / `--row` 或 `--plain` |
-| 安全区 | `--md-safe-l/r/b`；标准顶栏与列表工具条同步；MP 胶囊 |
+| 弹性列表卡 | `--cover` / `--tile` 可横可竖或 `--ratio-auto`；`--row` 左图仅 1:1 或竖图 / `md-set-row` 单行 |
+| 安全区 | 正文 `--md-safe-l/r` 左右 16；标准顶栏左右 4（不预留 96 胶囊空）；状态栏 28 贴上边框；底栏 48 贴下边框；overlay/cover 仍避让胶囊 |
 | 栅格 | 双列 `md-grid-2`（配 `--tile`）；金刚 4/5 列 |
 | 树 + 内容 | `md-tree-page` + `md-split`；`md-tree` `__toggle` 展开收起，点节点只换右区 |
 | 时间轴 | `md-timeline`；左竖轨 `__rail`，右图文 `md-card--row` |
@@ -72,7 +74,7 @@
 |------|----------|
 | 按下 | 套件默认 `transform`/`filter` |
 | 半屏/弹窗 | `ProtoPage.openDrawer` / `openDialog`（有过渡） |
-| 点图放大阅览 | 仅当本页规格要看大图：页根 `data-lightbox`；套件注入 `.md-lightbox`；同页一组，翻页到头不循环。有图 ≠ 可点预览 |
+| 点图放大阅览 | 默认只给详情页图（页根 `data-lightbox`，同页一组）与横卡多行卡内图（每卡一组）。封面叠字 / 双列 / Banner / 上传图不可预览 |
 | 轻成功 | `ProtoPage.snackbar`（触屏居中） |
 | 确认 | `ProtoPage.confirm` |
 | 加载/空/失败 | `data-state` + `md-skel-host` / `md-empty` |
@@ -89,5 +91,5 @@
 - [ ] Read 了本页类型金样并对标视觉下限（密度/类名不得低于金样）；规格需要的控件脚本保留；不要搬金样演示功能  
 - [ ] 审美必做 5 条满足  
 - [ ] 搜索/顶栏/安全距符合词典  
-- [ ] 列表卡三形态与规格一致（`--cover` / `--tile` / `--row` 或 `--plain`；字段按规格增减）  
+- [ ] 列表区/功能区与规格一致（列表：`--cover` / `--tile` / `--row` / 单行；功能：金刚/通栏/一行两个）  
 - [ ] 加载/空/失败/按下可感知  

@@ -1,0 +1,102 @@
+<!-- LNY-PRD gold: 悬浮胶囊。钉在页根、不进滚动层。单个圆形；多个成组细线分割。左上横向且与标题栏互斥；左下/右下竖向并避开 TabBar/操作条。不要右上。规格点名才画。 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>PAGE-MP-011 悬浮胶囊</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="assets/mui-kit.css">
+</head>
+<body>
+  <div class="md-mobile-page md-mp md-immersive">
+    <div class="md-hero" data-section="场景图">
+      <div class="md-swiper md-swiper--wide">
+        <div class="md-swiper__track">
+          <div class="md-swiper__slide md-media-ph md-media-ph--5"></div>
+          <div class="md-swiper__slide md-media-ph md-media-ph--2"></div>
+          <div class="md-swiper__slide md-media-ph md-media-ph--4"></div>
+        </div>
+        <div class="md-swiper__dots"></div>
+      </div>
+    </div>
+    <main class="md-mobile-body">
+      <div class="md-mobile-sheet">
+        <section class="md-module" data-section="规则">
+          <div class="md-section-head">
+            <h2 class="md-section-head__title">悬浮胶囊</h2>
+          </div>
+          <p class="md-body2">写在页根下，与底栏同级，不要放进正文滚动层，也不要随页滚动。单个是圆；多个合成一颗胶囊，格与格之间一条细线。左上只横向，且与页内标题栏互斥：有返回顶栏就不要左上胶囊。左下、右下只竖向，并抬到 TabBar 或贴底操作条之上留缝，不要压住底栏。不要放右上。</p>
+          <p class="md-body2">对照样只说明形态，真正的胶囊钉在四个角的安全位，滚正文时位置不变。</p>
+          <div class="md-pod-demo">
+            <nav class="md-pod md-pod--br md-pod--static" aria-label="单个圆形">
+              <button type="button" class="md-pod__item" aria-label="收藏">
+                <span class="md-icon" data-icon="favorite" aria-hidden="true"></span>
+              </button>
+            </nav>
+            <nav class="md-pod md-pod--tl md-pod--static" aria-label="左上横向">
+              <button type="button" class="md-pod__item" aria-label="返回">
+                <span class="md-icon" data-icon="chevron-left" aria-hidden="true"></span>
+              </button>
+              <button type="button" class="md-pod__item" aria-label="分享">
+                <span class="md-icon" data-icon="share" aria-hidden="true"></span>
+              </button>
+            </nav>
+            <nav class="md-pod md-pod--bl md-pod--static" aria-label="左下竖向">
+              <button type="button" class="md-pod__item" aria-label="添加">
+                <span class="md-icon" data-icon="add" aria-hidden="true"></span>
+              </button>
+              <button type="button" class="md-pod__item" aria-label="筛选">
+                <span class="md-icon" data-icon="filter" aria-hidden="true"></span>
+              </button>
+              <button type="button" class="md-pod__item" aria-label="刷新">
+                <span class="md-icon" data-icon="refresh" aria-hidden="true"></span>
+              </button>
+            </nav>
+          </div>
+        </section>
+      </div>
+    </main>
+    <nav class="md-pod md-pod--tl" aria-label="返回与分享">
+      <button type="button" class="md-pod__item" aria-label="返回" onclick="ProtoPage.snackbar('返回')">
+        <span class="md-icon" data-icon="chevron-left" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="md-pod__item" aria-label="分享" onclick="ProtoPage.snackbar('分享')">
+        <span class="md-icon" data-icon="share" aria-hidden="true"></span>
+      </button>
+    </nav>
+    <nav class="md-pod md-pod--bl" aria-label="地图工具">
+      <button type="button" class="md-pod__item" aria-label="添加" onclick="ProtoPage.snackbar('添加')">
+        <span class="md-icon" data-icon="add" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="md-pod__item" aria-label="筛选" onclick="ProtoPage.snackbar('筛选')">
+        <span class="md-icon" data-icon="filter" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="md-pod__item" aria-label="刷新" onclick="ProtoPage.snackbar('刷新')">
+        <span class="md-icon" data-icon="refresh" aria-hidden="true"></span>
+      </button>
+    </nav>
+    <nav class="md-pod md-pod--br" aria-label="收藏">
+      <button type="button" class="md-pod__item" aria-label="收藏" onclick="ProtoPage.snackbar('已收藏')">
+        <span class="md-icon" data-icon="favorite" aria-hidden="true"></span>
+      </button>
+    </nav>
+    <nav class="md-tabbar">
+      <a class="is-active" href="#">
+        <span class="md-icon" data-icon="home" aria-hidden="true"></span>
+        <span>首页</span>
+      </a>
+      <a href="#">
+        <span class="md-icon" data-icon="goods" aria-hidden="true"></span>
+        <span>逛逛</span>
+      </a>
+      <a href="#">
+        <span class="md-icon" data-icon="person" aria-hidden="true"></span>
+        <span>我的</span>
+      </a>
+    </nav>
+  </div>
+  <script src="assets/md-icons.js"></script>
+  <script src="assets/icons-extra.js"></script>
+  <script src="assets/proto-page.js"></script>
+</body>
+</html>

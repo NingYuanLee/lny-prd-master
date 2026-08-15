@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 金样：沉浸式 + 两倍标题栏高度封面顶栏（背景图+返回+标题）+ 分组列表一行一项。写设置/封面顶栏页前必 Read。 -->
+<!-- LNY-PRD gold: 金样：沉浸式 + 两倍标题栏高度封面顶栏；分组一行一项。控件不限于开关：无极调节、横向多选项（勾在下方）、点击下拉。写设置/封面顶栏页前必 Read。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -24,6 +24,49 @@
       </section>
       <section class="md-module">
       <div class="md-set-group">
+        <div class="md-set-group__title">显示</div>
+        <div class="md-set-picks" role="radiogroup" aria-label="字号">
+          <label class="md-set-pick">
+            <input type="radio" name="fontSize" value="标准" checked>
+            <span class="md-set-pick__label">标准</span>
+            <span class="md-set-pick__mark" aria-hidden="true"><span class="md-icon" data-icon="check"></span></span>
+          </label>
+          <label class="md-set-pick">
+            <input type="radio" name="fontSize" value="较大">
+            <span class="md-set-pick__label">较大</span>
+            <span class="md-set-pick__mark" aria-hidden="true"><span class="md-icon" data-icon="check"></span></span>
+          </label>
+          <label class="md-set-pick">
+            <input type="radio" name="fontSize" value="最大">
+            <span class="md-set-pick__label">最大</span>
+            <span class="md-set-pick__mark" aria-hidden="true"><span class="md-icon" data-icon="check"></span></span>
+          </label>
+        </div>
+        <div class="md-set-block">
+          <span class="md-set-block__label">推荐强度</span>
+          <div class="md-slider md-slider--fluid">
+            <div class="md-slider__row">
+              <input type="range" id="recStrength" min="0" max="100" step="1" value="60" data-suffix="%">
+              <span class="md-slider__value">60%</span>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="md-set-row" data-menu="langMenu">
+          <span class="md-set-row__lead"><span class="md-set-row__label">语言</span></span>
+          <span class="md-set-row__trail">
+            <span class="md-set-row__hint" id="langHint">简体中文</span>
+            <span class="md-icon" data-icon="chevron-right" aria-hidden="true"></span>
+          </span>
+        </button>
+        <ul id="langMenu" class="md-menu md-menu--right md-menu--fixed">
+          <li><button type="button" class="md-menu__item" data-lang="简体中文">简体中文</button></li>
+          <li><button type="button" class="md-menu__item" data-lang="繁體中文">繁體中文</button></li>
+          <li><button type="button" class="md-menu__item" data-lang="English">English</button></li>
+        </ul>
+      </div>
+      </section>
+      <section class="md-module">
+      <div class="md-set-group">
         <div class="md-set-group__title">隐私</div>
         <div class="md-set-row"><span>允许推荐相似商品</span><span class="md-switch"><input type="checkbox"><span class="md-switch__track"></span><span class="md-switch__thumb"></span></span></div>
       </div>
@@ -33,5 +76,15 @@
   <script src="assets/md-icons.js"></script>
   <script src="assets/icons-extra.js"></script>
   <script src="assets/proto-page.js"></script>
+  <script>
+    document.querySelectorAll("#langMenu .md-menu__item").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var hint = document.getElementById("langHint");
+        var val = btn.getAttribute("data-lang") || btn.textContent.trim();
+        if (hint) hint.textContent = val;
+        ProtoPage.snackbar("已选择" + val);
+      });
+    });
+  </script>
 </body>
 </html>

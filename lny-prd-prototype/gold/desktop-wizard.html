@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 金样：桌面向导。步骤条 + 进步条 + 当前步表单，最后一步才提交。 -->
+<!-- LNY-PRD gold: 金样：桌面向导。步骤条 + 进步条 + 当前步表单，最后一步才提交。数字步骤可点跳步。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -49,27 +49,5 @@
   <script src="assets/md-icons.js"></script>
   <script src="assets/icons-extra.js"></script>
   <script src="assets/proto-page.js"></script>
-  <script>
-    var step = 0;
-    function paint() {
-      document.querySelectorAll("#wiz [data-step]").forEach(function (el) {
-        el.hidden = Number(el.getAttribute("data-step")) !== step;
-      });
-      document.querySelectorAll(".md-step").forEach(function (el, i) {
-        el.classList.toggle("is-active", i === step);
-      });
-      document.getElementById("btnPrev").disabled = step === 0;
-      document.getElementById("btnNext").textContent = step === 2 ? "提交" : "下一步";
-      ProtoPage.setAdvance("#wizProg", ((step + 1) / 3) * 100, (step + 1) + " / 3");
-    }
-    document.getElementById("btnPrev").addEventListener("click", function () {
-      if (step > 0) { step -= 1; paint(); }
-    });
-    document.getElementById("btnNext").addEventListener("click", function () {
-      if (step < 2) { step += 1; paint(); return; }
-      ProtoPage.snackbar("已提交");
-    });
-    paint();
-  </script>
 </body>
 </html>

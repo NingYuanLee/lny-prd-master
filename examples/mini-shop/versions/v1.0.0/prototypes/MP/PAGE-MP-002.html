@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 金样：标准不透明状态栏 + 搜索行/筛选行/页签按钮组贴顶 + 横卡弹性排版（标题/副标题/摘要截断/元信息）+ 左/右半屏。写列表前必 Read。 -->
+<!-- LNY-PRD gold: 列表区：横卡多行（左图/图标/头像/无 + 文本靠左；价格/距离右上轨；单按钮右下或底栏多按钮靠右，过多收更多；卡内图默认可预览，整页不要 data-lightbox）与横卡单行；页签按钮组；左/右半屏。底角悬浮胶囊（有搜索顶栏故无左上）。功能区通栏见 mobile-menu。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -41,17 +41,21 @@
             <div class="md-card__main">
               <h2 class="md-card__title">有机草莓 250g</h2>
               <p class="md-card__subtitle">当季鲜果 · 冷链直达</p>
+              <div class="md-card__chips"><span class="md-chip md-chip--outlined">冷链</span><span class="md-chip md-chip--outlined">当季</span></div>
             </div>
-            <div class="md-card__foot">
-              <div class="md-card__meta">
-                <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>今天上架</span>
-                <span class="md-card__meta-item"><span class="md-icon" data-icon="view" aria-hidden="true"></span>1.2万</span>
-              </div>
+            <div class="md-card__meta">
+              <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>今天上架</span>
+              <span class="md-card__meta-item"><span class="md-icon" data-icon="view" aria-hidden="true"></span>1.2万</span>
+            </div>
+          </div>
+          <div class="md-card__rail">
+            <div class="md-card__aside">
               <p class="md-price">¥19.90</p>
+              <p class="md-card__dist">1.2km</p>
             </div>
           </div>
         </a>
-        <a class="md-card md-card--row" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
+        <a class="md-card md-card--row md-card--ratio-3x4" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
           <div class="md-card__media md-media-ph md-media-ph--2">
             <span class="md-card__tag md-card__tag--tr md-chip md-chip--error">售罄</span>
           </div>
@@ -60,62 +64,90 @@
               <h2 class="md-card__title">云南小粒咖啡 227g 精选烘焙手冲豆袋装超长标题示例</h2>
               <p class="md-card__text">中度烘焙，花香与坚果尾韵，适合手冲与法压；多行摘要超出两行会截断。</p>
             </div>
-            <div class="md-card__foot">
-              <div class="md-card__meta">
-                <span class="md-card__meta-item"><span class="md-icon" data-icon="favorite" aria-hidden="true"></span>328</span>
-                <span class="md-card__meta-item"><span class="md-icon" data-icon="view" aria-hidden="true"></span>8.6千</span>
-              </div>
+            <div class="md-card__meta">
+              <span class="md-card__meta-item"><span class="md-icon" data-icon="favorite" aria-hidden="true"></span>328</span>
+              <span class="md-card__meta-item"><span class="md-icon" data-icon="view" aria-hidden="true"></span>8.6千</span>
+            </div>
+          </div>
+          <div class="md-card__rail">
+            <div class="md-card__aside">
               <p class="md-price">¥29.90</p>
+              <p class="md-card__dist">3.4km</p>
             </div>
           </div>
         </a>
-        <a class="md-card md-card--row" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
-          <div class="md-card__media md-media-ph md-media-ph--3"></div>
+        <article class="md-card md-card--row" data-comp="COMP-001" data-state="default">
+          <a class="md-card__media md-media-ph md-media-ph--3" href="PAGE-MP-003.html" aria-hidden="true"></a>
           <div class="md-card__body">
             <div class="md-card__main">
-              <h2 class="md-card__title">青柠蜂蜜茶 500ml</h2>
+              <h2 class="md-card__title"><a href="PAGE-MP-003.html">青柠蜂蜜茶 500ml</a></h2>
               <p class="md-card__subtitle">冷饮优选</p>
             </div>
-            <div class="md-card__foot">
+          </div>
+          <div class="md-card__rail">
+            <div class="md-card__aside">
               <p class="md-price">¥12.50</p>
             </div>
+            <div class="md-card__actions">
+              <button type="button" class="md-btn md-btn--soft md-btn--sm" onclick="ProtoPage.snackbar('已加购')">加购</button>
+            </div>
           </div>
-        </a>
-        <a class="md-card md-card--row" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
+        </article>
+        <article class="md-card md-card--row" data-comp="COMP-001" data-state="default">
           <span class="md-card__leading" aria-hidden="true"><span class="md-icon" data-icon="goods"></span></span>
           <div class="md-card__body">
             <div class="md-card__main">
-              <h2 class="md-card__title">全麦吐司 400g</h2>
-              <p class="md-card__text">无大封面时用左侧小图标位；正文区仍走弹性布局。</p>
+              <h2 class="md-card__title"><a href="PAGE-MP-003.html">全麦吐司 400g</a></h2>
+              <p class="md-card__text">左侧图标、文本靠左；价格在右上，多按钮走底栏从右到左。</p>
             </div>
-            <div class="md-card__foot">
-              <div class="md-card__meta">
-                <span class="md-card__meta-item">
-                  <span class="md-card__thumb md-media-ph md-media-ph--4" aria-hidden="true"></span>
-                  迷你烘焙
-                </span>
-                <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>昨天</span>
-              </div>
+            <div class="md-card__photos">
+              <div class="md-card__photo md-media-ph md-media-ph--4"></div>
+              <div class="md-card__photo md-media-ph md-media-ph--5"></div>
+            </div>
+            <div class="md-card__meta">
+              <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>昨天</span>
+            </div>
+          </div>
+          <div class="md-card__rail">
+            <div class="md-card__aside">
               <p class="md-price">¥9.90</p>
             </div>
           </div>
-        </a>
-        <a class="md-card md-card--row" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
-          <div class="md-card__media md-media-ph md-media-ph--5"></div>
+          <div class="md-card__actions md-card__actions--bar">
+            <button type="button" class="md-btn md-btn--text md-btn--sm" onclick="ProtoPage.snackbar('已收藏')">收藏</button>
+            <button type="button" class="md-btn md-btn--soft md-btn--sm" onclick="ProtoPage.snackbar('已加购')">加购</button>
+          </div>
+        </article>
+        <article class="md-card md-card--row" data-comp="COMP-001" data-state="default">
+          <a class="md-card__media md-media-ph md-media-ph--5" href="PAGE-MP-003.html" aria-hidden="true"></a>
           <div class="md-card__body">
             <div class="md-card__main">
-              <h2 class="md-card__title">巴旦木仁 200g</h2>
+              <h2 class="md-card__title"><a href="PAGE-MP-003.html">巴旦木仁 200g</a></h2>
               <p class="md-card__subtitle">罐装便携 · 原味</p>
             </div>
-            <div class="md-card__foot">
-              <div class="md-card__meta">
-                <span class="md-card__meta-item"><span class="md-icon" data-icon="favorite" aria-hidden="true"></span>96</span>
-                <span class="md-card__meta-item"><span class="md-icon" data-icon="star" aria-hidden="true"></span>4.9</span>
-              </div>
-              <p class="md-price">¥36.00</p>
+            <div class="md-card__meta">
+              <span class="md-card__meta-item"><span class="md-icon" data-icon="favorite" aria-hidden="true"></span>96</span>
+              <span class="md-card__meta-item"><span class="md-icon" data-icon="star" aria-hidden="true"></span>4.9</span>
             </div>
           </div>
-        </a>
+          <div class="md-card__rail">
+            <div class="md-card__aside">
+              <p class="md-price">¥36.00</p>
+              <p class="md-card__dist">800m</p>
+            </div>
+          </div>
+          <div class="md-card__actions md-card__actions--bar">
+            <div class="md-select-wrap">
+              <button type="button" class="md-btn md-btn--text md-btn--sm" data-menu="rowMore1">更多</button>
+              <ul id="rowMore1" class="md-menu md-menu--right md-menu--fixed">
+                <li><button type="button" class="md-menu__item" onclick="ProtoPage.snackbar('已分享')">分享</button></li>
+                <li><button type="button" class="md-menu__item" onclick="ProtoPage.snackbar('已隐藏')">不感兴趣</button></li>
+              </ul>
+            </div>
+            <button type="button" class="md-btn md-btn--text md-btn--sm" onclick="ProtoPage.snackbar('已收藏')">收藏</button>
+            <button type="button" class="md-btn md-btn--soft md-btn--sm" onclick="ProtoPage.snackbar('已加购')">加购</button>
+          </div>
+        </article>
         <a class="md-card md-card--row" href="PAGE-MP-003.html" data-comp="COMP-001" data-state="default">
           <span class="md-card__leading md-card__leading--avatar md-media-ph md-media-ph--4" aria-hidden="true"></span>
           <div class="md-card__body">
@@ -123,28 +155,24 @@
               <h2 class="md-card__title">迷你烘焙</h2>
               <p class="md-card__text">左头像右文；全麦吐司今日可自提。</p>
             </div>
-            <div class="md-card__foot">
-              <div class="md-card__meta">
-                <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>昨天</span>
-              </div>
+            <div class="md-card__meta">
+              <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>昨天</span>
             </div>
           </div>
         </a>
-        <article class="md-card md-card--plain" data-comp="COMP-001" data-state="default">
+        <article class="md-card md-card--row" data-comp="COMP-001" data-state="default">
           <div class="md-card__body">
             <div class="md-card__main">
               <h2 class="md-card__title">阿宁</h2>
-              <p class="md-card__text">果很新鲜，到货包装也完整，冷藏一夜还是脆的。</p>
+              <p class="md-card__text">无左图也是横卡多行：字段分行靠左，下面一排小图。</p>
             </div>
             <div class="md-card__photos">
               <div class="md-card__photo md-media-ph md-media-ph--1"></div>
               <div class="md-card__photo md-media-ph md-media-ph--2"></div>
               <div class="md-card__photo md-media-ph md-media-ph--3"></div>
             </div>
-            <div class="md-card__foot">
-              <div class="md-card__meta">
-                <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>2026-08-10</span>
-              </div>
+            <div class="md-card__meta">
+              <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>2026-08-10</span>
             </div>
           </div>
         </article>
@@ -159,6 +187,40 @@
         <p class="md-empty__text">暂无商品</p>
       </div>
       </div>
+      <section class="md-module" data-section="列表区单行">
+        <div class="md-section-head">
+          <h2 class="md-section-head__title">今日上架</h2>
+        </div>
+        <div class="md-set-group">
+          <a class="md-set-row" href="PAGE-MP-003.html">
+            <span class="md-set-row__lead">
+              <span class="md-icon" data-icon="goods" aria-hidden="true"></span>
+              <span class="md-set-row__label">有机草莓 250g</span>
+            </span>
+            <span class="md-set-row__trail">
+              <span class="md-set-row__hint">¥19.90</span>
+            </span>
+          </a>
+          <a class="md-set-row" href="PAGE-MP-003.html">
+            <span class="md-set-row__lead">
+              <span class="md-icon" data-icon="goods" aria-hidden="true"></span>
+              <span class="md-set-row__label">云南小粒咖啡</span>
+            </span>
+            <span class="md-set-row__trail">
+              <span class="md-chip md-chip--error">售罄</span>
+            </span>
+          </a>
+          <a class="md-set-row" href="PAGE-MP-003.html">
+            <span class="md-set-row__lead">
+              <span class="md-icon" data-icon="goods" aria-hidden="true"></span>
+              <span class="md-set-row__label">青柠蜂蜜茶 500ml</span>
+            </span>
+            <span class="md-set-row__trail">
+              <span class="md-set-row__hint">有货</span>
+            </span>
+          </a>
+        </div>
+      </section>
       </div>
       <div id="listIn" class="md-tab-panel">
         <div class="md-module md-stack">
@@ -171,7 +233,9 @@
                 <h2 class="md-card__title">有机草莓 250g</h2>
                 <p class="md-card__subtitle">当季鲜果 · 冷链直达</p>
               </div>
-              <div class="md-card__foot">
+            </div>
+            <div class="md-card__rail">
+              <div class="md-card__aside">
                 <p class="md-price">¥19.90</p>
               </div>
             </div>
@@ -183,7 +247,9 @@
                 <h2 class="md-card__title">青柠蜂蜜茶 500ml</h2>
                 <p class="md-card__subtitle">冷饮优选</p>
               </div>
-              <div class="md-card__foot">
+            </div>
+            <div class="md-card__rail">
+              <div class="md-card__aside">
                 <p class="md-price">¥12.50</p>
               </div>
             </div>
@@ -201,7 +267,9 @@
                 <h2 class="md-card__title">云南小粒咖啡 227g</h2>
                 <p class="md-card__text">中度烘焙，花香与坚果尾韵。</p>
               </div>
-              <div class="md-card__foot">
+            </div>
+            <div class="md-card__rail">
+              <div class="md-card__aside">
                 <p class="md-price">¥29.90</p>
               </div>
             </div>
@@ -210,6 +278,19 @@
       </div>
       </div>
     </main>
+    <nav class="md-pod md-pod--bl" aria-label="列表工具">
+      <button type="button" class="md-pod__item" aria-label="添加" onclick="ProtoPage.snackbar('添加')">
+        <span class="md-icon" data-icon="add" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="md-pod__item" aria-label="刷新" onclick="ProtoPage.snackbar('已刷新')">
+        <span class="md-icon" data-icon="refresh" aria-hidden="true"></span>
+      </button>
+    </nav>
+    <nav class="md-pod md-pod--br" aria-label="客服">
+      <button type="button" class="md-pod__item" aria-label="客服" onclick="ProtoPage.snackbar('已接通客服')">
+        <span class="md-icon" data-icon="mail" aria-hidden="true"></span>
+      </button>
+    </nav>
     <nav class="md-tabbar">
       <a href="PAGE-MP-001.html">
         <span class="md-icon" data-icon="home" aria-hidden="true"></span>

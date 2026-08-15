@@ -4,9 +4,11 @@
 
 `pages_prd` 的 ASCII 线框只定**分区顺序**。金样定**控件密度与套件类名**。视觉冲突以金样为准；**功能**以本页 `pages_prd` / `ui` §2.3 / feature 为准。
 
+**按页类型打开金样，不要按 PAGE 序号左右对齐**：`PAGE-MP-003` 是详情（`mobile-detail`），`PAGE-AD-003` 是向导（`desktop-wizard`）。完整编号对照见 `lny-prd-ui` / `lny-prd-page` / `lny-prd-prototype` 的「三步对照」。
+
 禁止两个极端：
 
-1. **照搬**：金样有图就做成可点预览；套件样例铺了全控件就把整页搬进业务表单。点图灯箱等 **规格写了才用**（页根加 `data-lightbox`）。有图 ≠ 要预览。
+1. **照搬**：套件样例铺了全控件就把整页搬进业务表单。点图预览 **只默认给详情页图片和横卡多行卡内图**；不要给封面叠字 / 双列 / Banner / 表单上传加灯箱。
 2. **忽略**：按 ASCII 空盒子、不 Read 对应金样、密度低于金样。未 Read = 本页未完成。
 
 金样 HTML 写 `assets/mui-kit.css`（以及 `md-icons.js` / `icons-extra.js` / `proto-page.js`）是**故意**的：复制到 `prototypes/{终端}/` 后与 `copy-kit.py` 写入的 `assets/` 对齐。禁止改成 `../kit/`，否则业务页会丢样式。本目录 `gold/assets/` 只供直接打开金样预览；改过 `kit/` 后执行：
@@ -18,26 +20,28 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 本页类型 | 必读 |
 |----------|------|
 | 移动宫格 / 推荐 / 双列卡片 | `mobile-grid.html`（**沉浸式**；`md-hero` 钉底层；`md-mobile-sheet`；`md-module`；**封面叠字** `md-card--cover` + **双列瓷砖** `md-card--tile`；金刚 5 列或 `md-king--pair`） |
-| 移动列表 / 动态流 / 横卡 | `mobile-list.html`（**标准** + 搜索/筛选/页签按钮组贴顶；**横卡** `md-card--row` / 头像 / **纯文** `--plain`+`__photos`；左/右半屏；`data-wheel="daterange"`） |
-| 移动展示 / 详情 | `mobile-detail.html`（**沉浸式**；16:9 `md-hero` 钉底层 + 返回叠层；`md-mobile-sheet` 白底正文上层滚过；评论 + 贴底次要操作。夹具演示可加 `data-lightbox`；业务页仅当规格要看大图才加） |
+| 移动列表 / 动态流 / 横卡 | `mobile-list.html`（**标准** + 搜索/筛选/页签按钮组贴顶；**列表区**横卡多行 `md-card--row`（左图/图标/头像/无 + 文本靠左 + `__rail` 价格/距离右上 + 单按钮右下或 `--bar` 底栏；竖图定宽只加高；**卡内图默认可预览**）+ 横卡单行 `md-set-row`；底角悬浮胶囊；左/右半屏；`data-wheel="daterange"`） |
+| 移动展示 / 详情 | `mobile-detail.html`（**沉浸式**；16:9 `md-hero` 钉底层 + 返回叠层；`md-mobile-sheet` 白底正文上层滚过；评论附图约 40px + 贴底次要操作。**本页图片默认可预览**，页根 `data-lightbox`） |
 | 移动表单 | `mobile-form.html`（夹具 `PAGE-MP-004.html`；**套件样例**，一页铺齐触屏表单控件：文本/选择/滑动条/单日/日期段/省市区/三类上传 + 贴底提交；进度条见步骤向导） |
 | 桌面表格 / 筛选列表 / 弹窗维护 | `desktop-list.html`（内容区顶面包屑无大标题；页内签在筛选上方整区切换；分页与表横条贴底；勾选左冻 / 操作右冻定宽「更多」下拉；汇总左分页右；**列宽按字段语义**；**紧凑密度一屏多行**；隐藏骨架+插画空态；筛选用 `md-field--daterange`） |
 | 桌面整页表单 | `desktop-form.html`（夹具 `PAGE-AD-009.html`；**套件样例**，一页铺齐桌面表单控件：文本/选择/滑动条/单日/时间/日期段/省市区/三类上传。业务商品表单 `PAGE-AD-002` 按规格裁字段；进度条见步骤向导） |
-| 桌面展示 / 详情 | `desktop-detail.html`（夹具 `PAGE-AD-008.html`；面包屑；16:9 `md-swiper--wide`；图文介绍；`md-comment` 时间行 + 附图。灯箱仅当规格要看大图。禁止沉浸式叠层，禁止拿列表卡 1:1） |
+| 桌面展示 / 详情 | `desktop-detail.html`（夹具 `PAGE-AD-008.html`；面包屑；16:9 `md-swiper--wide`；图文介绍；`md-comment` 时间行 + 附图。**本页图片默认可预览**。禁止沉浸式叠层，禁止拿列表卡 1:1） |
 | 工作台 / 仪表盘 | `desktop-dashboard.html`（夹具 `PAGE-AD-004.html`；`md-stat-grid` 指标卡 + `md-chart-ph` + 短表。禁止拿 `desktop-list` 硬套） |
 | 树 + 内容 / 分栏 | `desktop-split.html`（夹具 `PAGE-AD-005.html`；`md-d1--split` 左树右内容；箭头展开收起，点树只换右区） |
-| 桌面设置 | `desktop-settings.html`（夹具 `PAGE-AD-006.html`；分组 `md-set-group`，一行一项开关） |
-| 桌面功能入口 | `desktop-menu.html`（夹具 `PAGE-AD-010.html`；面包屑；通栏 `md-set-row` 或一行两个 `md-set-pair`。禁止套商品表） |
-| 桌面向导 | `desktop-wizard.html`（夹具 `PAGE-AD-003.html`；`md-stepper` + 分段 `md-advance`，最后一步才提交） |
-| 移动设置 / 偏好 | `mobile-settings.html`（夹具 `PAGE-MP-006.html`；**沉浸式**；`md-appbar--cover` 两倍标题栏高度背景图+标题；分组列表一行一项开关） |
-| 移动功能入口 / 我的 / 服务 | `mobile-menu.html`（夹具 `PAGE-MP-010.html`；标准顶栏；通栏 `md-set-row` 或一行两个 `md-set-pair`。禁止金刚、禁止按钮堆、禁止商品横卡） |
+| 桌面设置 | `desktop-settings.html`（夹具 `PAGE-AD-006.html`；分组 `md-set-group`；开关 / 无极调节 / 横向多选项勾在下方 / 点击下拉） |
+| 桌面我的 / 服务 | `desktop-menu.html`（夹具 `PAGE-AD-010.html`；面包屑；**功能区**通栏或一行两个，分组标题可无。禁止套商品表） |
+| 桌面向导 | `desktop-wizard.html`（夹具 `PAGE-AD-003.html`；`md-stepper` + 分段 `md-advance`；数字步骤可点跳步；当前步 `[data-step]` 吃表单双列间距，最后一步才提交） |
+| 移动设置 / 偏好 | `mobile-settings.html`（夹具 `PAGE-MP-006.html`；**沉浸式**；`md-appbar--cover` 两倍标题栏高度背景图+标题；分组一行一项：开关 / 无极调节 / 横向多选项勾在下方 / 点击下拉） |
+| 移动我的 / 服务 | `mobile-menu.html`（夹具 `PAGE-MP-010.html`；标准顶栏；**功能区**通栏或一行两个，分组标题可无。金刚见首页。禁止按钮堆） |
 | 移动步骤向导 | `mobile-wizard.html`（夹具 `PAGE-MP-005.html`；横向 `md-stepper` + 分段 `md-advance--lg` + 无极 `md-progress` + 当前步表单，贴底上一步/下一步） |
 | 移动时间轴 | `mobile-timeline.html`（夹具 `PAGE-MP-009.html`；`md-timeline` 左竖轨右图文） |
 | 桌面时间轴 | `desktop-timeline.html`（夹具 `PAGE-AD-007.html`；面包屑 + `md-timeline` 左竖轨右图文） |
 | 移动按钮样例 | `mobile-buttons.html`（夹具 `PAGE-MP-007.html`；小/中/大三档：线框、色块、浅底 `--soft`、线框/色块/浅底置灰、带角标；页签按钮组） |
+| 触屏悬浮胶囊 | `mobile-pod.html`（钉在页根、不进滚动层；左上横向且与标题栏互斥；左下/右下竖向并避开 TabBar/操作条；单个圆形、多个成组细线分割。规格点名才画，不要右上） |
+| 桌面悬浮按钮 | `desktop-pod.html`（夹具 `PAGE-AD-011.html`；只右下、钉视口；单个圆形；多个独立圆钮竖排；满 4 个收成可展开的一颗，展开收起错开弹出；功能钮按下有反馈。不要左上/左下/右上，不要细线胶囊） |
 | 移动树 + 内容 | `mobile-tree.html`（夹具 `PAGE-MP-008.html`；`md-tree-page` 左树右内容；箭头展开收起，点节点只换右区） |
-| 其它桌面页 | 先按上表选最接近的金样；对不上再读 `desktop-list.html` 只借控件，禁止整页套成商品表 |
-| 其它移动页 | 先读 `mobile-list.html`；宫格叠加 `mobile-grid.html`；展示/表单/设置/功能入口/步骤向导/时间轴/树用上表对应金样 |
+| 其它桌面页 | 先按上表选最接近的金样；对不上再读 `desktop-list.html` **只借控件**，禁止整页套成商品表 |
+| 其它移动页 | 先按上表选最接近的金样（设置/我的/向导/时间轴/树/详情各有专页）；对不上再读 `mobile-list.html` **只借列表卡**，禁止整页套成商品列表 |
 
 触屏顶栏四种（⑥ 按规格点名复制对应金样）：
 
@@ -46,7 +50,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 3. **标准高度 + 返回和标题**：`mobile-form.html` / `mobile-wizard.html` / `mobile-tree.html` / `mobile-timeline.html`（`md-appbar--mobile`）
 4. **两倍标准高度 + 背景 + 标题**：`mobile-settings.html`（`md-appbar--cover`）
 
-对标时抄**视觉骨架**（类名、密度、本页规格需要的控件脚本：轮盘 `data-wheel`、更多 `data-menu`、页内签 `data-panel`）。禁止把金样演示交互整页搬来；禁止删掉本页规格需要的套件行为。§2.3 漏写时仍须落地舒适默认（骨架、空态插图、失败可重试、按下态、浮层过渡、语义列宽）。灯箱不算舒适默认。
+对标时抄**视觉骨架**（类名、密度、本页规格需要的控件脚本：轮盘 `data-wheel`、更多 `data-menu`、页内签 `data-panel`）。禁止把金样演示交互整页搬来；禁止删掉本页规格需要的套件行为。§2.3 漏写时仍须落地舒适默认（骨架、空态插图、失败可重试、按下态、浮层过渡、语义列宽）。点图预览只默认给详情页与横卡多行。
 
 禁止：
 
@@ -54,4 +58,4 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 - 因 `ui/PAGE`「视觉细节=粗糙」而少画控件
 - 重画已有页时删掉 Chip、面包屑、横卡、图标、弹窗套件、金样脚本
 - 从零手写一套比金样更瘦的布局
-- 用 `desktop-list.html` 硬套工作台 / 树 / 设置 / 功能入口 / 向导 / 详情；用 `mobile-list.html` 硬套触屏树；用金刚或一排按钮冒充功能入口
+- 用 `desktop-list.html` 硬套工作台 / 树 / 设置 / 我的服务 / 向导 / 详情；用 `mobile-list.html` 硬套触屏树；用金刚或一排按钮冒充列表卡单行

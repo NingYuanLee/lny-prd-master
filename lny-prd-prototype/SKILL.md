@@ -32,22 +32,39 @@ disable-model-invocation: true
 - 规格对照校验：`scripts/verify-prototype-coverage.py`
 - 框架排除：`lny-prd-master/framework-exclusions.md`
 
+## 三步对照（防错用）
+
+同一套页型，②⑤⑥ 各看一层，**禁止串用、禁止按编号左右对齐**。
+
+| 步 | 看 | 用来 | 禁止 |
+|----|----|------|------|
+| ② | `ui/PAGE` §2.3 + 夹具页型 | 体验与结构 | 规格里堆 `md-*` |
+| ⑤ | `pages_prd` ASCII | 分区上下 | ⑥ 按线框画空盒子 |
+| ⑥ 本步 | 下方金样全文 | 密度/类名下限 | 整页搬样例；按号猜金样（MP-003≠AD-003） |
+
+**编号不对齐**（先对页型再打开金样）：详情 MP-003→`mobile-detail` / AD-008→`desktop-detail`；向导 MP-005 / AD-003；树 MP-008 / AD-005；时间轴 MP-009 / AD-007；表单铺齐 MP-004 / AD-009；业务表单 AD-002 只借 `desktop-form` 控件并按规格裁。设置碰巧都是 006，我的碰巧都是 010。
+
+**套件样例 ≠ 业务必有页**：MP-004 / MP-007 / MP-011 / AD-009 / AD-011 只在本页规格写了「铺齐/演示」时整页用。业务表单按规格裁字段。触屏胶囊对标 `mobile-pod.html`，桌面悬浮按钮对标 `desktop-pod.html`，不要每个项目都做样例页。
+
+**列表页**用 `md-list-toolbar`（搜索+筛选），不要套返回标题栏 `md-appbar`。
+
 ## 夹具速查（写 HTML 前扫一眼）
 
-夹具 `examples/mini-shop/` → 金样 + 套件类。金样用来**快速对标视觉下限**（密度、比例、类名），不是业务功能清单。按页类型对照金样落地视觉，再按本页规格换文案/跳转/控件。夹具还须落地舒适默认与 [`reference-mobile-design.md`](reference-mobile-design.md) **审美必做**。类名细则 [`reference-kit.md`](reference-kit.md)。
+夹具 `examples/mini-shop/` → 金样 + 套件类。金样用来**快速对标视觉下限**（密度、比例、类名），不是业务功能清单。按**页类型**对照金样，不要按 PAGE 序号左右对齐。再按本页规格换文案/跳转/控件。夹具还须落地舒适默认与 [`reference-mobile-design.md`](reference-mobile-design.md) **审美必做**。类名细则 [`reference-kit.md`](reference-kit.md)。
 
 **移动端**
 
 | 夹具页 | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
 | PAGE-MP-001 首页 | `gold/mobile-grid.html` | `md-immersive` `md-hero`；`md-module`；`md-card--cover` 精选 + `md-card--tile` 双列推荐；`md-king` 5 列 + `--pair`；有 TabBar 则无 `md-appbar` |
-| PAGE-MP-002 列表 | `gold/mobile-list.html` | `md-standard`；搜索+筛选贴顶；**页签 `md-tabs` 按钮组**（浅底/选中色块，禁止下划线签）；`md-card--row` 左图/左图标/头像 + `md-card--plain` 纯文附图；筛选半屏 `data-wheel="daterange"` |
-| PAGE-MP-003 详情 | `gold/mobile-detail.html` | `md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 一排最多五张。点图灯箱 **仅当本页规格要看大图**（页根 `data-lightbox`），有图 ≠ 可点预览 |
-| PAGE-MP-004 表单 | `gold/mobile-form.html` | 返回顶栏；**全部触屏表单控件**：文本/数字/电话/多行/只读、单选多选标签、开关、少选项中间弹窗、多选项底半屏、五步/无极滑动条、`data-wheel` 单日/日期段/省市区、单图更换/多图可删/文件上传；`md-action-bar` 贴底。进度条不在本页，见步骤向导 |
+| PAGE-MP-002 列表 | `gold/mobile-list.html` | `md-standard`；搜索+筛选贴顶；页签按钮组；**列表区**横卡多行 `md-card--row`（文本靠左，`__rail` 价格/距离右上，单按钮右下或 `--bar` 底栏；**卡内图默认可预览**；竖图定宽只加高）+ 横卡单行 `md-set-row`；底角 `md-pod`（有顶栏故无左上）；筛选半屏 `data-wheel="daterange"` |
+| PAGE-MP-003 详情 | `gold/mobile-detail.html` | `md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 约 40px、一排最多五张。**本页图片默认可点预览**（页根 `data-lightbox`） |
+| PAGE-MP-004 表单（套件样例） | `gold/mobile-form.html` | **样例才整页铺齐**。返回顶栏；全部触屏表单控件；`md-action-bar` 贴底。业务表单按规格裁字段。进度条见步骤向导 |
 | PAGE-MP-005 步骤向导 | `gold/mobile-wizard.html` | 横向 `md-stepper`；分段 `md-advance md-advance--lg`；无极 `md-progress md-progress--lg`；当前步表单；`md-action-bar` 贴底，最后一步才提交 |
-| PAGE-MP-006 设置 | `gold/mobile-settings.html` | 沉浸式；`md-appbar--cover` 两倍高度封面顶栏；分组 `md-set-group`；一行一项开关 |
-| PAGE-MP-010 功能入口 | `gold/mobile-menu.html` | 标准顶栏；分组 `md-set-group`。**通栏** `md-set-row`：左图标+名称，右短说明（可无）+箭头。**一行两个** `md-set-pair` 包两格。禁止金刚宫格、禁止一排 `md-btn`、禁止商品横卡 |
-| PAGE-MP-007 按钮 | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、**浅底 `--soft`**、文字、**`--link` 纯文字**、置灰、`md-badge`；页签按钮组。禁止裸 `<button>` 带浏览器皮肤 |
+| PAGE-MP-006 设置 | `gold/mobile-settings.html` | 沉浸式；`md-appbar--cover` 两倍高度封面顶栏；分组 `md-set-group`；开关 / `md-slider--fluid` / `md-set-picks`（勾在下方） / `data-menu` 下拉 |
+| PAGE-MP-010 我的/服务 | `gold/mobile-menu.html` | 标准顶栏；**功能区**通栏 `md-set-row` 或 `md-set-pair`（分组标题可无）。金刚见首页。禁止一排 `md-btn` |
+| PAGE-MP-007 按钮（套件样例） | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、**浅底 `--soft`**、文字、**`--link`**、置灰、`md-badge`。禁止当业务首页。禁止裸 `<button>` |
+| PAGE-MP-011 悬浮胶囊（套件样例） | `gold/mobile-pod.html` | 规格点名才画到**业务页**，不要每个项目都做本页。`md-pod` + `--tl` / `--bl` / `--br`；写在页根。不要右上，不要用 `md-fab` 冒充成组 |
 | PAGE-MP-008 分类 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左树右内容；`md-tree` `__toggle` 展开收起；点节点只换右区 |
 | PAGE-MP-009 时间轴 | `gold/mobile-timeline.html` | `md-timeline` 左 `__rail` 竖轨，右 `md-card--row` 图文；`is-done` / `is-active`；点节点切高亮 |
 
@@ -57,14 +74,15 @@ disable-model-invocation: true
 |--------|------|----------------|
 | PAGE-AD-001 列表 | `gold/desktop-list.html` | `md-d1 md-d1--list`（**紧凑密度**）；`md-breadcrumb` 无 `md-page-head`；签 `md-tabs--page` 在筛上整区切换；列类 `md-col-check` `md-col-name` `md-col-price` `md-col-status` `md-col-date` `md-col-actions`（**按字段语义，禁止均分**）；筛选用 `md-field--daterange`；「更多」`md-menu--fixed`；`md-d1__stats` 左 / `md-d1__pager` 右 |
 | PAGE-AD-002 商品表单 | `gold/desktop-form.html` | `md-breadcrumb`；`md-field--sm`。**按规格裁字段**，不要把套件样例整页搬来；进度条不在本页，见步骤向导 |
-| PAGE-AD-009 表单 | `gold/desktop-form.html` | **全部桌面表单控件**：文本/数字/电话/多行/只读、单选多选、开关、少/多选项下拉、五步/无极滑动条、`md-field--date` / `--time` / `--daterange`、省市区三级下拉、单图更换/多图可删/文件上传。**不要**加 `md-d1--list`，不要触屏 `data-wheel` |
-| PAGE-AD-008 详情 | `gold/desktop-detail.html` | `md-breadcrumb`；`md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 一排最多五张。点图灯箱 **仅当规格要看大图**。不要 `md-d1--list`、不要沉浸式叠层 |
-| PAGE-AD-003 向导 | `gold/desktop-wizard.html` | `md-stepper` + 分段 `md-advance`；最后一步才提交 |
+| PAGE-AD-009 表单（套件样例） | `gold/desktop-form.html` | **样例才整页铺齐**。全部桌面表单控件。业务页用 AD-002 按规格裁。**不要**加 `md-d1--list`，不要触屏 `data-wheel` |
+| PAGE-AD-008 详情 | `gold/desktop-detail.html` | `md-breadcrumb`；`md-swiper--wide` 主图 16:9；图文介绍；`md-comment` 时间行 + `__photos` 约 40px、一排最多五张。**本页图片默认可点预览**。不要 `md-d1--list`、不要沉浸式叠层 |
+| PAGE-AD-003 向导 | `gold/desktop-wizard.html` | `md-stepper` + 分段 `md-advance`；当前步 `[data-step]` 包在 `md-d1__form` 内（套件会给步进容器双列间距，禁止裸堆字段贴死）；**数字步骤可点跳步**；最后一步才提交 |
 | PAGE-AD-004 工作台 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
 | PAGE-AD-005 分类 | `gold/desktop-split.html` | `md-d1--split` 左树右内容；`md-tree` `__toggle` 展开收起；点树只换右区 |
-| PAGE-AD-006 设置 | `gold/desktop-settings.html` | 分组 `md-set-group`；一行一项开关 |
-| PAGE-AD-010 功能入口 | `gold/desktop-menu.html` | `md-breadcrumb`；通栏 `md-set-row` 或一行两个 `md-set-pair`。不要 `md-d1--list`、不要一排按钮 |
+| PAGE-AD-006 设置 | `gold/desktop-settings.html` | 分组 `md-set-group`；开关 / `md-slider--fluid` / `md-set-picks`（勾在下方） / `data-menu` 下拉 |
+| PAGE-AD-010 我的/服务 | `gold/desktop-menu.html` | `md-breadcrumb`；**功能区**通栏 `md-set-row` 或 `md-set-pair`（分组标题可无）。不要 `md-d1--list`、不要一排按钮 |
 | PAGE-AD-007 时间轴 | `gold/desktop-timeline.html` | `md-breadcrumb`；`md-timeline` 左竖轨右图文；点节点切高亮 |
+| PAGE-AD-011 悬浮按钮（套件样例） | `gold/desktop-pod.html` | 规格点名才画到**业务页**。`md-pod md-pod--desk` 只右下、`position:fixed`。单个圆形；多个独立圆钮竖排（不要细线胶囊）。满 4 个写 `md-pod--fold` + `__toggle`（脚本也会补），点「+」错开弹出、再点收起。功能钮按下下沉/加深，不要缩放回弹。不要 `--tl/--bl`，不要 `md-fab` |
 | 关系图 | `prototypes/{端}/map.html` | `ProtoMap.boot`；预览区 **375×812**；连线端口错开 + 线中 `label`；底部色线图例；拖动写入 localStorage；「导出图片」 |
 
 ## 开笔前
@@ -92,10 +110,10 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 
 禁止两个极端：
 
-1. **照搬功能**：金样里有图片就把每张图做成可点预览；金样表单铺了全套控件就把样例整页搬进业务页。点图灯箱、一页铺齐控件等 **只在本页 `pages_prd` / `ui` §2.3 / feature 写了才用**。有图 ≠ 要灯箱；页根加 `data-lightbox` 才启用。
+1. **照搬功能**：金样表单铺了全套控件就把样例整页搬进业务页。点图预览 **只默认给详情页图片和横卡多行卡内图**；不要给封面叠字 / 双列 / Banner / 表单上传加灯箱。一页铺齐控件只在本页规格写了才用。
 2. **忽略金样**：按 ASCII 画空盒子、比金样更瘦、不 Read 对应金样。未 Read 金样 = 本页未完成。
 
-该对标的：分区疏密、卡片形态与 16:9 / 1:1、Chip / 面包屑 / 横卡、`md-*` 类名、本页规格需要的控件行为（轮盘 / 下拉 / 签）。
+该对标的：分区疏密、卡片形态与图文比例（叠字/瓷砖可横可竖或定宽随图；横卡左图 1:1 或竖图；详情非列表图 16:9）、Chip / 面包屑 / 横卡、`md-*` 类名、本页规格需要的控件行为（轮盘 / 下拉 / 签）。
 不该搬的：夹具商品名与跳转、套件样例才有的演示交互。
 
 真实项目没有样例店可看时，模型会按 ASCII 线框画出空盒子。用 `gold/` 钉死视觉下限，用 [`reference-mobile-design.md`](reference-mobile-design.md) 钉死审美必做，再用舒适默认抬高：
@@ -103,14 +121,14 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 1. 写页前：Read [`gold/README.md`](gold/README.md) → Read **本页类型**金样全文 → **按视觉骨架落地**（类名与密度不得低于金样）。禁止凭记忆、禁止按 ASCII 从零画。
 2. 只替换业务文案、条数、跳转、本页规格里的分区。规格需要的套件行为要保留（轮盘 `data-wheel`、`data-menu` 更多、页内签 `data-panel`）。规格没有的金样演示交互不要搬；换业务时禁止把本页需要的 JS 删成静态壳。
 3. ASCII = 分区顺序；金样 = 视觉密度。功能以本页规格为准。`ui/PAGE`「视觉细节」只给 ⑨ 估点，⑥ 视觉不降档。触屏 §1.3.3；桌面 D1-1 §1.4.3。
-4. **舒适默认（§2.3 漏写也要落地）**：按 `lny-prd-ui` **§1.7.0**。骨架、空态插图、失败可重试、一个主按钮、按下态、浮层过渡、D1-1 语义列宽+`md-d1--list`、评论时间行+附图一排最多五张。禁止发明新跳转/新字段/新弹窗。**有字段时必须按层级排版**。用户未给设计规范 ≠ 可以画线框。灯箱等套件能力不算舒适默认，规格点名才用。
+4. **舒适默认（§2.3 漏写也要落地）**：按 `lny-prd-ui` **§1.7.0**。骨架、空态插图、失败可重试、一个主按钮、按下态、浮层过渡、D1-1 语义列宽+`md-d1--list`、评论时间行+附图约 40px、一排最多五张。禁止发明新跳转/新字段/新弹窗。**有字段时必须按层级排版**。用户未给设计规范 ≠ 可以画线框。点图预览只默认给详情页与横卡多行，不是凡图都预览。
 5. 重画不得删 Chip / 面包屑 / 横卡 / `data-icon` / `md-dialog`。未 Read 金样 = 本页未完成。
-6. 不是夹具表里已有的页型：按金样表选最接近的金样（dashboard / split / settings / menu / wizard / timeline），禁止拿 `desktop-list` 硬套工作台，禁止拿金刚或按钮堆硬套功能入口。
+6. 不是夹具表里已有的页型：按金样表选最接近的金样（dashboard / split / settings / menu / wizard / timeline），禁止拿 `desktop-list` 硬套工作台，禁止拿一排按钮硬套功能区。
 
 ## 职责与禁止
 
 - **负责**：按端分批生成/更新 **高保真** 原型与静态镜像；逐页对照 `pages_prd`；UTF-8 与 coverage 验收；BUG 自检。
-- **禁止**：用 HTML 编造规格；改根规范或流水；交付已知 BUG；页内保留演示专用按钮（须归位状态演示）；同一轮画完超过 3 个业务页；未 Read 该页 `pages_prd` 或未 Read `gold/` 就写 HTML；按 ASCII 线框降质；把金样演示功能（如凡图即灯箱）搬进规格没写的业务页；裸 `<button>` / `<input type="submit">` 露出浏览器原生皮肤（必须 `md-btn` 等套件类）。
+- **禁止**：用 HTML 编造规格；改根规范或流水；交付已知 BUG；页内保留演示专用按钮（须归位状态演示）；同一轮画完超过 3 个业务页；未 Read 该页 `pages_prd` 或未 Read `gold/` 就写 HTML；按 ASCII 线框降质；把金样演示功能（如凡图即灯箱、全套表单样例）搬进规格没写的业务页；给封面叠字 / 双列 / Banner / 上传图加预览；裸 `<button>` / `<input type="submit">` 露出浏览器原生皮肤（必须 `md-btn` 等套件类）。
 
 ## 写产物纪律
 

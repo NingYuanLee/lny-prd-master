@@ -1098,7 +1098,7 @@
     if (el.closest("[data-preview=off]")) return true;
     if (
       el.closest(
-        ".md-appbar__cover, .md-card__leading, .md-empty__art, .md-chart-ph, .md-upload-grid__add, .md-upload-grid__del"
+        ".md-appbar__cover, .md-card__leading, .md-empty__art, .md-chart-ph, .md-upload-grid__add, .md-upload-grid__del, .md-upload-grid__thumb, .md-upload__preview"
       )
     ) {
       return true;
@@ -1107,25 +1107,36 @@
     return false;
   }
 
-  function isPreviewable(el) {
-    if (!el || previewSkip(el)) return false;
+  function isMediaLike(el) {
     if (el.tagName === "IMG" && !el.closest(".md-icon, svg")) return true;
     var cls = el.className && String(el.className);
-    if (cls && /\bmd-media-ph--[1-6]\b/.test(cls)) return true;
-    if (
-      el.classList &&
-      (el.classList.contains("md-upload-grid__thumb") ||
-        el.classList.contains("md-upload__preview"))
-    ) {
+    return !!(cls && /\bmd-media-ph--[1-6]\b/.test(cls));
+  }
+
+  function isPreviewable(el) {
+    if (!el || previewSkip(el) || !isMediaLike(el)) return false;
+    if (el.getAttribute("data-preview") === "on" || el.closest("[data-preview=on]")) {
       return true;
     }
+    if (el.closest(".md-card--row")) return true;
+    if (el.closest("[data-lightbox]")) return true;
     return false;
   }
 
-  function collectPreviewables() {
-    var nodes = document.querySelectorAll(
-      '[class*="md-media-ph--"], .md-upload-grid__thumb, .md-upload__preview, img'
-    );
+  var lightboxRoot = null;
+
+  function previewGroupRoot(el) {
+    if (!el) return lightboxRoot || document;
+    var row = el.closest(".md-card--row");
+    if (row) return row;
+    var page = el.closest("[data-lightbox]");
+    if (page) return page;
+    return document;
+  }
+
+  function collectPreviewables(root) {
+    root = root || lightboxRoot || document;
+    var nodes = root.querySelectorAll('[class*="md-media-ph--"], img');
     var out = [];
     for (var i = 0; i < nodes.length; i++) {
       var el = nodes[i];
@@ -1144,7 +1155,7 @@
   }
 
   function markPreviewables() {
-    collectPreviewables().forEach(function (el) {
+    collectPreviewables(document).forEach(function (el) {
       el.classList.add("md-previewable");
     });
   }
@@ -1229,6 +1240,7 @@
   }
 
   function openLightbox(el) {
+    lightboxRoot = previewGroupRoot(el);
     markPreviewables();
     var items = collectPreviewables();
     var idx = -1;
@@ -1283,9 +1295,8 @@
     return el;
   }
 
-  // Opt-in: only pages with [data-lightbox] get image preview.
+  // Default: detail pages ([data-lightbox]) and md-card--row images only.
   function bindLightbox() {
-    if (!document.querySelector("[data-lightbox]")) return;
     if (document.documentElement.getAttribute("data-md-lightbox") === "1") {
       markPreviewables();
       return;
@@ -1362,8 +1373,137 @@
     }
   }
 
+  function hoistPods() {
+    var page = document.querySelector(".md-mobile-page") || document.querySelector(".md-d1");
+    if (!page) return;
+    page.querySelectorAll(".md-pod:not(.md-pod--static)").forEach(function (pod) {
+      if (pod.parentNode !== page) page.appendChild(pod);
+    });
+  }
+
+  function paintIcon(host) {
+    if (global.ProtoIcons && typeof global.ProtoIcons.mount === "function") {
+      global.ProtoIcons.mount(host);
+    }
+  }
+
+  function bindDeskPods() {
+    var pods = document.querySelectorAll(".md-d1 .md-pod, .md-pod--desk");
+    pods.forEach(function (pod) {
+      pod.classList.add("md-pod--desk", "md-pod--br");
+      pod.classList.remove("md-pod--tl", "md-pod--bl");
+      var items = pod.querySelectorAll(".md-pod__item:not(.md-pod__toggle)");
+      var foldAt = Number(pod.getAttribute("data-fold"));
+      if (!foldAt && foldAt !== 0) foldAt = 4;
+      if (foldAt <= 0 || items.length < foldAt) return;
+      pod.classList.add("md-pod--fold");
+      pod.style.setProperty("--pod-n", String(items.length));
+      items.forEach(function (item, i) {
+        item.style.setProperty("--pod-i", String(items.length - i));
+      });
+      var toggle = pod.querySelector(".md-pod__toggle");
+      if (!toggle) {
+        toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "md-pod__item md-pod__toggle";
+        toggle.setAttribute("aria-label", "展开快捷操作");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.innerHTML = '<span class="md-icon" data-icon="add" aria-hidden="true"></span>';
+        pod.appendChild(toggle);
+        paintIcon(toggle);
+      }
+      if (toggle.getAttribute("data-bound") === "1") return;
+      if (toggle.getAttribute("onclick")) {
+        toggle.setAttribute("data-bound", "1");
+        return;
+      }
+      toggle.setAttribute("data-bound", "1");
+      toggle.addEventListener("click", function () {
+        var open = pod.classList.toggle("is-open");
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        toggle.setAttribute("aria-label", open ? "收起快捷操作" : "展开快捷操作");
+      });
+    });
+  }
+
+  function bindDeskWizards() {
+    var host = document.querySelector(".md-d1");
+    if (!host || host.getAttribute("data-wizard") === "off") return;
+    var stepper = host.querySelector(".md-stepper");
+    if (!stepper || stepper.getAttribute("data-wizard") === "off") return;
+    if (stepper.getAttribute("data-bound") === "1") return;
+    var steps = stepper.querySelectorAll(".md-step");
+    if (!steps.length) return;
+    var form = host.querySelector(".md-d1__form") || host.querySelector("form");
+    if (!form) return;
+    var panels = Array.prototype.filter.call(form.children, function (el) {
+      return el.hasAttribute("data-step");
+    });
+    if (!panels.length) return;
+    stepper.setAttribute("data-bound", "1");
+    var btnPrev = host.querySelector("#btnPrev, [data-wizard-prev]");
+    var btnNext = host.querySelector("#btnNext, [data-wizard-next]");
+    var advance = host.querySelector(".md-advance");
+    var progress = host.querySelector(".md-progress");
+    var total = steps.length;
+    var step = 0;
+
+    function paint() {
+      panels.forEach(function (el) {
+        el.hidden = Number(el.getAttribute("data-step")) !== step;
+      });
+      steps.forEach(function (el, i) {
+        el.classList.toggle("is-active", i === step);
+        el.classList.toggle("is-done", i < step);
+      });
+      if (btnPrev) btnPrev.disabled = step === 0;
+      if (btnNext) btnNext.textContent = step === total - 1 ? "提交" : "下一步";
+      var pct = ((step + 1) / total) * 100;
+      var label = (step + 1) + " / " + total;
+      if (advance) setAdvance(advance, pct, label);
+      if (progress) setProgress(progress, pct);
+    }
+
+    function go(i) {
+      if (i < 0 || i >= total) return;
+      step = i;
+      paint();
+    }
+
+    steps.forEach(function (el, i) {
+      el.setAttribute("role", "button");
+      el.setAttribute("tabindex", "0");
+      el.addEventListener("click", function () {
+        go(i);
+      });
+      el.addEventListener("keydown", function (e) {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        e.preventDefault();
+        go(i);
+      });
+    });
+    if (btnPrev) {
+      btnPrev.addEventListener("click", function () {
+        go(step - 1);
+      });
+    }
+    if (btnNext) {
+      btnNext.addEventListener("click", function () {
+        if (step < total - 1) {
+          go(step + 1);
+          return;
+        }
+        snackbar("已提交");
+      });
+    }
+    paint();
+  }
+
   function bindUi() {
     ensureStatusBar();
+    hoistPods();
+    bindDeskPods();
+    bindDeskWizards();
     bindTabs();
     bindMenus();
     bindCals();

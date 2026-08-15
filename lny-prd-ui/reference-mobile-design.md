@@ -38,9 +38,9 @@
 | 字体 | 「标题强于副文；元信息最小可读」 | `.md-h*` / `__title` / `__subtitle` / `__meta` |
 | 图标 | 「与文案同组；元信息用小图标」 | `data-icon`；闭集见 `reference-icons` |
 | 间距圆角 | 「区块有呼吸；卡片勿厚重浮块」 | `--md-space: 8px` 倍数；触屏卡 12px 圆角 |
-| 图片 | 「列表卡三形态；详情主图 16:9；需要看大图才写点图放大」 | `--cover` / `--tile` 1:1 / `--row`；`md-swiper--wide`；要看大图才页根 `data-lightbox` |
+| 图片 | 「列表区点名形态；叠字/瓷砖可横可竖或定宽随图；横卡左图 1:1 或竖图；详情主图 16:9；详情图与横卡多行图默认可点预览」 | `--cover` / `--tile`（`--ratio-*` / `--ratio-auto`）/ `--row`（左图 `--ratio-1x1` / `--ratio-3x4` / `--ratio-2x3`）/ `md-set-row`；`md-swiper--wide`；详情页根 `data-lightbox` |
 
-列表卡三形态（有字段才写）：①封面叠字单行标题；②双列标题两行+可选标签/金额/时间；③横卡或纯文。详见 prototype `reference-kit`。
+列表区：①封面叠字；②双列；③横卡多行（左图/图标/头像/无 + 文本靠左 + 价格/距离右上 + 可选小图）；④横卡单行。功能区：金刚宫格 / 金刚双卡 / 通栏 / 一行两个（分组标题可无）。详见 prototype `reference-kit`。
 
 ## 3. 组件规范（工具箱）
 
@@ -48,11 +48,13 @@
 
 | 类别 | 规格用语 | ⑥ 类名（摘要） |
 |------|----------|----------------|
-| 基础 | 按钮主/次/线框/浅底/文字/纯链接、输入、列表卡三形态 | `md-btn` + `--contained`/`--outlined`/`--soft`/`--text`/`--link`；`md-field`；`md-card--cover` / `--tile` / `--row` / `--plain`。禁止裸 `<button>` 带浏览器皮肤 |
+| 基础 | 按钮主/次/线框/浅底/文字/纯链接、输入、列表区 | `md-btn` + `--contained`/`--outlined`/`--soft`/`--text`/`--link`；`md-field`；`md-card--cover` / `--tile` / `--row`；列表单行 `md-set-row`。禁止裸 `<button>` 带浏览器皮肤 |
 | 表单 | 开关、单选多选、下拉、轮盘 | `md-switch` `md-check` `md-radio` `md-select` `data-wheel` |
 | 反馈 | 对话框、Toast、骨架、空态 | `md-dialog` `snackbar` `md-skeleton` `md-empty` |
-| 展示 | 标签（含卡片角标）、头像/缩略、轮播、进步/进度、时间轴、功能入口行 | `md-chip` `md-card__tag`；`md-swiper` `md-advance` `md-progress` `md-timeline`；入口通栏 `md-set-row` / 一行两个 `md-set-pair` |
-| 导航 | TabBar、返回顶栏、宫格、页内签 | `md-tabbar` `md-appbar` `md-king`；触屏页内签 `md-tabs` 按钮组（禁止下划线） |
+| 展示 | 标签（含卡片角标）、头像/缩略、轮播、进步/进度、时间轴 | `md-chip` `md-card__tag`；`md-swiper` `md-advance` `md-progress` `md-timeline` |
+| 功能区 | 金刚宫格、金刚双卡、通栏、一行两个 | `md-king` / `md-king--pair`；通栏 `md-set-row`；一行两个 `md-set-pair`（分组标题可无） |
+| 导航 | TabBar、返回顶栏、页内签 | `md-tabbar` `md-appbar`；触屏页内签 `md-tabs` 按钮组（禁止下划线） |
+| 悬浮胶囊 | 左上 / 左下 / 右下浮层图标组 | `md-pod` 钉在页根、不进滚动层；`--tl` 横向且与标题栏互斥 / `--bl` `--br` 竖向并避开底栏。规格点名才画，不要右上。桌面形态见 `gold/desktop-pod.html`（只右下、独立圆钮，满 4 个收成可展开） |
 
 触屏搜索框：**仅左图标 + 输入**，无「搜索」文案、无右侧搜索按钮。
 
@@ -63,7 +65,7 @@
 | 项 | ② / L 层级 | ⑥ |
 |----|------------|---|
 | 结构 | 状态栏模式 + 顶栏/无顶栏 + 内容 + Tab/操作条 | `md-immersive` / `md-standard`；金样四种顶栏 |
-| 安全区 | 左右下+四角；MP 胶囊避让 | `--md-safe-*`；MP 顶栏/状态栏避让 |
+| 安全区 | 正文左右 16；标准顶栏左右 4；状态栏 28；底栏 48；overlay/cover 避让胶囊 | `--md-safe-l/r` 16；标准顶栏 inset 4 |
 | 弹性布局 | 「左图右文可伸缩；主文与底栏分开；树页左树右内容；时间轴左竖轨右图文」 | `__main` + `__foot` flex；树 `md-tree-page`；时间轴 `md-timeline` |
 | 适配基准 | 不写死唯一稿宽 | 预览逻辑宽 **375**；`viewport-fit=cover` |
 

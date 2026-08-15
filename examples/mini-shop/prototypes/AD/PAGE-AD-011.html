@@ -1,0 +1,87 @@
+<!-- LNY-PRD gold: 桌面悬浮按钮。只右下；单个圆形；多个独立圆钮竖排，不要合成一颗胶囊。≥4 个收成可展开的一颗。规格点名才画。 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>PAGE-AD-011 悬浮按钮</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/mui-kit.css?v=2.6.88">
+</head>
+<body>
+  <div class="md-d1">
+    <div class="md-breadcrumb">
+      <span>套件</span><span>/</span><span class="is-current">悬浮按钮</span>
+    </div>
+    <section class="md-module" data-section="规则">
+      <div class="md-section-head">
+        <h2 class="md-section-head__title">桌面悬浮按钮</h2>
+      </div>
+      <p class="md-body2">只放右下角，钉在视口、不随正文滚。单个是圆。多个是独立圆钮上下排，中间留缝，不要收成一颗带分割线的胶囊。满 4 个及以上收成一颗「+」，点开再展开，再点收起。不要放左上、左下、右上。不要用 <code>md-fab</code> 冒充。</p>
+      <div class="md-pod-demo">
+        <nav class="md-pod md-pod--desk md-pod--static" aria-label="单个圆形">
+          <button type="button" class="md-pod__item" aria-label="添加">
+            <span class="md-icon" data-icon="add" aria-hidden="true"></span>
+          </button>
+        </nav>
+        <nav class="md-pod md-pod--desk md-pod--static" aria-label="三个独立圆钮">
+          <button type="button" class="md-pod__item" aria-label="添加">
+            <span class="md-icon" data-icon="add" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="md-pod__item" aria-label="刷新">
+            <span class="md-icon" data-icon="refresh" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="md-pod__item" aria-label="筛选">
+            <span class="md-icon" data-icon="filter" aria-hidden="true"></span>
+          </button>
+        </nav>
+      </div>
+      <p class="md-body2">下面这组满 5 个，点「+」看错开弹出；右下角是同一套活按钮。</p>
+      <div class="md-pod-demo md-pod-demo--fold">
+        <nav class="md-pod md-pod--desk md-pod--static md-pod--fold" aria-label="收束展开">
+          <button type="button" class="md-pod__item" aria-label="添加">
+            <span class="md-icon" data-icon="add" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="md-pod__item" aria-label="刷新">
+            <span class="md-icon" data-icon="refresh" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="md-pod__item" aria-label="筛选">
+            <span class="md-icon" data-icon="filter" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="md-pod__item" aria-label="分享">
+            <span class="md-icon" data-icon="share" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="md-pod__item" aria-label="客服">
+            <span class="md-icon" data-icon="mail" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="md-pod__item md-pod__toggle" aria-label="展开快捷操作" aria-expanded="false" onclick="var p=this.parentElement;var o=p.classList.toggle('is-open');this.setAttribute('aria-expanded',o);this.setAttribute('aria-label',o?'收起快捷操作':'展开快捷操作');">
+            <span class="md-icon" data-icon="add" aria-hidden="true"></span>
+          </button>
+        </nav>
+      </div>
+    </section>
+    <nav class="md-pod md-pod--desk md-pod--fold" aria-label="快捷操作">
+      <button type="button" class="md-pod__item" aria-label="添加" onclick="ProtoPage.snackbar('添加')">
+        <span class="md-icon" data-icon="add" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="md-pod__item" aria-label="刷新" onclick="ProtoPage.snackbar('已刷新')">
+        <span class="md-icon" data-icon="refresh" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="md-pod__item" aria-label="筛选" onclick="ProtoPage.snackbar('筛选')">
+        <span class="md-icon" data-icon="filter" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="md-pod__item" aria-label="分享" onclick="ProtoPage.snackbar('分享')">
+        <span class="md-icon" data-icon="share" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="md-pod__item" aria-label="客服" onclick="ProtoPage.snackbar('已接通客服')">
+        <span class="md-icon" data-icon="mail" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="md-pod__item md-pod__toggle" aria-label="展开快捷操作" aria-expanded="false" onclick="var p=this.parentElement;var o=p.classList.toggle('is-open');this.setAttribute('aria-expanded',o);this.setAttribute('aria-label',o?'收起快捷操作':'展开快捷操作');">
+        <span class="md-icon" data-icon="add" aria-hidden="true"></span>
+      </button>
+    </nav>
+  </div>
+  <script src="assets/md-icons.js?v=2.6.88"></script>
+  <script src="assets/icons-extra.js?v=2.6.88"></script>
+  <script src="assets/proto-page.js?v=2.6.88"></script>
+</body>
+</html>
