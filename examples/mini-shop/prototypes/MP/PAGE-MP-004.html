@@ -10,7 +10,7 @@
 <body>
   <div class="md-mobile-page md-mp md-standard">
     <header class="md-appbar md-appbar--mobile">
-      <a class="md-icon-btn" href="PAGE-MP-001.html" aria-label="返回">
+      <a class="md-icon-btn" href="#" aria-label="返回">
         <span class="md-icon" data-icon="chevron-left" aria-hidden="true"></span>
       </a>
       <h1 class="md-appbar__title">表单</h1>
@@ -40,6 +40,10 @@
           <label class="md-field md-field--readonly">
             <span class="md-field__label">只读</span>
             <input class="md-field__input" type="text" value="不可编辑" readonly>
+          </label>
+          <label class="md-field">
+            <span class="md-field__label">禁用</span>
+            <input class="md-field__input" type="text" value="不可修改" disabled>
           </label>
         </section>
 
@@ -141,7 +145,7 @@
               <div class="md-upload__empty">
                 <span class="md-icon" data-icon="image" aria-hidden="true"></span>
                 <span>点击上传单图</span>
-                <p class="md-upload__hint">图片或视频，点选后可更换</p>
+                <p class="md-upload__hint">图片或视频，点选后可预览、可更换</p>
               </div>
               <div class="md-upload__filled is-hidden">
                 <div class="md-upload__preview md-media-ph md-media-ph--1"></div>

@@ -1,76 +1,250 @@
-<!-- LNY-PRD gold: 金样：桌面工作台。指标卡一排 + 趋势 + 短表。写仪表盘前必 Read。禁止拿 D1-1 列表硬套。 -->
+<!-- LNY-PRD gold: 金样：桌面 D1-2 表单套件。一页铺齐桌面表单控件。写整页表单前必 Read。字段用 md-field--sm，禁止 56px 大输入框。禁止漏控件。业务商品表单按规格裁字段，不要少了本页已有的控件种类。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <title>PAGE-AD-004 工作台</title>
+  <title>PAGE-AD-009 表单</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="assets/mui-kit.css">
 </head>
 <body>
   <div class="md-d1">
     <div class="md-breadcrumb">
-      <span class="is-current">工作台</span>
+      <span>套件</span>
+      <span>/</span>
+      <span class="is-current">表单</span>
     </div>
-    <div class="md-stat-grid">
-      <div class="md-stat-card">
-        <span class="md-caption">今日订单</span>
-        <p class="md-h3">128</p>
-        <span class="md-caption">较昨日 +12%</span>
+    <form class="md-d1__form" id="kitForm">
+      <div class="md-section-head">
+        <h2 class="md-section-head__title">文本</h2>
       </div>
-      <div class="md-stat-card">
-        <span class="md-caption">待发货</span>
-        <p class="md-h3">16</p>
-        <span class="md-caption">需今日处理</span>
+      <label class="md-field md-field--sm">
+        <span class="md-field__label">单行文本</span>
+        <input class="md-field__input" id="fText" type="text" placeholder="请输入名称">
+      </label>
+      <label class="md-field md-field--sm">
+        <span class="md-field__label">数字</span>
+        <input class="md-field__input" id="fNum" type="number" placeholder="请输入数量">
+      </label>
+      <label class="md-field md-field--sm">
+        <span class="md-field__label">电话</span>
+        <input class="md-field__input" id="fPhone" type="tel" placeholder="请输入联系电话">
+      </label>
+      <label class="md-field md-field--sm md-field--readonly">
+        <span class="md-field__label">只读</span>
+        <input class="md-field__input" type="text" value="不可编辑" readonly>
+      </label>
+      <label class="md-field md-field--sm">
+        <span class="md-field__label">禁用</span>
+        <input class="md-field__input" type="text" value="不可修改" disabled>
+      </label>
+      <label class="md-field md-field--sm">
+        <span class="md-field__label">多行文本</span>
+        <textarea class="md-field__input" id="fNote" rows="3" placeholder="选填说明"></textarea>
+      </label>
+
+      <div class="md-section-head">
+        <h2 class="md-section-head__title">选择</h2>
       </div>
-      <div class="md-stat-card">
-        <span class="md-caption">库存预警</span>
-        <p class="md-h3">3</p>
-        <span class="md-caption">低于安全库存</span>
+      <div class="md-choice-group">
+        <span class="md-choice-group__label">单选</span>
+        <label class="md-radio"><input type="radio" name="fRadio" value="微信通知" checked> 微信通知</label>
+        <label class="md-radio"><input type="radio" name="fRadio" value="短信"> 短信</label>
       </div>
-      <div class="md-stat-card">
-        <span class="md-caption">到货提醒</span>
-        <p class="md-h3">9</p>
-        <span class="md-caption">待联系</span>
+      <div class="md-choice-group">
+        <span class="md-choice-group__label">多选</span>
+        <label class="md-check"><input type="checkbox" name="fCheck" value="小程序" checked> 小程序</label>
+        <label class="md-check"><input type="checkbox" name="fCheck" value="后台展示"> 后台展示</label>
+        <label class="md-check"><input type="checkbox" name="fCheck" value="到店自提"> 到店自提</label>
       </div>
-    </div>
-    <div class="md-section-head"><span class="md-section-head__title">近七日趋势</span></div>
-    <div class="md-chart-ph" aria-hidden="true">
-      <span style="height:40%"></span><span style="height:55%"></span><span style="height:48%"></span>
-      <span style="height:70%"></span><span style="height:62%"></span><span style="height:80%"></span>
-      <span style="height:74%"></span>
-    </div>
-    <div class="md-section-head"><span class="md-section-head__title">待办</span></div>
-    <div class="md-paper">
-      <table class="md-table">
-        <thead>
-          <tr>
-            <th class="md-col-name">事项</th>
-            <th class="md-col-status">状态</th>
-            <th class="md-col-date">截止</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="md-col-name">补货：有机草莓</td><td class="md-col-status"><span class="md-chip md-chip--error">紧急</span></td><td class="md-col-date">2026-08-14</td></tr>
-          <tr><td class="md-col-name">回复到货提醒 4 条</td><td class="md-col-status"><span class="md-chip md-chip--primary">进行中</span></td><td class="md-col-date">2026-08-15</td></tr>
-          <tr><td class="md-col-name">核对缺货 SKU</td><td class="md-col-status"><span class="md-chip">待开始</span></td><td class="md-col-date">2026-08-16</td></tr>
-          <tr><td class="md-col-name">更新首页 Banner</td><td class="md-col-status"><span class="md-chip md-chip--success">已完成</span></td><td class="md-col-date">2026-08-12</td></tr>
-        </tbody>
-      </table>
-      <div class="md-skel-host is-hidden" data-skel-for="COMP-001">
-        <div class="md-skeleton md-skeleton--row"></div>
-        <div class="md-skeleton md-skeleton--row"></div>
-        <div class="md-skeleton md-skeleton--row"></div>
+      <label class="md-switch-row">
+        <span class="md-switch">
+          <input type="checkbox" id="fSwitch" checked>
+          <span class="md-switch__track"></span>
+          <span class="md-switch__thumb"></span>
+        </span>
+        <span>开关</span>
+      </label>
+      <label class="md-field md-field--sm md-field--select">
+        <span class="md-field__label">下拉（少选项）</span>
+        <select class="md-select" id="fSpec">
+          <option value="250g">250g</option>
+          <option value="500g">500g</option>
+          <option value="礼盒装">礼盒装</option>
+        </select>
+      </label>
+      <label class="md-field md-field--sm md-field--select">
+        <span class="md-field__label">下拉（多选项）</span>
+        <select class="md-select" id="fCat">
+          <option value="水果">水果</option>
+          <option value="浆果">浆果</option>
+          <option value="柑橘">柑橘</option>
+          <option value="饮品">饮品</option>
+          <option value="咖啡">咖啡</option>
+          <option value="烘焙">烘焙</option>
+          <option value="坚果">坚果</option>
+          <option value="乳品">乳品</option>
+        </select>
+      </label>
+
+      <div class="md-section-head">
+        <h2 class="md-section-head__title">滑动条</h2>
       </div>
-      <div class="md-empty md-empty--illus is-hidden" data-empty-for="COMP-001" data-empty-text="暂无待办" data-error-text="待办加载失败">
-        <div class="md-empty__art" aria-hidden="true"></div>
-        <p class="md-empty__title">暂无内容</p>
-        <p class="md-empty__text">暂无待办</p>
+      <div class="md-slider md-slider--steps" data-labels="低,较低,一般,较高,高">
+        <span class="md-slider__label">五步滑动条</span>
+        <div class="md-slider__row">
+          <input type="range" id="fPriority" min="1" max="5" step="1" value="3">
+          <span class="md-slider__value">一般</span>
+        </div>
+        <div class="md-slider__ticks">
+          <span>低</span><span>较低</span><span>一般</span><span>较高</span><span>高</span>
+        </div>
       </div>
-    </div>
+      <div class="md-slider md-slider--fluid">
+        <span class="md-slider__label">无极滑动条</span>
+        <div class="md-slider__row">
+          <input type="range" id="fPremium" min="0" max="20" step="1" value="5" data-suffix="%">
+          <span class="md-slider__value">5%</span>
+        </div>
+      </div>
+
+      <div class="md-section-head">
+        <h2 class="md-section-head__title">日期与地区</h2>
+      </div>
+      <label class="md-field md-field--sm md-field--date">
+        <span class="md-field__label">单日</span>
+        <input class="md-field__input" id="fDate" type="text" placeholder="年-月-日" autocomplete="off">
+      </label>
+      <label class="md-field md-field--sm md-field--time">
+        <span class="md-field__label">时间</span>
+        <input class="md-field__input" id="fTime" type="time">
+      </label>
+      <label class="md-field md-field--sm md-field--daterange">
+        <span class="md-field__label">日期段</span>
+        <input class="md-field__input" id="fRange" type="text" placeholder="开始日期 ~ 结束日期" autocomplete="off" readonly>
+      </label>
+      <div class="md-form-block">
+        <span class="md-form-label">省市区</span>
+        <div class="md-region-row">
+        <label class="md-field md-field--sm md-field--select">
+          <span class="md-field__label">省</span>
+          <select class="md-select" id="fProv">
+            <option value="北京市">北京市</option>
+            <option value="上海市">上海市</option>
+            <option value="广东省">广东省</option>
+          </select>
+        </label>
+        <label class="md-field md-field--sm md-field--select">
+          <span class="md-field__label">市</span>
+          <select class="md-select" id="fCity">
+            <option value="北京市">北京市</option>
+            <option value="上海市">上海市</option>
+            <option value="广州市">广州市</option>
+          </select>
+        </label>
+        <label class="md-field md-field--sm md-field--select">
+          <span class="md-field__label">区</span>
+          <select class="md-select" id="fDist">
+            <option value="朝阳区">朝阳区</option>
+            <option value="海淀区">海淀区</option>
+            <option value="浦东新区">浦东新区</option>
+            <option value="天河区">天河区</option>
+          </select>
+        </label>
+        </div>
+      </div>
+
+      <div class="md-section-head">
+        <h2 class="md-section-head__title">上传</h2>
+      </div>
+      <div class="md-form-block">
+        <span class="md-form-label">单图更换</span>
+        <div class="md-upload md-upload--single" data-upload="single">
+          <input type="file" accept="image/*,video/*">
+          <div class="md-upload__empty">
+            <span class="md-icon" data-icon="image" aria-hidden="true"></span>
+            <span>点击上传单图</span>
+            <p class="md-upload__hint">图片或视频，点选后可预览、可更换</p>
+          </div>
+          <div class="md-upload__filled is-hidden">
+            <div class="md-upload__preview md-media-ph md-media-ph--1"></div>
+            <button type="button" class="md-btn md-btn--contained md-btn--sm md-upload__replace">更换</button>
+          </div>
+        </div>
+      </div>
+      <div class="md-form-block">
+        <span class="md-form-label">多图可删</span>
+        <div class="md-upload-grid" data-upload="multi">
+          <div class="md-upload-grid__item">
+            <div class="md-upload-grid__thumb md-media-ph md-media-ph--2"></div>
+            <button type="button" class="md-icon-btn md-upload-grid__del" aria-label="删除">
+              <span class="md-icon" data-icon="close" aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="md-upload-grid__item">
+            <div class="md-upload-grid__thumb md-media-ph md-media-ph--4"></div>
+            <button type="button" class="md-icon-btn md-upload-grid__del" aria-label="删除">
+              <span class="md-icon" data-icon="close" aria-hidden="true"></span>
+            </button>
+          </div>
+          <label class="md-upload-grid__add">
+            <input type="file" accept="image/*,video/*">
+            <span class="md-icon" data-icon="add" aria-hidden="true"></span>
+            <span>添加</span>
+          </label>
+        </div>
+      </div>
+      <label class="md-upload md-upload--file">
+        <input type="file">
+        <span class="md-icon" data-icon="copy" aria-hidden="true"></span>
+        <span>文件上传</span>
+        <p class="md-upload__hint">支持 PDF / Word / 图片</p>
+        <span class="md-upload__name"></span>
+      </label>
+      <div class="md-progress is-hidden" id="fileProg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="md-progress__head">
+          <span class="md-progress__label">文件上传进度</span>
+          <span class="md-progress__value">0%</span>
+        </div>
+        <div class="md-progress__track">
+          <div class="md-progress__bar"></div>
+        </div>
+      </div>
+
+      <div class="md-btn-group">
+        <button type="button" class="md-btn md-btn--text" id="btnCancel">取消</button>
+        <button type="submit" class="md-btn md-btn--contained">提交</button>
+      </div>
+    </form>
   </div>
   <script src="assets/md-icons.js"></script>
   <script src="assets/icons-extra.js"></script>
   <script src="assets/proto-page.js"></script>
+  <script>
+    document.querySelector(".md-upload--file input").addEventListener("change", function () {
+      var box = document.getElementById("fileProg");
+      box.classList.remove("is-hidden");
+      var p = 0;
+      ProtoPage.setProgress("#fileProg", 0);
+      var t = setInterval(function () {
+        p += 25;
+        ProtoPage.setProgress("#fileProg", Math.min(p, 100));
+        if (p >= 100) clearInterval(t);
+      }, 120);
+    });
+    document.getElementById("btnCancel").addEventListener("click", function () {
+      ProtoPage.snackbar("已取消");
+    });
+    document.getElementById("kitForm").addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var name = (document.getElementById("fText").value || "").trim();
+      var phone = (document.getElementById("fPhone").value || "").trim();
+      if (!name || !phone) {
+        ProtoPage.snackbar("请填写单行文本与电话");
+        return;
+      }
+      ProtoPage.snackbar("已提交");
+    });
+  </script>
 </body>
 </html>

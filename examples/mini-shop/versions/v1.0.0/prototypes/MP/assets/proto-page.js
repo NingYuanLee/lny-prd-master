@@ -862,10 +862,19 @@
           if (empty) empty.classList.add("is-hidden");
           if (filled) filled.classList.remove("is-hidden");
           if (!file || !preview) return;
+          preview.removeAttribute("data-preview-kind");
+          preview.removeAttribute("data-preview-src");
           if (file.type.indexOf("image/") === 0) {
             var url = URL.createObjectURL(file);
             preview.style.backgroundImage = "url(" + url + ")";
             preview.className = "md-upload__preview";
+            preview.setAttribute("data-preview-src", url);
+          } else if (file.type.indexOf("video/") === 0) {
+            var vurl = URL.createObjectURL(file);
+            preview.style.backgroundImage = "";
+            preview.className = "md-upload__preview " + phClass(3);
+            preview.setAttribute("data-preview-kind", "video");
+            preview.setAttribute("data-preview-src", vurl);
           } else {
             preview.style.backgroundImage = "";
             preview.className = "md-upload__preview " + phClass(2);
@@ -896,7 +905,14 @@
           n += 1;
           if (file && file.type.indexOf("image/") === 0) {
             thumb.className = "md-upload-grid__thumb";
-            thumb.style.backgroundImage = "url(" + URL.createObjectURL(file) + ")";
+            var iurl = URL.createObjectURL(file);
+            thumb.style.backgroundImage = "url(" + iurl + ")";
+            thumb.setAttribute("data-preview-src", iurl);
+          } else if (file && file.type.indexOf("video/") === 0) {
+            thumb.className = "md-upload-grid__thumb " + phClass(n);
+            var mvurl = URL.createObjectURL(file);
+            thumb.setAttribute("data-preview-kind", "video");
+            thumb.setAttribute("data-preview-src", mvurl);
           } else {
             thumb.className = "md-upload-grid__thumb " + phClass(n);
           }
@@ -1115,9 +1131,10 @@
     if (el.closest(".md-lightbox")) return true;
     if (el.getAttribute("data-preview") === "off") return true;
     if (el.closest("[data-preview=off]")) return true;
+    if (el.closest(".md-upload--file")) return true;
     if (
       el.closest(
-        ".md-appbar__cover, .md-card__leading, .md-profile__media, .md-set-row__thumb, .md-empty__art, .md-chart-ph, .md-upload-grid__add, .md-upload-grid__del, .md-upload-grid__thumb, .md-upload__preview"
+        ".md-appbar__cover, .md-card__leading, .md-profile__media, .md-set-row__thumb, .md-empty__art, .md-chart-ph, .md-upload-grid__add, .md-upload-grid__del, .md-upload__replace"
       )
     ) {
       return true;
@@ -1128,6 +1145,13 @@
 
   function isMediaLike(el) {
     if (el.tagName === "IMG" && !el.closest(".md-icon, svg")) return true;
+    if (
+      el.classList &&
+      (el.classList.contains("md-upload__preview") ||
+        el.classList.contains("md-upload-grid__thumb"))
+    ) {
+      return true;
+    }
     var cls = el.className && String(el.className);
     return !!(cls && /\bmd-media-ph--[1-6]\b/.test(cls));
   }
@@ -1135,6 +1159,15 @@
   function isPreviewable(el) {
     if (!el || previewSkip(el) || !isMediaLike(el)) return false;
     if (el.getAttribute("data-preview") === "on" || el.closest("[data-preview=on]")) {
+      return true;
+    }
+    /* 单图 / 多图 / 视频上传：已选缩略默认可点大图预览 */
+    if (
+      el.classList &&
+      (el.classList.contains("md-upload__preview") ||
+        el.classList.contains("md-upload-grid__thumb")) &&
+      el.closest(".md-upload--single, .md-upload-grid, [data-upload]")
+    ) {
       return true;
     }
     if (el.closest(".md-card--row")) return true;
@@ -1147,6 +1180,7 @@
   /**
    * Preview groups stay separate by zone:
    * - md-card--row: one group per card
+   * - upload multi: one group per md-upload-grid; single: one per md-upload--single
    * - detail [data-lightbox]: swiper / article / comment-list each their own group
    * - optional [data-lightbox-group] overrides the container
    */
@@ -1154,6 +1188,10 @@
     if (!el) return lightboxRoot || document;
     var row = el.closest(".md-card--row");
     if (row) return row;
+    var uploadGrid = el.closest(".md-upload-grid");
+    if (uploadGrid) return uploadGrid;
+    var uploadSingle = el.closest(".md-upload--single, [data-upload=single]");
+    if (uploadSingle) return uploadSingle;
     var named = el.closest("[data-lightbox-group]");
     if (named) return named;
     var page = el.closest("[data-lightbox]");
@@ -1177,7 +1215,9 @@
 
   function collectPreviewables(root) {
     root = root || lightboxRoot || document;
-    var nodes = root.querySelectorAll('[class*="md-media-ph--"], img');
+    var nodes = root.querySelectorAll(
+      '[class*="md-media-ph--"], img, .md-upload__preview, .md-upload-grid__thumb'
+    );
     var out = [];
     for (var i = 0; i < nodes.length; i++) {
       var el = nodes[i];
@@ -1196,6 +1236,9 @@
   }
 
   function markPreviewables() {
+    document.querySelectorAll(".md-previewable").forEach(function (el) {
+      el.classList.remove("md-previewable");
+    });
     collectPreviewables(document).forEach(function (el) {
       el.classList.add("md-previewable");
     });
@@ -1203,6 +1246,8 @@
 
   function mediaUrl(el) {
     if (!el) return "";
+    var dataSrc = el.getAttribute && el.getAttribute("data-preview-src");
+    if (dataSrc) return dataSrc;
     if (el.tagName === "IMG") return el.currentSrc || el.src || "";
     var bg = (el.style && el.style.backgroundImage) || "";
     var m = bg.match(/url\(["']?([^"')]+)["']?\)/);
@@ -1247,6 +1292,16 @@
     if (!frame) return;
     frame.innerHTML = "";
     var src = mediaUrl(el);
+    var kind = el && el.getAttribute && el.getAttribute("data-preview-kind");
+    if (src && kind === "video") {
+      var video = document.createElement("video");
+      video.src = src;
+      video.controls = true;
+      video.playsInline = true;
+      video.setAttribute("playsinline", "");
+      frame.appendChild(video);
+      return;
+    }
     if (src) {
       var img = document.createElement("img");
       img.src = src;
@@ -1336,7 +1391,7 @@
     return el;
   }
 
-  // Default: detail pages ([data-lightbox]) and md-card--row images only.
+  // Default: detail ([data-lightbox]), md-card--row, and image/video uploads.
   function bindLightbox() {
     if (document.documentElement.getAttribute("data-md-lightbox") === "1") {
       markPreviewables();
@@ -1630,6 +1685,174 @@
     });
   }
 
+  function copyPlainText(text) {
+    if (!text) return Promise.reject();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function (resolve, reject) {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        if (document.execCommand("copy")) resolve();
+        else reject();
+      } catch (err) {
+        reject(err);
+      }
+      document.body.removeChild(ta);
+    });
+  }
+
+  function overflowCellText(cell) {
+    if (!cell) return "";
+    var clone = cell.cloneNode(true);
+    clone
+      .querySelectorAll(
+        "button, .md-menu, .md-check, .md-radio, input, select, textarea, .md-icon, .md-thumb, .md-actions, a.md-btn, .md-btn"
+      )
+      .forEach(function (n) {
+        if (n.parentNode) n.parentNode.removeChild(n);
+      });
+    return String(clone.textContent || "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function isOverflowCell(el) {
+    if (!el || !el.getBoundingClientRect) return false;
+    if (el.closest(".md-col-check, .md-col-actions, .md-actions")) return false;
+    return el.scrollWidth > el.clientWidth + 1 || el.scrollHeight > el.clientHeight + 1;
+  }
+
+  function ensureOverflowTip() {
+    var tip = document.getElementById("mdOverflowTip");
+    if (tip) return tip;
+    tip = document.createElement("div");
+    tip.id = "mdOverflowTip";
+    tip.className = "md-overflow-tip";
+    tip.setAttribute("role", "tooltip");
+    document.body.appendChild(tip);
+    return tip;
+  }
+
+  function placeOverflowTip(tip, ev) {
+    var pad = 12;
+    var x = (ev && ev.clientX != null ? ev.clientX : 0) + 14;
+    var y = (ev && ev.clientY != null ? ev.clientY : 0) + 16;
+    tip.style.left = "0px";
+    tip.style.top = "0px";
+    var rect = tip.getBoundingClientRect();
+    var maxX = window.innerWidth - rect.width - pad;
+    var maxY = window.innerHeight - rect.height - pad;
+    tip.style.left = Math.max(pad, Math.min(x, maxX)) + "px";
+    tip.style.top = Math.max(pad, Math.min(y, maxY)) + "px";
+  }
+
+  /** AD 列表：表头/单元格文字溢出省略时，悬停看全文，点击复制 */
+  function bindOverflowTips() {
+    if (document.documentElement.getAttribute("data-md-overflow-tip") === "1") return;
+    var hosts = document.querySelectorAll(".md-d1 .md-table");
+    if (!hosts.length) return;
+    document.documentElement.setAttribute("data-md-overflow-tip", "1");
+    var tip = ensureOverflowTip();
+    var active = null;
+
+    function hide() {
+      if (active) active.classList.remove("is-overflow");
+      active = null;
+      tip.classList.remove("is-open");
+      tip.textContent = "";
+    }
+
+    function cellFromEvent(ev) {
+      var t = ev.target;
+      if (!t || !t.closest) return null;
+      if (
+        t.closest(
+          "button, a.md-btn, .md-btn, input, select, textarea, .md-menu, .md-check, .md-radio, .md-actions, label.md-check, label.md-radio"
+        )
+      ) {
+        return null;
+      }
+      var cell = t.closest(".md-d1 .md-table th, .md-d1 .md-table td");
+      if (!cell || cell.closest(".md-col-check, .md-col-actions")) return null;
+      return cell;
+    }
+
+    document.addEventListener(
+      "pointerover",
+      function (ev) {
+        var cell = cellFromEvent(ev);
+        if (!cell) {
+          if (active && (!ev.relatedTarget || !active.contains(ev.relatedTarget))) hide();
+          return;
+        }
+        if (!isOverflowCell(cell)) {
+          if (active === cell) hide();
+          return;
+        }
+        var text = overflowCellText(cell);
+        if (!text) return;
+        if (active && active !== cell) active.classList.remove("is-overflow");
+        active = cell;
+        cell.classList.add("is-overflow");
+        tip.textContent = text;
+        tip.classList.add("is-open");
+        placeOverflowTip(tip, ev);
+      },
+      true
+    );
+
+    document.addEventListener(
+      "pointermove",
+      function (ev) {
+        if (!active || !tip.classList.contains("is-open")) return;
+        placeOverflowTip(tip, ev);
+      },
+      true
+    );
+
+    document.addEventListener(
+      "pointerout",
+      function (ev) {
+        if (!active) return;
+        var to = ev.relatedTarget;
+        if (to && active.contains(to)) return;
+        hide();
+      },
+      true
+    );
+
+    document.addEventListener(
+      "click",
+      function (ev) {
+        var cell = cellFromEvent(ev);
+        if (!cell || !isOverflowCell(cell)) return;
+        var text = overflowCellText(cell);
+        if (!text) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        copyPlainText(text).then(
+          function () {
+            snackbar("已复制");
+          },
+          function () {
+            snackbar("复制失败", { severity: "error" });
+          }
+        );
+      },
+      true
+    );
+
+    window.addEventListener("scroll", hide, true);
+    window.addEventListener("resize", hide);
+  }
+
   function bindDeskWizards() {
     var host = document.querySelector(".md-d1");
     if (!host || host.getAttribute("data-wizard") === "off") return;
@@ -1721,6 +1944,7 @@
     bindMobileSelects();
     bindProgress();
     bindLightbox();
+    bindOverflowTips();
     document.querySelectorAll(".md-drawer.md-drawer--bottom").forEach(ensureBottomDrawerClose);
   }
 

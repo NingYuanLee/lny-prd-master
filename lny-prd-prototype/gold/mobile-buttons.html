@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 金样：触屏按钮三档尺寸 + 浅底色字 + 纯文字链接钮 + 页签按钮组。每档含线框、色块、浅底、文字、置灰、角标。写按钮前对照本页。 -->
+<!-- LNY-PRD gold: 金样：触屏按钮三档尺寸 + 浅底色字 + 纯文字链接钮 + 通栏整行 + 页签按钮组。每档含线框、色块、浅底、文字、置灰、角标。写按钮前对照本页。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -61,6 +61,17 @@
       </section>
       <section class="md-module md-btn-demo">
         <div class="md-section-head">
+          <h2 class="md-section-head__title">通栏（一行一钮）</h2>
+        </div>
+        <p class="md-body2">一行只有一个主按钮时占满整行：内容区加 md-btn--block；多个通栏竖叠用 md-btn-row。贴底 md-action-bar / 半屏 md-drawer__actions 仅一钮时自动占满。</p>
+        <div class="md-btn-row">
+          <button type="button" class="md-btn md-btn--contained md-btn--block">提交订单</button>
+          <button type="button" class="md-btn md-btn--outlined md-btn--block">继续浏览</button>
+          <button type="button" class="md-btn md-btn--soft md-btn--block">稍后再说</button>
+        </div>
+      </section>
+      <section class="md-module md-btn-demo">
+        <div class="md-section-head">
           <h2 class="md-section-head__title">纯文字链接</h2>
           <a class="md-btn md-btn--link" href="#">了解更多</a>
         </div>
@@ -70,7 +81,7 @@
           <button type="button" class="md-btn md-btn--link">查看全部</button>
           <button type="button" class="md-btn md-btn--link" disabled>不可点</button>
         </div>
-        <p class="md-body2">`md-btn--link`：无线框、无背景、无阴影；分区头「查看全部」也用这一形态，不要做成线框/色块。</p>
+        <p class="md-body2">md-btn--link：无线框、无背景、无阴影；分区头「查看全部」也用这一形态，不要做成线框/色块。</p>
       </section>
       <section class="md-module md-btn-demo">
         <div class="md-section-head">
@@ -94,6 +105,9 @@
         </div>
       </section>
     </main>
+    <div class="md-action-bar">
+      <button type="button" class="md-btn md-btn--contained" onclick="ProtoPage.snackbar('仅一钮时自动占满整行')">确认</button>
+    </div>
   </div>
   <script src="assets/md-icons.js"></script>
   <script src="assets/icons-extra.js"></script>

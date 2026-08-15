@@ -53,13 +53,15 @@ python <skillDir>/scripts/search-icons.py 客服 --pick 0 --name kefu --out <prd
 | favorite | 点赞 / 喜欢 | 列表元信息 |
 | view | 查看 / 浏览 | 列表元信息 / 详情 |
 | filter | 筛选 | 工具栏 |
-| add | 添加、新增 | 功能栏 |
-| edit | 编辑 | 操作列 |
-| delete | 删除 | 操作列 |
-| view | 查看 | 操作列 |
+| add | 添加、新增 | 功能栏 / 操作列 |
+| edit | 编辑 | 操作列（图标钮） |
+| delete | 删除 | 操作列（图标钮，可加 `md-icon--danger`） |
+| view | 查看、详情、浏览 | 操作列（图标钮） / 列表元信息 |
+| enable | 启用、开启 | 操作列（图标钮） |
+| disable | 停用、禁用 | 操作列（图标钮） |
 | copy | 复制 | 操作列 |
 | refresh | 刷新 | 工具栏 |
-| more | 更多 | 顶栏 |
+| more | 更多 | 操作列溢出 / 顶栏 |
 | check | 成功 | 状态 |
 | error | 失败、错误 | 状态 |
 | warning | 警告 | 状态 |
