@@ -14,7 +14,8 @@ try:
     import yaml
 except ModuleNotFoundError:
     print(
-        "PyYAML is required; run: python -m pip install -r requirements-dev.txt",
+        "PyYAML is required in the active interpreter. Create the repository "
+        ".venv and install requirements-dev.txt; see README.md section 10.",
         file=sys.stderr,
     )
     raise SystemExit(2)

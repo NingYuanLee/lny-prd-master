@@ -420,7 +420,7 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 ├── lny-prd-sp/SKILL.md + reference-weights.md
 ├── examples/mini-shop/             # 最小回归夹具
 ├── scripts/validate-skill-package.py # 元数据、链接、脚本、kit、金样与夹具回归
-├── requirements-dev.txt            # PyYAML 发布门禁依赖
+├── requirements-dev.txt            # 本地与 CI 的 PyYAML 发布门禁依赖
 ├── .github/workflows/validate-skills.yml
 ├── README.md
 └── LICENSE
@@ -428,12 +428,33 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 
 ## 十、维护回归
 
-修改技能、金样、套件或示例后，在仓库根执行：
+首次本地使用时，在仓库根创建持久虚拟环境并安装依赖（只需执行一次）：
 
-```text
-python -m pip install -r requirements-dev.txt
-python scripts/validate-skill-package.py
+```powershell
+# Windows
+python -m venv .venv
+.\.venv\Scripts\python -m pip install -r requirements-dev.txt
 ```
+
+```bash
+# macOS / Linux
+python3 -m venv .venv
+./.venv/bin/python -m pip install -r requirements-dev.txt
+```
+
+以后修改技能、金样、套件或示例后，直接复用该环境运行：
+
+```powershell
+# Windows
+.\.venv\Scripts\python scripts\validate-skill-package.py
+```
+
+```bash
+# macOS / Linux
+./.venv/bin/python scripts/validate-skill-package.py
+```
+
+`.venv/` 仅保留在本机并由 Git 忽略；除非 `requirements-dev.txt` 发生变化，无需重复安装。GitHub Actions 使用全新环境，仍会在每次任务中安装依赖。
 
 门禁使用真实 YAML 解析并逐一 quick-validate 9 个技能，同时检查 `agents/openai.yaml`、Markdown 链接、全量文本 UTF-8、Python/JavaScript 语法、迁移冲突保护、kit 与副本、全部金样、页面 ID、根原型与版本镜像完全一致，以及带正反例的 12 页 coverage。GitHub Actions 在 push 和 pull request 时运行同一脚本；任一项失败均不得发布。元数据路由固定为：总控 `allow_implicit_invocation: true`，其余子技能为 `false`，子技能仍可通过 `$lny-prd-*` 显式调用。
 
