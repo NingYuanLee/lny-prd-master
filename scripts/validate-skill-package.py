@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import re
 import shutil
 import subprocess
@@ -23,24 +24,28 @@ except ModuleNotFoundError:
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL_DIRS = sorted(path for path in ROOT.glob("lny-prd-*") if path.is_dir())
-EXPECTED_SKILLS = {
-    "lny-prd-api",
-    "lny-prd-check",
-    "lny-prd-feature",
-    "lny-prd-iter",
+EXPECTED_SKILL_ORDER = (
     "lny-prd-master",
+    "lny-prd-ui",
+    "lny-prd-api",
+    "lny-prd-feature",
     "lny-prd-page",
     "lny-prd-prototype",
+    "lny-prd-check",
+    "lny-prd-iter",
     "lny-prd-sp",
-    "lny-prd-ui",
-}
+)
+EXPECTED_SKILLS = set(EXPECTED_SKILL_ORDER)
 FRONTMATTER_RE = re.compile(r"\A---\r?\n(.*?)\r?\n---(?:\r?\n|\Z)", re.S)
 MARKDOWN_LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
+EXAMPLES_PATH_RE = re.compile(r"(?:^|[\s(\"'`])(?:\.\./)*examples[\\/]", re.M)
+SEMVER_RE = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 GENERATED_PROJECT_DOCS = {"api_spec.md", "feature_spec.md", "ui_manifest.md"}
 TEXT_SUFFIXES = {".css", ".html", ".js", ".json", ".md", ".mdc", ".mjs", ".py", ".txt", ".yaml", ".yml"}
 TEXT_NAMES = {".gitignore", "LICENSE"}
 EXCLUDED_PARTS = {".cursor", ".git", "__pycache__", "node_modules"}
 QUICK_VALIDATE = ROOT / "scripts" / "quick_validate.py"
+INSTALLER_TESTS = ROOT / "scripts" / "test_install_skills.py"
 
 
 def fail(errors: list[str], message: str) -> None:
@@ -76,6 +81,42 @@ def load_yaml_mapping(path: Path, text: str, errors: list[str]) -> dict | None:
         fail(errors, f"{path}: YAML root must be a mapping")
         return None
     return value
+
+
+def validate_bundle_contract(errors: list[str]) -> None:
+    manifest_path = ROOT / "skill-bundle.json"
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        fail(errors, f"{manifest_path}: invalid bundle manifest: {exc}")
+        return
+    if not isinstance(manifest, dict):
+        fail(errors, f"{manifest_path}: root must be an object")
+        return
+    if manifest.get("schema_version") != 1 or manifest.get("bundle_id") != "lny-prd":
+        fail(errors, f"{manifest_path}: expected schema_version 1 and bundle_id lny-prd")
+    version = manifest.get("bundle_version")
+    if not isinstance(version, str) or not SEMVER_RE.fullmatch(version):
+        fail(errors, f"{manifest_path}: bundle_version must be stable X.Y.Z")
+    if manifest.get("skills") != list(EXPECTED_SKILL_ORDER):
+        fail(errors, f"{manifest_path}: skills must list the exact ordered nine-skill bundle")
+    expected_resources = {"examples": {"path": "examples", "audience": "human"}}
+    if manifest.get("optional_resources") != expected_resources:
+        fail(errors, f"{manifest_path}: optional_resources must declare human-only examples")
+
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    match = re.search(r"\*\*工具包版本：([^*]+)\*\*", readme)
+    readme_version = match.group(1).strip() if match else None
+    if isinstance(version, str) and readme_version != version:
+        fail(errors, f"README version {readme_version!r} does not match bundle {version!r}")
+
+    for skill_dir in SKILL_DIRS:
+        for path in skill_dir.rglob("*"):
+            if not path.is_file() or path.suffix.lower() not in TEXT_SUFFIXES:
+                continue
+            text = path.read_text(encoding="utf-8")
+            if EXAMPLES_PATH_RE.search(text):
+                fail(errors, f"{path}: skill runtime must not reference repository examples/")
 
 
 def validate_skill_metadata(errors: list[str]) -> None:
@@ -476,6 +517,7 @@ def validate_prototypes(errors: list[str]) -> None:
 
 def main() -> int:
     errors: list[str] = []
+    validate_bundle_contract(errors)
     validate_skill_metadata(errors)
     validate_markdown_links(errors)
     validate_text_and_yaml(errors)
@@ -484,14 +526,20 @@ def main() -> int:
     validate_kit_copies(errors)
     validate_migration(errors)
     validate_prototypes(errors)
+    require_run(
+        [sys.executable, str(INSTALLER_TESTS), "-v"],
+        errors,
+        "atomic bundle installer tests",
+    )
     if errors:
         print("skill package validation failed:", file=sys.stderr)
         for error in errors:
             print("- " + error, file=sys.stderr)
         return 1
     print(
-        f"skill package validation ok: {len(SKILL_DIRS)} skills; real YAML + quick validation; "
-        "links; UTF-8; Python/JS; migration; kit/gold; exact mirror; fixture + negative coverage"
+        f"skill package validation ok: {len(SKILL_DIRS)} skills; bundle/version contract; "
+        "runtime examples isolation; real YAML + quick validation; links; UTF-8; Python/JS; "
+        "installer transactions; migration; kit/gold; exact mirror; fixture + negative coverage"
     )
     return 0
 

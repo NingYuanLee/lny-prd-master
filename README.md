@@ -1,6 +1,6 @@
 # LNY-PRD — 李宁远产品工作流
 
-**工具包版本：2.6.143**
+**工具包版本：2.7.0**
 
 ## 背景
 
@@ -126,23 +126,48 @@ FE：① ui 页壳 → ② api 全局层 → ③ 可复用 COMP → ④ 多 Agen
 
 ## 四、前置条件
 
-- 支持 Agent Skills 的 AI 编程工具（Cursor、Claude Code、Codex 等）
-- 已将本仓库各 `lny-prd-*/` 目录注册为 Agent Skill（见 5.1）
+- 支持 Agent Skills 的 AI 编程工具（Cursor、ChatGPT、TraeWork CN）
+- 已按 5.1 将本仓库的 9 个 `lny-prd-*/` 技能作为整包安装
 - 准备一个 **空的 PRD 项目目录**（不要用本技能包仓库根当项目根）
 
 ## 五、快速开始
 
 ### 5.1 安装
 
-将本仓库克隆到本地。本仓库 = 技能包；PRD 项目 = 另开目录。改技能包后需再同步到工具侧。
+将本仓库克隆到本地。本仓库 = 技能包；PRD 项目 = 另开目录。安装器只使用 Python 标准库，不需要先安装 `requirements-dev.txt`。
 
-**Cursor**：将各 `lny-prd-*/` 目录复制或链接到 `~/.cursor/skills/`，或放到工作区 `.cursor/skills/`。
+9 个技能是一个原子、同版本的整包，禁止只安装或只更新其中一部分。仅支持用户级安装：
 
-**Claude Code**：按 Skill 配置指向各 `lny-prd-*/SKILL.md`。
+| 工具 | `--host` | 默认技能目录 |
+|------|----------|--------------|
+| Cursor | `cursor` | `~/.cursor/skills/` |
+| ChatGPT | `chatgpt`（兼容别名 `codex`） | `~/.agents/skills/` |
+| TraeWork CN | `traework-cn`（兼容 `trae-work`、`trae`、`trae-cn`） | `~/.trae-cn/skills/` |
 
-**Codex**：按对应工具的 Skill 配置方式，指向各 `lny-prd-*/SKILL.md`。
+> ChatGPT 当前按 OpenAI 官方 Agent Skills 约定使用 `~/.agents/skills/`。本机可能存在的 `~/.codex/skills/.system/` 是应用管理的内置技能目录，不是本整包的安装目标。
 
-对照粒度：打开 [`examples/mini-shop/`](examples/mini-shop/)（只读样例，含 MP+AD、COMP-001、`_shell/AD-shell.md`、`sp_report.md`）。
+首次安装（把 `<host>` 换成表中的值）：
+
+```bash
+python scripts/install-skills.py install --host <host>
+```
+
+若目标中已有手工复制的同名技能，安装器会拒绝覆盖；确认需要接管时使用 `--force`，原目录会先备份。以后更新和检查状态：
+
+```bash
+python scripts/install-skills.py update --host <host>
+python scripts/install-skills.py status --host <host>
+```
+
+本地修改过已安装副本时，更新会停止；确认丢弃这些修改时才对 `update` 加 `--force`。可先用 `--dry-run` 预览，卸载使用 `uninstall`。TraeWork CN 安装前须至少启动过一次；安装器会保留 `~/.trae-cn/skill-config.json` 中无关字段，并登记 9 个 `user_upload` 技能。
+
+[`examples/`](examples/) 仅供人类查看，同时作为仓库 CI 回归数据；技能运行不依赖它，也不会把它复制进技能目录。需要仓库之外的独立副本时执行：
+
+```bash
+python scripts/install-skills.py export-examples
+```
+
+默认导出到 `~/.lny-prd/examples/`。对照粒度可查看 [`examples/mini-shop/`](examples/mini-shop/)（含 MP+AD、COMP-001、`_shell/AD-shell.md`、`sp_report.md`）。
 
 ### 5.2 使用
 
@@ -397,7 +422,7 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 ├── lny-prd-master/
 │   ├── SKILL.md                    # ① 总控与立项
 │   ├── reference-init.md           # main_spec 模板
-│   ├── reference-page-types.md     # ②⑤⑥ 共用页型职责与夹具映射
+│   ├── reference-page-types.md     # ②⑤⑥ 共用页型职责与金样映射
 │   └── framework-exclusions.md     # lny-default / none
 ├── lny-prd-ui/
 │   ├── SKILL.md                    # ②
@@ -418,8 +443,11 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 ├── lny-prd-check/SKILL.md + reference-checks.md
 ├── lny-prd-iter/SKILL.md + reference.md
 ├── lny-prd-sp/SKILL.md + reference-weights.md
-├── examples/mini-shop/             # 最小回归夹具
-├── scripts/validate-skill-package.py # 元数据、链接、脚本、kit、金样与夹具回归
+├── examples/mini-shop/             # 人类只读样例 + CI 回归数据（不参与安装）
+├── skill-bundle.json               # 整包 ID、版本、9 技能全集与可选资源
+├── scripts/install-skills.py       # 三平台用户级整包安装、更新、状态与卸载
+├── scripts/test_install_skills.py  # 安装事务、回滚、漂移与平台配置测试
+├── scripts/validate-skill-package.py # 元数据、清单、链接、脚本、kit、金样与回归总门禁
 ├── requirements-dev.txt            # 本地与 CI 的 PyYAML 发布门禁依赖
 ├── .github/workflows/validate-skills.yml
 ├── README.md
@@ -456,7 +484,7 @@ python3 -m venv .venv
 
 `.venv/` 仅保留在本机并由 Git 忽略；除非 `requirements-dev.txt` 发生变化，无需重复安装。GitHub Actions 使用全新环境，仍会在每次任务中安装依赖。
 
-门禁使用真实 YAML 解析并逐一 quick-validate 9 个技能，同时检查 `agents/openai.yaml`、Markdown 链接、全量文本 UTF-8、Python/JavaScript 语法、迁移冲突保护、kit 与副本、全部金样、页面 ID、根原型与版本镜像完全一致，以及带正反例的 12 页 coverage。GitHub Actions 在 push 和 pull request 时运行同一脚本；任一项失败均不得发布。元数据路由固定为：总控 `allow_implicit_invocation: true`，其余子技能为 `false`，子技能仍可通过 `$lny-prd-*` 显式调用。
+门禁使用真实 YAML 解析并逐一 quick-validate 9 个技能，同时检查 `skill-bundle.json` 与 README 版本一致、技能运行时不依赖 `examples/`、`agents/openai.yaml`、Markdown 链接、全量文本 UTF-8、Python/JavaScript 语法、安装事务与回滚、迁移冲突保护、kit 与副本、全部金样、页面 ID、根原型与版本镜像完全一致，以及带正反例的 12 页 coverage。GitHub Actions 在 push 和 pull request 时运行同一脚本；任一项失败均不得发布。元数据路由固定为：总控 `allow_implicit_invocation: true`，其余子技能为 `false`，子技能仍可通过 `$lny-prd-*` 显式调用。
 
 ## 十一、许可证
 

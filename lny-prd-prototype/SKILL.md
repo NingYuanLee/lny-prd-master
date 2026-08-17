@@ -36,13 +36,13 @@ description: >-
 
 先 Read [`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)。本步只维护金样类名、视觉密度和 HTML 行为；下方速查表只保留 ⑥ 的专属落地规则。
 
-## 夹具速查（写 HTML 前扫一眼）
+## 金样速查（写 HTML 前扫一眼）
 
-夹具 `examples/mini-shop/` → 金样 + 套件类。金样用来**快速对标视觉下限**（密度、比例、类名），不是业务功能清单。按**页类型**对照金样，不要按 PAGE 序号左右对齐。再按本页规格换文案/跳转/控件。夹具还须落地舒适默认与 [`reference-mobile-design.md`](reference-mobile-design.md) **审美必做**。类名细则 [`reference-kit.md`](reference-kit.md)。
+金样用来**快速对标视觉下限**（密度、比例、类名），不是业务功能清单。按**页类型**对照金样，不要按 PAGE 序号左右对齐；再按本页规格换文案、跳转和控件，并落地舒适默认与 [`reference-mobile-design.md`](reference-mobile-design.md) **审美必做**。类名细则见 [`reference-kit.md`](reference-kit.md)，本步不依赖仓库示例。
 
 **移动端**
 
-| 夹具页 | 金样 | 关键类 / 调用 |
+| 页型标识（无需读取示例） | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
 | PAGE-MP-001 首页 | `gold/mobile-grid.html` | `md-immersive` `md-hero`；`md-module`；`md-card--cover` 精选 + `md-card--tile` 双列推荐；`md-king` 5 列 + `--pair`；有 TabBar 则无 `md-appbar` |
 | PAGE-MP-002 列表 | `gold/mobile-list.html` | 卡型与操作语义遵守共享 `PT-MOBILE-LIST`；多行落 `md-card--row`，值长且字段少再加 `md-card--long`，操作轨用 `__rail` / `--bar`；单行落 `md-stack`>`md-set-row`；卡统一 `--md-shadow-surface`，多行图片可预览；筛选半屏用 `data-wheel="daterange"` |
@@ -59,7 +59,7 @@ description: >-
 
 **桌面端**
 
-| 夹具页 | 金样 | 关键类 / 调用 |
+| 页型标识（无需读取示例） | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
 | PAGE-AD-001 列表 | `gold/desktop-list.html` | 语义与阈值遵守共享 `PT-DESKTOP-LIST`；根用 `md-d1 md-d1--list`，列用对应 `md-col-*`，页签用 `md-tabs--page`，日期筛选用 `md-field--daterange`；「更多」落 `md-menu--fixed`；汇总/分页分别用 `md-d1__stats` / `md-d1__pager` |
 | PAGE-AD-002 商品表单 | `gold/desktop-form.html` | `md-breadcrumb`；`md-field--sm`。**按规格裁字段**，不要把套件样例整页搬来；进度条不在本页，见步骤向导 |
@@ -90,7 +90,7 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 **本地预览**：在 `prototypes/` 目录执行 `python -m http.server`（不要用 `npx serve`，也**禁止**在业务项目生成 `serve.json`）。
 
 1. `python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}`
-2. Read [`reference-kit.md`](reference-kit.md)：**高保真落地** + `index.html` 只填 `PROTO_SHELL`；单页只用 `md-*` 类；无对应类名时用该文「无类名组合」，**禁止裸 HTML**、禁止「示例 A/B」低保真夹具。
+2. Read [`reference-kit.md`](reference-kit.md)：**高保真落地** + `index.html` 只填 `PROTO_SHELL`；单页只用 `md-*` 类；无对应类名时用该文「无类名组合」，**禁止裸 HTML**、禁止「示例 A/B」低保真数据。
 3. 业务图标：Read [`reference-icons.md`](reference-icons.md)。闭集能覆盖则 `data-icon`；否则 `search-icons.py --pick 0 --name … --out …/assets`。无网或接口失败时按该文选择闭集近义项并记录替代，**不中止本批**。
 4. 壳层行为（状态演示 / 规格说明 / 缩放 / 关系图）见 [`reference-shell.md`](reference-shell.md)。每批末按 [`reference-scope.md`](reference-scope.md) 覆盖刷新 `prototypes/index.html`（含页底右下 SKILL 标注）。各端 `index.html` 的同类标注由 `proto-shell.js` 注入，禁止手写。
 
@@ -106,7 +106,7 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 2. **忽略金样**：按 ASCII 画空盒子、比金样更瘦、不 Read 对应金样。未 Read 金样 = 本页未完成。
 
 该对标的：分区疏密、卡片形态与图文比例（叠字/瓷砖可横可竖或定宽随图；横卡左图 1:1 或竖图；详情非列表图 16:9）、Chip / 面包屑 / 横卡、`md-*` 类名、本页规格需要的控件行为（轮盘 / 下拉 / 签）。
-不该搬的：夹具商品名与跳转、套件样例才有的演示交互。
+不该搬的：金样商品名与跳转、套件样例才有的演示交互。
 
 真实项目没有样例店可看时，模型会按 ASCII 线框画出空盒子。用 `gold/` 钉死视觉下限，用 [`reference-mobile-design.md`](reference-mobile-design.md) 钉死审美必做，再用舒适默认抬高：
 
@@ -115,7 +115,7 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 3. ASCII = 分区顺序；金样 = 视觉密度。功能以本页规格为准。`ui/PAGE`「视觉细节」只给 ⑨ 估点，⑥ 视觉不降档。触屏 §1.3.3；桌面 D1-1 §1.4.3。
 4. **舒适默认（§2.3 漏写也要落地）**：按 `lny-prd-ui` **§1.7.0**。骨架、空态插图、失败可重试、一个主按钮、按下态、浮层过渡、D1-1 语义列宽+`md-d1--list`、评论时间行+附图约 40px、一排最多五张。禁止发明新跳转/新字段/新弹窗。**有字段时必须按层级排版**。用户未给设计规范 ≠ 可以画线框。点图预览只默认给详情页与横卡多行，不是凡图都预览。
 5. 重画不得删 Chip / 面包屑 / 横卡 / `data-icon` / `md-dialog`。未 Read 金样 = 本页未完成。
-6. 不是夹具表里已有的页型：按金样表选最接近的金样（dashboard / split / settings / menu / wizard / timeline / fields），禁止拿 `desktop-list` 硬套工作台，禁止拿一排按钮硬套功能区。
+6. 不是速查表里已有的页型：按金样表选最接近的金样（dashboard / split / settings / menu / wizard / timeline / fields），禁止拿 `desktop-list` 硬套工作台，禁止拿一排按钮硬套功能区。
 
 ## 职责与禁止
 

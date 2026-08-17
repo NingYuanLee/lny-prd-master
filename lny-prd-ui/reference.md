@@ -258,18 +258,18 @@
 | 键盘与焦点 | 「Tab 顺序合理；主按钮回车；焦点可见」 | 套件 `:focus-visible`；触屏不靠 hover |
 | 首次进入 | 「没数据/没权限时第一眼；无则写无」 | 用空态/Alert 说清现状；禁止另造引导层（除非 §2.3 写了） |
 
-#### 1.7.6 易误套页型（已有夹具与金样，禁止拿列表页硬套）
+#### 1.7.6 易误套页型（已有金样，禁止拿列表页硬套）
 
 | 页型 | 骨架码 | 观感要点 |
 |------|--------|----------|
-| 工作台 / 仪表盘 | D1-3 | 指标卡 3～4 张一排；趋势用 `md-chart-ph`；下面短表或待办。金样 `gold/desktop-dashboard.html`；夹具 `PAGE-AD-004.html` |
-| 树 + 内容 | 触屏左树右内容 / D1-3 | 当前项高亮；箭头展开收起；右区随选中切换。金样 `gold/mobile-tree.html` / `gold/desktop-split.html`；夹具 `PAGE-MP-008.html` / `PAGE-AD-005.html` |
-| 设置 | 移动分组列表 / D1-2 分组 | **功能服务 · 设置项**：同 `md-set-group` 通栏；页根 **`md-set-page`**（浅灰底、组间距漏底）；成组有限；左图标可有可无；**在当前行直接操作**（开关 / 无极 / 横向勾选 / 本行下拉改值），不是拿整行当跳转入口。金样 `gold/mobile-settings.html` / `gold/desktop-settings.html`；夹具 `PAGE-MP-006.html` / `PAGE-AD-006.html` |
+| 工作台 / 仪表盘 | D1-3 | 指标卡 3～4 张一排；趋势用 `md-chart-ph`；下面短表或待办。金样 `gold/desktop-dashboard.html` |
+| 树 + 内容 | 触屏左树右内容 / D1-3 | 当前项高亮；箭头展开收起；右区随选中切换。金样 `gold/mobile-tree.html` / `gold/desktop-split.html` |
+| 设置 | 移动分组列表 / D1-2 分组 | **功能服务 · 设置项**：同 `md-set-group` 通栏；页根 **`md-set-page`**（浅灰底、组间距漏底）；成组有限；左图标可有可无；**在当前行直接操作**（开关 / 无极 / 横向勾选 / 本行下拉改值），不是拿整行当跳转入口。金样 `gold/mobile-settings.html` / `gold/desktop-settings.html` |
 | 我的 / 服务 | 移动分组列表 / D1-2 分组 | **功能服务 · 入口**：通栏、一行两个、或按需金刚（宫格/双卡，**不限首页**）；信息多用金刚双卡。**只跳转或打开半屏/弹窗**。金样入口见 `gold/mobile-menu.html` / `gold/desktop-menu.html`，金刚形态见 `gold/mobile-grid.html`。禁止按钮堆 |
-| 向导 | 表单 + 步骤条 + 进步条 | 当前步清晰，最后一步才提交；当前步字段疏密与整页表单相同（桌面双列有行距）。**桌面数字步骤可点，快速跳到该步**。金样 `gold/desktop-wizard.html` / `gold/mobile-wizard.html`；夹具 `PAGE-AD-003.html` / `PAGE-MP-005.html` |
+| 向导 | 表单 + 步骤条 + 进步条 | 当前步清晰，最后一步才提交；当前步字段疏密与整页表单相同（桌面双列有行距）。**桌面数字步骤可点，快速跳到该步**。金样 `gold/desktop-wizard.html` / `gold/mobile-wizard.html` |
 | 展示 / 详情（桌面） | D1-3 | 面包屑；极浅灰底 + 白底通栏；左 16:9 + 右标题；图文四级标题；短段不缩进、大段 `__body` 缩进、多项目 `__list`；单/双图、图注居中。**本页图片默认可点预览**。金样 `gold/desktop-detail.html`。禁止卡片圆角阴影、沉浸式、列表卡比例 |
 | 字段详情（桌面） | D1-3 | 面包屑；极浅灰底 + 白底分组；`md-desc` 左名右值，可 `--cols-2`；长文案 `--stack`+`--span`。金样 `gold/desktop-fields.html`。禁止当表单、沉浸式、D1-1 表壳 |
-| 时间轴 | 左竖轨 + 右图文 | 节点已完成/当前/待办。金样 `gold/mobile-timeline.html` / `gold/desktop-timeline.html`；夹具 `PAGE-MP-009.html` / `PAGE-AD-007.html` |
+| 时间轴 | 左竖轨 + 右图文 | 节点已完成/当前/待办。金样 `gold/mobile-timeline.html` / `gold/desktop-timeline.html` |
 | 分栏对照 | D1-3 | 两栏职责分离，主操作落在主栏 |
 
 ---

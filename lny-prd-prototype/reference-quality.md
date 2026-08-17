@@ -87,7 +87,7 @@ exit 0 才可继续；exit 1 不得交付，按 F.1 整文件重写（coverage �
 
 | 序号 | 检查项 | 通过标准 |
 |------|--------|----------|
-| G5.1 | 夹具像真 | 无「示例商品 A/B」「测试数据」；名称/价格像业务数据 |
+| G5.1 | 数据像真 | 无「示例商品 A/B」「测试数据」；名称/价格像业务数据 |
 | G5.2 | 密度 | 直接执行共享 `PT-DENSITY`；不得把其中的列表门槛扩大到详情附属区或摘要短表，规格/API 明示条数优先 |
 | G5.3 | 封面 | `md-media-ph--1`～`--6` 轮换，无纯灰块。灯箱默认给详情页图（页根 `data-lightbox`；轮播/图文/评论各一组）、横卡多行卡内图（每卡一组）、**单图/多图/视频上传缩略**。封面叠字 / 双列 / Banner / 文件上传不可预览 |
 | G5.4 | 移动端 | 状态栏由 `proto-page.js` 注入；页根 `md-immersive` 或 `md-standard`；分区用 `md-module` + `md-section-head`；列表实现共享 `PT-MOBILE-LIST`，多行卡根必须有 `md-card--row` 且左图宽高双锁，单行用 `md-stack`>`md-set-row`；功能区明确 `md-king` / `--pair` / `md-set-group` / `md-set-pair`；详情非列表图默认 16:9；评论有时间行与最多五张约 40px 附图；有 TabBar 则无 `md-appbar`；MP 用 `md-mp` 和 `viewport-fit=cover`；悬浮控件实现共享 `PT-FLOAT` |

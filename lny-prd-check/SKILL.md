@@ -16,7 +16,6 @@ description: >-
 - 检查表全文：[`reference-checks.md`](reference-checks.md)
 - 跨步骤页型不变量：[`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)
 - 框架排除：`lny-prd-master/framework-exclusions.md`
-- 回归样例（只读）：技能包 `examples/mini-shop/`
 
 ## 职责与禁止
 

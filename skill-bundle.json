@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "bundle_id": "lny-prd",
+  "bundle_version": "2.7.0",
+  "skills": [
+    "lny-prd-master",
+    "lny-prd-ui",
+    "lny-prd-api",
+    "lny-prd-feature",
+    "lny-prd-page",
+    "lny-prd-prototype",
+    "lny-prd-check",
+    "lny-prd-iter",
+    "lny-prd-sp"
+  ],
+  "optional_resources": {
+    "examples": {
+      "path": "examples",
+      "audience": "human"
+    }
+  }
+}

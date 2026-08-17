@@ -140,7 +140,7 @@ ProtoMap.boot({
 });
 ```
 
-线型由套件内置：`forward` 绿实线、`back` 灰虚线、`tab` 蓝虚线、`embed` 紫点线。iframe `loading="lazy"`；>15 页可改为占位 + 双击加载。参考 `examples/mini-shop/prototypes/MP/map.html`。
+线型由套件内置：`forward` 绿实线、`back` 灰虚线、`tab` 蓝虚线、`embed` 紫点线。iframe `loading="lazy"`；>15 页可改为占位 + 双击加载。实现以本节 `PROTO_MAP.boot` 结构与 `kit/proto-map.js` 为准。
 
 #### E.6b 布局持久化
 
