@@ -84,8 +84,9 @@
 |--------|------|------------|--------|
 | 版本一致性 | 变更记录表版本集合与 `versions/` 一一对应；同版本号在单表不得多行；最新版本与目录一致 | 在 `/lny-prd-iter` 统一修订；本步不改文件 | 高 |
 | 过程性留痕（建议） | 对根目录四规范的修订，宜在 `versions/{对应版本}/iteration_notes.md` 文末有按时间顺序的简短摘要 | 提醒遵守 `lny-prd-master` §1.1；本步不改文件 | 低 |
-| iter 台账 ↔ pages_prd | `versions/{v}/ui_changes.md` 中新增/修改页面且 `pages_prd目标路径` 非「无需单页 PRD」「—」的每一行，对应文件须存在（路径可嵌套） | 运行 `/lny-prd-page`（⑤）按台账路径落盘 | 中 |
-| iter 台账 ↔ 规格索引（建议） | `ui_changes.md`/`api_changes.md`/`feature_changes.md` 中状态待②/待③/待④的条目，应对应检查 `ui_manifest`/`api_spec` §4/`feature_spec` 是否已落实 | 按台账委派步运行 `/lny-prd-ui`/`/lny-prd-api`/`/lny-prd-feature` | 低 |
+| 台账状态单值 | 三类 `*_changes.md` 每行状态只能是 `待②` / `待③` / `待④` / `待⑤` / `已完成` 之一；禁止斜杠、逗号或多个状态并存 | 由对应 ②③④⑤ 子技能按状态机修正；本步不改文件 | 高 |
+| 待办状态 ↔ 缺口 | `待②` 表示本行 UI 尚未完整落规格；`待③` 表示 API 尚未完整落规格；`待④` 表示 Feature 尚未完整落规格；`待⑤` 仅用于新增/修改页面，且 UI 已完成但目标单页 PRD 尚未完成。状态与实际缺口不一致即报 | 按当前真实缺口委派 `/lny-prd-ui`、`/lny-prd-api`、`/lny-prd-feature` 或 `/lny-prd-page` | 高 |
+| `已完成` 产物闭环 | 新增/修改页面须有 UI 索引/明细及台账目标 `pages_prd`；废弃页面须在 UI 留有明确废弃记录且无需单页 PRD；API/Feature 须有索引与对应明细或明确废弃记录。只改状态、缺必要产物不得算完成 | 委派对应产物责任技能补齐；失败时退回该步单值待办状态 | 高 |
 
 ### 1.6 其它类
 
@@ -94,7 +95,7 @@
 | 原型图文件存在性（建议） | 每个页面可有 `prototypes/{终端}/PAGE-{终端}-{序号}.html`；不作为规格阻塞项 | 运行 `/lny-prd-prototype`（⑥） | 低 |
 | 原型总入口 | 若已有任一端 `prototypes/{终端}/`：须有 `prototypes/index.html`（含简介正文 + 各端入口）；**不**再写 `scope.html` | 运行 `/lny-prd-prototype`（⑥）补总入口 | 中 |
 | 原型须有单页 PRD 来源 | 每个业务页原型 `prototypes/{终端}/PAGE-*.html`（不含各端 `index.html`/`map.html`、也不含 `prototypes/index.html`）须能对应到 `versions/{v}/pages_prd/**` 下同源单页 PRD；**例外**仅当台账或产物明确标注 **`ui直出`**（须可核对） | 缺来源则先跑 `/lny-prd-page`（⑤）补单页 PRD，再 `/lny-prd-prototype`；或补标 `ui直出` | 中 |
-| 根原型 ↔ 版本镜像 | 若存在 `versions/{v}/prototypes/`：业务页 `PAGE-*.html` 集合宜与根 `prototypes/` **同端同名对齐**；总入口 `index.html` 宜同时出现在两侧（允许镜像晚于根；明显缺页/只存在一侧须报） | `/lny-prd-prototype` 同步镜像或根目录 | 低 |
+| 页面 ID 与镜像 | 每个 `PAGE-*.html` 的 `<title>` 以文件名 PAGE ID 开头；若存在 `versions/{v}/prototypes/`，根原型与该工作版本镜像的文件集合及同名内容必须一致（含入口与 assets），不得只同名不同页型 | `/lny-prd-prototype` 以当前规格重新同步完整镜像 | 高 |
 
 ---
 
@@ -153,7 +154,7 @@
 | 原型 JS 引用 | 静态无残留调用；可选 Console 无 ReferenceError | `/lny-prd-prototype` 按 G.1 修 | 高 |
 | 交互体验设计 §2.3 | 每个 `ui/PAGE-*` 含观感与舒适、动效与过渡、微反馈、收纳与浮层；不得只列控件 | `/lny-prd-ui` 补 §2.3 | 高 |
 | 布局与 COMP 态 | 布局与 `ui/PAGE-*` 一致；COMP 态与矩阵可演示 | ② 或 ⑥ | 中 |
-| 逐页对照 G.4 | 每个业务 `PAGE-*.html` 对照 `pages_prd`：ASCII 只定分区；视觉须达 `gold/` 金样密度（对标下限，勿照搬演示功能）；须能过 `verify-prototype-coverage.py`（含高保真：无「示例 A/B」、≥4 条、封面变体、状态栏、无 ASCII 残留、桌面表有 Chip/缩略图） | `/lny-prd-prototype` 按 G.4/G.5 对照金样补页（每轮最多 3 页） | 高 |
+| 逐页对照 G.4 | 每个业务 `PAGE-*.html` 对照 `pages_prd`：ASCII 只定分区；视觉须达 `gold/` 金样下限且不照搬演示功能；须能过 `verify-prototype-coverage.py`。密度按共享 `PT-DENSITY`，移动列表、D1-1 与悬浮控件分别按 `PT-MOBILE-LIST`、`PT-DESKTOP-LIST`、`PT-FLOAT`；另查无低保真占位、封面变体、状态栏、ASCII 残留及桌面表 Chip/缩略图 | `/lny-prd-prototype` 按共享页型规则与 G.4/G.5 补页（每轮最多 3 页） | 高 |
 | 接口与 Feature | 展示字段能在 `api/API-*` 找到；主操作有 API；流程与 FEATURE/AC 可对照 | ③④ 或 ⑥ | 中 |
 | 跨层编号 | 原型中的 `PAGE-*` / `API-*` / `FEATURE-*` 可回溯索引 | 对应步补引用 | 高 |
 | 跳转 | 页面间跳转无死路；目标在 manifest | ⑥ 修跳转 | 低 |

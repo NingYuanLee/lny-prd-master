@@ -3,7 +3,6 @@ name: lny-prd-iter
 description: >-
   创建新版本文件夹、变更台账与委派清单；不写规格正文。
   Use when the user mentions /lny-prd-iter, @lny-prd-iter, 新迭代, 版本迭代, 变更台账.
-disable-model-invocation: true
 ---
 
 ## 与总控的关系
@@ -22,7 +21,7 @@ disable-model-invocation: true
 |----------|----------|
 | 校验版本号，创建 `versions/{新版本号}/` | 写 `ui/` / `api/` / `feature/` 正文 |
 | 写 `iteration_notes.md` 开篇、三类 `*_changes.md`、`eval_signals.md` | 生成 `pages_prd` |
-| 新增/修改页面登记 `pages_prd` 目标路径，状态 `待②`/`待⑤` | 更新索引/统计（留给 ②③④） |
+| 新增/修改页面登记 `pages_prd` 目标路径，初始状态 `待②`（② 完成后转 `待⑤`） | 更新索引/统计（留给 ②③④） |
 | 根四规范「变更记录」各追加一行（版本号+简述+日期） | 声称已写规格或单页 PRD |
 | 输出委派清单（②→③→④→⑤；⑥ 视演示目标；⑦ 不自动） | 初始化 `v1.0.0`（属 ①）；写 `prototypes/index.html`（属 ⑥） |
 
@@ -45,3 +44,5 @@ disable-model-invocation: true
 3. 创建目录；按模板写 `iteration_notes.md` 开篇、三类台账、`eval_signals.md`。
 4. 根四规范：变更记录各 +1 行；更新「文档版本」「最后更新」；**不**改索引与 §5/§6/§7。
 5. 输出委派清单与路径；列出新增/修改页的 `pages_prd目标路径` 供 ⑤/⑦。
+
+台账状态须遵守 master §1.1.3：每行只写一个状态；本步只初始化，不提前标记下游完成。

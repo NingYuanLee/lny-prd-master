@@ -16,6 +16,23 @@ STYLE_THEME_RE = re.compile(
     re.I,
 )
 SKIP_QUOTES = {"无", "是", "否"}
+VOID_ELEMENTS = {
+    "area",
+    "base",
+    "br",
+    "col",
+    "embed",
+    "hr",
+    "img",
+    "input",
+    "link",
+    "meta",
+    "param",
+    "source",
+    "track",
+    "wbr",
+}
+CARD_DENSITY_CONTEXT_CLASSES = {"md-grid-2", "md-list-toolbar", "md-timeline"}
 
 
 def terminal_of(page_id: str) -> str:
@@ -71,7 +88,7 @@ def parse_prd(text: str) -> tuple[set[str], set[str], list[str]]:
 class PageParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
-        self.stack: list[set[str]] = []
+        self.stack: list[tuple[str, set[str]]] = []
         self.errors: list[str] = []
         self.text_parts: list[str] = []
         self.has_kit_css = False
@@ -81,6 +98,7 @@ class PageParser(HTMLParser):
         self.empty_for: set[str] = set()
         self.in_style = False
         self.in_thead = 0
+        self.in_data_table = 0
         self.is_mobile = False
         self.is_desktop = False
         self.has_status_bar = False
@@ -89,13 +107,25 @@ class PageParser(HTMLParser):
         self.has_tabbar = False
         self.has_mobile_appbar = False
         self.card_count = 0
+        self.non_row_card_count = 0
         self.table_rows = 0
         self.bare_media = 0
+        self.has_card_density_context = False
+        self.has_dense_data_table = False
+        self.has_list_toolbar = False
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         ad = {k: (v or "") for k, v in attrs}
         classes = set((ad.get("class") or "").split())
-        self.stack.append(classes)
+        ancestors = [item_classes for _, item_classes in self.stack]
+        if tag not in VOID_ELEMENTS:
+            self.stack.append((tag, classes))
+        if classes & CARD_DENSITY_CONTEXT_CLASSES:
+            self.has_card_density_context = True
+        if "md-d1--list" in classes or "md-d1__list" in classes:
+            self.has_dense_data_table = True
+        if "md-list-toolbar" in classes:
+            self.has_list_toolbar = True
         if "md-mobile-page" in classes:
             self.is_mobile = True
         if "md-d1" in classes:
@@ -114,12 +144,21 @@ class PageParser(HTMLParser):
             self.has_mobile_appbar = True
         if "md-card" in classes:
             self.card_count += 1
+            if "md-card--row" not in classes:
+                self.non_row_card_count += 1
         if "md-media-ph" in classes:
             if not any(re.match(r"md-media-ph--\d+", c) for c in classes):
                 self.bare_media += 1
+        if tag == "table":
+            if "md-table" in classes:
+                self.in_data_table += 1
+            elif "md-article__table" not in classes:
+                self.errors.append(
+                    "<table> without md-table or md-article__table"
+                )
         if tag == "thead":
             self.in_thead += 1
-        if tag == "tr" and self.in_thead == 0:
+        if tag == "tr" and self.in_data_table and self.in_thead == 0:
             self.table_rows += 1
         if tag == "style":
             self.in_style = True
@@ -129,7 +168,7 @@ class PageParser(HTMLParser):
         if tag == "script":
             src = ad.get("src", "")
             if src:
-                self.scripts.add(Path(src).name)
+                self.scripts.add(Path(re.split(r"[?#]", src, maxsplit=1)[0]).name)
         if tag == "a" and ad.get("href"):
             self.hrefs.add(ad["href"])
         comp = ad.get("data-comp")
@@ -143,10 +182,12 @@ class PageParser(HTMLParser):
             self.errors.append("inline theme style: " + style[:80])
         if tag == "button":
             allowed = any(c.startswith("md-") or c.startswith("proto-") for c in classes)
-            in_toggle = any("md-toggle" in prev for prev in self.stack[:-1])
+            in_toggle = any("md-toggle" in prev for prev in ancestors)
             if not allowed and not in_toggle:
                 self.errors.append(
-                    "naked <button> without md-* class (browser chrome; use md-btn / md-icon-btn / md-tab)"
+                    "naked <button> without md-* class at "
+                    + str(self.getpos())
+                    + " (browser chrome; use md-btn / md-icon-btn / md-tab)"
                 )
         if tag in {"input", "select", "textarea"}:
             if ad.get("type") == "hidden":
@@ -156,25 +197,34 @@ class PageParser(HTMLParser):
                     "md-field",
                     "md-check",
                     "md-radio",
+                    "md-set-pick",
+                    "md-slider",
                     "md-switch",
                     "md-upload",
+                    "md-upload-grid__add",
                 }
                 & prev
-                for prev in self.stack
+                for prev in ancestors
             )
             self_ok = any(c.startswith("md-") for c in classes)
             if not in_field and not self_ok:
-                self.errors.append("naked <" + tag + "> without md-field / md-*")
-        if tag == "table" and "md-table" not in classes:
-            self.errors.append("<table> without md-table")
-
+                self.errors.append(
+                    "naked <"
+                    + tag
+                    + "> without md-field / md-* at "
+                    + str(self.getpos())
+                )
     def handle_endtag(self, tag: str) -> None:
         if tag == "style":
             self.in_style = False
         if tag == "thead" and self.in_thead:
             self.in_thead -= 1
-        if self.stack:
-            self.stack.pop()
+        if tag == "table" and self.in_data_table:
+            self.in_data_table -= 1
+        for index in range(len(self.stack) - 1, -1, -1):
+            if self.stack[index][0] == tag:
+                del self.stack[index:]
+                break
 
     def handle_data(self, data: str) -> None:
         if not self.in_style:
@@ -230,13 +280,10 @@ def check_html(path: Path, page_id: str, comps: set[str], jumps: set[str], quote
         errors.append(str(path) + ": low-fidelity fixture " + low_fi.group(0))
     if parser.bare_media:
         errors.append(str(path) + ": md-media-ph without --1..--6 variant")
-    if parser.card_count and parser.card_count < 4:
-        errors.append(str(path) + ": need ≥4 cards in default state (got " + str(parser.card_count) + ")")
-    if parser.table_rows and parser.table_rows < 4:
-        errors.append(str(path) + ": need ≥4 table rows (got " + str(parser.table_rows) + ")")
+    errors.extend(check_density(path, parser))
     if parser.is_mobile and "proto-page.js" not in parser.scripts:
         errors.append(str(path) + ": mobile page missing proto-page.js (injects fixed status bar)")
-    if parser.is_mobile and not parser.has_section_head:
+    if parser.is_mobile and not parser.has_section_head and "md-set-page" not in text:
         errors.append(str(path) + ": mobile page missing md-section-head")
     if parser.is_desktop and not parser.has_breadcrumb:
         errors.append(str(path) + ": desktop page missing md-breadcrumb")
@@ -246,6 +293,26 @@ def check_html(path: Path, page_id: str, comps: set[str], jumps: set[str], quote
 
 BOX_DRAW_RE = re.compile(r"[┌┐└┘├┤┬┴┼│─]|[+][-]{2,}")
 NATIVE_DATE_RE = re.compile(r"""type\s*=\s*["']date["']""", re.I)
+
+
+def check_density(path: Path, parser: PageParser) -> list[str]:
+    """Enforce repeated-content density only for explicit list/grid contexts."""
+    errors: list[str] = []
+    if parser.has_card_density_context and 0 < parser.card_count < 4:
+        errors.append(
+            str(path)
+            + ": need ≥4 cards in list/grid default state (got "
+            + str(parser.card_count)
+            + ")"
+        )
+    if parser.has_dense_data_table and 0 < parser.table_rows < 4:
+        errors.append(
+            str(path)
+            + ": need ≥4 table rows in D1-1 default state (got "
+            + str(parser.table_rows)
+            + ")"
+        )
+    return errors
 
 
 def check_visual_floor(path: Path, text: str, parser: PageParser) -> list[str]:
@@ -263,7 +330,7 @@ def check_visual_floor(path: Path, text: str, parser: PageParser) -> list[str]:
             errors.append(prefix + "desktop table missing md-chip/md-thumb/md-row-goods")
     if parser.is_desktop and "md-d1__form" in text and "md-field--sm" not in text:
         errors.append(prefix + "form fields must use md-field--sm")
-    if parser.is_mobile and "md-stack" in text and parser.card_count and "md-card--row" not in text:
+    if parser.is_mobile and parser.has_list_toolbar and parser.non_row_card_count:
         errors.append(prefix + "mobile list cards must use md-card--row")
     if parser.is_mobile and "md-tabbar" in text and "data-icon" not in text:
         errors.append(prefix + "tabbar missing data-icon")

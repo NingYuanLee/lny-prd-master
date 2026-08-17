@@ -3,7 +3,6 @@ name: lny-prd-api
 description: >-
   维护 api_spec 索引与 api/API-*.md、api/EXT-*.md 业务需求明细；不写路由/JSON/code/域名。
   Use when the user mentions /lny-prd-api, @lny-prd-api, 接口需求, API-*, EXT-*.
-disable-model-invocation: true
 ---
 
 ## 与总控的关系
@@ -25,7 +24,7 @@ Read `lny-prd-master/framework-exclusions.md`。不为框架通用已排除项�
 
 ## 职责与禁止
 
-- **负责**：`api_spec.md` §1～§4 索引与规则；`api/API-*.md` / `api/EXT-*.md`；`main_spec` §6 统计。
+- **负责**：`api_spec.md` §1～§4 索引与规则；`api/API-*.md` / `api/EXT-*.md`；`main_spec` §6 统计；成功自检后推进本次 `api_changes.md` 对应行状态。
 - **禁止**：写 UI 线框；改 `prototypes/`；实现向内容；根规范「变更记录」表新增行。仅当 PM 已说出点位或 AD 字典条目才写埋点；**禁止自拟埋点方案**。
 
 **新立项只走目录化**。旧 `api_spec` §5 单体大段只提示迁移，禁止双轨扩写。
@@ -56,3 +55,4 @@ Read `lny-prd-master/framework-exclusions.md`。不为框架通用已排除项�
 2. 按页面与第4章终端梳理接口；写 EXT 前过联调门槛门禁。
 3. 更新 §2 / §4 索引与明细文件；更新 `main_spec` §6。
 4. 文末追加 `iteration_notes`（若有业务变更）。
+5. 索引、明细与引用自检通过后，将本次 `api_changes.md` 条目由 `待③` 改为 `已完成`；有缺口或失败则保留 `待③`。

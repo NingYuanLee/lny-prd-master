@@ -1,0 +1,6 @@
+interface:
+  display_name: "LNY-PRD UI"
+  short_description: "设计页面结构、视觉层级、交互体验、状态反馈与复用组件规格"
+  default_prompt: "Use $lny-prd-ui to design and update the UI specifications for this PRD."
+policy:
+  allow_implicit_invocation: false

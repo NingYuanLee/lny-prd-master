@@ -3,7 +3,6 @@ name: lny-prd-sp
 description: >-
   按指定版本汇总 FE/BE 故事点，覆盖写入 versions/{v}/sp_report.md。只读规格与台账，不改正文。
   Use when the user mentions /lny-prd-sp, @lny-prd-sp, 故事点, 估点, SP, sp_report.
-disable-model-invocation: true
 ---
 
 ## 与总控的关系
@@ -21,6 +20,8 @@ disable-model-invocation: true
 
 - **负责**：按版本计算 FE_SP / BE_SP；同版本重跑直接覆盖报告；落盘后同轮交 ⑥ 只刷总入口。
 - **禁止**：改规格/台账/`eval_signals`/DDL/人天；手改 `prototypes/`（含 `index.html`）；产品链不可估时仍写报告但停算（数值用 `—`），**仍须**刷总入口。
+
+故事点仅用于同一团队、同一权重版本下的相对比较。未用至少 3 个真实迭代校准团队速率前，禁止把 SP 换算成人天、工期、发布日期或交付承诺；校准后也只由人工项目管理决策使用。
 
 ## 计分范围
 

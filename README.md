@@ -52,13 +52,14 @@ LNY-PRD 做的是 **vibe-spec-coding** 里的 **vibe-spec**：把已经想清楚
 | ⑧ | `/lny-prd-iter` | 新迭代管理（建版本壳 + 变更台账 + 委派清单） |
 | ⑨ | `/lny-prd-sp` | 按指定版本汇总 FE/BE 故事点（`sp_report.md`） |
 
-**②③④** 为规格三件套，可并行推进（总控 **同轮批跑**，中间不问「继续」）。用户目标是原型/演示时，总控在**当前版本**静默补 ②③④⑤⑥，**禁止静默 ⑧**（只有明确说新迭代才建新版本）。⑥ **每轮最多 3 个业务页**；未画完时「继续」只续原型，不重做规格。
+**②③④** 为规格三件套，按 **②→③→④ 同轮批处理**（中间不问「继续」）。用户目标是原型/演示时，总控在**当前版本**静默补 ②③④⑤⑥，**禁止静默 ⑧**（只有明确说新迭代才建新版本）。⑥ **每轮最多 3 个业务页**；未画完时「继续」只续原型，不重做规格。
 
 ## 二、核心原则
 
 - **目标驱动、规格先行**：对人要原型则先交付原型，缺口由 Agent 静默补规格；禁止用 HTML 代替规格，禁止静默开新版本
 - **技能边界**：每一步都有明确的"负责"与"禁止"清单，Agent 不得越权；**Skill 只写干啥，原理说明书集中在本 README**
 - **版本纪律**：仅 ① 可建 `v1.0.0`，仅 ⑧ 可建新版本并追加变更记录；小改留在当前版本
+- **台账单值状态**：页面 `待② → 待⑤ → 已完成`；API `待③ → 已完成`；Feature `待④ → 已完成`。仅在本步成功落盘并自检后推进，禁止 `待②/待⑤` 复合值
 - **只读检查**：⑦ `/lny-prd-check` 不改任何文件，仅输出报告与委派建议
 - **框架内置排除**：`lny-default` 是作者栈的个性化配置，**不是**强制行业表（见 [`lny-prd-master/framework-exclusions.md`](lny-prd-master/framework-exclusions.md)）；立项须确认；换栈可设 `none`；未确认不得按默认表删需求
 
@@ -165,7 +166,7 @@ Agent 将自动判定当前状态：
 ### 5.3 推荐工作流
 
 ```text
-① 立项 → ②③④ 规格三件套（并行） → ⑤ 单页 PRD → ⑥ 原型生成 → ⑦ 检查验收 → ⑨ 估点 → ⑧ 新迭代（仅用户明确要求）
+① 立项 → ②③④ 规格三件套（同轮批处理） → ⑤ 单页 PRD → ⑥ 原型生成 → ⑦ 检查验收 → ⑨ 估点 → ⑧ 新迭代（仅用户明确要求）
 ```
 
 「继续」= 重新走总控 §3，不是按上表自动走完。**②③④** 缺口会在同一轮连续完成。规格齐了只建议 ⑤⑥⑦，不自动落盘。当轮目标为演示时同一轮可做到 ⑥。要原型时对人静默补规格（禁止用 HTML 代替规格）；只有明确说新迭代才走 ⑧；⑦ 须明确要求检查。⑨ 估点落盘后同一轮只刷 `prototypes/index.html` 版本清单，不重画各端页面。估点见 [第八章](#八估点与可评估性)。
@@ -396,6 +397,7 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 ├── lny-prd-master/
 │   ├── SKILL.md                    # ① 总控与立项
 │   ├── reference-init.md           # main_spec 模板
+│   ├── reference-page-types.md     # ②⑤⑥ 共用页型职责与夹具映射
 │   └── framework-exclusions.md     # lny-default / none
 ├── lny-prd-ui/
 │   ├── SKILL.md                    # ②
@@ -417,10 +419,24 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 ├── lny-prd-iter/SKILL.md + reference.md
 ├── lny-prd-sp/SKILL.md + reference-weights.md
 ├── examples/mini-shop/             # 最小回归夹具
+├── scripts/validate-skill-package.py # 元数据、链接、脚本、kit、金样与夹具回归
+├── requirements-dev.txt            # PyYAML 发布门禁依赖
+├── .github/workflows/validate-skills.yml
 ├── README.md
 └── LICENSE
 ```
 
-## 十、许可证
+## 十、维护回归
+
+修改技能、金样、套件或示例后，在仓库根执行：
+
+```text
+python -m pip install -r requirements-dev.txt
+python scripts/validate-skill-package.py
+```
+
+门禁使用真实 YAML 解析并逐一 quick-validate 9 个技能，同时检查 `agents/openai.yaml`、Markdown 链接、全量文本 UTF-8、Python/JavaScript 语法、迁移冲突保护、kit 与副本、全部金样、页面 ID、根原型与版本镜像完全一致，以及带正反例的 12 页 coverage。GitHub Actions 在 push 和 pull request 时运行同一脚本；任一项失败均不得发布。元数据路由固定为：总控 `allow_implicit_invocation: true`，其余子技能为 `false`，子技能仍可通过 `$lny-prd-*` 显式调用。
+
+## 十一、许可证
 
 MIT License

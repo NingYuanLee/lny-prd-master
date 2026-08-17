@@ -1,0 +1,6 @@
+interface:
+  display_name: "LNY-PRD Page"
+  short_description: "生成逐页面 PRD、页面分区线框、数据依赖和桌面业务壳规格"
+  default_prompt: "Use $lny-prd-page to generate the required page-level PRD documents for this version."
+policy:
+  allow_implicit_invocation: false

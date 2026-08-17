@@ -1,0 +1,6 @@
+interface:
+  display_name: "LNY-PRD 总控"
+  short_description: "编排 PRD 立项、规格、原型、检查、迭代与估点流程"
+  default_prompt: "Use $lny-prd-master to inspect this PRD workspace and execute the next required workflow step."
+policy:
+  allow_implicit_invocation: true

@@ -6,10 +6,11 @@ description: >-
   /lny-prd-page, /lny-prd-check, /lny-prd-iter, /lny-prd-sp, product spec, or PRD workflows.
   空目录走立项脚手架；已有 main_spec.md 时按 §3 判定下一步并 Read 对应 lny-prd-*/SKILL.md。
   入口与「继续」等价；勿要求用户自选子指令。
+---
 
 ## 李宁远产品工作流
 
-🔷 **LNY-PRD** 共九步：**①** `/lny-prd-master` 立项 · **②** `/lny-prd-ui` · **③** `/lny-prd-api` · **④** `/lny-prd-feature` · **⑤** `/lny-prd-page` · **⑥** `/lny-prd-prototype` · **⑦** `/lny-prd-check` · **⑧** `/lny-prd-iter` · **⑨** `/lny-prd-sp`。**②③④ 规格三件套可并行**；**⑥ 默认依赖 ⑤**（`pages_prd`；例外 `ui直出`）。入口 `@lny-prd-master` / `/lny-prd-master` /「继续」等价；按本协议判定后 **Read** 对应 `lny-prd-*/SKILL.md` 执行。
+🔷 **LNY-PRD** 共九步：**①** `/lny-prd-master` 立项 · **②** `/lny-prd-ui` · **③** `/lny-prd-api` · **④** `/lny-prd-feature` · **⑤** `/lny-prd-page` · **⑥** `/lny-prd-prototype` · **⑦** `/lny-prd-check` · **⑧** `/lny-prd-iter` · **⑨** `/lny-prd-sp`。**②③④ 规格三件套同轮批处理**；**⑥ 默认依赖 ⑤**（`pages_prd`；例外 `ui直出`）。入口 `@lny-prd-master` / `/lny-prd-master` /「继续」等价；按本协议判定后 **Read** 对应 `lny-prd-*/SKILL.md` 执行。
 
 ---
 
@@ -57,6 +58,19 @@ description: >-
 2. 文件增删是否用了 📁/🗑️？
 3. 是否避免「修复文档」「修正台账」等非功能性措辞？
 
+#### 1.1.3 台账状态机（单值、成功后推进）
+
+台账每行的「状态」只写一个当前值，禁止 `待②/待⑤` 等复合值。仅在本步产物全部成功落盘并完成自检后推进：
+
+| 对象 | 状态转换 |
+|------|----------|
+| 新增/修改页面 | `待②` → ② 完成后 `待⑤` → ⑤ 完成后 `已完成` |
+| 废弃页面 | `待②` → ② 完成后 `已完成` |
+| API | `待③` → ③ 完成后 `已完成` |
+| Feature | `待④` → ④ 完成后 `已完成` |
+
+子技能失败或仍有未落盘缺口时保留原状态。总控只按当前单值匹配 I2-spec / I2-page，禁止凭对话声称跳过台账状态。
+
 ### 2. 前置分流（续跑与立项）
 
 在 **PRD 根**按顶层可见项与 `main_spec.md` 是否存在分流（**不**将 `.` 开头项计入「空目录」）：
@@ -90,9 +104,9 @@ description: >-
 
 **跳步规则**：用户要原型但规格未齐 → **不拒绝**，走 **§3.2** 在当前版本静默补链。禁止用 HTML 代替规格。禁止静默 ⑧。
 
-### 3.1 规格三件套批（②③④ 并行，禁止拆「继续」）
+### 3.1 规格三件套同轮批处理（禁止拆「继续」）
 
-> **问题**：§3 的 B→C→D 优先级 +「每轮只做一步」会把本可并行的 ②③④ 拆成三次「要不要继续」。
+> **问题**：§3 的 B→C→D 优先级 +「每轮只做一步」会把本应同轮完成的 ②③④ 拆成三次「要不要继续」。
 
 **何时触发批跑（满足其一）**：
 
@@ -200,7 +214,7 @@ description: >-
    - `feature_spec.md` ← `lny-prd-feature/reference.md`
 3. 四份文档统一文档信息 / 变更记录首行 v1.0.0；`main_spec` 第4章终端表直接放在二级标题下，**禁止** `###` 小节
 4. 创建 `versions/v1.0.0/` 与 `iteration_notes.md`（含「版本名称」，无则写「首版」）
-5. 输出结构；下一步总控进规格三件套（②③④ 可并行）
+5. 输出结构；下一步总控进规格三件套同轮批处理（②→③→④）
 
 ## 续跑：新增/变更/删减终端
 
@@ -218,6 +232,7 @@ description: >-
 
 - 立项 YAML 与 `main_spec.md` 模板：[`reference-init.md`](reference-init.md)
 - 框架排除：[`framework-exclusions.md`](framework-exclusions.md)
+- ②⑤⑥ 共用页型职责与夹具映射：[`reference-page-types.md`](reference-page-types.md)
 - `api_spec.md` → `lny-prd-api/reference.md`
 - `ui_manifest.md` → `lny-prd-ui/reference.md`
 - `feature_spec.md` → `lny-prd-feature/reference.md`

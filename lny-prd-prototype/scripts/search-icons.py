@@ -188,15 +188,25 @@ def main() -> int:
         fills = "0"
 
     online: list[dict] = []
+    online_error = ""
     need_online = (not args.local_only) and (
         args.icon_id or args.pick >= 0 or args.out or not result["kit"]
     )
     if need_online and args.query:
-        packed = search_iconfont(args.query, args.page, min(args.size, 20), fills)
-        online = packed["icons"]
-        result["iconfont"] = [
-            {k: v for k, v in ic.items() if k != "show_svg"} for ic in online
-        ]
+        try:
+            packed = search_iconfont(args.query, args.page, min(args.size, 20), fills)
+            online = packed["icons"]
+            result["iconfont"] = [
+                {k: v for k, v in ic.items() if k != "show_svg"} for ic in online
+            ]
+        except (OSError, TimeoutError, UnicodeError, json.JSONDecodeError, RuntimeError) as exc:
+            online_error = str(exc)
+            result["warning"] = "iconfont unavailable; use a semantically close kit icon"
+
+    if online_error and (args.icon_id or args.pick >= 0):
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        print("online icon install unavailable: " + online_error, file=sys.stderr)
+        return 1
 
     install = None
     if args.icon_id:
@@ -205,11 +215,15 @@ def main() -> int:
                 install = ic
                 break
         if install is None and args.query:
-            packed = search_iconfont(args.query, 1, 20, fills)
-            for ic in packed["icons"]:
-                if str(ic["id"]) == str(args.icon_id):
-                    install = ic
-                    break
+            try:
+                packed = search_iconfont(args.query, 1, 20, fills)
+                for ic in packed["icons"]:
+                    if str(ic["id"]) == str(args.icon_id):
+                        install = ic
+                        break
+            except (OSError, TimeoutError, UnicodeError, json.JSONDecodeError, RuntimeError) as exc:
+                print("online icon install unavailable: " + str(exc), file=sys.stderr)
+                return 1
         if install is None:
             print("icon id not in search results: " + args.icon_id, file=sys.stderr)
             return 1

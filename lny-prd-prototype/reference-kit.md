@@ -18,12 +18,12 @@
 | 估点档 | 忽略「视觉细节=粗糙」；⑥ 不降档；须满足 `reference-mobile-design.md` 审美必做 |
 | 舒适默认 | §2.3 漏写也要落地：隐藏 `md-skel-host`、插画 `md-empty`、失败可重试、按下态、浮层过渡、D1-1 `md-d1--list`+`md-col-*`。禁止发明新跳转/字段/弹窗；**有字段时必须按层级排版** |
 | 夹具数据 | 用符合业务域的中文名称与真实量级价格（如 `有机草莓 250g` / `¥19.90`）。**禁止** `示例商品 A/B`、`测试数据`、`xxx`、`Item 1` |
-| 条数 | 列表/卡片/表格默认态 **≥4 条**（规格写明空态、或 API 写死更少条数时从其规定；首页有「每页条数」则按其值） |
+| 条数 | 直接执行共享 `PT-DENSITY`，只对明确列表/宫格/时间轴/D1-1 生效；详情附属区和摘要短表不套门槛 |
 | 字段 | API/COMP 已列的展示字段都要出现（名称、图、价、库存状态等）；**不**发明规格没有的字段（如无「销量」就不要写已售） |
 | 图片 | `md-card__media` **只能**出现在 `--cover` / `--tile` / `--row` 卡内。横卡必须是 `md-card md-card--row`，左图套件**宽高双锁定**（触屏 96×96，竖图只加高不改宽；桌面 112 同理），**禁止**漏写 `--row` 或给左图写 `height:auto`/`width:100%`（会被拉高再撑宽挤掉正文）。页顶大背景用 `md-hero`/`md-appbar--cover`；详情主图 `md-swiper--wide`；介绍配图 `md-media--16x9`。占位图 `md-media-ph--{1-6}` 轮换；禁止无编号纯灰、禁止随机色块。点图预览默认给：详情页图（页根 `data-lightbox`；**轮播 / 图文 / 评论各一组**）、横卡多行卡内图（每卡一组）、**单图/多图/视频上传缩略**。封面叠字 / 双列 / Banner / 文件上传默认不可预览（`data-preview=on/off` 例外）；可用 `data-lightbox-group` 自定义组容器 |
 | 按钮 | 可点操作用套件类：`md-btn` + `--contained` / `--outlined` / `--soft` / `--text` / `--link`，或 `md-icon-btn` / `md-tab` / `md-menu__item` / `md-page-btn` / `md-tree__item`。禁止裸 `<button>`、禁止 `<input type="submit">` 露出浏览器灰钮/立体边 |
 | 移动端 | 状态栏由 `proto-page.js` 固定顶注入；页根须标 `md-immersive` 或 `md-standard`；`md-section-head`；**列表区** `md-card--cover` / `--tile` / `--row`（多行，可无左图+小图）/ `md-set-row`（单行）；**功能区** `md-king` / `--pair` / `md-set-row` 通栏 / `md-set-pair`；触屏 `md-search` 仅左图标+输入；`viewport-fit=cover`；正文左右下走 `--md-safe-*`；标准顶栏左右 4px |
-| 桌面端 | 必须有 `md-breadcrumb`（内容区顶部，**不要** `md-page-head` 大标题）；表格首列可用 `md-row-goods` + `md-thumb md-media-ph--n`。D1-1 列表：页内签在筛选上方且整区切换；`md-d1--list` 让分页与表横条贴底，并走 **紧凑密度**；勾选列 `md-col-check` 左冻、操作列 `md-col-actions` 右冻尽量窄（左右内边距小；**常规动作默认图标钮**）；中间列按语义加 `md-col-name`（名称硬锁定宽）/ `md-col-desc`（说明/备注吃剩余）/ `md-col-price` / `md-col-status` / `md-col-date`（无说明时日期/时间吃剩余）；再无说明/日期则**最后一列数据列**吃剩余（有操作列取前一列）；禁止均分或把名称列拉长；**操作 ≤2 全部直出（禁止「更多」），≥3 才** `md-actions` + `data-menu`「更多」图标；`md-d1__stats` 靠左、`md-d1__pager` 靠右。**触屏弹窗/半屏内边距收紧**；底半屏高度随内容、最大 **70vh**、超出正文滚动、关闭钮在面板右上角（`md-drawer__close`）。规格出现的弹窗/签/下拉/日期/按钮组必须用本节 AD 控件，禁止裸 `alert` / 无样式 `<select>` |
+| 桌面端 | 必须有 `md-breadcrumb`（内容区顶部，不要 `md-page-head` 大标题）；表格首列可用 `md-row-goods` + `md-thumb md-media-ph--n`。D1-1 的冻结、操作阈值、语义列宽、紧凑密度和底部对齐直接执行共享 `PT-DESKTOP-LIST`：根用 `md-d1--list`，列用对应 `md-col-*`，更多菜单用 `md-actions` + `data-menu`，汇总/分页用 `md-d1__stats` / `md-d1__pager`。触屏弹窗/半屏内边距收紧；底半屏高度随内容、最大 70vh、超出正文滚动、关闭钮在面板右上角（`md-drawer__close`）。规格出现的弹窗/签/下拉/日期/按钮组必须用本节 AD 控件，禁止裸 `alert` / 无样式 `<select>` |
 | 间距 | 触屏滚动区模块间距走 `--md-module-gap`（`md-module`）；卡片/栅格内距走套件；禁止内联 `margin` 当排版 |
 
 ## 复制
@@ -172,7 +172,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 操作列（**按操作个数选形态；常规动作默认图标钮，禁止无脑照抄「更多」**）：
 
 ```html
-<!-- ≤2：全部直出（常规 = 图标） -->
+<!-- PT-DESKTOP-LIST：当前操作数无需“更多” -->
 <td class="md-col-actions"><div class="md-actions">
   <button type="button" class="md-icon-btn" data-act="view" title="查看" aria-label="查看"><span class="md-icon" data-icon="view" aria-hidden="true"></span></button>
   <button type="button" class="md-icon-btn" data-act="edit" title="编辑" aria-label="编辑"><span class="md-icon" data-icon="edit" aria-hidden="true"></span></button>
@@ -231,7 +231,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 ### 触屏列表区
 
-同一模块只选一种（分区可各自点名）。规格有字段才写对应节点，**禁止**为好看编造业务字段。**横卡单行**仅当字段≤3 **且**各字段值都短、定高不换行；字段更多、会换行，或字段≤3 但**任一字段值很长**（单行放不下、需截断/换行）→ 用**横卡多行**。字段少却因值长命中多行时，再加 **`md-card--long`**：标题/摘要字号略大，卡片与正文区 **高度随内容**，**不要**定 `min-height`。
+同一模块只选一种（分区可各自点名）。规格有字段才写对应节点，禁止为好看编造业务字段。单行/多行选择直接执行共享 `PT-MOBILE-LIST`；该规则命中“字段少但值长”的多行分支时加 `md-card--long`，标题/摘要字号略大且高度随内容，不定 `min-height`。
 
 **① 封面叠字** `md-card--cover`：一行一列大图，单行标题悬图片底部。图 **可横可竖**，或 **定宽、高度随图**（`--ratio-auto`，须内嵌 `<img>`）。套件默认 **16:9**；点名 `--ratio-16x9` / `--ratio-2x1` / `--ratio-4x3` / `--ratio-3x4` / `--ratio-2x3` / `--ratio-1x1`；`--h-sm/md/lg` 固定高度。
 
@@ -262,7 +262,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 </article>
 ```
 
-**③ 横卡多行** `md-card--row`：左可为封面 / 图标 / 头像 / 无。**左图只允许 1:1 或竖图**（宽高比 ≤ 1：默认 1:1，竖图 `--ratio-3x4` / `--ratio-2x3`），**不要横图**。左图**宽高双锁定**（触屏默认 96×96；竖图只加高、不加宽），文本仍在右侧同一栏，不要折到图下。禁止给左图写 `width:100%` / `height:auto`（会被卡片拉高再撑宽）。**文本区**标题 / 副标题 / 摘要或说明 / 标签 / 时间浏览等 **靠左**。有价格、距离等右侧信息时，右侧留白给 `__rail`：`__aside` 里的价格 / 距离 **靠右上**，并留边框安全距。小按钮：仅一个放进轨内 `__actions`（**右下角**）；多个用 `__actions--bar` **底栏独一行、靠右、从右到左**（DOM 先次要后主按钮）。可见按钮建议 ≤3，超出收「更多」`data-menu` + `md-menu--fixed`。有按钮的卡用 `<article>`，不要把按钮塞进整卡 `<a>`。可选 `__photos` 小图一排（仍 **1:1**、最多五张）。字段多或换行撑高卡片。**字段≤3 却因值长才走多行**时再加 `md-card--long`（字号略大、高度随内容、无 min-height）；字段本身很多的密集多行卡不要加。
+**③ 横卡多行** `md-card--row`：内容与操作布局执行共享 `PT-MOBILE-LIST`。左可为封面 / 图标 / 头像 / 无；图片只允许 1:1 或竖图，宽高双锁定（默认 96×96），禁止 `width:100%` / `height:auto`。右轨用 `__rail`，多操作底栏用 `__actions--bar`，溢出菜单用 `data-menu` + `md-menu--fixed`；有按钮时根用 `<article>`。可选 `__photos` 最多五张 1:1 小图；共享规则命中“字段少但值长”分支时再加 `md-card--long`。
 
 ```html
 <article class="md-card md-card--row">
@@ -757,7 +757,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | 图表 | `md-chart-ph` 占位条 | 手写 canvas / 自造柱 |
 | 页内分页签 | 桌面：`md-tabs md-tabs--page` 下划线（**平铺，无圆角阴影卡片壳**）；触屏：`md-tabs`（自动按钮组，浅底/选中色块） | 触屏用桌面下划线签；自造下划线 `div` / 裸 `<a>` 签；页内签套卡片壳 |
 | 主/线/浅底/字/链接按钮 | `md-btn md-btn--contained` / `--outlined` / **`--soft`（无边框浅底色字）** / `--text` / `--link`；**通栏整行** `--block`（或 `md-btn-row` 竖叠）；图标钮 `md-icon-btn`。触屏贴底 `md-action-bar` / 半屏 `md-drawer__actions` **仅一钮时自动占满** | 裸 `<button>`、`<input type="submit">`、Bootstrap/`btn`、浏览器灰钮；一行一主钮却缩成短条 |
-| 悬浮胶囊 / 桌面悬浮按钮 | 触屏 `md-pod --tl/--bl/--br` 成组细线；桌面 `md-pod--desk` 只右下、独立圆钮，满 4 个 `md-pod--fold` + `__toggle` 错开弹出；功能钮按下下沉/加深 | 写进滚动层；桌面画左上/左下或细线胶囊；用 `md-fab` 冒充；功能钮缩放回弹 |
+| 悬浮胶囊 / 桌面悬浮按钮 | 形态与阈值执行共享 `PT-FLOAT`；触屏用 `md-pod` 方位类，桌面用 `md-pod--desk`，折叠用 `md-pod--fold` + `__toggle` | 写进滚动层；违反共享方位；用 `md-fab` 冒充；功能钮缩放回弹 |
 | 按钮组 / 工具栏按钮 | `md-btn-group` / `md-d1__toolbar`（功能栏**平铺，无圆角阴影**；保留内边距；区块间距靠父级 gap） | 无 class 的一排 `<button>`；功能栏套卡片壳 |
 | 下拉 | `md-field--select` + `md-select`，或 `md-select-btn` + `md-menu` | 未包 `md-field` 的裸 `<select>`；触屏用系统原生选择器 |
 | 日期 / 时间 | `md-field--date` / `md-field--daterange` / `md-field--time` + `type="date|time|datetime-local"` | 自造日历、两个裸日期框冒充日期段 |
@@ -952,13 +952,13 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 系统栏 | `md-status-bar`（`proto-page.js` 固定顶注入；页内禁止手写；时间/信号靠顶略放大，左右各收一个图标身位，不为胶囊留空） |
 | 触屏顶栏 | ① `md-hero` 16:9+slogan ② `--overlay` 叠 16:9 ③ 标准 `md-appbar--mobile` ④ `--cover` 两倍高度封面 |
 | 桌面面包屑 | `md-breadcrumb`（D1 内容区顶部，禁止再写 `md-page-head`） |
-| 操作列 | `md-col-actions` 尽量窄（左右内边距约 2px，`width:1%`+nowrap 按内容收）。**常规动作默认 `md-icon-btn` 图标**（查看/详情、编辑、删除、新增/添加、启用/停用、更多；`title`/`aria-label`；删除 `md-icon--danger`）。**操作总数 ≤2：全部直出，禁止「更多」**。**≥3**：列内直出 1～2 个 + `data-menu`「更多」图标 + `md-menu md-menu--fixed`。非常规文案才用文字或进菜单。金样有 3 个操作故示范「查看图标 + 更多」；规格只有 1～2 个时不要照抄 |
+| 操作列 | 阈值与收纳直接执行共享 `PT-DESKTOP-LIST`。实现用窄 `md-col-actions`；常规动作落 `md-icon-btn` 并提供 `title`/`aria-label`，删除加 `md-icon--danger`；共享规则要求菜单时用 `data-menu` + `md-menu md-menu--fixed` |
 | 语义列宽 | `md-col-check` 勾选；`md-col-name` 名称/昵称硬锁定宽；`md-col-desc` / `md-col-note` 说明/备注吃剩余；`md-col-date` 无说明时日期/时间吃剩余；再无则**最后一列数据列**吃剩余（有 `md-col-actions` 时取操作列前一列）；`md-col-price` 金额窄右齐；`md-col-status` 状态/短枚举；`md-col-id` 短码；`md-col-num` 数量。**列宽须盖住字段标题**；**慎用 `width:auto`**（易压成一字），吃剩余用 `%`+坚实 `min-width`。禁止所有列均分、禁止名称列空荡拉长。**溢出省略**的表头/单元格：悬停看全文，点击复制（套件自动） |
 | D1-1 紧凑 | 根节点 `md-d1 md-d1--list`（矮行、小内外距）；**不要**套到 D1-2 表单页 |
 | 工作台 | `md-stat-grid` `md-stat-card`；趋势 `md-chart-ph` |
 | 分栏 | `md-d1--split` / 触屏 `md-tree-page`；`md-split` `__side` `__main`；树 `md-tree` `__item` `__toggle` `__label` `is-open` `is-active` |
 | 设置分组 | `md-set-group` `__title` `md-set-row`（**设置项**：当页当行直接操作；左 `md-icon` 可有可无 + `__label`；右开关/值/本行菜单）；开关 `md-switch`（热区铺满，可点）；无极 `md-set-block` + `md-slider--fluid`；横向多选 `md-set-picks` / `md-set-pick`（`__face` 可为 `__label` 文字 / 图标 / `__media` 图片；`__mark` 含 `__off`+`__on`，未选也显示空圈）；下拉 `md-set-row` + `data-menu` |
-| 列表单行 | `md-stack` > `md-set-row`：每行独立有缝；**仅**字段≤3 且值都短；值长改 `--row` + `--long`；非分组无限流；轻阴影；`__lead`（图标+`__label`）+ `__trail`（说明/计数/小标签，一般无箭头） |
+| 列表单行 | 仅在共享 `PT-MOBILE-LIST` 判定为单行时使用 `md-stack` > `md-set-row`；结构用 `__lead`（图标+`__label`）+ `__trail`（说明/计数/小标签，一般无箭头） |
 | 功能区通栏 / 一行两个 | **功能入口**：通栏 `md-set-group`；一行两个 `md-set-pair`；右可为 `__hint` 或 **方形 `__thumb`**（`--thumb`，行更高）；常带箭头；**无圆角阴影卡片壳**；触屏**跟正文同左右安全距**，分割线内缩 |
 | 汇总分页 | `md-d1__footer`：`md-d1__stats` 靠左，`md-d1__pager` 靠右 |
 | 纸面/表格 | `md-paper` `md-table` `md-table-wrap` `md-col-check` `md-col-name` `md-col-desc` `md-col-note` `md-col-price` `md-col-status` `md-col-date` `md-col-actions` `md-pagination` `md-page-btn` |
@@ -967,7 +967,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 轮播 / 金刚区 | `md-swiper` `md-king`（5 列图标文字上下同底、**无阴影**）`md-king--pair`（双卡靠左小图标+标题说明、**无阴影**；**信息多时用**；**不限首页**）`__name` `__desc`；沉浸式 `md-immersive` + `md-hero`；标准 `md-standard`；方形图标钮 `md-btn--stack` |
 | 主操作条 | `md-action-bar`（无 TabBar 的提交/购买） |
 | 触屏表单页壳 | `md-form-page`：浅灰 `#f7f7f7`；分区用白底 `md-module`（有内边距，组间露灰）；与详情/设置同色底 |
-| 悬浮胶囊 | 触屏：`md-pod` + `--tl/--bl/--br`；页根直接子节点；左下/右下遇 `md-tabbar` / `md-action-bar` 自动抬高并留 `--md-pod-clearance`。桌面：`md-pod md-pod--desk` 只右下、`fixed`；多个独立圆钮竖排；满 4 个写 `md-pod--fold` + `__toggle`（`data-fold` 默认 4，脚本也会补），展开收起错开弹出；功能钮按下下沉/加深，不要缩放回弹。文档内嵌加 `--static`。规格点名才画；触屏不要右上；桌面不要左上/左下/右上；不要用 `md-fab` |
+| 悬浮胶囊 | 位置、数量阈值与反馈执行共享 `PT-FLOAT`。触屏实现用页根 `md-pod` + 方位类并通过 `--md-pod-clearance` 避让底栏；桌面实现用 `md-pod md-pod--desk` + `fixed`，折叠态用 `md-pod--fold` + `__toggle`；文档内嵌加 `--static`；禁止 `md-fab` |
 | 上传 | `md-upload` `md-upload--single` `md-upload-grid` `md-upload--file`（图/视频缩略默认可预览） |
 | 滑动条 | `md-slider` `--steps` `--fluid` |
 | 底半屏三级 | `data-wheel="date"` / `data-wheel="region"` / `data-wheel="daterange"` |
@@ -996,12 +996,12 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 <nav class="md-pod md-pod--br" aria-label="收藏">
   <button type="button" class="md-pod__item" aria-label="收藏"><span class="md-icon" data-icon="favorite"></span></button>
 </nav>
-<!-- 桌面：放在 .md-d1 下；只右下；多个独立圆钮；满 4 个脚本收成可展开 -->
+<!-- 桌面：放在 .md-d1 下；方位和折叠阈值见 PT-FLOAT -->
 <nav class="md-pod md-pod--desk" aria-label="快捷操作">
   <button type="button" class="md-pod__item" aria-label="添加"><span class="md-icon" data-icon="add"></span></button>
   <button type="button" class="md-pod__item" aria-label="刷新"><span class="md-icon" data-icon="refresh"></span></button>
 </nav>
-<!-- 满 4 个：写 md-pod--fold，最后一颗是 __toggle；脚本也会补 -->
+<!-- PT-FLOAT 命中折叠态时写 md-pod--fold，最后一颗是 __toggle -->
 <nav class="md-pod md-pod--desk md-pod--fold" aria-label="快捷操作">
   <button type="button" class="md-pod__item" aria-label="添加"><span class="md-icon" data-icon="add"></span></button>
   <button type="button" class="md-pod__item" aria-label="刷新"><span class="md-icon" data-icon="refresh"></span></button>

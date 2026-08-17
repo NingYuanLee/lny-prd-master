@@ -5,7 +5,6 @@ description: >-
   禁止按 ASCII 线框降质，也禁止把金样里的演示功能整页搬进业务页。
   全端静态 HTML + MUI 套件；每轮最多 3 个业务页。Use when the user mentions
   /lny-prd-prototype, @lny-prd-prototype, 原型, prototypes.
-disable-model-invocation: true
 ---
 
 ## 与总控的关系
@@ -24,6 +23,7 @@ disable-model-invocation: true
 - 壳层 / 关系图 / 缩放：[`reference-shell.md`](reference-shell.md)
 - 原型总入口：[`reference-scope.md`](reference-scope.md)
 - 视觉金样（写页前必读）：[`gold/README.md`](gold/README.md)
+- 三步职责、页型编号与金样映射：[`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)
 - UTF-8 与 BUG / 逐页对照：[`reference-quality.md`](reference-quality.md)
 - 复制套件：`<skillDir>/scripts/copy-kit.py`
 - 关系图画布：`kit/proto-map.js`（`map.html` 只 boot 数据）
@@ -34,19 +34,7 @@ disable-model-invocation: true
 
 ## 三步对照（防错用）
 
-同一套页型，②⑤⑥ 各看一层，**禁止串用、禁止按编号左右对齐**。
-
-| 步 | 看 | 用来 | 禁止 |
-|----|----|------|------|
-| ② | `ui/PAGE` §2.3 + 夹具页型 | 体验与结构 | 规格里堆 `md-*` |
-| ⑤ | `pages_prd` ASCII | 分区上下 | ⑥ 按线框画空盒子 |
-| ⑥ 本步 | 下方金样全文 | 密度/类名下限 | 整页搬样例；按号猜金样（MP-003≠AD-003） |
-
-**编号不对齐**（先对页型再打开金样）：详情 MP-003→`mobile-detail` / AD-008→`desktop-detail`；字段详情 MP-012→`mobile-fields` / AD-012→`desktop-fields`；向导 MP-005 / AD-003；树 MP-008 / AD-005；时间轴 MP-009 / AD-007；表单铺齐 MP-004 / AD-009；业务表单 AD-002 只借 `desktop-form` 控件并按规格裁。设置碰巧都是 006，我的碰巧都是 010。
-
-**套件样例 ≠ 业务必有页**：MP-004 / MP-007 / MP-011 / AD-009 / AD-011 只在本页规格写了「铺齐/演示」时整页用。业务表单按规格裁字段。触屏胶囊对标 `mobile-pod.html`，桌面悬浮按钮对标 `desktop-pod.html`，不要每个项目都做样例页。
-
-**列表页**用 `md-list-toolbar`（搜索+筛选），不要套返回标题栏 `md-appbar`。
+先 Read [`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)。本步只维护金样类名、视觉密度和 HTML 行为；下方速查表只保留 ⑥ 的专属落地规则。
 
 ## 夹具速查（写 HTML 前扫一眼）
 
@@ -57,7 +45,7 @@ disable-model-invocation: true
 | 夹具页 | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
 | PAGE-MP-001 首页 | `gold/mobile-grid.html` | `md-immersive` `md-hero`；`md-module`；`md-card--cover` 精选 + `md-card--tile` 双列推荐；`md-king` 5 列 + `--pair`；有 TabBar 则无 `md-appbar` |
-| PAGE-MP-002 列表 | `gold/mobile-list.html` | `md-standard`；搜索+筛选贴顶；页签按钮组；**列表区**横卡多行 `md-card--row`（字段多或值长；字段少因值长再加 `md-card--long`：字号略大、高度随内容无 min-height；文本靠左，`__rail` 价格/距离右上，单按钮右下或 `--bar` 底栏；**卡内图默认可预览**；竖图定宽只加高）+ 横卡单行 `md-stack`>`md-set-row`（仅字段≤3 且值都短；每行独立有缝，不要 `md-set-group`）；非分组、数据可无限（分页无页边界）；卡统一 `--md-shadow-surface`；底角 `md-pod`（有顶栏故无左上）；筛选半屏 `data-wheel="daterange"` |
+| PAGE-MP-002 列表 | `gold/mobile-list.html` | 卡型与操作语义遵守共享 `PT-MOBILE-LIST`；多行落 `md-card--row`，值长且字段少再加 `md-card--long`，操作轨用 `__rail` / `--bar`；单行落 `md-stack`>`md-set-row`；卡统一 `--md-shadow-surface`，多行图片可预览；筛选半屏用 `data-wheel="daterange"` |
 | PAGE-MP-003 详情 | `gold/mobile-detail.html` | 含 `md-profile`（店铺资料示例；同组件可用于个人/公司资料）；目录四项；右下目录+回顶 |
 | PAGE-MP-012 字段详情 | `gold/mobile-fields.html` | `md-detail-page`；标准顶栏；分组 `md-desc` 左名右值；`--stack` 长文案；非图文、非表单 |
 | PAGE-MP-004 表单（套件样例） | `gold/mobile-form.html` | **样例才整页铺齐**。`md-form-page` 浅灰底+白底 `md-module` 分组；返回顶栏；全部触屏表单控件；`md-action-bar` 贴底。业务表单按规格裁字段并同样分组。进度条见步骤向导 |
@@ -65,7 +53,7 @@ disable-model-invocation: true
 | PAGE-MP-006 设置 | `gold/mobile-settings.html` | `md-set-page` 浅灰底；沉浸式；`md-appbar--cover`；**设置项**：开关可点；`md-set-picks` 选项面文字/图标/图片均可，未选显示 `radio-off`、已选 `check`；左图标可有可无；无极 / `data-menu` 改值 |
 | PAGE-MP-010 我的/服务 | `gold/mobile-menu.html` | `md-set-page` 浅灰底；功能入口通栏/`md-set-pair`；右可为文字或 **方形配图 `--thumb`**（行更高）；组间距漏底 |
 | PAGE-MP-007 按钮（套件样例） | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、**浅底 `--soft`**、文字、**`--link`**、**通栏 `--block` / `md-btn-row`**、置灰、`md-badge`；贴底仅一钮自动占满。禁止当业务首页。禁止裸 `<button>` |
-| PAGE-MP-011 悬浮胶囊（套件样例） | `gold/mobile-pod.html` | 规格点名才画到**业务页**，不要每个项目都做本页。`md-pod` + `--tl` / `--bl` / `--br`；写在页根。不要右上，不要用 `md-fab` 冒充成组 |
+| PAGE-MP-011 悬浮胶囊（套件样例） | `gold/mobile-pod.html` | 仅规格点名时按共享 `PT-FLOAT` 落到业务页；用 `md-pod` + `--tl` / `--bl` / `--br` 并写在页根，禁止用 `md-fab` 冒充成组 |
 | PAGE-MP-008 分类 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左树右内容；`md-tree` `__toggle` 展开收起；点节点只换右区 |
 | PAGE-MP-009 时间轴 | `gold/mobile-timeline.html` | `md-timeline` 左 `__rail` 竖轨，右 `md-card--row` 图文；`is-done` / `is-active`；点节点切高亮 |
 
@@ -73,7 +61,7 @@ disable-model-invocation: true
 
 | 夹具页 | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
-| PAGE-AD-001 列表 | `gold/desktop-list.html` | `md-d1 md-d1--list`（**紧凑密度**）；`md-breadcrumb` 无 `md-page-head`；签 `md-tabs--page` 在筛上整区切换；列类 `md-col-check` `md-col-name` `md-col-desc` `md-col-price` `md-col-status` `md-col-date` `md-col-actions`（**说明/备注 → 日期/时间 → 最后数据列 吃剩余；名称硬锁定宽；禁止均分**）；筛选用 `md-field--daterange`；**常规操作图标钮**；**操作 ≤2 直出、≥3 才「更多」**（本金样 3 个操作故有 `md-menu--fixed`）；操作列左右内边距尽量小；`md-d1__stats` 左 / `md-d1__pager` 右 |
+| PAGE-AD-001 列表 | `gold/desktop-list.html` | 语义与阈值遵守共享 `PT-DESKTOP-LIST`；根用 `md-d1 md-d1--list`，列用对应 `md-col-*`，页签用 `md-tabs--page`，日期筛选用 `md-field--daterange`；「更多」落 `md-menu--fixed`；汇总/分页分别用 `md-d1__stats` / `md-d1__pager` |
 | PAGE-AD-002 商品表单 | `gold/desktop-form.html` | `md-breadcrumb`；`md-field--sm`。**按规格裁字段**，不要把套件样例整页搬来；进度条不在本页，见步骤向导 |
 | PAGE-AD-009 表单（套件样例） | `gold/desktop-form.html` | **样例才整页铺齐**。全部桌面表单控件。业务页用 AD-002 按规格裁。**不要**加 `md-d1--list`，不要触屏 `data-wheel` |
 | PAGE-AD-008 详情 | `gold/desktop-detail.html` | 整页浅灰；白底区块；`md-profile`；灯箱分区；右下目录+回顶。不要沉浸式 |
@@ -84,7 +72,7 @@ disable-model-invocation: true
 | PAGE-AD-006 设置 | `gold/desktop-settings.html` | `md-d1 md-set-page` 浅灰底；**设置项**：开关可点；`md-set-picks` 文字/图标/图片 + 未选空圈；左图标可有可无；无极 / `data-menu` 改值 |
 | PAGE-AD-010 我的/服务 | `gold/desktop-menu.html` | `md-d1 md-set-page` 浅灰底；功能入口通栏/`md-set-pair`；右可为文字或方形配图 `--thumb`。不要 `md-d1--list` |
 | PAGE-AD-007 时间轴 | `gold/desktop-timeline.html` | `md-breadcrumb`；`md-timeline` 左竖轨右图文；点节点切高亮 |
-| PAGE-AD-011 悬浮按钮（套件样例） | `gold/desktop-pod.html` | 规格点名才画到**业务页**。`md-pod md-pod--desk` 只右下、`position:fixed`。单个圆形；多个独立圆钮竖排（不要细线胶囊）。满 4 个写 `md-pod--fold` + `__toggle`（脚本也会补），点「+」错开弹出、再点收起。功能钮按下下沉/加深，不要缩放回弹。不要 `--tl/--bl`，不要 `md-fab` |
+| PAGE-AD-011 悬浮按钮（套件样例） | `gold/desktop-pod.html` | 仅规格点名时按共享 `PT-FLOAT` 落到业务页；用 `md-pod md-pod--desk` + `position:fixed`，折叠态用 `md-pod--fold` + `__toggle`，禁止触屏方位类和 `md-fab` |
 | 关系图 | `prototypes/{端}/map.html` | `ProtoMap.boot`；预览区 **375×812**；连线端口错开 + 线中 `label`；底部色线图例；拖动写入 localStorage；「导出图片」 |
 
 ## 开笔前
@@ -103,7 +91,7 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 
 1. `python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}`
 2. Read [`reference-kit.md`](reference-kit.md)：**高保真落地** + `index.html` 只填 `PROTO_SHELL`；单页只用 `md-*` 类；无对应类名时用该文「无类名组合」，**禁止裸 HTML**、禁止「示例 A/B」低保真夹具。
-3. 业务图标：Read [`reference-icons.md`](reference-icons.md)。闭集能覆盖则 `data-icon`；否则 `search-icons.py --pick 0 --name … --out …/assets`。
+3. 业务图标：Read [`reference-icons.md`](reference-icons.md)。闭集能覆盖则 `data-icon`；否则 `search-icons.py --pick 0 --name … --out …/assets`。无网或接口失败时按该文选择闭集近义项并记录替代，**不中止本批**。
 4. 壳层行为（状态演示 / 规格说明 / 缩放 / 关系图）见 [`reference-shell.md`](reference-shell.md)。每批末按 [`reference-scope.md`](reference-scope.md) 覆盖刷新 `prototypes/index.html`（含页底右下 SKILL 标注）。各端 `index.html` 的同类标注由 `proto-shell.js` 注入，禁止手写。
 
 **禁止**：初始化 npm/Vite/React；查询 mui-mcp；调用 `user-search-iconfont-mcp`（改用本技能 `search-icons.py`）；页内自造主题色、手绘图标 path 或第二套组件 CSS。

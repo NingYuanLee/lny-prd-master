@@ -20,11 +20,11 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 本页类型 | 必读 |
 |----------|------|
 | 移动宫格 / 推荐 / 双列卡片 | `mobile-grid.html`（**沉浸式**；`md-hero` 钉底层；`md-mobile-sheet`；`md-module`；**封面叠字** `md-card--cover` + **双列瓷砖** `md-card--tile`；金刚 5 列或 `md-king--pair`） |
-| 移动列表 / 动态流 / 横卡 | `mobile-list.html`（**标准** + 搜索/筛选/页签按钮组贴顶；**列表区**横卡多行 `md-card--row`（字段多或值长；字段少因值长再加 `md-card--long`）+ 横卡单行 `md-stack`>`md-set-row`（仅字段≤3 且值都短；每行独立有缝）；底角悬浮胶囊；左/右半屏；`data-wheel="daterange"`） |
+| 移动列表 / 动态流 / 横卡 | `mobile-list.html`（语义按共享 `PT-MOBILE-LIST`；多行 `md-card--row`、长值 `md-card--long`、单行 `md-stack`>`md-set-row`；左/右半屏；`data-wheel="daterange"`） |
 | 移动展示 / 详情 | `mobile-detail.html`（含 `md-profile` 店铺资料示例；组件亦用于个人/公司资料） |
 | 移动字段详情 | `mobile-fields.html`（夹具 `PAGE-MP-012.html`；浅灰底+白底分组；`md-desc` 左名右值；标准顶栏；非图文、非表单） |
 | 移动表单 | `mobile-form.html`（夹具 `PAGE-MP-004.html`；**套件样例**；`md-form-page` 浅灰底+白底分组；一页铺齐触屏表单控件：文本/选择/滑动条/单日/日期段/省市区/三类上传 + 贴底提交；进度条见步骤向导） |
-| 桌面表格 / 筛选列表 / 弹窗维护 | `desktop-list.html`（内容区顶面包屑无大标题；页内签在筛选上方整区切换；分页与表横条贴底；勾选左冻 / 操作右冻尽量窄；**常规操作默认图标钮**；**操作 ≤2 直出、≥3 才「更多」**（本金样 3 操作故有「更多」图标）；汇总左分页右；**列宽按字段语义**；**紧凑密度一屏多行**；隐藏骨架+插画空态；筛选用 `md-field--daterange`） |
+| 桌面表格 / 筛选列表 / 弹窗维护 | `desktop-list.html`（语义按共享 `PT-DESKTOP-LIST`；实现用 `md-d1--list`、语义 `md-col-*`、`md-menu--fixed`、隐藏骨架+插画空态与 `md-field--daterange`） |
 | 桌面整页表单 | `desktop-form.html`（夹具 `PAGE-AD-009.html`；**套件样例**，一页铺齐桌面表单控件：文本/选择/滑动条/单日/时间/日期段/省市区/三类上传。业务商品表单 `PAGE-AD-002` 按规格裁字段；进度条见步骤向导） |
 | 桌面展示 / 详情 | `desktop-detail.html`（夹具 `PAGE-AD-008.html`；整页浅灰+白底区块；资料卡片；灯箱分区；右下目录+回顶。禁止沉浸式） |
 | 桌面字段详情 | `desktop-fields.html`（夹具 `PAGE-AD-012.html`；分组 `md-desc`；桌面可双列；禁止沉浸式、禁止当表单） |
@@ -40,7 +40,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 桌面时间轴 | `desktop-timeline.html`（夹具 `PAGE-AD-007.html`；面包屑 + `md-timeline` 左竖轨右图文） |
 | 移动按钮样例 | `mobile-buttons.html`（夹具 `PAGE-MP-007.html`；小/中/大三档：线框、色块、浅底 `--soft`、线框/色块/浅底置灰、带角标；页签按钮组） |
 | 触屏悬浮胶囊 | `mobile-pod.html`（钉在页根、不进滚动层；左上横向且与标题栏互斥；左下/右下竖向并避开 TabBar/操作条；单个圆形、多个成组细线分割。规格点名才画，不要右上） |
-| 桌面悬浮按钮 | `desktop-pod.html`（夹具 `PAGE-AD-011.html`；只右下、钉视口；单个圆形；多个独立圆钮竖排；满 4 个收成可展开的一颗，展开收起错开弹出；功能钮按下有反馈。不要左上/左下/右上，不要细线胶囊） |
+| 桌面悬浮按钮 | `desktop-pod.html`（夹具 `PAGE-AD-011.html`；语义按共享 `PT-FLOAT`，实现用 `md-pod--desk` / `md-pod--fold`） |
 | 移动树 + 内容 | `mobile-tree.html`（夹具 `PAGE-MP-008.html`；`md-tree-page` 左树右内容；箭头展开收起，点节点只换右区） |
 | 其它桌面页 | 先按上表选最接近的金样；对不上再读 `desktop-list.html` **只借控件**，禁止整页套成商品表 |
 | 其它移动页 | 先按上表选最接近的金样（设置/我的/向导/时间轴/树/详情/字段详情各有专页）；对不上再读 `mobile-list.html` **只借列表卡**，禁止整页套成商品列表 |

@@ -1,0 +1,6 @@
+interface:
+  display_name: "LNY-PRD Feature"
+  short_description: "拆分功能目标、业务规则、验收标准、流程图与跨层引用闭环"
+  default_prompt: "Use $lny-prd-feature to define and update the feature specifications for this PRD."
+policy:
+  allow_implicit_invocation: false

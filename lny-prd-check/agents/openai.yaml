@@ -1,0 +1,6 @@
+interface:
+  display_name: "LNY-PRD Check"
+  short_description: "只读检查文档一致性、原型规格符合度、产品链与估点就绪度"
+  default_prompt: "Use $lny-prd-check to audit this PRD without modifying any project files."
+policy:
+  allow_implicit_invocation: false

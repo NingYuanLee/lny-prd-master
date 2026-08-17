@@ -3,7 +3,6 @@ name: lny-prd-check
 description: >-
   只读检查 PRD：文档一致性、功能性验收、产品就绪度（含估点信号）。不修改仓库文件。
   Use when the user mentions /lny-prd-check, @lny-prd-check, PRD 检查, 文档验收, 产品就绪度.
-disable-model-invocation: true
 ---
 
 ## 与总控的关系
@@ -15,6 +14,7 @@ disable-model-invocation: true
 ## Additional resources
 
 - 检查表全文：[`reference-checks.md`](reference-checks.md)
+- 跨步骤页型不变量：[`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)
 - 框架排除：`lny-prd-master/framework-exclusions.md`
 - 回归样例（只读）：技能包 `examples/mini-shop/`
 
@@ -32,7 +32,7 @@ disable-model-invocation: true
 ## 执行步骤
 
 1. 解析工作版本；目录须已存在。
-2. **文档性**：按 [`reference-checks.md`](reference-checks.md) §1.1→1.6。
+2. **文档性**：Read 共享页型不变量，再按 [`reference-checks.md`](reference-checks.md) §1.1→1.6。
 3. **功能性**：先过「无原型」门禁；有原型则按规格外 / 文案 / 主路径 / 实现符合规格。
 4. **产品就绪度**：§3.1 虚引用 + FE 三维 + BE 四维 +（有台账时）迭代信号。
 5. 输出报告（通篇连续序号）+ 委派建议（`#序号`）。可估且信号较齐时建议总控跑 `/lny-prd-sp`。
