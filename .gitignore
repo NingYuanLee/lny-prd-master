@@ -36,5 +36,7 @@ __pycache__/
 *.log
 logs/
 
-# Cursor local state
-.cursor/
+# Cursor local state（保留可共享的项目规则）
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**

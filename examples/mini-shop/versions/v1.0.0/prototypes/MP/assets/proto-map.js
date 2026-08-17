@@ -29,6 +29,27 @@
     bottom: { x: 1, y: 0 }
   };
 
+  /** Directory URL of current page (always ends with /). */
+  function dirHref() {
+    var path = location.pathname;
+    if (/\.html?$/i.test(path)) path = path.replace(/\/[^/]*$/, "/");
+    else if (!path.endsWith("/")) path += "/";
+    return location.origin + path;
+  }
+
+  /** Resolve local relative URLs against the page directory. */
+  function relUrl(u) {
+    if (!u) return u;
+    if (/^(?:#|https?:|mailto:|tel:|javascript:|data:|blob:)/i.test(u)) return u;
+    if (u.indexOf("//") === 0) return u;
+    try {
+      return new URL(u, dirHref()).href;
+    } catch (e) {
+      if (/^(?:\.\/|\.\.\/|\/)/.test(u)) return u;
+      return "./" + u;
+    }
+  }
+
   function clonePages(list) {
     return (list || []).map(function (p) {
       return {
@@ -480,10 +501,10 @@
         n.querySelector(".node-name").textContent = p.name;
         n.querySelector(".node-mod").textContent = p.module || "";
         var frame = n.querySelector("iframe");
-        frame.src = p.file;
+        frame.src = relUrl(p.file);
         frame.title = p.id;
         n.querySelector(".phone-overlay").addEventListener("click", function () {
-          window.open(p.file, "_blank");
+          window.open(relUrl(p.file), "_blank");
         });
         n.querySelector(".node-header").addEventListener("mousedown", function (ev) {
           ev.preventDefault();

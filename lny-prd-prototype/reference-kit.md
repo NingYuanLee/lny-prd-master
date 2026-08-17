@@ -34,15 +34,15 @@
 python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 ```
 
-写入 `prototypes/{终端}/assets/`：`mui-kit.css`、`proto-shell.css`、`proto-shell.js`、`proto-page.js`、`proto-map.js`、`md-icons.js`；若尚无 `icons-extra.js` 则补空文件（已有 extras 不覆盖）。镜像 `versions/{v}/prototypes/{终端}/` 时 **须连同 `assets/`**（含 extras 与 `icons/`）。禁止改 kit 源文件来迁就某一页。
+写入 `prototypes/{终端}/assets/`：`mui-kit.css`、`proto-shell.css`、`proto-shell.js`、`proto-page.js`、`proto-map.js`、`md-icons.js`；若尚无 `icons-extra.js` 则补空文件（已有 extras 不覆盖）。镜像 `versions/{v}/prototypes/{终端}/` 时 **须连同 `assets/`**（含 extras 与 `icons/`）。禁止改 kit 源文件来迁就某一页。禁止生成 `serve.json`。本地预览：在 `prototypes/` 目录执行 `python -m http.server`。
 
 ## 引用（硬性）
 
 | 文件 | 必引 |
 |------|------|
-| 所有 `PAGE-*.html` | `assets/mui-kit.css` + `assets/md-icons.js` + `assets/icons-extra.js` + `assets/proto-page.js` |
-| `index.html` 汇总壳 | 上表 + `assets/proto-shell.css` + `assets/proto-shell.js`（`md-icons.js` → `icons-extra.js` → `proto-shell.js`） |
-| `map.html` | `assets/mui-kit.css` + `assets/proto-shell.css` + `assets/proto-map.js`；只填 `ProtoMap.boot({ project, terminal, pages, links })`，禁止手写拖拽/缩放/导出 |
+| 所有 `PAGE-*.html` | `./assets/mui-kit.css` + `./assets/md-icons.js` + `./assets/icons-extra.js` + `./assets/proto-page.js` |
+| `index.html` 汇总壳 | 上表 + `./assets/proto-shell.css` + `./assets/proto-shell.js`（`md-icons.js` → `icons-extra.js` → `proto-shell.js`） |
+| `map.html` | `./assets/mui-kit.css` + `./assets/proto-shell.css` + `./assets/proto-map.js`；只填 `ProtoMap.boot({ project, terminal, pages, links })`，禁止手写拖拽/缩放/导出 |
 
 禁止：页内 `<style>` 改 `--md-primary` / 另写一套按钮色；内联 `style` 仅允许布局占位（宽高/显示），不得当主题。
 
@@ -57,8 +57,8 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
   <meta charset="utf-8">
   <title>MP 原型</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <link rel="stylesheet" href="assets/mui-kit.css">
-  <link rel="stylesheet" href="assets/proto-shell.css">
+  <link rel="stylesheet" href="./assets/mui-kit.css">
+  <link rel="stylesheet" href="./assets/proto-shell.css">
 </head>
 <body>
   <div id="proto-root"></div>
@@ -72,7 +72,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
           id: "PAGE-MP-001",
           name: "首页",
           module: "首页",
-          file: "PAGE-MP-001.html",
+          file: "./PAGE-MP-001.html",
           tabBarExempt: true,
           comps: [],
           spec: {
@@ -87,9 +87,9 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
       ]
     };
   </script>
-  <script src="assets/md-icons.js"></script>
-  <script src="assets/icons-extra.js"></script>
-  <script src="assets/proto-shell.js"></script>
+  <script src="./assets/md-icons.js"></script>
+  <script src="./assets/icons-extra.js"></script>
+  <script src="./assets/proto-shell.js"></script>
 </body>
 </html>
 ```
@@ -208,7 +208,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
       <section class="md-module">
         <div class="md-section-head">
           <h1 class="md-section-head__title">推荐</h1>
-          <a class="md-btn md-btn--link" href="…">查看全部</a>
+          <a class="md-btn md-btn--link" href="./…">查看全部</a>
         </div>
         <div class="md-grid-2">
           <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default">
@@ -236,7 +236,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 **① 封面叠字** `md-card--cover`：一行一列大图，单行标题悬图片底部。图 **可横可竖**，或 **定宽、高度随图**（`--ratio-auto`，须内嵌 `<img>`）。套件默认 **16:9**；点名 `--ratio-16x9` / `--ratio-2x1` / `--ratio-4x3` / `--ratio-3x4` / `--ratio-2x3` / `--ratio-1x1`；`--h-sm/md/lg` 固定高度。
 
 ```html
-<a class="md-card md-card--cover" href="…">
+<a class="md-card md-card--cover" href="./…">
   <div class="md-card__media md-media-ph md-media-ph--1">
     <span class="md-card__tag md-chip md-chip--success">有货</span>
     <h2 class="md-card__title">单行标题截断</h2>
@@ -266,13 +266,13 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 ```html
 <article class="md-card md-card--row">
-  <a class="md-card__media md-media-ph md-media-ph--1" href="…"></a>
+  <a class="md-card__media md-media-ph md-media-ph--1" href="./…"></a>
   <!-- 竖图：卡片再加 md-card--ratio-3x4 ；不要用 16:9 / 2:1 -->
   <!-- 字段少但值长：再加 md-card--long -->
   <!-- 无封面：<span class="md-card__leading">…</span> -->
   <div class="md-card__body">
     <div class="md-card__main">
-      <h2 class="md-card__title"><a href="…">标题最多两行截断</a></h2>
+      <h2 class="md-card__title"><a href="./…">标题最多两行截断</a></h2>
       <p class="md-card__subtitle">副标题一行</p>
       <p class="md-card__text">摘要最多两行</p>
       <div class="md-card__chips"><span class="md-chip md-chip--outlined">标签</span></div>
@@ -311,7 +311,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 ```html
 <div class="md-stack">
-  <a class="md-set-row" href="…">
+  <a class="md-set-row" href="./…">
     <span class="md-set-row__lead">
       <span class="md-icon" data-icon="goods" aria-hidden="true"></span>
       <span class="md-set-row__label">有机草莓 250g</span>
@@ -350,7 +350,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 |------|------|------|
 | 16:9 大背景 + slogan | `md-immersive` + `md-hero` + `md-swiper`；有 TabBar 则无页内顶栏 | `gold/mobile-grid.html` |
 | 16:9 大背景 + 左上返回和标题 | `md-immersive` + `md-appbar--overlay` + `md-swiper--wide` | `gold/mobile-detail.html` |
-| 标准高度标题栏 + 靠左返回和标题 | `md-standard` + `md-appbar md-appbar--mobile` | `gold/mobile-form.html` |
+| 标准高度标题栏 + 靠左返回和标题 | `md-standard` + `md-appbar md-appbar--mobile` | `gold/mobile-form.html`（另加 `md-form-page`） |
 | 两倍标准高度封面 + 标题 | `md-immersive` + `md-appbar--cover` + `__cover` 背景图；高度约 `2 ×` 标准标题栏 | `gold/mobile-settings.html` |
 
 ```html
@@ -437,7 +437,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
     <!-- 或纯选项行：<button type="button" class="md-drawer__opt">水果</button> -->
   </div>
   <div class="md-drawer__actions">
-    <a class="md-btn md-btn--contained" href="…">去列表</a>
+    <a class="md-btn md-btn--contained" href="./…">去列表</a>
   </div>
 </aside>
 ```
@@ -644,7 +644,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 功能区通栏 / 一行两个对照金样 `gold/mobile-menu.html` / `gold/desktop-menu.html`。分组标题可无。短说明可省略，通栏箭头保留。**右侧说明位也可换成方形配图**：`md-set-row--thumb` + `__thumb`（1:1，约 52px），行高随之加高；有图时不再叠文字 `__hint`。字段多改列表区横卡多行。
 
 ```html
-<a class="md-set-row" href="PAGE-MP-002.html">
+<a class="md-set-row" href="./PAGE-MP-002.html">
   <span class="md-set-row__lead">
     <span class="md-icon" data-icon="goods" aria-hidden="true"></span>
     <span class="md-set-row__label">我的订单</span>
@@ -966,6 +966,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 抽屉 | `md-drawer` `--left/--right/--bottom`；底 `__close`；底选项 `__opt` 或 `md-choice-group` 每项一行；`ProtoPage.openDrawer` |
 | 轮播 / 金刚区 | `md-swiper` `md-king`（5 列图标文字上下同底、**无阴影**）`md-king--pair`（双卡靠左小图标+标题说明、**无阴影**；**信息多时用**；**不限首页**）`__name` `__desc`；沉浸式 `md-immersive` + `md-hero`；标准 `md-standard`；方形图标钮 `md-btn--stack` |
 | 主操作条 | `md-action-bar`（无 TabBar 的提交/购买） |
+| 触屏表单页壳 | `md-form-page`：浅灰 `#f7f7f7`；分区用白底 `md-module`（有内边距，组间露灰）；与详情/设置同色底 |
 | 悬浮胶囊 | 触屏：`md-pod` + `--tl/--bl/--br`；页根直接子节点；左下/右下遇 `md-tabbar` / `md-action-bar` 自动抬高并留 `--md-pod-clearance`。桌面：`md-pod md-pod--desk` 只右下、`fixed`；多个独立圆钮竖排；满 4 个写 `md-pod--fold` + `__toggle`（`data-fold` 默认 4，脚本也会补），展开收起错开弹出；功能钮按下下沉/加深，不要缩放回弹。文档内嵌加 `--static`。规格点名才画；触屏不要右上；桌面不要左上/左下/右上；不要用 `md-fab` |
 | 上传 | `md-upload` `md-upload--single` `md-upload-grid` `md-upload--file`（图/视频缩略默认可预览） |
 | 滑动条 | `md-slider` `--steps` `--fluid` |

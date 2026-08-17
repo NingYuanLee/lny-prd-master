@@ -91,7 +91,7 @@
 #### E.3 `PAGES`
 
 ```javascript
-{ id: 'PAGE-MP-001', name: '首页', module: '主包 · home', file: 'PAGE-MP-001.html', x: 480, y: 320 }
+{ id: 'PAGE-MP-001', name: '首页', module: '主包 · home', file: './PAGE-MP-001.html', x: 480, y: 320 }
 ```
 
 `id`/`name`/`module`/`file` 与规格逐字一致；`x,y` 见 E.5。须与 `index.html` 页单同源。
@@ -132,7 +132,7 @@ ProtoMap.boot({
   project: "mini-shop",
   terminal: "MP",
   pages: [
-    { id: "PAGE-MP-001", name: "首页", module: "首页", file: "PAGE-MP-001.html", x: 80, y: 80 }
+    { id: "PAGE-MP-001", name: "首页", module: "首页", file: "./PAGE-MP-001.html", x: 80, y: 80 }
   ],
   links: [
     { from: "PAGE-MP-001", to: "PAGE-MP-002", type: "tab", label: "TabBar" }

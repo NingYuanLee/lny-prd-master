@@ -11,7 +11,7 @@
 1. **照搬**：套件样例铺了全控件就把整页搬进业务表单。点图预览 **只默认给详情页图片和横卡多行卡内图**；不要给封面叠字 / 双列 / Banner / 表单上传加灯箱。
 2. **忽略**：按 ASCII 空盒子、不 Read 对应金样、密度低于金样。未 Read = 本页未完成。
 
-金样 HTML 写 `assets/mui-kit.css`（以及 `md-icons.js` / `icons-extra.js` / `proto-page.js`）是**故意**的：复制到 `prototypes/{终端}/` 后与 `copy-kit.py` 写入的 `assets/` 对齐。禁止改成 `../kit/`，否则业务页会丢样式。本目录 `gold/assets/` 只供直接打开金样预览；改过 `kit/` 后执行：
+金样 HTML 写 `./assets/mui-kit.css`（以及 `md-icons.js` / `icons-extra.js` / `proto-page.js`）是**故意**的：复制到 `prototypes/{终端}/` 后与 `copy-kit.py` 写入的 `assets/` 对齐。禁止改成 `../kit/`，否则业务页会丢样式。本目录 `gold/assets/` 只供直接打开金样预览；改过 `kit/` 后执行：
 
 ```text
 python <skillDir>/scripts/copy-kit.py <skillDir>/gold
@@ -23,7 +23,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 移动列表 / 动态流 / 横卡 | `mobile-list.html`（**标准** + 搜索/筛选/页签按钮组贴顶；**列表区**横卡多行 `md-card--row`（字段多或值长；字段少因值长再加 `md-card--long`）+ 横卡单行 `md-stack`>`md-set-row`（仅字段≤3 且值都短；每行独立有缝）；底角悬浮胶囊；左/右半屏；`data-wheel="daterange"`） |
 | 移动展示 / 详情 | `mobile-detail.html`（含 `md-profile` 店铺资料示例；组件亦用于个人/公司资料） |
 | 移动字段详情 | `mobile-fields.html`（夹具 `PAGE-MP-012.html`；浅灰底+白底分组；`md-desc` 左名右值；标准顶栏；非图文、非表单） |
-| 移动表单 | `mobile-form.html`（夹具 `PAGE-MP-004.html`；**套件样例**，一页铺齐触屏表单控件：文本/选择/滑动条/单日/日期段/省市区/三类上传 + 贴底提交；进度条见步骤向导） |
+| 移动表单 | `mobile-form.html`（夹具 `PAGE-MP-004.html`；**套件样例**；`md-form-page` 浅灰底+白底分组；一页铺齐触屏表单控件：文本/选择/滑动条/单日/日期段/省市区/三类上传 + 贴底提交；进度条见步骤向导） |
 | 桌面表格 / 筛选列表 / 弹窗维护 | `desktop-list.html`（内容区顶面包屑无大标题；页内签在筛选上方整区切换；分页与表横条贴底；勾选左冻 / 操作右冻尽量窄；**常规操作默认图标钮**；**操作 ≤2 直出、≥3 才「更多」**（本金样 3 操作故有「更多」图标）；汇总左分页右；**列宽按字段语义**；**紧凑密度一屏多行**；隐藏骨架+插画空态；筛选用 `md-field--daterange`） |
 | 桌面整页表单 | `desktop-form.html`（夹具 `PAGE-AD-009.html`；**套件样例**，一页铺齐桌面表单控件：文本/选择/滑动条/单日/时间/日期段/省市区/三类上传。业务商品表单 `PAGE-AD-002` 按规格裁字段；进度条见步骤向导） |
 | 桌面展示 / 详情 | `desktop-detail.html`（夹具 `PAGE-AD-008.html`；整页浅灰+白底区块；资料卡片；灯箱分区；右下目录+回顶。禁止沉浸式） |
@@ -35,7 +35,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 桌面向导 | `desktop-wizard.html`（夹具 `PAGE-AD-003.html`；`md-stepper` + 分段 `md-advance`；数字步骤可点跳步；当前步 `[data-step]` 吃表单双列间距，最后一步才提交） |
 | 移动设置 / 偏好 | `mobile-settings.html`（夹具 `PAGE-MP-006.html`；**设置项**：当页当行直接操作；沉浸式封面顶栏；左图标可有可无） |
 | 移动我的 / 服务 | `mobile-menu.html`（功能入口；右可为文字或方形配图 `--thumb`） |
-| 移动步骤向导 | `mobile-wizard.html`（夹具 `PAGE-MP-005.html`；横向 `md-stepper` + 分段 `md-advance--lg` + 无极 `md-progress` + 当前步表单，贴底上一步/下一步） |
+| 移动步骤向导 | `mobile-wizard.html`（夹具 `PAGE-MP-005.html`；`md-form-page`；横向 `md-stepper` + 分段 `md-advance--lg` + 无极 `md-progress` + 当前步表单，贴底上一步/下一步） |
 | 移动时间轴 | `mobile-timeline.html`（夹具 `PAGE-MP-009.html`；`md-timeline` 左竖轨右图文） |
 | 桌面时间轴 | `desktop-timeline.html`（夹具 `PAGE-AD-007.html`；面包屑 + `md-timeline` 左竖轨右图文） |
 | 移动按钮样例 | `mobile-buttons.html`（夹具 `PAGE-MP-007.html`；小/中/大三档：线框、色块、浅底 `--soft`、线框/色块/浅底置灰、带角标；页签按钮组） |

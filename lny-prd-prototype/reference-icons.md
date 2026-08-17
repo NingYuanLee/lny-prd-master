@@ -12,9 +12,9 @@
 ## 引用顺序
 
 ```html
-<script src="assets/md-icons.js"></script>
-<script src="assets/icons-extra.js"></script>
-<script src="assets/proto-page.js"></script>
+<script src="./assets/md-icons.js"></script>
+<script src="./assets/icons-extra.js"></script>
+<script src="./assets/proto-page.js"></script>
 ```
 
 `index.html` 在 `proto-shell.js` 前同样先引 `md-icons.js` + `icons-extra.js`。`copy-kit.py` 会补空的 `icons-extra.js`，已有内容不覆盖。

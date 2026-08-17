@@ -25,11 +25,11 @@ disable-model-invocation: true
 - 原型总入口：[`reference-scope.md`](reference-scope.md)
 - 视觉金样（写页前必读）：[`gold/README.md`](gold/README.md)
 - UTF-8 与 BUG / 逐页对照：[`reference-quality.md`](reference-quality.md)
-- 复制套件：`scripts/copy-kit.py`
+- 复制套件：`<skillDir>/scripts/copy-kit.py`
 - 关系图画布：`kit/proto-map.js`（`map.html` 只 boot 数据）
-- 搜图标：`scripts/search-icons.py`
-- UTF-8 校验：`scripts/verify-prototype-utf8.py`
-- 规格对照校验：`scripts/verify-prototype-coverage.py`
+- 搜图标：`<skillDir>/scripts/search-icons.py`
+- UTF-8 校验：`<skillDir>/scripts/verify-prototype-utf8.py`
+- 规格对照校验：`<skillDir>/scripts/verify-prototype-coverage.py`
 - 框架排除：`lny-prd-master/framework-exclusions.md`
 
 ## 三步对照（防错用）
@@ -60,8 +60,8 @@ disable-model-invocation: true
 | PAGE-MP-002 列表 | `gold/mobile-list.html` | `md-standard`；搜索+筛选贴顶；页签按钮组；**列表区**横卡多行 `md-card--row`（字段多或值长；字段少因值长再加 `md-card--long`：字号略大、高度随内容无 min-height；文本靠左，`__rail` 价格/距离右上，单按钮右下或 `--bar` 底栏；**卡内图默认可预览**；竖图定宽只加高）+ 横卡单行 `md-stack`>`md-set-row`（仅字段≤3 且值都短；每行独立有缝，不要 `md-set-group`）；非分组、数据可无限（分页无页边界）；卡统一 `--md-shadow-surface`；底角 `md-pod`（有顶栏故无左上）；筛选半屏 `data-wheel="daterange"` |
 | PAGE-MP-003 详情 | `gold/mobile-detail.html` | 含 `md-profile`（店铺资料示例；同组件可用于个人/公司资料）；目录四项；右下目录+回顶 |
 | PAGE-MP-012 字段详情 | `gold/mobile-fields.html` | `md-detail-page`；标准顶栏；分组 `md-desc` 左名右值；`--stack` 长文案；非图文、非表单 |
-| PAGE-MP-004 表单（套件样例） | `gold/mobile-form.html` | **样例才整页铺齐**。返回顶栏；全部触屏表单控件；`md-action-bar` 贴底。业务表单按规格裁字段。进度条见步骤向导 |
-| PAGE-MP-005 步骤向导 | `gold/mobile-wizard.html` | 横向 `md-stepper`；分段 `md-advance md-advance--lg`；无极 `md-progress md-progress--lg`；当前步表单；`md-action-bar` 贴底，最后一步才提交 |
+| PAGE-MP-004 表单（套件样例） | `gold/mobile-form.html` | **样例才整页铺齐**。`md-form-page` 浅灰底+白底 `md-module` 分组；返回顶栏；全部触屏表单控件；`md-action-bar` 贴底。业务表单按规格裁字段并同样分组。进度条见步骤向导 |
+| PAGE-MP-005 步骤向导 | `gold/mobile-wizard.html` | `md-form-page`；横向 `md-stepper`；分段 `md-advance md-advance--lg`；无极 `md-progress md-progress--lg`；当前步表单；`md-action-bar` 贴底，最后一步才提交 |
 | PAGE-MP-006 设置 | `gold/mobile-settings.html` | `md-set-page` 浅灰底；沉浸式；`md-appbar--cover`；**设置项**：开关可点；`md-set-picks` 选项面文字/图标/图片均可，未选显示 `radio-off`、已选 `check`；左图标可有可无；无极 / `data-menu` 改值 |
 | PAGE-MP-010 我的/服务 | `gold/mobile-menu.html` | `md-set-page` 浅灰底；功能入口通栏/`md-set-pair`；右可为文字或 **方形配图 `--thumb`**（行更高）；组间距漏底 |
 | PAGE-MP-007 按钮（套件样例） | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、**浅底 `--soft`**、文字、**`--link`**、**通栏 `--block` / `md-btn-row`**、置灰、`md-badge`；贴底仅一钮自动占满。禁止当业务首页。禁止裸 `<button>` |
@@ -97,7 +97,9 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 
 ## 一条路径（全端静态 HTML + kit）
 
-所有终端（MP / H5 / APP / PC / AD）均为静态 HTML。观感来自技能包 **`kit/`**。图标：闭集 `md-icons.js`；闭集没有的用 **`scripts/search-icons.py`**（技能自带，不调用 Cursor MCP）。
+所有终端（MP / H5 / APP / PC / AD）均为静态 HTML。观感来自技能包 **`kit/`**。图标：闭集 `md-icons.js`；闭集没有的用 **`scripts/search-icons.py`**（技能自带，不调用 Cursor MCP）。**本地 URL 一律相对路径且带 `./`**：静态资源（如 `./assets/mui-kit.css`）、页面跳转与 `<a href>`（如 `./PAGE-MP-001.html`）、`iframe`/`script`/`link` 的 `src`/`href`、壳层 `PROTO_SHELL.pages[].file`、关系图 `map` 数据里的 `file` 等；禁止绝对路径、站点根路径（`/…`）或省略 `./` 的裸相对名。`#` 锚点与 `https://` 外链除外。
+
+**本地预览**：在 `prototypes/` 目录执行 `python -m http.server`（不要用 `npx serve`，也**禁止**在业务项目生成 `serve.json`）。
 
 1. `python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}`
 2. Read [`reference-kit.md`](reference-kit.md)：**高保真落地** + `index.html` 只填 `PROTO_SHELL`；单页只用 `md-*` 类；无对应类名时用该文「无类名组合」，**禁止裸 HTML**、禁止「示例 A/B」低保真夹具。
@@ -130,17 +132,20 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 ## 职责与禁止
 
 - **负责**：按端分批生成/更新 **高保真** 原型与静态镜像；逐页对照 `pages_prd`；UTF-8 与 coverage 验收；BUG 自检。
-- **禁止**：用 HTML 编造规格；改根规范或流水；交付已知 BUG；页内保留演示专用按钮（须归位状态演示）；同一轮画完超过 3 个业务页；未 Read 该页 `pages_prd` 或未 Read `gold/` 就写 HTML；按 ASCII 线框降质；把金样演示功能（如凡图即灯箱、全套表单样例）搬进规格没写的业务页；给封面叠字 / 双列 / Banner / 文件上传加预览；裸 `<button>` / `<input type="submit">` 露出浏览器原生皮肤（必须 `md-btn` 等套件类）。
+- **禁止**：用 HTML 编造规格；改根规范或流水；交付已知 BUG；页内保留演示专用按钮（须归位状态演示）；同一轮画完超过 3 个业务页；未 Read 该页 `pages_prd` 或未 Read `gold/` 就写 HTML；按 ASCII 线框降质；把金样演示功能（如凡图即灯箱、全套表单样例）搬进规格没写的业务页；给封面叠字 / 双列 / Banner / 文件上传加预览；裸 `<button>` / `<input type="submit">` 露出浏览器原生皮肤（必须 `md-btn` 等套件类）；把本轮临时文件留在业务项目里交付。
 
 ## 写产物纪律
 
 先清单后落盘。含 CJK 的文件整文件 UTF-8 写入，禁止用 StrReplace 改中文块。每页写后执行 UTF-8 验收；本批全部页写完再跑 coverage。失败则重写，不得交付。细则见 [`reference-quality.md`](reference-quality.md)。
 
+**工具路径**：copy-kit / 搜图标 / UTF-8 / coverage 一律执行 **技能包** `<skillDir>/scripts/…`，不要把技能脚本永久拷进 `prdRoot`。
+
+**临时文件清理（交付前必做）**：过程中若在 `prdRoot` 建了辅助脚本（如 `prdRoot/scripts/`）、草稿、备份、一次性生成器等，**用完后必须删干净**再交付（含空目录）。正式产物只保留协议约定目录与文件（`prototypes/`、`versions/…/prototypes/`、规格等）。系统临时目录优先于业务根目录。
+
 ```text
 python <skillDir>/scripts/verify-prototype-utf8.py <prdRoot>/prototypes/...
 python <skillDir>/scripts/verify-prototype-coverage.py <prdRoot> --version vX.Y.Z --page PAGE-… --page PAGE-…
 ```
-
 ## 前置条件
 
 已有 `main_spec.md`。若尚无 `ui_manifest` / 目标页 / `pages_prd`（且非 `ui直出`），或台账仍有 `待②`～`待⑤`：先按开笔前补链，再写原型。不要因此拒绝。
@@ -173,4 +178,5 @@ python <skillDir>/scripts/verify-prototype-coverage.py <prdRoot> --version vX.Y.
 4. **逐页**：对该页完整 Read `pages_prd`（无则须 `ui直出`）+ `ui/PAGE-*` **§2.3** + COMP。按页类型 Read 金样全文，**对标视觉骨架**（密度/类名不得低于金样），再按本页规格换文案并落地 §2.3 与舒适默认。写完立刻过 [`reference-quality.md`](reference-quality.md) **§G.4 / G.5**。禁止凭记忆、禁止按 ASCII 降质、禁止忽略金样、禁止把金样演示功能搬进规格没写的页。
 5. 按 [`reference-shell.md`](reference-shell.md) 写/刷新各端 `index.html`（及移动端 `map.html`）：**只挂已落盘**的 `PAGE-*.html`。按 [`reference-scope.md`](reference-scope.md) 写 `prototypes/index.html`。镜像到 `versions/{v}/prototypes/`（各端含 `assets/`，总入口放在该目录根下）。不写 `scope.html`。
 6. 对本批页跑 UTF-8 脚本 + `verify-prototype-coverage.py` + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）。任一步失败则重写，不得交付。
-7. 输出：本批路径列表、验收通过说明、**剩余未生成 PAGE 编号**（无则写「全部已齐」）。有剩余时明确下一步：「继续」只续 ⑥。
+7. **清理临时文件**：删除本轮在 `prdRoot` 留下的辅助脚本/草稿/备份及空的 `scripts/` 等（见写产物纪律）；未建临时文件可跳过。
+8. 输出：本批路径列表、验收通过说明、**剩余未生成 PAGE 编号**（无则写「全部已齐」）。有剩余时明确下一步：「继续」只续 ⑥。

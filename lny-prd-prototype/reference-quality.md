@@ -22,6 +22,10 @@ python <skillDir>/scripts/verify-prototype-coverage.py <prdRoot> --version v1.0.
 
 exit 0 才可继续；exit 1 不得交付，按 F.1 整文件重写（coverage 失败则按 G.4 补控件/跳转/COMP）。禁止未跑验收就汇报「已更新」；禁止把 `repair-*` 当常规步骤。
 
+#### F.3 临时文件清理（交付前）
+
+过程中可在 `prdRoot` 建辅助脚本（如 `scripts/`）、草稿、备份；**交付前必须删干净**（含空目录）。工具脚本始终跑 `<skillDir>/scripts/…`，不要把技能包脚本永久留在业务项目。
+
 ### G. 原型 BUG 预防规则（必守）
 
 交付前消除已知 BUG。

@@ -2710,6 +2710,45 @@ button.md-tree__item {
 .md-d1.md-set-page > .md-set-pair + .md-set-pair {
   margin-top: 0; /* 由父级 gap 拉开 */
 }
+/* 触屏表单页：浅灰底 + 白底分组区块（内边距；组间露灰） */
+.md-form-page {
+  --md-form-page-bg: #f7f7f7;
+  --md-form-page-gap: 12px;
+  background: var(--md-form-page-bg);
+}
+.md-mobile-page.md-form-page {
+  background: var(--md-form-page-bg);
+}
+.md-mobile-page.md-form-page > .md-mobile-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-form-page-gap);
+  background: var(--md-form-page-bg);
+  padding-top: var(--md-form-page-gap);
+  padding-left: 0;
+  padding-right: 0;
+  box-sizing: border-box;
+}
+.md-mobile-page.md-form-page form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-form-page-gap);
+  width: 100%;
+  margin: 0;
+  min-width: 0;
+}
+.md-mobile-page.md-form-page .md-module {
+  margin: 0;
+  padding: 16px var(--md-safe-r, 16px) 16px var(--md-safe-l, 16px);
+  background: var(--md-bg-paper);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+}
+.md-mobile-page.md-form-page .md-section-head {
+  margin: 0 0 4px;
+}
 .md-set-group__title {
   padding: 12px 16px 4px;
   font-size: 0.75rem;
@@ -5468,8 +5507,14 @@ a.md-card {
   background: rgba(25, 118, 210, 0.18);
 }
 
-/* 表单页与列表共用左右安全距；输入右侧余量由字段本身承担，避免整页比列表更宽一截 */
-.md-mobile-page:has(form) .md-mobile-body {
+/* 表单页：左右安全距落在白底区块内边距，勿再给 body 叠一层 */
+.md-mobile-page.md-form-page:has(form) .md-mobile-body,
+.md-mobile-page.md-form-page .md-mobile-body {
+  padding-left: 0;
+  padding-right: 0;
+}
+/* 非分组表单页仍与列表共用左右安全距；输入右侧余量由字段本身承担 */
+.md-mobile-page:has(form):not(.md-form-page) .md-mobile-body {
   padding-left: var(--md-safe-l);
   padding-right: var(--md-safe-r);
 }

@@ -12,6 +12,27 @@
   var briefOpen = false;
   var collapsedGroups = {};
 
+  /** Directory URL of current page (always ends with /). Fixes serve cleanUrls → /MP without slash. */
+  function dirHref() {
+    var path = location.pathname;
+    if (/\.html?$/i.test(path)) path = path.replace(/\/[^/]*$/, "/");
+    else if (!path.endsWith("/")) path += "/";
+    return location.origin + path;
+  }
+
+  /** Resolve local relative URLs against the page directory (not the no-slash parent). */
+  function relUrl(u) {
+    if (!u) return u;
+    if (/^(?:#|https?:|mailto:|tel:|javascript:|data:|blob:)/i.test(u)) return u;
+    if (u.indexOf("//") === 0) return u;
+    try {
+      return new URL(u, dirHref()).href;
+    } catch (e) {
+      if (/^(?:\.\/|\.\.\/|\/)/.test(u)) return u;
+      return "./" + u;
+    }
+  }
+
   function syncGroup(head, body, open) {
     if (head) {
       head.classList.toggle("is-open", open);
@@ -192,7 +213,7 @@
       );
     });
     var frame = document.getElementById("previewFrame");
-    if (frame) frame.src = page.file;
+    if (frame) frame.src = relUrl(page.file);
     renderStatePanel(page);
     fillDrawer(page);
     fillBrief(page);
@@ -325,7 +346,7 @@
 
     var mapLink =
       mode === "mobile"
-        ? el("a", { className: "proto-link", href: "map.html", text: "关系图" })
+        ? el("a", { className: "proto-link", href: "./map.html", text: "关系图" })
         : null;
 
     var appbar = el("header", { className: "proto-appbar" }, [

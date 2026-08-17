@@ -49,7 +49,7 @@
 | 类别 | 规格用语 | ⑥ 类名（摘要） |
 |------|----------|----------------|
 | 基础 | 按钮主/次/线框/浅底/文字/纯链接、通栏整行、输入、列表区 | `md-btn` + `--contained`/`--outlined`/`--soft`/`--text`/`--link`（纯文字字色须区别紧邻正文）；**一行一主钮**用 `--block` 或 `md-btn-row`；贴底/半屏仅一钮自动占满；`md-field`；`md-card--cover` / `--tile` / `--row`；列表单行 `md-stack`>`md-set-row`（独立有缝）。禁止裸 `<button>` 带浏览器皮肤 |
-| 表单 | 开关、单选多选、下拉、轮盘 | `md-switch` `md-check` `md-radio` `md-select` `data-wheel` |
+| 表单 | 开关、单选多选、下拉、轮盘；页根 `md-form-page`（浅灰底+白底分组） | `md-form-page` + `md-module` 分组；`md-switch` `md-check` `md-radio` `md-select` `data-wheel` |
 | 反馈 | 对话框、Toast、骨架、空态 | `md-dialog` `snackbar` `md-skeleton` `md-empty` |
 | 展示 | 标签（含卡片角标）、头像/缩略、轮播、进步/进度、时间轴 | `md-chip` `md-card__tag`；`md-swiper` `md-advance` `md-progress` `md-timeline` |
 | 功能区 | 金刚宫格、金刚双卡、通栏、一行两个 | `md-king` / `md-king--pair`（**不限首页**）；通栏 `md-set-group`>`md-set-row`；一行两个 `md-set-pair`。**信息多 → 金刚双卡**；信息少 → 一行两个。**平铺、无圆角阴影卡片壳**；触屏**跟正文同左右安全距**，组内分割线仍内缩。**我的/设置**加 `md-set-page` 浅灰底，组间距漏底。成组、每组入口有限 |
