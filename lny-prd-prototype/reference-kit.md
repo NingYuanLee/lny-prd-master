@@ -24,7 +24,7 @@
 | 按钮 | 可点操作用套件类：`md-btn` + `--contained` / `--outlined` / `--soft` / `--text` / `--link`，或 `md-icon-btn` / `md-tab` / `md-menu__item` / `md-page-btn` / `md-tree__item`。禁止裸 `<button>`、禁止 `<input type="submit">` 露出浏览器灰钮/立体边 |
 | 移动端 | 状态栏由 `proto-page.js` 固定顶注入；页根须标 `md-immersive` 或 `md-standard`；`md-section-head`；**列表区** `md-card--cover` / `--tile` / `--row`（多行，可无左图+小图）/ `md-set-row`（单行）；**功能区** `md-king` / `--pair` / `md-set-row` 通栏 / `md-set-pair`；触屏 `md-search` 仅左图标+输入；`viewport-fit=cover`；正文左右下走 `--md-safe-*`；标准顶栏左右 4px |
 | 桌面端 | 必须有 `md-breadcrumb`（内容区顶部，不要 `md-page-head` 大标题）；表格首列可用 `md-row-goods` + `md-thumb md-media-ph--n`。D1-1 的冻结、操作阈值、语义列宽、紧凑密度和底部对齐直接执行共享 `PT-DESKTOP-LIST`：根用 `md-d1--list`，列用对应 `md-col-*`，更多菜单用 `md-actions` + `data-menu`，汇总/分页用 `md-d1__stats` / `md-d1__pager`。触屏弹窗/半屏内边距收紧；底半屏高度随内容、最大 70vh、超出正文滚动、关闭钮在面板右上角（`md-drawer__close`）。规格出现的弹窗/签/下拉/日期/按钮组必须用本节 AD 控件，禁止裸 `alert` / 无样式 `<select>` |
-| 间距 | 触屏滚动区模块间距走 `--md-module-gap`（`md-module`）；**同一固定顶区/工具条内**相邻子区块（搜索行↔页签、筛选行↔按钮组、顶栏↔工具条）须留 **≥ `--md-space`（8px）** 纵向间距：父级 `display:flex; flex-direction:column; gap:var(--md-space)` 或套件已写死的等价规则（如 `md-list-toolbar`）；卡片/栅格内距走套件；**禁止**把不同功能块贴死、也禁止用内联 `margin` 当排版 |
+| 间距 | **先内边距、后外边距**：优先用区块自身 `padding` 撑开呼吸感；仅当相邻两块贴死或视觉仍挤时才补块间 `gap`/`margin`（≥ `--md-space`）。**两侧都已有足够内边距时可不再加块间外边距**；只有一侧有则视情况补另一侧或父级 `gap`。滚动区模块用 `md-module` + `--md-module-gap`；固定顶区/工具条见套件（如 `md-list-toolbar`）。禁止内联 `margin` 当排版 |
 
 ## 复制
 
@@ -817,7 +817,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | 页内分页签 | 桌面：`md-tabs md-tabs--page` 下划线（**平铺，无圆角阴影卡片壳**）；触屏：`md-tabs`（自动按钮组，浅底/选中色块） | 触屏用桌面下划线签；自造下划线 `div` / 裸 `<a>` 签；页内签套卡片壳 |
 | 主/线/浅底/字/链接按钮 | `md-btn md-btn--contained` / `--outlined` / **`--soft`（无边框浅底色字）** / `--text` / `--link`；**通栏整行** `--block`（或 `md-btn-row` 竖叠）；图标钮 `md-icon-btn`。触屏贴底 `md-action-bar` / 半屏 `md-drawer__actions` **仅一钮时自动占满** | 裸 `<button>`、`<input type="submit">`、Bootstrap/`btn`、浏览器灰钮；一行一主钮却缩成短条 |
 | 悬浮胶囊 / 桌面悬浮按钮 | 形态与阈值执行共享 `PT-FLOAT`；触屏用 `md-pod` 方位类，桌面用 `md-pod--desk`，折叠用 `md-pod--fold` + `__toggle` | 写进滚动层；违反共享方位；用 `md-fab` 冒充；功能钮缩放回弹 |
-| 按钮组 / 工具栏按钮 | `md-btn-group` / `md-d1__toolbar`（功能栏**平铺，无圆角阴影**；保留内边距；区块间距靠父级 gap） | 无 class 的一排 `<button>`；功能栏套卡片壳 |
+| 按钮组 / 工具栏按钮 | `md-btn-group` / `md-d1__toolbar`（功能栏**平铺，无圆角阴影**；保留内边距；块间间距优先靠各块 `padding`，不够再父级 `gap`） | 无 class 的一排 `<button>`；功能栏套卡片壳 |
 | 下拉 | 少选项：`md-field--select` + `md-select`；多选/搜索/树：`md-field--combo` + `md-combo`（`data-mode="multi"` / `data-search="1"` / `data-tree="leaf|1"`）；菜单：`md-select-btn` + `md-menu` | 未包 `md-field` 的裸 `<select>`；触屏用系统原生选择器；自造 autocomplete 面板 |
 | 日期 / 时间 | `md-field--date` / `md-field--daterange` / `md-field--time` + `type="date|time|datetime-local"` | 自造日历、两个裸日期框冒充日期段 |
 | 开关 | `md-switch-row` + `md-switch` | 自造滑块 / 裸 checkbox 当开关 |
