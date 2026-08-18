@@ -6235,6 +6235,14 @@ a.md-card {
   gap: 8px;
   width: 100%;
   margin: 0;
+  padding: 0;
+  min-height: 44px;
+  box-sizing: border-box;
+}
+.md-list-toolbar .md-search-row > .md-search,
+.md-list-toolbar .md-search-row > .md-search-row__filter {
+  align-self: center;
+  margin: 0;
 }
 .md-list-toolbar .md-search {
   flex: 1;
@@ -6243,11 +6251,15 @@ a.md-card {
   height: 44px;
   box-sizing: border-box;
 }
-.md-search-row__filter {
+.md-list-toolbar .md-search-row__filter {
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   color: var(--md-text-secondary);
+}
+.md-list-toolbar .md-search-row__filter .md-icon {
+  width: 24px;
+  height: 24px;
 }
 .md-search-row__filter.is-active {
   color: var(--md-primary);
