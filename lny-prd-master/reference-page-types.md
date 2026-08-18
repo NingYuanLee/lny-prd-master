@@ -49,7 +49,7 @@ PAGE 编号按终端独立分配，MP 与 AD 的相同序号不代表相同页�
 
 ## 金样边界
 
-MP-004、MP-007、MP-011、MP-012、AD-003～AD-007、AD-009～AD-014 是套件/形态样例，不是每个业务项目的必有页面。业务表单按规格裁字段；悬浮胶囊或按钮仅在规格点名时加入业务页。列表页顶部是搜索与筛选工具条，不是返回标题栏。夹具 `PAGE-AD-001` 是**分页标准列表**且含筛+功能栏；六型总览与树表/卡片只在金样 `desktop-lists.html`（只对标列表区）。桌面字段详情金样在 `desktop-detail.html` 字段签，夹具可单独一页 `PAGE-AD-012`。表内嵌套无独立夹具 PAGE，见 `desktop-tree-nest.html` / `desktop-lists` 第二签。状态导览合览无独立夹具 PAGE，见 `PAGE-AD-003` 与 `desktop-state-flow.html`。
+MP-004、MP-007、MP-011、MP-012、AD-003～AD-007、AD-009～AD-014 是套件/形态样例，不是每个业务项目的必有页面。业务表单按规格裁字段；悬浮胶囊或按钮仅在规格点名时加入业务页。列表页顶部是搜索与筛选工具条，不是返回标题栏。夹具 `PAGE-AD-001` 是**分页标准列表**且含筛+功能栏；六型总览与树表/卡片只在金样 `desktop-lists.html`（只对标列表区）。桌面字段详情金样在 `desktop-detail.html` 字段签，夹具可单独一页 `PAGE-AD-012`。表内嵌套无独立夹具 PAGE，见 `desktop-lists.html` 第二签（分页树形列表）。状态导览合览无独立夹具 PAGE，见 `PAGE-AD-003` 与 `desktop-state-flow.html`。
 
 ## 跨步骤不变量
 
