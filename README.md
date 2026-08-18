@@ -1,6 +1,6 @@
 # LNY-PRD — 李宁远产品工作流
 
-**工具包版本：2.8.1**
+**工具包版本：2.8.2**
 
 ## 背景
 
@@ -454,7 +454,7 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 └── LICENSE
 ```
 
-`lny-prd-ui` 另含 `reference-mobile-design.md` 与 `reference-desktop-design.md`（桌面分栏/表单栅格/列表三型/状态导览/定位与树）。
+`lny-prd-ui` 另含 `reference-mobile-design.md` 与 `reference-desktop-design.md`（桌面通栏/分栏/表单栅格/列表四型/状态导览/定位与树）。
 ## 十、维护回归
 
 首次本地使用时，在仓库根创建持久虚拟环境并安装依赖（只需执行一次）：

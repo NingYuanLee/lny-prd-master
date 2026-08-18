@@ -1,54 +1,48 @@
-<!-- LNY-PRD gold: 定位导航族。分类按钮 / 章节大纲：点选定位右侧锚点。与时间轴同族；与可展开树分离。写分类/大纲前必 Read；树见 desktop-split。 -->
+<!-- LNY-PRD gold: 章节大纲。与桌面时间轴同构：左大纲右全文，点左滚右。分类钮可用 md-locator--cats，不要做成树。写大纲/分类前必 Read。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <title>桌面定位导航</title>
+  <title>桌面章节大纲</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./assets/mui-kit.css">
 </head>
 <body>
   <div class="md-d1 md-d1--split">
     <div class="md-breadcrumb">
-      <span>套件</span><span>/</span><span class="is-current">定位导航</span>
+      <span>套件</span><span>/</span><span class="is-current">章节大纲</span>
     </div>
-
-    <div class="md-section-head">
-      <h2 class="md-section-head__title">分类按钮（顶栏式）</h2>
-    </div>
-    <nav class="md-locator md-locator--cats" aria-label="分类">
-      <button type="button" class="md-locator__item is-active" data-target="sec-fruit">水果</button>
-      <button type="button" class="md-locator__item" data-target="sec-drink">饮品</button>
-      <button type="button" class="md-locator__item" data-target="sec-bake">烘焙</button>
-    </nav>
-
     <div class="md-split">
       <aside class="md-split__side">
-        <div class="md-section-head"><span class="md-section-head__title">章节大纲</span></div>
+        <div class="md-section-head"><span class="md-section-head__title">大纲</span></div>
         <nav class="md-locator md-locator--outline" aria-label="大纲">
           <button type="button" class="md-locator__item is-active" data-target="sec-fruit">一、水果</button>
           <button type="button" class="md-locator__item md-locator__item--l2" data-target="sec-berry">浆果说明</button>
           <button type="button" class="md-locator__item" data-target="sec-drink">二、饮品</button>
           <button type="button" class="md-locator__item" data-target="sec-bake">三、烘焙</button>
         </nav>
-        <p class="md-caption">时间轴节点同属本族，见 desktop-timeline。可展开组织树见 desktop-split，不要混用。</p>
+        <p class="md-caption">时间轴见 desktop-timeline，左右结构相同。顶栏分类钮用 <code>md-locator--cats</code>。可展开树见 desktop-split。</p>
       </aside>
-      <div class="md-split__main md-layout__pane md-layout__pane--flush">
+      <div class="md-split__main md-layout__pane md-layout__pane--flush md-doc-scroll">
         <div class="md-module" data-section="sec-fruit" id="sec-fruit">
           <h2 class="md-h3">一、水果</h2>
-          <p class="md-body2">点左侧大纲或顶部分类，右侧滚到本锚点。不是换一整棵树的数据域。</p>
+          <p class="md-body2">点左侧大纲，右侧滚到本锚点。不是换一整棵树的数据域，也不要做成触屏时间轴那种整行横卡。</p>
+          <p class="md-body2">有机草莓与脐橙礼盒的产地、冷链和效期写在本段，方便对照大纲跳读。</p>
         </div>
         <div class="md-module" data-section="sec-berry" id="sec-berry">
           <h2 class="md-h3">浆果说明</h2>
-          <p class="md-body2">大纲二级项同样定位到锚点；不要做成树展开收起。</p>
+          <p class="md-body2">大纲二级项同样定位到锚点；不要做成树展开收起，也不要在左侧做增删改。</p>
+          <p class="md-body2">浆果短保、忌挤压。本段只承担阅读定位，筛选树仍走 desktop-split。</p>
         </div>
         <div class="md-module" data-section="sec-drink" id="sec-drink">
           <h2 class="md-h3">二、饮品</h2>
-          <p class="md-body2">分类按钮与大纲可并存：都是定位导航，状态高亮当前节点。</p>
+          <p class="md-body2">小粒咖啡与青柠蜂蜜茶的冲泡和冷藏要求写在本段。左侧高亮当前章。</p>
+          <p class="md-body2">分类按钮若出现，只做横向定位，不替代本页左侧大纲。</p>
         </div>
         <div class="md-module" data-section="sec-bake" id="sec-bake">
           <h2 class="md-h3">三、烘焙</h2>
-          <p class="md-body2">详情页右下「目录」也属本族（data-section）。</p>
+          <p class="md-body2">全麦吐司的当日烘焙与保存写在本段。详情页右下「目录」也属本族（data-section）。</p>
+          <p class="md-body2">末章同样只滚动全文。维护分类树、表内嵌套行见列表四型与 desktop-split。</p>
         </div>
       </div>
     </div>

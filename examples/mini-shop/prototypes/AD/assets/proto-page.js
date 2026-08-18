@@ -1080,10 +1080,16 @@
           n.classList.remove("is-active");
         });
         item.classList.add("is-active");
+        var target =
+          item.getAttribute("data-target") ||
+          item.getAttribute("data-section") ||
+          "";
+        var host = tl.closest(".md-d1--split") || tl.closest(".md-d1") || document;
+        if (target) scrollToSectionTarget(host, target);
         tl.dispatchEvent(
           new CustomEvent("md-timeline-select", {
             bubbles: true,
-            detail: { item: item },
+            detail: { item: item, target: target },
           })
         );
       });

@@ -1,18 +1,27 @@
-<!-- LNY-PRD gold: 桌面页面级分栏。双列 / 三列 / 品字形。禁止用表单窄双列栅格冒充页面左右布局。写 D1-3 分栏前必 Read。 -->
+<!-- LNY-PRD gold: 桌面页面级布局。通栏 / 双列 / 三列 / 品字形。禁止用表单窄双列栅格冒充页面左右布局。卡片列表见 desktop-cards。写 D1-3 分栏前必 Read。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <title>桌面分栏布局</title>
+  <title>桌面页面布局</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./assets/mui-kit.css">
 </head>
 <body>
   <div class="md-d1">
     <div class="md-breadcrumb">
-      <span>套件</span><span>/</span><span class="is-current">页面分栏</span>
+      <span>套件</span><span>/</span><span class="is-current">页面布局</span>
     </div>
-    <p class="md-body2">页面分栏用 <code>md-layout</code>。字段并排才用表单窄双列栅格（D1-2 表单金样）。二者不要混用。</p>
+    <p class="md-body2">页面布局用 <code>md-layout</code>。字段并排才用表单窄双列栅格（D1-2 表单金样）。二者不要混用。卡片列表见 desktop-cards，不要写进本页。</p>
+
+    <div class="md-section-head"><h2 class="md-section-head__title">标准通栏</h2></div>
+    <p class="md-caption">D1 默认：面包屑下一块内容铺满内容区，不再左右切开。不是品字里的「上通栏」。无规格要求分栏时先用通栏。</p>
+    <div class="md-layout md-layout--full">
+      <div class="md-layout__pane">
+        <h3 class="md-h3">通栏主区</h3>
+        <p class="md-body2">筛选、表格、详情长文都落在这一栏。不要为了「看起来像后台」硬拆双列。</p>
+      </div>
+    </div>
 
     <div class="md-section-head"><h2 class="md-section-head__title">双列</h2></div>
     <div class="md-layout md-layout--2col">
@@ -37,32 +46,10 @@
     <div class="md-layout md-layout--pin">
       <div class="md-layout__pane md-layout__pane--span">
         <h3 class="md-h3">上通栏</h3>
-        <p class="md-body2">指标、说明或工具条。</p>
+        <p class="md-body2">指标、说明或工具条。这是品字的顶条，不是整页标准通栏。</p>
       </div>
       <div class="md-layout__pane"><h3 class="md-h3">下左</h3><p class="md-body2">列表或图</p></div>
       <div class="md-layout__pane"><h3 class="md-h3">下右</h3><p class="md-body2">详情或表单摘要</p></div>
-    </div>
-
-    <div class="md-section-head"><h2 class="md-section-head__title">卡片列表（列表三型之一）</h2></div>
-    <div class="md-d1--cards">
-      <div class="md-card-grid">
-        <article class="md-card md-card--tile">
-          <div class="md-card__media md-media-ph md-media-ph--1"></div>
-          <div class="md-card__body"><h3 class="md-card__title">有机草莓</h3><p class="md-card__text">图文重、非强对齐列时用卡片列表，不要硬套标准表。</p></div>
-        </article>
-        <article class="md-card md-card--tile">
-          <div class="md-card__media md-media-ph md-media-ph--2"></div>
-          <div class="md-card__body"><h3 class="md-card__title">脐橙礼盒</h3><p class="md-card__text">标准列表 / 表格 / 卡片列表三型择一。</p></div>
-        </article>
-        <article class="md-card md-card--tile">
-          <div class="md-card__media md-media-ph md-media-ph--3"></div>
-          <div class="md-card__body"><h3 class="md-card__title">小粒咖啡</h3><p class="md-card__text">嵌入短表见工作台金样，勿整页套商品表壳。</p></div>
-        </article>
-        <article class="md-card md-card--tile">
-          <div class="md-card__media md-media-ph md-media-ph--4"></div>
-          <div class="md-card__body"><h3 class="md-card__title">全麦吐司</h3><p class="md-card__text">卡片列表默认态至少四张，便于对标密度。</p></div>
-        </article>
-      </div>
     </div>
   </div>
   <script src="./assets/md-icons.js"></script>

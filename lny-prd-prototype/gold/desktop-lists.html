@@ -1,0 +1,410 @@
+<!-- LNY-PRD gold: 桌面列表四型。分页标准列表 / 分页树形列表 / 不分页分组字段 / 不分页只读树。卡片列表见 desktop-cards。标准列表完整交互见 desktop-list。写桌面列表前必 Read。 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>桌面列表四型</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./assets/mui-kit.css">
+</head>
+<body>
+  <div class="md-d1 md-d1--list">
+    <div class="md-breadcrumb">
+      <span>套件</span><span>/</span><span class="is-current">列表四型</span>
+    </div>
+    <p class="md-body2">四型择一。卡片列表见 desktop-cards。筛冻结与弹窗细节见 desktop-list。维护树见 desktop-split。</p>
+    <nav class="md-tabs md-tabs--page">
+      <button type="button" class="md-tab is-active" data-panel="panelStd">分页标准列表</button>
+      <button type="button" class="md-tab" data-panel="panelNest">分页树形列表</button>
+      <button type="button" class="md-tab" data-panel="panelGroup">不分页分组字段</button>
+      <button type="button" class="md-tab" data-panel="panelTree">不分页树形展示</button>
+    </nav>
+    <div class="md-tab-panels md-d1__workspace">
+      <div id="panelStd" class="md-tab-panel is-active">
+        <div class="md-d1__search" data-section="搜索栏">
+          <label class="md-field md-field--sm">
+            <span class="md-field__label">商品名称</span>
+            <input class="md-field__input" type="text" placeholder="请输入商品名称">
+          </label>
+          <label class="md-field md-field--sm md-field--select">
+            <span class="md-field__label">库存状态</span>
+            <select class="md-select">
+              <option value="">全部</option>
+              <option value="有货">有货</option>
+              <option value="缺货">缺货</option>
+            </select>
+          </label>
+          <div class="md-filter__actions md-btn-group">
+            <button type="button" class="md-btn md-btn--contained">
+              <span class="md-icon" data-icon="search" aria-hidden="true"></span>
+              查询
+            </button>
+            <button type="button" class="md-btn md-btn--outlined">重置</button>
+          </div>
+        </div>
+        <div class="md-d1__toolbar">
+          <div class="md-btn-group">
+            <button type="button" class="md-btn md-btn--contained">新增</button>
+          </div>
+        </div>
+        <div class="md-d1__list">
+          <div class="md-table-wrap">
+            <table class="md-table">
+              <thead>
+                <tr>
+                  <th class="md-col-check"><label class="md-check"><input type="checkbox"></label></th>
+                  <th class="md-col-name">商品名称</th>
+                  <th class="md-col-price">售价</th>
+                  <th class="md-col-status">库存状态</th>
+                  <th class="md-col-date">上架日期</th>
+                  <th class="md-col-actions">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="md-col-check"><label class="md-check"><input type="checkbox"></label></td>
+                  <td class="md-col-name"><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--1"></span>
+                    <span class="md-cell-stack">
+                      <span class="md-cell-stack__primary">有机草莓 250g</span>
+                      <span class="md-cell-stack__secondary">冷链鲜果 · 次日达</span>
+                    </span>
+                  </span></td>
+                  <td class="md-col-price">¥19.90</td>
+                  <td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td>
+                  <td class="md-col-date">2026-03-12</td>
+                  <td class="md-col-actions"><div class="md-actions">
+                    <button type="button" class="md-icon-btn" title="查看" aria-label="查看"><span class="md-icon" data-icon="view" aria-hidden="true"></span></button>
+                    <button type="button" class="md-icon-btn" title="编辑" aria-label="编辑"><span class="md-icon" data-icon="edit" aria-hidden="true"></span></button>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td class="md-col-check"><label class="md-check"><input type="checkbox"></label></td>
+                  <td class="md-col-name"><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--2"></span>云南小粒咖啡 227g</span></td>
+                  <td class="md-col-price">¥29.90</td>
+                  <td class="md-col-status"><span class="md-chip md-chip--outlined">缺货</span></td>
+                  <td class="md-col-date">2026-02-08</td>
+                  <td class="md-col-actions"><div class="md-actions">
+                    <button type="button" class="md-icon-btn" title="查看" aria-label="查看"><span class="md-icon" data-icon="view" aria-hidden="true"></span></button>
+                    <button type="button" class="md-icon-btn" title="编辑" aria-label="编辑"><span class="md-icon" data-icon="edit" aria-hidden="true"></span></button>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td class="md-col-check"><label class="md-check"><input type="checkbox"></label></td>
+                  <td class="md-col-name"><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--3"></span>青柠蜂蜜茶 500ml</span></td>
+                  <td class="md-col-price">¥12.50</td>
+                  <td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td>
+                  <td class="md-col-date">2026-04-01</td>
+                  <td class="md-col-actions"><div class="md-actions">
+                    <button type="button" class="md-icon-btn" title="查看" aria-label="查看"><span class="md-icon" data-icon="view" aria-hidden="true"></span></button>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td class="md-col-check"><label class="md-check"><input type="checkbox"></label></td>
+                  <td class="md-col-name"><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--4"></span>全麦吐司 400g</span></td>
+                  <td class="md-col-price">¥9.90</td>
+                  <td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td>
+                  <td class="md-col-date">2026-01-20</td>
+                  <td class="md-col-actions"><div class="md-actions">
+                    <button type="button" class="md-icon-btn" title="查看" aria-label="查看"><span class="md-icon" data-icon="view" aria-hidden="true"></span></button>
+                  </div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="md-skel-host is-hidden" data-skel-for="COMP-001">
+            <div class="md-skeleton md-skeleton--row"></div>
+            <div class="md-skeleton md-skeleton--row"></div>
+            <div class="md-skeleton md-skeleton--row"></div>
+          </div>
+          <div class="md-empty md-empty--illus is-hidden" data-empty-for="COMP-001" data-empty-text="暂无商品" data-error-text="列表加载失败">
+            <div class="md-empty__art" aria-hidden="true"></div>
+            <p class="md-empty__title">暂无内容</p>
+            <p class="md-empty__text">暂无商品</p>
+          </div>
+          <div class="md-d1__footer">
+            <span class="md-d1__stats md-caption">共 4 条</span>
+            <div class="md-d1__pager">
+              <span class="md-caption">第 1 页</span>
+              <nav class="md-pagination">
+                <button type="button" class="md-page-btn" disabled>‹</button>
+                <button type="button" class="md-page-btn is-active">1</button>
+                <button type="button" class="md-page-btn" disabled>›</button>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="panelNest" class="md-tab-panel">
+        <div class="md-d1__list">
+          <div class="md-table-wrap">
+            <table class="md-table md-table--nest">
+              <thead>
+                <tr>
+                  <th class="md-col-name">名称</th>
+                  <th class="md-col-status">状态</th>
+                  <th class="md-col-num">数量</th>
+                  <th class="md-col-actions">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-row-id="fruit">
+                  <td class="md-col-name">
+                    <button type="button" class="md-nest-toggle" aria-expanded="true" aria-label="展开收起"><span class="md-icon" data-icon="chevron-right" aria-hidden="true"></span></button>
+                    水果
+                  </td>
+                  <td class="md-col-status"><span class="md-chip md-chip--success">启用</span></td>
+                  <td class="md-col-num">2</td>
+                  <td class="md-col-actions"><div class="md-actions">
+                    <button type="button" class="md-icon-btn" title="编辑" aria-label="编辑"><span class="md-icon" data-icon="edit" aria-hidden="true"></span></button>
+                  </div></td>
+                </tr>
+                <tr class="md-row--child" data-parent="fruit">
+                  <td class="md-col-name">有机草莓 250g</td>
+                  <td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td>
+                  <td class="md-col-num">120</td>
+                  <td class="md-col-actions"><div class="md-actions">
+                    <button type="button" class="md-icon-btn" title="查看" aria-label="查看"><span class="md-icon" data-icon="view" aria-hidden="true"></span></button>
+                    <button type="button" class="md-icon-btn" title="编辑" aria-label="编辑"><span class="md-icon" data-icon="edit" aria-hidden="true"></span></button>
+                  </div></td>
+                </tr>
+                <tr class="md-row--child" data-parent="fruit">
+                  <td class="md-col-name">
+                    <div class="md-cell-stack">
+                      <span class="md-cell-stack__primary">赣南脐橙 5斤 · 超长名称演示省略避免叠列</span>
+                      <span class="md-cell-stack__secondary">产地直发 · 冷链</span>
+                    </div>
+                  </td>
+                  <td class="md-col-status"><span class="md-chip">缺货</span></td>
+                  <td class="md-col-num">0</td>
+                  <td class="md-col-actions"><div class="md-actions">
+                    <button type="button" class="md-icon-btn" title="查看" aria-label="查看"><span class="md-icon" data-icon="view" aria-hidden="true"></span></button>
+                    <button type="button" class="md-icon-btn" title="编辑" aria-label="编辑"><span class="md-icon" data-icon="edit" aria-hidden="true"></span></button>
+                  </div></td>
+                </tr>
+                <tr data-row-id="drink">
+                  <td class="md-col-name">
+                    <button type="button" class="md-nest-toggle" aria-expanded="true" aria-label="展开收起"><span class="md-icon" data-icon="chevron-right" aria-hidden="true"></span></button>
+                    饮品
+                  </td>
+                  <td class="md-col-status"><span class="md-chip md-chip--success">启用</span></td>
+                  <td class="md-col-num">1</td>
+                  <td class="md-col-actions"><div class="md-actions">
+                    <button type="button" class="md-icon-btn" title="编辑" aria-label="编辑"><span class="md-icon" data-icon="edit" aria-hidden="true"></span></button>
+                  </div></td>
+                </tr>
+                <tr class="md-row--child" data-parent="drink">
+                  <td class="md-col-name">云南小粒咖啡 227g</td>
+                  <td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td>
+                  <td class="md-col-num">48</td>
+                  <td class="md-col-actions"><div class="md-actions">
+                    <button type="button" class="md-icon-btn" title="查看" aria-label="查看"><span class="md-icon" data-icon="view" aria-hidden="true"></span></button>
+                    <div class="md-select-wrap">
+                      <button type="button" class="md-icon-btn" title="更多" aria-label="更多" data-menu="nestMore1"><span class="md-icon" data-icon="more" aria-hidden="true"></span></button>
+                      <ul id="nestMore1" class="md-menu md-menu--right md-menu--fixed">
+                        <li><button type="button" class="md-menu__item">编辑</button></li>
+                        <li><button type="button" class="md-menu__item">下架</button></li>
+                      </ul>
+                    </div>
+                  </div></td>
+                </tr>
+                <tr class="md-row--child" data-parent="drink">
+                  <td class="md-col-name">青柠蜂蜜茶 500ml</td>
+                  <td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td>
+                  <td class="md-col-num">36</td>
+                  <td class="md-col-actions"><div class="md-actions">
+                    <button type="button" class="md-icon-btn" title="查看" aria-label="查看"><span class="md-icon" data-icon="view" aria-hidden="true"></span></button>
+                  </div></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="md-skel-host is-hidden" data-skel-for="COMP-nest">
+              <div class="md-skeleton md-skeleton--row"></div>
+              <div class="md-skeleton md-skeleton--row"></div>
+            </div>
+            <div class="md-empty md-empty--illus is-hidden" data-empty-for="COMP-nest" data-empty-text="暂无分类商品" data-error-text="加载失败">
+              <div class="md-empty__art" aria-hidden="true"></div>
+              <p class="md-empty__title">暂无内容</p>
+              <p class="md-empty__text">该分类下还没有商品</p>
+            </div>
+          </div>
+          <div class="md-d1__footer">
+            <span class="md-d1__stats md-caption">共 6 条</span>
+            <div class="md-d1__pager"><nav class="md-pagination" aria-label="分页"><button type="button" class="md-page-btn is-active">1</button></nav></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="panelGroup" class="md-tab-panel">
+        <div class="md-group-list">
+          <section class="md-group-list__group">
+            <div class="md-group-list__head">水果</div>
+            <article class="md-group-list__item">
+              <dl class="md-desc md-desc--cols-2">
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">商品名称</dt>
+                  <dd class="md-desc__value">有机草莓 250g</dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">售价</dt>
+                  <dd class="md-desc__value">¥19.90</dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">库存状态</dt>
+                  <dd class="md-desc__value"><span class="md-chip md-chip--success">有货</span></dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">上架日期</dt>
+                  <dd class="md-desc__value">2026-03-12</dd>
+                </div>
+              </dl>
+            </article>
+            <article class="md-group-list__item">
+              <dl class="md-desc md-desc--cols-2">
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">商品名称</dt>
+                  <dd class="md-desc__value">赣南脐橙 5斤</dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">售价</dt>
+                  <dd class="md-desc__value">¥32.80</dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">库存状态</dt>
+                  <dd class="md-desc__value"><span class="md-chip">缺货</span></dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">上架日期</dt>
+                  <dd class="md-desc__value">2026-04-18</dd>
+                </div>
+              </dl>
+            </article>
+          </section>
+          <section class="md-group-list__group">
+            <div class="md-group-list__head">饮品</div>
+            <article class="md-group-list__item">
+              <dl class="md-desc md-desc--cols-2">
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">商品名称</dt>
+                  <dd class="md-desc__value">云南小粒咖啡 227g</dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">售价</dt>
+                  <dd class="md-desc__value">¥29.90</dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">库存状态</dt>
+                  <dd class="md-desc__value"><span class="md-chip md-chip--success">有货</span></dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">上架日期</dt>
+                  <dd class="md-desc__value">2026-02-08</dd>
+                </div>
+              </dl>
+            </article>
+            <article class="md-group-list__item">
+              <dl class="md-desc md-desc--cols-2">
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">商品名称</dt>
+                  <dd class="md-desc__value">青柠蜂蜜茶 500ml</dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">售价</dt>
+                  <dd class="md-desc__value">¥12.50</dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">库存状态</dt>
+                  <dd class="md-desc__value"><span class="md-chip md-chip--success">有货</span></dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">上架日期</dt>
+                  <dd class="md-desc__value">2026-04-01</dd>
+                </div>
+              </dl>
+            </article>
+          </section>
+        </div>
+      </div>
+
+      <div id="panelTree" class="md-tab-panel">
+        <div class="md-tree-browse">
+          <p class="md-caption">只读展示：可展开收起，无增删改、无拖拽。维护交互见 desktop-split。</p>
+          <ul class="md-tree" data-tree-edit="off">
+            <li class="is-open">
+              <button type="button" class="md-tree__item is-active">
+                <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                <span class="md-tree__label">水果</span>
+              </button>
+              <ul>
+                <li class="is-open">
+                  <button type="button" class="md-tree__item">
+                    <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                    <span class="md-tree__label">浆果</span>
+                  </button>
+                  <ul>
+                    <li>
+                      <button type="button" class="md-tree__item">
+                        <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                        <span class="md-tree__label">有机草莓</span>
+                      </button>
+                    </li>
+                    <li>
+                      <button type="button" class="md-tree__item">
+                        <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                        <span class="md-tree__label">蓝莓</span>
+                      </button>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <button type="button" class="md-tree__item">
+                    <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                    <span class="md-tree__label">脐橙礼盒</span>
+                  </button>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <button type="button" class="md-tree__item">
+                <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                <span class="md-tree__label">饮品</span>
+              </button>
+              <ul>
+                <li>
+                  <button type="button" class="md-tree__item">
+                    <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                    <span class="md-tree__label">小粒咖啡</span>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="md-tree__item">
+                    <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                    <span class="md-tree__label">青柠蜂蜜茶</span>
+                  </button>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <button type="button" class="md-tree__item">
+                <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                <span class="md-tree__label">烘焙</span>
+              </button>
+              <ul>
+                <li>
+                  <button type="button" class="md-tree__item">
+                    <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
+                    <span class="md-tree__label">全麦吐司</span>
+                  </button>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="./assets/md-icons.js"></script>
+  <script src="./assets/icons-extra.js"></script>
+  <script src="./assets/proto-page.js"></script>
+</body>
+</html>
