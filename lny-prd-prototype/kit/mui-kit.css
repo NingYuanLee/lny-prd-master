@@ -865,11 +865,13 @@ a:hover { text-decoration: none; }
   top: -8px;
   padding: 0 4px;
   background: var(--md-bg-paper);
-  font-size: 0.75rem;
+  font-size: var(--md-field-label-font, 12px);
   line-height: 1.4375em;
   color: var(--md-text-secondary);
   pointer-events: none;
   z-index: 1;
+  transform: scale(var(--md-field-label-scale, 0.8333333333));
+  transform-origin: left center;
 }
 .md-field:focus-within .md-field__label { color: var(--md-primary); }
 .md-field--combo:has(.md-combo.is-open) .md-field__label { color: var(--md-primary); }
@@ -2093,7 +2095,7 @@ body.md-lightbox-open { overflow: hidden; }
 }
 .md-d1__pager .md-field { min-width: 88px; }
 .md-d1__page-size .md-field__label {
-  font-size: 0.6875rem;
+  --md-field-label-scale: 0.75;
   color: var(--md-text-secondary);
 }
 .md-d1__workspace {
@@ -2170,7 +2172,7 @@ body.md-lightbox-open { overflow: hidden; }
 .md-d1--list .md-d1__search .md-field__label,
 .md-filter .md-field__label,
 .md-d1__search .md-field__label {
-  font-size: 0.6875rem; /* 11px：筛选区 label 更小 */
+  --md-field-label-scale: 0.75; /* 筛选区 label 再小一档（约 9px 视觉） */
   line-height: 1.3;
 }
 .md-d1--list .md-d1__search .md-field--sm .md-field__input:not(textarea),

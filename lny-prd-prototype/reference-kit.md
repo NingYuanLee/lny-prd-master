@@ -529,16 +529,12 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 单日用 `md-field--date`（聚焦弹出月历）。日期段用 `md-field--daterange`：先点开始日、再点结束日，输入框显示 `YYYY-MM-DD ~ YYYY-MM-DD`，起止写在 `data-start` / `data-end`。时间用 `md-field--time` + `type="time"`。禁止再写 `datetime-local` 裸控件。
 
-**只读 / 禁用输入**（**视觉一致**：灰底 `#eee`、标签缺口同色灰底、淡字；语义上 `readonly` 仍可复制文本，`disabled` 不参与提交。日期段触发器的 `readonly` 不要套 `md-field--readonly`）
+**只读 / 禁用输入**（**视觉一致**，金样只保留一项：`md-field--readonly` + `readonly` 或 `disabled` 均可；灰底 `#eee`、标签缺口同色灰底、淡字。日期段触发器的 `readonly` 不要套 `md-field--readonly`）
 
 ```html
 <label class="md-field md-field--readonly">
-  <span class="md-field__label">只读</span>
+  <span class="md-field__label">只读/禁用</span>
   <input class="md-field__input" type="text" value="不可编辑" readonly>
-</label>
-<label class="md-field">
-  <span class="md-field__label">禁用</span>
-  <input class="md-field__input" type="text" value="不可修改" disabled>
 </label>
 ```
 
@@ -952,7 +948,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 主/线/浅底/字/链接按钮 | `md-btn md-btn--contained` / `--outlined` / **`--soft`（无边框浅底色字）** / `--text` / **`--link`（纯文字无线框无背景，查看更多/了解全部）**；`--sm` `--lg`；置灰 `disabled`；角标内嵌 `md-badge`。**`--text`/`--link` 字色须区别紧邻正文**（默认主色，禁止跟正文同色） |
 | 图标 | `span.md-icon` + `data-icon`（闭集见 [`reference-icons.md`](reference-icons.md)） |
 | 图标按钮 | `md-icon-btn` 内放 `span.md-icon` |
-| 输入 | `md-field` + `md-field__label` + `md-field__input`；只读加 `md-field--readonly` + `readonly`，或 `disabled`（**灰底淡字**）。日期段 `readonly` 触发器不要加 `--readonly` |
+| 输入 | `md-field` + `md-field__label` + `md-field__input`；不可编辑一项即可：`md-field--readonly` + `readonly` 或 `disabled`（**视觉相同、灰底淡字**）。日期段 `readonly` 触发器不要加 `--readonly` |
 | 卡片 | `md-card` **`--cover` / `--tile`（可横可竖或 `--ratio-auto` 定宽随图）`--row`（左图仅 1:1 或竖图 `--ratio-3x4/2x3`；字段少因值长再加 `--long`）**；列表单行 `md-set-row`。`md-card__media` `md-card__leading` `--avatar` `md-card__body` `md-card__main` `md-card__title` `md-card__subtitle` `md-card__text` `md-card__chips` `md-card__rail` `md-card__aside` `md-card__dist` `md-card__actions` `--bar` `md-card__time` `md-card__foot` `md-card__meta` `md-card__photos` `md-card__photo` `md-card__tag` `--tl/--tr` `md-price` |
 | 资料卡片 | `md-profile`（店铺/个人/公司；**默认平铺**无圆角/轻阴影）；**最精简**=仅 `__head`（`__media` + `__title` + `__subtitle`）；完整再加 `__side` / `__meta` / `__tags` / `__stats` / `__foot`；**页顶**加 `--top` |
 | 详情页 | 页根 `md-detail-page`（整页浅灰）；内容壳透底；标题/图文 **白底区块**、间隙露灰；`md-detail-head`；`md-article` 四级标题；短段不缩进、大段 `__body` 缩进、多项目 `__list`；`__figures--1/2`+居中 `__caption`+表格可横滑；**评论列表卡**；可嵌平铺 **资料卡片**；右下 **目录+返回顶部** |
