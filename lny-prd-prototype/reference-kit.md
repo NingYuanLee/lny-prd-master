@@ -753,7 +753,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | D1-2 表单 | `md-d1` + `md-d1__form` + `md-field--sm`；行距靠 grid `row-gap`；可选 `--cols-1/3` | 无纸面的裸 label 堆叠；弹窗内双列并排；字段包进无 gap 的裸 div 导致上下贴死；**用表单窄双列冒充页面左右分栏** |
 | 页面分栏 | `md-layout--full/2col/3col/pin` | 用 `md-d1__form` 当页面布局 |
 | 进步条 / 进度条 / 页签 | 同属状态导览：`md-tabs` / `md-stepper` / `md-advance` / `md-progress` | 用无极冒充分段；把签与进步条写成互不相关两套 |
-| 定位导航 | `md-locator` `--cats` / `--outline`；左栏 `md-split--outline` 可收缩；右悬浮 `md-locator-float` 可收起 | 用 `md-tree` 冒充分类钮；用分类冒充可展开树；把时间轴做成大纲分栏 |
+| 定位导航 | `md-locator` `--cats` / `--outline`；左栏 `md-split--outline` 可收缩；右悬浮 `md-locator-float` 可收起；滚正文时当前章 `is-active` 联动 | 用 `md-tree` 冒充分类钮；用分类冒充可展开树；把时间轴做成大纲分栏 |
 | 树 | 不分页 `md-tree` + `__item` `__toggle` `__label`；总控 `md-tree-bar`；节点 `__ops`（增子/重命名/删除）；拖放 `上/中/下`；表内 `md-table--nest`。只读 `data-tree-edit="off"`；末级禁增 `data-leaf` / `data-leaf-add="off"` | 无类名嵌套 `ul`；用分类定位冒充树；触屏用列表硬套分类树 |
 | 步骤条 | `md-stepper` + `md-step`；已完成 `is-done`；当前 `is-active`。桌面数字步骤可点跳步（`proto-page.js` 自动绑）；自管步进写 `data-wizard="off"` | 纯数字列表；桌面数字步骤不可点 |
 | 进步条 | `md-advance` + `__head` + `__track` + `__seg` + `__bar`；`data-segments`；触屏可 `--lg` | 用无极 `md-progress` 冒充分步 |
@@ -963,7 +963,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 列表六型 | 选型 `desktop-lists`（**金样只对标列表区**）：分页标准 `md-d1--list`；分页树表 `md-table--nest`（子行缩进、+/−）；分组字段 `md-group-list`（记录间浅线）；只读树 `data-tree-edit="off"`；无图/有图卡片 `md-card-grid` + `md-card--tile`（高度随内容、放不下换行；有图才加 `__media`）。筛区/功能栏按规格另加。嵌入短表可只用 `md-table` |
 | 工作台 | `md-stat-grid` `md-stat-card`；趋势 `md-chart-ph` |
 | 页面分栏 | `md-layout` `--full` / `--2col` / `--3col` / `--pin` + `__pane` / `__pane--span`。**禁止**用 `md-d1__form` 冒充 |
-| 分栏 / 树 | `md-d1--split`；`md-split` `__side` `__main`；树 `md-tree` `__row` `__ops` `md-tree-bar`；拖到节点上/中/下；只读 `data-tree-edit="off"`；定位导航 `md-locator` `--cats` / `--outline`（`data-target`）；左大纲 `md-split--outline` + `data-outline-toggle`；右悬浮 `md-locator-float` |
+| 分栏 / 树 | `md-d1--split`；`md-split` `__side` `__main`；树 `md-tree` `__row` `__ops` `md-tree-bar`；拖到节点上/中/下；只读 `data-tree-edit="off"`；定位导航 `md-locator` `--cats` / `--outline`（`data-target`，滚正文高亮联动）；左大纲 `md-split--outline` + `data-outline-toggle`；右悬浮 `md-locator-float` |
 | 表内嵌套树 | `md-table--nest` + `md-row--child` + `md-nest-toggle`（空按钮，CSS 画 +/−）；`data-row-id` / `data-parent`；子行 `.md-nest-name` 缩进 |
 | 分组字段列表 | `md-group-list` `__group` `__head` `__item` + `md-desc`；无分页；**多条记录**；记录间一条浅线，字段行不再分割。单对象字段详情用 `md-module`+`md-desc`，见 `desktop-detail` 字段签 |
 | D1-2 表单栅格 | `md-d1__form`（默认双列，`row-gap` 保留）；`--cols-1` / `--cols-3`；嵌套 `md-form-block` 同样有 gap。弹窗 `md-dialog__form` 单列 |

@@ -292,6 +292,7 @@
           if (!p.classList || !p.classList.contains("md-tab-panel")) return;
           p.classList.toggle("is-active", p.id === panelId);
         });
+        syncLocatorSpies();
       });
     });
   }
@@ -1124,6 +1125,85 @@
     else scrollRoot.scrollTop = Math.max(0, top);
   }
 
+  function locatorScope(nav) {
+    return (
+      nav.closest(".md-tab-panel") ||
+      nav.closest(".md-article-host") ||
+      nav.closest(".md-d1") ||
+      document
+    );
+  }
+
+  function locatorScrollRoot(nav) {
+    var scope = locatorScope(nav);
+    return (
+      scope.querySelector(".md-doc-scroll") ||
+      scope.querySelector(".md-split__main") ||
+      scope.querySelector(".md-article")
+    );
+  }
+
+  function locatorSectionEl(scope, id) {
+    if (!id) return null;
+    return (
+      scope.querySelector('[data-section="' + id + '"]') ||
+      document.getElementById(id)
+    );
+  }
+
+  function setLocatorActive(nav, btn) {
+    if (!nav || !btn) return;
+    nav.querySelectorAll(".md-locator__item.is-active").forEach(function (n) {
+      n.classList.remove("is-active");
+    });
+    btn.classList.add("is-active");
+    if (typeof btn.scrollIntoView === "function") {
+      btn.scrollIntoView({ block: "nearest" });
+    }
+  }
+
+  function syncLocatorSpy(nav) {
+    if (!nav || nav.getAttribute("data-locator-lock") === "1") return;
+    var pane = nav.closest(".md-tab-panel");
+    if (pane && !pane.classList.contains("is-active")) return;
+    var scope = locatorScope(nav);
+    var scrollRoot = locatorScrollRoot(nav);
+    if (!scrollRoot) return;
+    var pairs = [];
+    nav.querySelectorAll(".md-locator__item").forEach(function (btn) {
+      var id = btn.getAttribute("data-target") || btn.getAttribute("data-section") || "";
+      var el = locatorSectionEl(scope, id);
+      if (el) pairs.push({ btn: btn, el: el });
+    });
+    if (!pairs.length) return;
+    var rootRect = scrollRoot.getBoundingClientRect();
+    var marker = rootRect.top + Math.min(48, Math.max(16, rootRect.height * 0.18));
+    var atBottom =
+      scrollRoot.scrollHeight - (scrollRoot.scrollTop + scrollRoot.clientHeight) <= 4;
+    var current = atBottom ? pairs[pairs.length - 1].btn : pairs[0].btn;
+    if (!atBottom) {
+      pairs.forEach(function (it) {
+        if (it.el.getBoundingClientRect().top <= marker) current = it.btn;
+      });
+    }
+    if (!current.classList.contains("is-active")) setLocatorActive(nav, current);
+  }
+
+  function syncLocatorSpies() {
+    document.querySelectorAll(".md-locator").forEach(function (nav) {
+      if (nav.getAttribute("data-md-bound") === "1") syncLocatorSpy(nav);
+    });
+  }
+
+  function lockLocatorSpy(nav) {
+    nav.setAttribute("data-locator-lock", "1");
+    if (nav._locatorUnlock) clearTimeout(nav._locatorUnlock);
+    nav._locatorUnlock = setTimeout(function () {
+      nav.removeAttribute("data-locator-lock");
+      syncLocatorSpy(nav);
+    }, 480);
+  }
+
   function bindLocators() {
     document.querySelectorAll(".md-locator").forEach(function (nav) {
       if (nav.getAttribute("data-md-bound") === "1") return;
@@ -1132,19 +1212,13 @@
         var btn = ev.target.closest(".md-locator__item");
         if (!btn || !nav.contains(btn)) return;
         ev.preventDefault();
-        nav.querySelectorAll(".md-locator__item.is-active").forEach(function (n) {
-          n.classList.remove("is-active");
-        });
-        btn.classList.add("is-active");
+        setLocatorActive(nav, btn);
         var target =
           btn.getAttribute("data-target") ||
           btn.getAttribute("data-section") ||
           "";
-        var host =
-          nav.closest(".md-tab-panel") ||
-          nav.closest(".md-article-host") ||
-          nav.closest(".md-d1") ||
-          document;
+        var host = locatorScope(nav);
+        lockLocatorSpy(nav);
         scrollToSectionTarget(host, target);
         nav.dispatchEvent(
           new CustomEvent("md-locator-select", {
@@ -1153,6 +1227,25 @@
           })
         );
       });
+      var scrollRoot = locatorScrollRoot(nav);
+      if (scrollRoot && scrollRoot.getAttribute("data-locator-scroll") !== "1") {
+        scrollRoot.setAttribute("data-locator-scroll", "1");
+        scrollRoot.addEventListener(
+          "scroll",
+          function () {
+            if (scrollRoot._locatorTick) return;
+            scrollRoot._locatorTick = true;
+            requestAnimationFrame(function () {
+              scrollRoot._locatorTick = false;
+              document.querySelectorAll(".md-locator").forEach(function (other) {
+                if (locatorScrollRoot(other) === scrollRoot) syncLocatorSpy(other);
+              });
+            });
+          },
+          { passive: true }
+        );
+      }
+      syncLocatorSpy(nav);
     });
   }
 

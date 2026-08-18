@@ -31,7 +31,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 工作台 / 仪表盘 | `desktop-dashboard.html`（`md-stat-grid` 指标卡 + `md-chart-ph` + 短表。禁止拿 `desktop-lists` 硬套） |
 | 树 + 内容（不分页） | `desktop-split.html`（`md-d1--split` 左树右内容；总控展开/收起/增根；节点维护与拖到上/中/下。**不是**分类钮） |
 | 表内父子嵌套 | `desktop-tree-nest.html`（分页树形列表深挖；六型总览见 `desktop-lists`） |
-| 定位导航（章节大纲） | `desktop-locator.html`（左侧可收缩 / 右侧悬浮可收起；点选滚锚点；与树分离） |
+| 定位导航（章节大纲） | `desktop-locator.html`（左侧可收缩 / 右侧悬浮可收起；点选滚锚点；滚正文时大纲高亮联动；与树分离） |
 | 桌面设置 | `desktop-settings.html`（**设置项**：当页当行直接操作；左图标可有可无） |
 | 桌面我的 / 服务 | `desktop-menu.html`（功能入口；右可为文字或方形配图 `--thumb`） |
 | 桌面向导 | `desktop-wizard.html`（`md-stepper` + 分段 `md-advance`；数字步骤可点跳步；当前步吃表单双列间距） |

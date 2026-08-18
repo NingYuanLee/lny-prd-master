@@ -2683,7 +2683,7 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
   overflow: auto;
 }
 .md-doc-scroll > .md-module {
-  min-height: 36vh;
+  min-height: 52vh;
   flex-shrink: 0;
 }
 
@@ -3042,7 +3042,7 @@ button.md-tree__item {
   padding: 8px;
 }
 
-/* 定位导航族：分类钮 / 章节大纲（与树分离；点选定位右侧锚点） */
+/* 定位导航族：分类钮 / 章节大纲（与树分离；点选定位右侧锚点；滚正文时高亮联动） */
 .md-locator {
   display: flex;
   flex-direction: column;
@@ -3050,6 +3050,11 @@ button.md-tree__item {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+.md-locator--outline {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
 }
 .md-locator__item {
   display: flex;
