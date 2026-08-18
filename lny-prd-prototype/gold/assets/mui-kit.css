@@ -3890,6 +3890,23 @@ button.md-set-row:active { background: var(--md-selected); }
   background: var(--md-grey-200);
   box-sizing: border-box;
 }
+/* 图片单选：9:16 竖版大图（通栏等分，随列宽拉高） */
+.md-set-picks--media-9x16 {
+  align-items: flex-start;
+}
+.md-set-picks--media-9x16 .md-set-pick {
+  min-height: 0;
+}
+.md-set-pick__media--9x16 {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 9 / 16;
+  border-radius: 10px;
+}
+.md-set-pick:has(.md-set-pick__media--9x16) .md-set-pick__face {
+  width: 100%;
+  min-height: 0;
+}
 .md-set-pick__mark {
   position: relative;
   display: flex;

@@ -1016,7 +1016,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 分组字段列表 | `md-group-list` `__group` `__head` `__item` + `md-desc`；无分页；**多条记录**；组标题加粗坐白底卡；记录间浅线左右内缩、不贴边；字段行不再分割。单对象字段详情用 `md-module`+`md-desc`，见 `desktop-detail` 字段签 |
 | D1-2 表单栅格 | `md-d1__form`（默认双列，通栏 `width:100%`，`row-gap` 保留）；整页 `--cols-1/2/3/4`；块内 `md-form-block--cols-*`；字段 `--md-field-min`。弹窗 `md-dialog__form` 单列 |
 | 下拉组合框 | `md-combo` + `md-combo__trigger` / `__panel` / `__value`（hidden）；`data-search="1"` 模糊搜；`data-mode="multi"` 多选；`data-tree="leaf"` 叶节点单选；`data-tree="1"` 树多选。`ProtoPage.bindCombos` 自动绑 |
-| 设置分组 | `md-set-group` `__title` `md-set-row`（**设置项**：当页当行直接操作；左 `md-icon` 可有可无 + `__label`；右开关/值/本行菜单）；开关 `md-switch`（热区铺满，可点）；无极 `md-set-block` + `md-slider--fluid`；横向多选 `md-set-picks` / `md-set-pick`（`__face` 可为 `__label` 文字 / 图标 / `__media` 图片；`__mark` 含 `__off`+`__on`，未选也显示空圈）；下拉 `md-set-row` + `data-menu` |
+| 设置分组 | `md-set-group` `__title` `md-set-row`（**设置项**：当页当行直接操作；左 `md-icon` 可有可无 + `__label`；右开关/值/本行菜单）；开关 `md-switch`（热区铺满，可点）；无极 `md-set-block` + `md-slider--fluid`；横向多选 `md-set-picks` / `md-set-pick`（`__face` 可为 `__label` 文字 / 图标 / `__media` 图片；图片竖版大图用 **`md-set-picks--media-9x16` + `__media--9x16`**；`__mark` 含 `__off`+`__on`，未选也显示空圈）；下拉 `md-set-row` + `data-menu` |
 | 列表单行 | 仅在共享 `PT-MOBILE-LIST` 判定为单行时使用 `md-stack` > `md-set-row`；结构用 `__lead`（图标+`__label`）+ `__trail`（说明/计数/小标签，一般无箭头） |
 | 功能区通栏 / 一行两个 | **功能入口**：通栏 `md-set-group`；一行两个 `md-set-pair`；右可为 `__hint` 或 **方形 `__thumb`**（`--thumb`，行更高）；常带箭头；**无圆角阴影卡片壳**；触屏**跟正文同左右安全距**，分割线内缩 |
 | 汇总分页 | `md-d1__footer`：`md-d1__stats`（`md-d1__stats-num` 高亮条数）靠左；`md-d1__pager`（浅底条 + 每页 + 页码 + `md-pagination` 胶囊）靠右 |
