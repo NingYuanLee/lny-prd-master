@@ -62,7 +62,7 @@ description: >-
 
 | 页型标识（无需读取示例） | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
-| PAGE-AD-001 列表 | `gold/desktop-lists.html` | 六型合一，**金样只对标列表区**（无搜索栏、无功能栏）。分页标准：`md-d1 md-d1--list`、操作列按按钮形态与数量定宽、`md-cell-stack`。树表：`md-table--nest`、子行缩进、+/−。卡片：`md-card-grid` 同一行等高、放不下换行。筛区/功能栏按规格另加，不要从金样抄成「不要筛」 |
+| PAGE-AD-001 列表 | `gold/desktop-lists.html` | 六型合一，**金样只对标列表区**（无搜索栏、无功能栏）。分页标准：`md-d1 md-d1--list`、操作列按按钮形态与数量定宽、`md-cell-stack`、`md-col-switch`。树表：`md-table--nest`、子行缩进、+/−。卡片：`md-d1__list`+`md-card-grid`+底栏分页；卡右上角开关/右下角按钮。筛区/功能栏按规格另加，不要从金样抄成「不要筛」 |
 | PAGE-AD-002 商品表单 | `gold/desktop-form.html` | `md-breadcrumb`；`md-field--sm`；栅格有行距。**按规格裁字段**；分栏布局勿用本表单；状态导览见 wizard / state-flow |
 | PAGE-AD-009 表单（套件样例） | `gold/desktop-form.html` | **样例才整页铺齐**。`--cols-1/2/3/4` + `md-combo` 七种下拉。**不要**加 `md-d1--list`，不要触屏 `data-wheel`，不要当页面左右分栏 |
 | PAGE-AD-008 详情 | `gold/desktop-detail.html` | 整页浅灰；白底区块；`md-profile`；灯箱分区；右下目录+回顶。图文签。不要沉浸式 |

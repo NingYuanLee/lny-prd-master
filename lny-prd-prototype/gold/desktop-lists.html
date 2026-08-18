@@ -12,14 +12,14 @@
     <div class="md-breadcrumb">
       <span>套件</span><span>/</span><span class="is-current">列表六型</span>
     </div>
-    <p class="md-body2">六型择一，本页只画列表区。维护树见 desktop-split。工作台短表不要整页套本金样第一签。筛区/功能栏按规格另加。操作列宽按直出钮形态与数量收，表头与单元格同宽。无图/有图卡片同一行等高。</p>
+    <p class="md-body2">六型择一，本页只画列表区。维护树见 desktop-split。工作台短表不要整页套本金样第一签。筛区/功能栏按规格另加。操作列宽按直出钮形态与数量收，表头与单元格同宽。分页卡片列表带底栏统计分页；卡片右下角可放操作钮，无图卡片右上角或标准列表列内可放开关。</p>
     <nav class="md-tabs md-tabs--page">
       <button type="button" class="md-tab is-active" data-panel="panelStd">分页标准列表</button>
       <button type="button" class="md-tab" data-panel="panelNest">分页树形列表</button>
       <button type="button" class="md-tab" data-panel="panelGroup">不分页分组字段</button>
       <button type="button" class="md-tab" data-panel="panelTree">不分页树形展示</button>
-      <button type="button" class="md-tab" data-panel="panelCardPlain">无图卡片</button>
-      <button type="button" class="md-tab" data-panel="panelCardMedia">有图卡片</button>
+      <button type="button" class="md-tab" data-panel="panelCardPlain">分页无图卡片列表</button>
+      <button type="button" class="md-tab" data-panel="panelCardMedia">分页有图卡片列表</button>
     </nav>
     <div class="md-tab-panels md-d1__workspace">
       <div id="panelStd" class="md-tab-panel is-active">
@@ -32,6 +32,7 @@
                   <th class="md-col-name">商品名称</th>
                   <th class="md-col-price">售价</th>
                   <th class="md-col-status">库存状态</th>
+                  <th class="md-col-switch">上架</th>
                   <th class="md-col-date">上架日期</th>
                   <th class="md-col-actions">操作</th>
                 </tr>
@@ -47,6 +48,7 @@
                   </span></td>
                   <td class="md-col-price">¥19.90</td>
                   <td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td>
+                  <td class="md-col-switch"><label class="md-switch md-switch--compact" aria-label="上架"><input type="checkbox" checked><span class="md-switch__track"></span><span class="md-switch__thumb"></span></label></td>
                   <td class="md-col-date">2026-03-12</td>
                   <td class="md-col-actions">
                     <div class="md-actions">
@@ -66,6 +68,7 @@
                   <td class="md-col-name"><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--2"></span>云南小粒咖啡 227g 精选烘焙手冲豆袋装超长标题示例</span></td>
                   <td class="md-col-price">¥29.90</td>
                   <td class="md-col-status"><span class="md-chip md-chip--outlined">缺货</span></td>
+                  <td class="md-col-switch"><label class="md-switch md-switch--compact" aria-label="上架"><input type="checkbox"><span class="md-switch__track"></span><span class="md-switch__thumb"></span></label></td>
                   <td class="md-col-date">2026-02-08</td>
                   <td class="md-col-actions">
                     <div class="md-actions">
@@ -85,6 +88,7 @@
                   <td class="md-col-name"><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--3"></span>青柠蜂蜜茶 500ml</span></td>
                   <td class="md-col-price">¥12.50</td>
                   <td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td>
+                  <td class="md-col-switch"><label class="md-switch md-switch--compact" aria-label="上架"><input type="checkbox" checked><span class="md-switch__track"></span><span class="md-switch__thumb"></span></label></td>
                   <td class="md-col-date">2026-04-01</td>
                   <td class="md-col-actions">
                     <div class="md-actions">
@@ -104,6 +108,7 @@
                   <td class="md-col-name"><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--4"></span>全麦吐司 400g</span></td>
                   <td class="md-col-price">¥9.90</td>
                   <td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td>
+                  <td class="md-col-switch"><label class="md-switch md-switch--compact" aria-label="上架"><input type="checkbox" checked><span class="md-switch__track"></span><span class="md-switch__thumb"></span></label></td>
                   <td class="md-col-date">2026-01-20</td>
                   <td class="md-col-actions">
                     <div class="md-actions">
@@ -123,6 +128,7 @@
                   <td class="md-col-name"><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--5"></span>巴旦木仁 200g</span></td>
                   <td class="md-col-price">¥36.00</td>
                   <td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td>
+                  <td class="md-col-switch"><label class="md-switch md-switch--compact" aria-label="上架"><input type="checkbox" checked><span class="md-switch__track"></span><span class="md-switch__thumb"></span></label></td>
                   <td class="md-col-date">2026-05-16</td>
                   <td class="md-col-actions">
                     <div class="md-actions">
@@ -142,6 +148,7 @@
                   <td class="md-col-name"><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--6"></span>冷萃美式 250ml</span></td>
                   <td class="md-col-price">¥15.80</td>
                   <td class="md-col-status"><span class="md-chip md-chip--outlined">缺货</span></td>
+                  <td class="md-col-switch"><label class="md-switch md-switch--compact" aria-label="上架"><input type="checkbox"><span class="md-switch__track"></span><span class="md-switch__thumb"></span></label></td>
                   <td class="md-col-date">2026-03-28</td>
                   <td class="md-col-actions">
                     <div class="md-actions">
@@ -170,20 +177,20 @@
             <p class="md-empty__text">暂无商品</p>
           </div>
           <div class="md-d1__footer">
-            <span class="md-d1__stats md-caption">共 6 条</span>
+            <div class="md-d1__stats"><span>共</span><strong class="md-d1__stats-num">6</strong><span>条</span></div>
             <div class="md-d1__pager">
-              <label class="md-field md-field--sm md-field--select">
-                <span class="md-field__label">每页条数</span>
+              <label class="md-field md-field--sm md-field--select md-d1__page-size">
+                <span class="md-field__label">每页</span>
                 <select class="md-select">
                   <option>10</option>
                   <option selected>20</option>
                 </select>
               </label>
-              <span class="md-caption">第 1 页</span>
-              <nav class="md-pagination">
-                <button type="button" class="md-page-btn" disabled>‹</button>
+              <span class="md-d1__pager-meta">第 <strong>1</strong> / 1 页</span>
+              <nav class="md-pagination" aria-label="分页">
+                <button type="button" class="md-page-btn md-page-btn--nav" disabled aria-label="上一页">‹</button>
                 <button type="button" class="md-page-btn is-active">1</button>
-                <button type="button" class="md-page-btn" disabled>›</button>
+                <button type="button" class="md-page-btn md-page-btn--nav" disabled aria-label="下一页">›</button>
               </nav>
             </div>
           </div>
@@ -283,8 +290,22 @@
             </div>
           </div>
           <div class="md-d1__footer">
-            <span class="md-d1__stats md-caption">共 6 条</span>
-            <div class="md-d1__pager"><nav class="md-pagination" aria-label="分页"><button type="button" class="md-page-btn is-active">1</button></nav></div>
+            <div class="md-d1__stats"><span>共</span><strong class="md-d1__stats-num">6</strong><span>条</span></div>
+            <div class="md-d1__pager">
+              <label class="md-field md-field--sm md-field--select md-d1__page-size">
+                <span class="md-field__label">每页</span>
+                <select class="md-select">
+                  <option selected>10</option>
+                  <option>20</option>
+                </select>
+              </label>
+              <span class="md-d1__pager-meta">第 <strong>1</strong> / 1 页</span>
+              <nav class="md-pagination" aria-label="分页">
+                <button type="button" class="md-page-btn md-page-btn--nav" disabled aria-label="上一页">‹</button>
+                <button type="button" class="md-page-btn is-active">1</button>
+                <button type="button" class="md-page-btn md-page-btn--nav" disabled aria-label="下一页">›</button>
+              </nav>
+            </div>
           </div>
         </div>
       </div>
@@ -455,29 +476,48 @@
         </div>
       </div>
       <div id="panelCardPlain" class="md-tab-panel">
+        <div class="md-d1__list">
         <div class="md-card-grid">
           <article class="md-card md-card--tile">
             <div class="md-card__body">
-              <h3 class="md-card__title">有机草莓 250g</h3>
-              <p class="md-card__text">冷链鲜果，次日达。同一行卡片等高，价格沉底。</p>
+              <div class="md-card__head">
+                <h3 class="md-card__title">有机草莓 250g</h3>
+                <label class="md-switch md-switch--compact" aria-label="上架"><input type="checkbox" checked><span class="md-switch__track"></span><span class="md-switch__thumb"></span></label>
+              </div>
+              <p class="md-card__text">冷链鲜果，次日达。同一行卡片等高，底栏统计分页。</p>
               <div class="md-card__chips"><span class="md-chip md-chip--success">有货</span></div>
-              <span class="md-price">¥19.90</span>
+              <div class="md-card__foot">
+                <span class="md-price">¥19.90</span>
+                <div class="md-card__actions"><button type="button" class="md-btn md-btn--text md-btn--sm">编辑</button></div>
+              </div>
             </div>
           </article>
           <article class="md-card md-card--tile">
             <div class="md-card__body">
-              <h3 class="md-card__title">脐橙礼盒</h3>
+              <div class="md-card__head">
+                <h3 class="md-card__title">脐橙礼盒</h3>
+                <label class="md-switch md-switch--compact" aria-label="上架"><input type="checkbox"><span class="md-switch__track"></span><span class="md-switch__thumb"></span></label>
+              </div>
               <p class="md-card__text">产地直发。</p>
               <div class="md-card__chips"><span class="md-chip">缺货</span></div>
-              <span class="md-price">¥32.80</span>
+              <div class="md-card__foot">
+                <span class="md-price">¥32.80</span>
+                <div class="md-card__actions"><button type="button" class="md-btn md-btn--outlined md-btn--sm">查看</button></div>
+              </div>
             </div>
           </article>
           <article class="md-card md-card--tile">
             <div class="md-card__body">
-              <h3 class="md-card__title">小粒咖啡 227g</h3>
+              <div class="md-card__head">
+                <h3 class="md-card__title">小粒咖啡 227g</h3>
+                <label class="md-switch md-switch--compact" aria-label="上架"><input type="checkbox" checked><span class="md-switch__track"></span><span class="md-switch__thumb"></span></label>
+              </div>
               <p class="md-card__text">中烘手冲。栅格放不下就换行；同一行仍保持等高。</p>
               <div class="md-card__chips"><span class="md-chip md-chip--success">有货</span></div>
-              <span class="md-price">¥29.90</span>
+              <div class="md-card__foot">
+                <span class="md-price">¥29.90</span>
+                <div class="md-card__actions"><button type="button" class="md-btn md-btn--text md-btn--sm">编辑</button></div>
+              </div>
             </div>
           </article>
           <article class="md-card md-card--tile">
@@ -485,7 +525,9 @@
               <h3 class="md-card__title">全麦吐司 400g</h3>
               <p class="md-card__text">当日烘焙。</p>
               <div class="md-card__chips"><span class="md-chip md-chip--success">有货</span></div>
-              <span class="md-price">¥9.90</span>
+              <div class="md-card__foot">
+                <span class="md-price">¥9.90</span>
+              </div>
             </div>
           </article>
           <article class="md-card md-card--tile">
@@ -493,7 +535,10 @@
               <h3 class="md-card__title">巴旦木仁 200g</h3>
               <p class="md-card__text">原味烘烤，独立小包。说明写长时这一行的卡一起被撑齐。</p>
               <div class="md-card__chips"><span class="md-chip md-chip--success">有货</span></div>
-              <span class="md-price">¥36.00</span>
+              <div class="md-card__foot">
+                <span class="md-price">¥36.00</span>
+                <div class="md-card__actions"><button type="button" class="md-btn md-btn--text md-btn--sm">编辑</button></div>
+              </div>
             </div>
           </article>
           <article class="md-card md-card--tile">
@@ -501,7 +546,9 @@
               <h3 class="md-card__title">冷萃美式</h3>
               <p class="md-card__text">冰饮即开。</p>
               <div class="md-card__chips"><span class="md-chip">缺货</span></div>
-              <span class="md-price">¥15.80</span>
+              <div class="md-card__foot">
+                <span class="md-price">¥15.80</span>
+              </div>
             </div>
           </article>
           <article class="md-card md-card--tile">
@@ -509,19 +556,45 @@
               <h3 class="md-card__title">青柠蜂蜜茶 500ml</h3>
               <p class="md-card__text">冷藏短保，酸甜适口。第七张用来演示换行到下一排。</p>
               <div class="md-card__chips"><span class="md-chip md-chip--success">有货</span></div>
-              <span class="md-price">¥12.50</span>
+              <div class="md-card__foot">
+                <span class="md-price">¥12.50</span>
+                <div class="md-card__actions"><button type="button" class="md-btn md-btn--outlined md-btn--sm">查看</button></div>
+              </div>
             </div>
           </article>
         </div>
+          <div class="md-d1__footer">
+            <div class="md-d1__stats"><span>共</span><strong class="md-d1__stats-num">7</strong><span>条</span></div>
+            <div class="md-d1__pager">
+              <label class="md-field md-field--sm md-field--select md-d1__page-size">
+                <span class="md-field__label">每页</span>
+                <select class="md-select">
+                  <option>6</option>
+                  <option selected>12</option>
+                </select>
+              </label>
+              <span class="md-d1__pager-meta">第 <strong>1</strong> / 1 页</span>
+              <nav class="md-pagination" aria-label="分页">
+                <button type="button" class="md-page-btn md-page-btn--nav" disabled aria-label="上一页">‹</button>
+                <button type="button" class="md-page-btn is-active">1</button>
+                <button type="button" class="md-page-btn md-page-btn--nav" disabled aria-label="下一页">›</button>
+              </nav>
+            </div>
+          </div>
+        </div>
       </div>
       <div id="panelCardMedia" class="md-tab-panel">
+        <div class="md-d1__list">
         <div class="md-card-grid">
           <article class="md-card md-card--tile">
             <div class="md-card__media md-media-ph md-media-ph--1"></div>
             <div class="md-card__body">
               <h3 class="md-card__title">有机草莓</h3>
-              <p class="md-card__text">图文重、非强对齐列时用有图卡片。同一行卡片等高，价格沉底。</p>
-              <span class="md-price">¥19.90</span>
+              <p class="md-card__text">分页有图卡片列表；同一行卡片等高，右下角可放操作钮。</p>
+              <div class="md-card__foot">
+                <span class="md-price">¥19.90</span>
+                <div class="md-card__actions"><button type="button" class="md-btn md-btn--text md-btn--sm">编辑</button></div>
+              </div>
             </div>
           </article>
           <article class="md-card md-card--tile">
@@ -529,7 +602,10 @@
             <div class="md-card__body">
               <h3 class="md-card__title">脐橙礼盒</h3>
               <p class="md-card__text">产地直发。</p>
-              <span class="md-price">¥32.80</span>
+              <div class="md-card__foot">
+                <span class="md-price">¥32.80</span>
+                <div class="md-card__actions"><button type="button" class="md-btn md-btn--outlined md-btn--sm">查看</button></div>
+              </div>
             </div>
           </article>
           <article class="md-card md-card--tile">
@@ -537,7 +613,10 @@
             <div class="md-card__body">
               <h3 class="md-card__title">小粒咖啡</h3>
               <p class="md-card__text">栅格自适应列数；放不下换行。无图/有图是两种列表，不要混在同一栅格。</p>
-              <span class="md-price">¥29.90</span>
+              <div class="md-card__foot">
+                <span class="md-price">¥29.90</span>
+                <div class="md-card__actions"><button type="button" class="md-btn md-btn--text md-btn--sm">编辑</button></div>
+              </div>
             </div>
           </article>
           <article class="md-card md-card--tile">
@@ -545,7 +624,9 @@
             <div class="md-card__body">
               <h3 class="md-card__title">全麦吐司</h3>
               <p class="md-card__text">当日烘焙。</p>
-              <span class="md-price">¥9.90</span>
+              <div class="md-card__foot">
+                <span class="md-price">¥9.90</span>
+              </div>
             </div>
           </article>
           <article class="md-card md-card--tile">
@@ -553,7 +634,10 @@
             <div class="md-card__body">
               <h3 class="md-card__title">巴旦木仁</h3>
               <p class="md-card__text">原味烘烤。同一行卡片等高，不要各走各的高度。</p>
-              <span class="md-price">¥36.00</span>
+              <div class="md-card__foot">
+                <span class="md-price">¥36.00</span>
+                <div class="md-card__actions"><button type="button" class="md-btn md-btn--text md-btn--sm">编辑</button></div>
+              </div>
             </div>
           </article>
           <article class="md-card md-card--tile">
@@ -561,7 +645,9 @@
             <div class="md-card__body">
               <h3 class="md-card__title">冷萃美式</h3>
               <p class="md-card__text">冰饮即开。</p>
-              <span class="md-price">¥15.80</span>
+              <div class="md-card__foot">
+                <span class="md-price">¥15.80</span>
+              </div>
             </div>
           </article>
           <article class="md-card md-card--tile">
@@ -569,9 +655,31 @@
             <div class="md-card__body">
               <h3 class="md-card__title">青柠蜂蜜茶</h3>
               <p class="md-card__text">第七张换到下一排。</p>
-              <span class="md-price">¥12.50</span>
+              <div class="md-card__foot">
+                <span class="md-price">¥12.50</span>
+                <div class="md-card__actions"><button type="button" class="md-btn md-btn--outlined md-btn--sm">查看</button></div>
+              </div>
             </div>
           </article>
+        </div>
+          <div class="md-d1__footer">
+            <div class="md-d1__stats"><span>共</span><strong class="md-d1__stats-num">7</strong><span>条</span></div>
+            <div class="md-d1__pager">
+              <label class="md-field md-field--sm md-field--select md-d1__page-size">
+                <span class="md-field__label">每页</span>
+                <select class="md-select">
+                  <option>6</option>
+                  <option selected>12</option>
+                </select>
+              </label>
+              <span class="md-d1__pager-meta">第 <strong>1</strong> / 1 页</span>
+              <nav class="md-pagination" aria-label="分页">
+                <button type="button" class="md-page-btn md-page-btn--nav" disabled aria-label="上一页">‹</button>
+                <button type="button" class="md-page-btn is-active">1</button>
+                <button type="button" class="md-page-btn md-page-btn--nav" disabled aria-label="下一页">›</button>
+              </nav>
+            </div>
+          </div>
         </div>
       </div>
     </div>
