@@ -969,11 +969,47 @@
         });
       }
     });
+    function uploadProgressEl(upload) {
+      if (!upload) return null;
+      var next = upload.nextElementSibling;
+      if (next && next.classList.contains("md-progress")) return next;
+      var nested = upload.querySelector(".md-progress");
+      if (nested) return nested;
+      var box = document.createElement("div");
+      box.className = "md-progress is-hidden md-upload__progress";
+      box.setAttribute("role", "progressbar");
+      box.setAttribute("aria-valuemin", "0");
+      box.setAttribute("aria-valuemax", "100");
+      box.setAttribute("aria-valuenow", "0");
+      box.innerHTML =
+        '<div class="md-progress__head">' +
+        '<span class="md-progress__label">文件上传进度</span>' +
+        '<span class="md-progress__value">0%</span>' +
+        "</div>" +
+        '<div class="md-progress__track"><div class="md-progress__bar"></div></div>';
+      upload.insertAdjacentElement("afterend", box);
+      return box;
+    }
+
+    function simulateFileUploadProgress(progressEl) {
+      if (!progressEl) return;
+      progressEl.classList.remove("is-hidden");
+      var p = 0;
+      setProgress(progressEl, 0);
+      var t = setInterval(function () {
+        p += 25;
+        setProgress(progressEl, Math.min(p, 100));
+        if (p >= 100) clearInterval(t);
+      }, 120);
+    }
+
     document.querySelectorAll(".md-upload--file input[type=file]").forEach(function (input) {
       input.addEventListener("change", function () {
+        var upload = input.closest(".md-upload");
         var name = input.files && input.files[0] ? input.files[0].name : "";
-        var slot = input.closest(".md-upload").querySelector(".md-upload__name");
+        var slot = upload && upload.querySelector(".md-upload__name");
         if (slot) slot.textContent = name;
+        simulateFileUploadProgress(uploadProgressEl(upload));
       });
     });
   }

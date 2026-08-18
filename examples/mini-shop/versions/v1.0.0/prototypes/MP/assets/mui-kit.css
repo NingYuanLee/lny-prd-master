@@ -3460,14 +3460,12 @@ button.md-tree__item {
   min-height: 0;
   overflow: auto;
 }
-.md-article {
-  flex: 1;
-  min-width: 0;
-  min-height: 0;
+/* 桌面分栏 + 右浮大纲：内边距仅落在 article-host 内，勿污染触屏详情 md-module > .md-article */
+.md-article-host > .md-article {
   padding: 12px 248px 16px 16px;
   box-sizing: border-box;
 }
-.md-article-host:has(.md-locator-float.is-collapsed) .md-article {
+.md-article-host:has(.md-locator-float.is-collapsed) > .md-article {
   padding-right: 56px;
 }
 .md-locator-float {
@@ -3638,6 +3636,46 @@ button.md-tree__item {
 }
 .md-mobile-page.md-form-page .md-section-head {
   margin: 0 0 4px;
+}
+/* 触屏表单页：字段/标签钮略矮，行高收紧；仍保留可点区域 */
+.md-mobile-page.md-form-page .md-field__input:not(textarea),
+.md-mobile-page.md-form-page .md-select,
+.md-mobile-page.md-form-page .md-picker-trigger,
+.md-mobile-page.md-form-page button.md-field__input {
+  height: 40px;
+  padding: 8px 12px;
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+.md-mobile-page.md-form-page .md-field:focus-within .md-field__input:not(textarea),
+.md-mobile-page.md-form-page .md-field:focus-within .md-select,
+.md-mobile-page.md-form-page .md-field:focus-within .md-picker-trigger,
+.md-mobile-page.md-form-page .md-field:focus-within button.md-field__input {
+  padding: 7px 11px;
+}
+.md-mobile-page.md-form-page textarea.md-field__input {
+  min-height: 72px;
+  height: auto;
+  padding: 8px 12px;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+.md-mobile-page.md-form-page .md-action-bar .md-btn,
+.md-mobile-page.md-form-page form .md-btn:not(.md-btn--link):not(.md-icon-btn):not(.md-upload-grid__del):not(.md-upload__replace) {
+  height: 34px;
+  min-height: 34px;
+  padding: 4px 14px;
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+.md-mobile-page.md-form-page .md-choice-group:not(.md-choice-group--list) > .md-check,
+.md-mobile-page.md-form-page .md-choice-group:not(.md-choice-group--list) > .md-radio {
+  min-height: 36px;
+  padding: 6px 14px;
+  line-height: 1.35;
+}
+.md-mobile-page.md-form-page .md-switch-row {
+  min-height: 40px;
 }
 .md-set-group__title {
   padding: 12px 16px 4px;
@@ -7054,6 +7092,10 @@ button.md-field__input,
   color: var(--md-primary);
   margin: 0;
   word-break: break-all;
+}
+.md-upload--file + .md-progress,
+.md-upload--file + .md-upload__progress {
+  margin-top: -4px;
 }
 .md-upload-grid {
   display: flex;

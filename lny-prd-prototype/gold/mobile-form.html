@@ -203,17 +203,6 @@
   <script src="./assets/icons-extra.js"></script>
   <script src="./assets/proto-page.js"></script>
   <script>
-    document.querySelector(".md-upload--file input").addEventListener("change", function () {
-      var box = document.getElementById("fileProg");
-      box.classList.remove("is-hidden");
-      var p = 0;
-      ProtoPage.setProgress("#fileProg", 0);
-      var t = setInterval(function () {
-        p += 25;
-        ProtoPage.setProgress("#fileProg", Math.min(p, 100));
-        if (p >= 100) clearInterval(t);
-      }, 120);
-    });
     document.getElementById("kitForm").addEventListener("submit", function (ev) {
       ev.preventDefault();
       var name = (document.getElementById("fText").value || "").trim();
