@@ -70,8 +70,8 @@ description: >-
 | PAGE-AD-003 向导 | `gold/desktop-wizard.html` + `gold/desktop-state-flow.html` | 状态导览族：`md-stepper` + `md-advance` +（可选）`md-progress`；当前步包在 `md-d1__form`；数字可点跳步 |
 | PAGE-AD-004 工作台 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
 | PAGE-AD-005 树+内容 | `gold/desktop-split.html` | 不分页维护树：`md-d1--split` + `md-tree` + `md-tree-bar`；增子/重命名/删除；拖到上/中/下。只读树与表内嵌套读 `desktop-lists.html`。**不是**分类钮 |
-| 定位导航 | `gold/desktop-locator.html` | 两种：左可收缩 / 右悬浮可收起；点选滚锚点；**滚正文时大纲高亮联动**；与树分离 |
-| 页面分栏 | `gold/desktop-layout.html` | `md-layout--full/2col/3col/pin`；**禁止** `md-d1__form` 冒充分栏。卡片列表见 `desktop-lists.html` |
+| PAGE-AD-013 章节大纲（套件样例） | `gold/desktop-locator.html` | 两种：左可收缩 / 右悬浮可收起；点选滚锚点；**滚正文时大纲高亮联动**；与树分离 |
+| PAGE-AD-014 页面分栏（套件样例） | `gold/desktop-layout.html` | `md-layout--full/2col/3col/pin`；**禁止** `md-d1__form` 冒充分栏。卡片列表见 `desktop-lists.html` |
 | PAGE-AD-006 设置 | `gold/desktop-settings.html` | `md-d1 md-set-page` 浅灰底；**设置项**：开关可点；`md-set-picks` 文字/图标/图片 + 未选空圈；左图标可有可无；无极 / `data-menu` 改值 |
 | PAGE-AD-010 我的/服务 | `gold/desktop-menu.html` | `md-d1 md-set-page` 浅灰底；功能入口通栏/`md-set-pair`；右可为文字或方形配图 `--thumb`。不要 `md-d1--list` |
 | PAGE-AD-007 时间轴 | `gold/desktop-timeline.html` | 通栏 `md-timeline` 左竖轨右 `md-card--row` 图文；点节点切高亮。不要左右分栏。触屏见 `mobile-timeline` |

@@ -4,7 +4,7 @@
 
 `pages_prd` 的 ASCII 线框只定**分区顺序**。金样定**控件密度与套件类名**。视觉冲突以金样为准；**功能**以本页 `pages_prd` / `ui` §2.3 / feature 为准。
 
-**按页类型打开金样，不要按 PAGE 序号左右对齐**：`PAGE-MP-003` 是详情（`mobile-detail`），`PAGE-AD-003` 是向导（`desktop-wizard`）。完整编号对照见 `lny-prd-ui` / `lny-prd-page` / `lny-prd-prototype` 的「三步对照」。
+**按页类型打开金样，不要按 PAGE 序号左右对齐**：`PAGE-MP-003` 是详情（`mobile-detail`），`PAGE-AD-003` 是向导（`desktop-wizard`）。完整编号、金样文件与夹具 PAGE 对照见 [`lny-prd-master/reference-page-types.md`](../../lny-prd-master/reference-page-types.md)。套件样例夹具可整页对标金样；业务夹具按规格裁（桌面列表夹具含筛+功能栏，金样六型只对标列表区）。
 
 禁止两个极端：
 
@@ -24,14 +24,14 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 移动展示 / 详情 | `mobile-detail.html`（含 `md-profile` 店铺资料示例；组件亦用于个人/公司资料） |
 | 移动字段详情 | `mobile-fields.html`（浅灰底+白底分组；`md-desc` 左名右值；标准顶栏；非图文、非表单） |
 | 移动表单 | `mobile-form.html`（**套件样例**；`md-form-page` 浅灰底+白底分组；一页铺齐触屏表单控件：文本/选择/滑动条/单日/日期段/省市区/三类上传 + 贴底提交；进度条见步骤向导） |
-| 桌面列表六型 | `desktop-lists.html`（只对标列表区：分页标准 / 分页树表 / 分组字段 / 只读树 / 无图卡片 / 有图卡片；**写列表先读**。筛区/功能栏按规格另加） |
-| 桌面页面布局 | `desktop-layout.html`（通栏/双列/三列/品字；**禁止**用 `md-d1__form` 窄双列冒充分栏） |
+| 桌面列表六型 | `desktop-lists.html`（只对标列表区：分页标准 / 分页树表 / 分组字段 / 只读树 / 无图卡片 / 有图卡片；**写列表先读**。筛区/功能栏按规格另加。夹具 `PAGE-AD-001` 是分页标准列表且含筛+功能栏） |
+| 桌面页面布局 | `desktop-layout.html`（通栏/双列/三列/品字；**禁止**用 `md-d1__form` 窄双列冒充分栏。夹具 `PAGE-AD-014`） |
 | 桌面整页表单 | `desktop-form.html`（**套件样例**；双列栅格有行距，`--cols-1/3` 可选。业务表单按规格裁；进度条见状态导览/向导） |
-| 桌面展示 / 详情 | `desktop-detail.html`（图文签 + 字段签；整页浅灰+白底区块；资料卡片；灯箱；右下目录+回顶。字段签=一条对象的分组 `md-desc`，不要套 lists 分组字段。禁止沉浸式、禁止当表单） |
+| 桌面展示 / 详情 | `desktop-detail.html`（图文签 + 字段签；整页浅灰+白底区块；资料卡片；灯箱；右下目录+回顶。字段签=一条对象的分组 `md-desc`，不要套 lists 分组字段。禁止沉浸式、禁止当表单。夹具图文 `PAGE-AD-008`、字段 `PAGE-AD-012`） |
 | 工作台 / 仪表盘 | `desktop-dashboard.html`（`md-stat-grid` 指标卡 + `md-chart-ph` + 短表。禁止拿 `desktop-lists` 硬套） |
-| 树 + 内容（不分页） | `desktop-split.html`（`md-d1--split` 左树右内容；总控展开/收起/增根；节点维护与拖到上/中/下。**不是**分类钮） |
+| 树 + 内容（不分页） | `desktop-split.html`（`md-d1--split` 左树右内容；总控展开/收起/增根；节点维护与拖到上/中/下。**不是**分类钮。夹具 `PAGE-AD-005`） |
 | 表内父子嵌套 | `desktop-tree-nest.html`（分页树形列表深挖；六型总览见 `desktop-lists`） |
-| 定位导航（章节大纲） | `desktop-locator.html`（左侧可收缩 / 右侧悬浮可收起；点选滚锚点；滚正文时大纲高亮联动；与树分离） |
+| 定位导航（章节大纲） | `desktop-locator.html`（左侧可收缩 / 右侧悬浮可收起；点选滚锚点；滚正文时大纲高亮联动；与树分离。夹具 `PAGE-AD-013`） |
 | 桌面设置 | `desktop-settings.html`（**设置项**：当页当行直接操作；左图标可有可无） |
 | 桌面我的 / 服务 | `desktop-menu.html`（功能入口；右可为文字或方形配图 `--thumb`） |
 | 桌面向导 | `desktop-wizard.html`（`md-stepper` + 分段 `md-advance`；数字步骤可点跳步；当前步吃表单双列间距） |
