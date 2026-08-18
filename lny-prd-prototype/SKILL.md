@@ -62,11 +62,11 @@ description: >-
 
 | 页型标识（无需读取示例） | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
-| PAGE-AD-001 列表 | `gold/desktop-lists.html` | 六型合一；分页标准列表在第一签（`md-d1 md-d1--list`；操作列按钮数定宽；`md-cell-stack`；库存签 `md-tabs--page`；日期筛选 `md-field--daterange`）。无图/有图卡片分签，不要混栅格 |
+| PAGE-AD-001 列表 | `gold/desktop-lists.html` | 六型合一，**金样只对标列表区**（无搜索栏、无功能栏）。分页标准：`md-d1 md-d1--list`、操作列按钮数定宽、`md-cell-stack`。树表：`md-table--nest`、子行缩进、+/−。卡片：`md-card-grid` 高度随内容、放不下换行。筛区/功能栏按规格另加，不要从金样抄成「不要筛」 |
 | PAGE-AD-002 商品表单 | `gold/desktop-form.html` | `md-breadcrumb`；`md-field--sm`；栅格有行距。**按规格裁字段**；分栏布局勿用本表单；状态导览见 wizard / state-flow |
 | PAGE-AD-009 表单（套件样例） | `gold/desktop-form.html` | **样例才整页铺齐**。`--cols-1/3` 可选。**不要**加 `md-d1--list`，不要触屏 `data-wheel`，不要当页面左右分栏 |
-| PAGE-AD-008 详情 | `gold/desktop-detail.html` | 整页浅灰；白底区块；`md-profile`；灯箱分区；右下目录+回顶。不要沉浸式 |
-| PAGE-AD-012 字段详情 | `gold/desktop-fields.html` | `md-detail-page`；分组 `md-desc`；桌面 `--cols-2`；跨列 `--span`。不要沉浸式、不要当表单 |
+| PAGE-AD-008 详情 | `gold/desktop-detail.html` | 整页浅灰；白底区块；`md-profile`；灯箱分区；右下目录+回顶。图文签。不要沉浸式 |
+| PAGE-AD-012 字段详情 | `gold/desktop-detail.html` 字段签 | 同详情壳；分组 `md-desc`；桌面 `--cols-2`；跨列 `--span`。一条对象。不要沉浸式、不要当表单、不要套 lists 的 `md-group-list` |
 | PAGE-AD-003 向导 | `gold/desktop-wizard.html` + `gold/desktop-state-flow.html` | 状态导览族：`md-stepper` + `md-advance` +（可选）`md-progress`；当前步包在 `md-d1__form`；数字可点跳步 |
 | PAGE-AD-004 工作台 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
 | PAGE-AD-005 树+内容 | `gold/desktop-split.html` | 不分页维护树：`md-d1--split` + `md-tree` + `md-tree-bar`；增子/重命名/删除；拖到上/中/下。只读树与表内嵌套读 `desktop-lists.html`。**不是**分类钮 |
@@ -118,7 +118,7 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 3. ASCII = 分区顺序；金样 = 视觉密度。功能以本页规格为准。`ui/PAGE`「视觉细节」只给 ⑨ 估点，⑥ 视觉不降档。触屏 §1.3.3；桌面 D1-1 §1.4.3。
 4. **舒适默认（§2.3 漏写也要落地）**：按 `lny-prd-ui` **§1.7.0**。骨架、空态插图、失败可重试、一个主按钮、按下态、浮层过渡、D1-1 语义列宽+`md-d1--list`、评论时间行+附图约 40px、一排最多五张。禁止发明新跳转/新字段/新弹窗。**有字段时必须按层级排版**。用户未给设计规范 ≠ 可以画线框。点图预览只默认给详情页与横卡多行，不是凡图都预览。
 5. 重画不得删 Chip / 面包屑 / 横卡 / `data-icon` / `md-dialog`。未 Read 金样 = 本页未完成。
-6. 不是速查表里已有的页型：按金样表选最接近的金样（dashboard / layout / lists / split / locator / settings / menu / wizard / state-flow / timeline / fields），禁止拿 `desktop-lists` 硬套工作台，禁止拿 `md-d1__form` 冒充页面分栏，禁止拿一排按钮硬套功能区。
+6. 不是速查表里已有的页型：按金样表选最接近的金样（dashboard / layout / lists / split / locator / settings / menu / wizard / state-flow / timeline / detail），禁止拿 `desktop-lists` 硬套工作台，禁止拿 `md-d1__form` 冒充页面分栏，禁止拿一排按钮硬套功能区。
 
 ## 职责与禁止
 

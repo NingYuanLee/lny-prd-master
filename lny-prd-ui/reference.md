@@ -271,7 +271,7 @@
 | 我的 / 服务 | 移动分组列表 / D1-2 分组 | **功能服务 · 入口**：通栏、一行两个、或按需金刚（宫格/双卡，**不限首页**）；信息多用金刚双卡。**只跳转或打开半屏/弹窗**。金样入口见 `gold/mobile-menu.html` / `gold/desktop-menu.html`，金刚形态见 `gold/mobile-grid.html`。禁止按钮堆 |
 | 向导 / 状态导览 | 表单 + 步骤条 + 进步条 | 页签/步骤/进步/进度同族（`PT-STATE-FLOW`）。当前步清晰，最后一步才提交；当前步字段疏密与整页表单相同（桌面双列有行距）。**桌面数字步骤可点**。金样 `gold/desktop-wizard.html` / `gold/desktop-state-flow.html` / `gold/mobile-wizard.html` |
 | 展示 / 详情（桌面） | D1-3 | 面包屑；极浅灰底 + 白底通栏；左 16:9 + 右标题；图文四级标题；短段不缩进、大段 `__body` 缩进、多项目 `__list`；单/双图、图注居中。**本页图片默认可点预览**。金样 `gold/desktop-detail.html`。禁止卡片圆角阴影、沉浸式、列表卡比例 |
-| 字段详情（桌面） | D1-3 | 面包屑；极浅灰底 + 白底分组；`md-desc` 左名右值，可 `--cols-2`；长文案 `--stack`+`--span`。金样 `gold/desktop-fields.html`。禁止当表单、沉浸式、D1-1 表壳 |
+| 字段详情（桌面） | D1-3 | 面包屑；极浅灰底 + 白底分组；`md-desc` 左名右值，可 `--cols-2`；长文案 `--stack`+`--span`。金样 `gold/desktop-detail.html` 字段签（一条对象）。禁止当表单、沉浸式、D1-1 表壳、lists 的 `md-group-list` |
 | 时间轴 | 两端都是竖轨右图文 | 节点已完成/当前/待办；点节点切高亮。不要做成左右分栏。金样 `gold/mobile-timeline.html` / `gold/desktop-timeline.html` |
 | 分栏对照 | D1-3 | 同「页面分栏」；两栏职责分离，主操作落在主栏 |
 

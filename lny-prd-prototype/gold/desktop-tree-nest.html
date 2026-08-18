@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 分页树形列表（六型之二）：表内父子嵌套行。六型总览见 desktop-lists。只读树见该页第四签；维护树见 desktop-split。写嵌套表前必 Read。 -->
+<!-- LNY-PRD gold: 分页树形列表（六型之二）：表内父子嵌套行。父行实线、子行浅线并缩进；展开收起用 +/−。六型总览见 desktop-lists。只读树见该页第四签；维护树见 desktop-split。写嵌套表前必 Read。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -12,7 +12,7 @@
     <div class="md-breadcrumb">
       <span>套件</span><span>/</span><span class="is-current">表内嵌套</span>
     </div>
-    <p class="md-body2">分页树形列表：父子行缩进。六型总览见 desktop-lists。分类定位见 desktop-locator，不要混用。</p>
+    <p class="md-body2">分页树形列表：父行实线、子行浅线并缩进；展开收起用 +/−。六型总览见 desktop-lists。分类定位见 desktop-locator，不要混用。</p>
     <div class="md-d1__list">
       <div class="md-table-wrap">
         <table class="md-table md-table--nest">
@@ -27,8 +27,7 @@
           <tbody>
             <tr data-row-id="fruit">
               <td class="md-col-name">
-                <button type="button" class="md-nest-toggle" aria-expanded="true" aria-label="展开收起"><span class="md-icon" data-icon="chevron-right" aria-hidden="true"></span></button>
-                水果
+                <span class="md-nest-name"><button type="button" class="md-nest-toggle" aria-expanded="true" aria-label="收起"></button><span>水果</span></span>
               </td>
               <td class="md-col-status"><span class="md-chip md-chip--success">启用</span></td>
               <td class="md-col-num">2</td>
@@ -37,7 +36,7 @@
               </div></td>
             </tr>
             <tr class="md-row--child" data-parent="fruit">
-              <td class="md-col-name">有机草莓 250g</td>
+              <td class="md-col-name"><span class="md-nest-name">有机草莓 250g</span></td>
               <td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td>
               <td class="md-col-num">120</td>
               <td class="md-col-actions"><div class="md-actions">
@@ -47,10 +46,12 @@
             </tr>
             <tr class="md-row--child" data-parent="fruit">
               <td class="md-col-name">
+                <span class="md-nest-name">
                 <div class="md-cell-stack">
                   <span class="md-cell-stack__primary">赣南脐橙 5斤 · 超长名称演示省略避免叠列</span>
                   <span class="md-cell-stack__secondary">产地直发 · 冷链</span>
                 </div>
+                </span>
               </td>
               <td class="md-col-status"><span class="md-chip">缺货</span></td>
               <td class="md-col-num">0</td>
@@ -61,8 +62,7 @@
             </tr>
             <tr data-row-id="drink">
               <td class="md-col-name">
-                <button type="button" class="md-nest-toggle" aria-expanded="true" aria-label="展开收起"><span class="md-icon" data-icon="chevron-right" aria-hidden="true"></span></button>
-                饮品
+                <span class="md-nest-name"><button type="button" class="md-nest-toggle" aria-expanded="true" aria-label="收起"></button><span>饮品</span></span>
               </td>
               <td class="md-col-status"><span class="md-chip md-chip--success">启用</span></td>
               <td class="md-col-num">1</td>
@@ -71,7 +71,7 @@
               </div></td>
             </tr>
             <tr class="md-row--child" data-parent="drink">
-              <td class="md-col-name">云南小粒咖啡 227g</td>
+              <td class="md-col-name"><span class="md-nest-name">云南小粒咖啡 227g</span></td>
               <td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td>
               <td class="md-col-num">48</td>
               <td class="md-col-actions"><div class="md-actions">
@@ -86,7 +86,7 @@
               </div></td>
             </tr>
             <tr class="md-row--child" data-parent="drink">
-              <td class="md-col-name">青柠蜂蜜茶 500ml</td>
+              <td class="md-col-name"><span class="md-nest-name">青柠蜂蜜茶 500ml</span></td>
               <td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td>
               <td class="md-col-num">36</td>
               <td class="md-col-actions"><div class="md-actions">

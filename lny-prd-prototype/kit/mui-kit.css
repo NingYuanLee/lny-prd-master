@@ -1382,28 +1382,65 @@ textarea.md-field__input:disabled:focus,
   font-variant-numeric: tabular-nums;
 }
 /* 表内父子嵌套行（分页列表里的树） */
-.md-table--nest .md-row--child td.md-col-name,
-.md-table--nest .md-row--child .md-cell-stack {
-  padding-left: 28px;
-}
-.md-table--nest .md-row--child > td.md-col-name {
-  padding-left: 36px;
+.md-table--nest .md-nest-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
 }
 .md-table--nest .md-row--child td {
   background: var(--md-grey-50, #fafafa);
+  border-bottom-color: var(--md-divider-soft);
+}
+.md-table--nest tbody tr:not(.md-row--child) td {
+  border-bottom-color: var(--md-divider);
+  font-weight: 500;
+}
+.md-table--nest tbody .md-row--child:hover td {
+  background: #f0f0f0;
+}
+.md-table--nest .md-row--child .md-nest-name {
+  padding-left: 40px;
 }
 .md-table--nest .md-nest-toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-  margin-right: 4px;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
   vertical-align: middle;
-  border: 0;
-  background: transparent;
+  position: relative;
+  border: 1px solid var(--md-grey-400, #bdbdbd);
+  border-radius: 2px;
+  background: var(--md-bg-paper);
   color: var(--md-text-secondary);
   cursor: pointer;
+}
+.md-table--nest .md-nest-toggle .md-icon { display: none; }
+.md-table--nest .md-nest-toggle::before,
+.md-table--nest .md-nest-toggle::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  pointer-events: none;
+}
+.md-table--nest .md-nest-toggle::before {
+  width: 8px;
+  height: 1.5px;
+  left: 3px;
+  top: 6.25px;
+}
+.md-table--nest .md-nest-toggle::after {
+  width: 1.5px;
+  height: 8px;
+  left: 6.25px;
+  top: 3px;
+}
+.md-table--nest .md-nest-toggle[aria-expanded="true"]::after {
+  display: none;
 }
 .md-actions {
   display: flex;
@@ -2079,6 +2116,9 @@ body.md-lightbox-open { overflow: hidden; }
 .md-d1--list .md-d1__list .md-table td {
   padding: 6px 10px;
   font-size: 0.8125rem;
+}
+.md-d1--list .md-d1__list .md-table--nest .md-row--child .md-nest-name {
+  padding-left: 40px;
 }
 .md-d1--list .md-d1__list .md-col-check {
   width: 44px;
@@ -2926,17 +2966,27 @@ button.md-tree__item {
 .md-card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-auto-rows: min-content;
+  align-items: start;
+  align-content: start;
   gap: 12px;
   padding: 4px 0 12px;
   flex: 1;
   min-height: 0;
   overflow: auto;
 }
+.md-card-grid > .md-card {
+  height: auto;
+  align-self: start;
+}
+.md-card-grid > .md-card--tile .md-card__body {
+  flex: 0 0 auto;
+}
 .md-d1--cards .md-d1__list {
   overflow: auto;
 }
 
-/* 不分页分组字段展示（列表四型之一） */
+/* 不分页分组字段展示（列表六型之一：多条记录；区别于详情页单对象 md-desc） */
 .md-group-list {
   display: flex;
   flex-direction: column;
@@ -2964,11 +3014,23 @@ button.md-tree__item {
   color: var(--md-text-primary);
 }
 .md-group-list__item {
-  padding: 12px 16px;
-  border-top: 1px solid var(--md-divider);
+  padding: 14px 16px;
+  border-top: 0;
+}
+.md-group-list__item + .md-group-list__item {
+  box-shadow: inset 0 1px 0 var(--md-divider-soft);
 }
 .md-group-list__item .md-desc {
   margin: 0;
+}
+.md-group-list__item .md-desc__row {
+  border-bottom: 0;
+  padding: 4px 0;
+}
+.md-group-list__item .md-desc--cols-2 .md-desc__row,
+.md-group-list__item .md-desc--cols-3 .md-desc__row {
+  border-bottom: 0;
+  padding: 4px 0;
 }
 .md-tree-browse {
   flex: 1;
@@ -4291,11 +4353,11 @@ button.md-set-row:active { background: var(--md-selected); }
   min-width: 0;
 }
 .md-card--tile:not(:has(> .md-card__media)) {
-  min-height: 148px;
+  min-height: 0;
 }
-.md-card--tile:not(:has(> .md-card__media)) .md-card__body {
+.md-card-grid > .md-card--tile:not(:has(> .md-card__media)) .md-card__body {
   padding: 16px;
-  flex: 1;
+  flex: 0 0 auto;
 }
 .md-card--tile .md-card__title {
   margin: 0;
@@ -6172,7 +6234,22 @@ a.md-card {
   padding: 12px 24px;
   background: transparent;
 }
-.md-d1.md-detail-page > .md-detail-content {
+.md-d1.md-detail-page > .md-body2 {
+  margin: 0;
+  padding: 0 24px 8px;
+}
+.md-d1.md-detail-page > .md-tabs {
+  padding: 0 24px;
+  background: transparent;
+  box-shadow: none;
+}
+.md-d1.md-detail-page > .md-tab-panels {
+  background: transparent;
+  flex: 1;
+  min-height: 0;
+}
+.md-d1.md-detail-page > .md-detail-content,
+.md-d1.md-detail-page .md-tab-panel > .md-detail-content {
   width: 100%;
   margin: 0;
   padding: 0 0 8px;

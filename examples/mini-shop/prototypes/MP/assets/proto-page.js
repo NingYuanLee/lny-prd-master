@@ -1197,11 +1197,12 @@
         if (!row) return;
         var id = row.getAttribute("data-row-id");
         if (!id) return;
-        var open = !row.classList.contains("is-collapsed-branch");
-        row.classList.toggle("is-collapsed-branch", open);
-        toggle.setAttribute("aria-expanded", open ? "false" : "true");
+        var willCollapse = !row.classList.contains("is-collapsed-branch");
+        row.classList.toggle("is-collapsed-branch", willCollapse);
+        toggle.setAttribute("aria-expanded", willCollapse ? "false" : "true");
+        toggle.setAttribute("aria-label", willCollapse ? "展开" : "收起");
         table.querySelectorAll('.md-row--child[data-parent="' + id + '"]').forEach(function (child) {
-          child.hidden = open;
+          child.hidden = willCollapse;
         });
       });
     });
@@ -2002,6 +2003,8 @@
     var seen = [];
     function push(el) {
       if (!el || seen.indexOf(el) >= 0) return;
+      var pane = el.closest(".md-tab-panel");
+      if (pane && !pane.classList.contains("is-active")) return;
       var title = detailSectionTitle(el);
       if (!title) return;
       seen.push(el);
