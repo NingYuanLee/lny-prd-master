@@ -23,7 +23,7 @@ description: >-
 
 - 模板与 L/D 层级、控件形态：[`reference.md`](reference.md)
 - 移动端设计词典（原则/视觉/组件/布局/交互分工）：[`reference-mobile-design.md`](reference-mobile-design.md)
-- 桌面端设计词典（通栏/分栏/表单栅格/列表四型/状态导览/定位与树）：[`reference-desktop-design.md`](reference-desktop-design.md)
+- 桌面端设计词典（通栏/分栏/表单栅格/列表六型/状态导览/定位与树）：[`reference-desktop-design.md`](reference-desktop-design.md)
 - 三步职责、页型编号与金样映射：[`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)
 - 框架排除：`lny-prd-master/framework-exclusions.md`
 - 旧项目迁移：`scripts/migrate-prd-structure.mjs`（先 `--dry-run`；默认拒绝覆盖现有明细，人工核对后才可显式 `--force`）
@@ -60,7 +60,7 @@ description: >-
 
 | 页型 | 回归标识（无需读取示例） | ② 必须写清 |
 |------|------|------------|
-| D1-1 列表 | PAGE-AD-001 | 点名四型之一，或单独点名卡片列表；签在筛上整区切换；操作数量与形态、右冻定宽跟钮数、语义列宽、多行单元格、紧凑密度和底部汇总遵守共享 `PT-DESKTOP-LIST`；日期段筛选用月历点两次 |
+| D1-1 列表 | PAGE-AD-001 | 点名六型之一；签在筛上整区切换；操作数量与形态、右冻定宽跟钮数、语义列宽、多行单元格、紧凑密度和底部汇总遵守共享 `PT-DESKTOP-LIST`；日期段筛选用月历点两次 |
 | D1-2 表单（套件样例） | PAGE-AD-009 | **套件样例**。顶仅面包屑；**一页铺齐**桌面表单控件；**栅格有上下行距**（禁止字段贴死）。**不要**套 D1-1 紧凑行高，不要触屏底半屏，**不要**用窄双列冒充页面分栏 |
 | D1-2 业务表单 | PAGE-AD-002 | 顶仅面包屑；**按规格裁字段**；保存/取消；字段疏密与样例相同。控件种类以 PAGE-AD-009 为地板 |
 | 展示/详情 | PAGE-AD-008 | 顶仅面包屑；极浅灰底+白底通栏；左 16:9+右标题；图文四级标题；短段不缩进 / 大段 `__body` / 多项目 `__list`；单双图/居中图注。**不要**卡片壳、沉浸式、D1-1 |

@@ -14,7 +14,7 @@
 
 | 项 | 要求 |
 |----|------|
-| 金样 | 按页类型 Read `gold/`（表见该文）。**对标视觉下限**（密度/类名不得低于金样），不要整页照搬演示功能。禁止用 `desktop-list` 硬套工作台；禁止用 `mobile-list` 硬套触屏树 |
+| 金样 | 按页类型 Read `gold/`（表见该文）。**对标视觉下限**（密度/类名不得低于金样），不要整页照搬演示功能。禁止用 `desktop-lists` 硬套工作台；禁止用 `mobile-list` 硬套触屏树 |
 | 估点档 | 忽略「视觉细节=粗糙」；⑥ 不降档；须满足 `reference-mobile-design.md` 审美必做 |
 | 舒适默认 | §2.3 漏写也要落地：隐藏 `md-skel-host`、插画 `md-empty`、失败可重试、按下态、浮层过渡、D1-1 `md-d1--list`+`md-col-*`。禁止发明新跳转/字段/弹窗；**有字段时必须按层级排版** |
 | 演示数据 | 用符合业务域的中文名称与真实量级价格（如 `有机草莓 250g` / `¥19.90`）。**禁止** `示例商品 A/B`、`测试数据`、`xxx`、`Item 1` |
@@ -961,7 +961,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 操作列 | 阈值与收纳执行 `PT-DESKTOP-LIST`。`md-col-actions` 宽按直出控件个数自动分档（1/2/3 图标；含文字钮加宽）；常规动作 `md-icon-btn` + `title`/`aria-label`；删除加 `md-icon--danger`；「更多」用 `data-menu` + `md-menu md-menu--fixed` |
 | 语义列宽 | `md-col-check` 勾选；`md-col-name` 名称硬锁定宽；`md-col-desc` / `md-col-note` 说明吃剩余；`md-col-date` / 最后数据列规则同前；`md-col-price` / `md-col-status` / `md-col-id` / `md-col-num`。**多字段单元格**用 `md-cell-stack`（`__primary` / `__secondary`）。长值省略不得溢出叠邻列；悬停看全文、点击复制 |
 | D1-1 紧凑 | 根节点 `md-d1 md-d1--list`；**不要**套到 D1-2 表单页 |
-| 列表四型 | 选型 `desktop-lists`：分页标准 `md-d1--list`；分页树表 `md-table--nest`；分组字段 `md-group-list`；只读树 `data-tree-edit="off"`。卡片另页 `md-d1--cards` + `md-card-grid`。嵌入短表可只用 `md-table` |
+| 列表六型 | 选型 `desktop-lists`：分页标准 `md-d1--list`；分页树表 `md-table--nest`；分组字段 `md-group-list`；只读树 `data-tree-edit="off"`；无图/有图卡片 `md-card-grid` + `md-card--tile`（有图才加 `__media`）。嵌入短表可只用 `md-table` |
 | 工作台 | `md-stat-grid` `md-stat-card`；趋势 `md-chart-ph` |
 | 页面分栏 | `md-layout` `--full` / `--2col` / `--3col` / `--pin` + `__pane` / `__pane--span`。**禁止**用 `md-d1__form` 冒充 |
 | 分栏 / 树 | `md-d1--split`；`md-split` `__side` `__main`；树 `md-tree` `__row` `__ops` `md-tree-bar`；拖到节点上/中/下；只读 `data-tree-edit="off"`；定位导航 `md-locator` `--cats` / `--outline`（`data-target`）；桌面时间轴 `md-timeline--nav` |

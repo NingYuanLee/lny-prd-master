@@ -24,16 +24,14 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 移动展示 / 详情 | `mobile-detail.html`（含 `md-profile` 店铺资料示例；组件亦用于个人/公司资料） |
 | 移动字段详情 | `mobile-fields.html`（浅灰底+白底分组；`md-desc` 左名右值；标准顶栏；非图文、非表单） |
 | 移动表单 | `mobile-form.html`（**套件样例**；`md-form-page` 浅灰底+白底分组；一页铺齐触屏表单控件：文本/选择/滑动条/单日/日期段/省市区/三类上传 + 贴底提交；进度条见步骤向导） |
-| 桌面列表四型 | `desktop-lists.html`（分页标准 / 分页树表 / 分组字段 / 只读树；**写列表先读**） |
-| 桌面标准列表落地 | `desktop-list.html`（`PT-DESKTOP-LIST` 分页标准列表完整交互；操作列按钮数定宽；`md-cell-stack`；语义 `md-col-*`） |
-| 桌面卡片列表 | `desktop-cards.html`（`md-d1--cards` + `md-card-grid`；不进四型页签） |
+| 桌面列表六型 | `desktop-lists.html`（分页标准 / 分页树表 / 分组字段 / 只读树 / 无图卡片 / 有图卡片；**写列表先读**） |
 | 桌面页面布局 | `desktop-layout.html`（通栏/双列/三列/品字；**禁止**用 `md-d1__form` 窄双列冒充分栏） |
 | 桌面整页表单 | `desktop-form.html`（**套件样例**；双列栅格有行距，`--cols-1/3` 可选。业务表单按规格裁；进度条见状态导览/向导） |
 | 桌面展示 / 详情 | `desktop-detail.html`（整页浅灰+白底区块；资料卡片；灯箱分区；右下目录+回顶。禁止沉浸式） |
 | 桌面字段详情 | `desktop-fields.html`（分组 `md-desc`；桌面可双列；禁止沉浸式、禁止当表单） |
-| 工作台 / 仪表盘 | `desktop-dashboard.html`（`md-stat-grid` 指标卡 + `md-chart-ph` + 短表。禁止拿 `desktop-list` 硬套） |
+| 工作台 / 仪表盘 | `desktop-dashboard.html`（`md-stat-grid` 指标卡 + `md-chart-ph` + 短表。禁止拿 `desktop-lists` 硬套） |
 | 树 + 内容（不分页） | `desktop-split.html`（`md-d1--split` 左树右内容；总控展开/收起/增根；节点维护与拖到上/中/下。**不是**分类钮） |
-| 表内父子嵌套 | `desktop-tree-nest.html`（分页树形列表深挖；四型总览见 `desktop-lists`） |
+| 表内父子嵌套 | `desktop-tree-nest.html`（分页树形列表深挖；六型总览见 `desktop-lists`） |
 | 定位导航（章节大纲） | `desktop-locator.html`（左大纲右全文，点左滚右；与时间轴同构；与树分离） |
 | 桌面设置 | `desktop-settings.html`（**设置项**：当页当行直接操作；左图标可有可无） |
 | 桌面我的 / 服务 | `desktop-menu.html`（功能入口；右可为文字或方形配图 `--thumb`） |
@@ -48,7 +46,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 触屏悬浮胶囊 | `mobile-pod.html`（钉在页根、不进滚动层；左上横向且与标题栏互斥；左下/右下竖向并避开 TabBar/操作条；单个圆形、多个成组细线分割。规格点名才画，不要右上） |
 | 桌面悬浮按钮 | `desktop-pod.html`（语义按共享 `PT-FLOAT`，实现用 `md-pod--desk` / `md-pod--fold`） |
 | 移动树 + 内容 | `mobile-tree.html`（`md-tree-page` 左树右内容；箭头展开收起，点节点只换右区） |
-| 其它桌面页 | 先按上表选最接近的金样；对不上再读 `desktop-list.html` **只借控件**，禁止整页套成商品表 |
+| 其它桌面页 | 先按上表选最接近的金样；对不上再读 `desktop-lists.html` **只借控件**，禁止整页套成商品表 |
 | 其它移动页 | 先按上表选最接近的金样（设置/我的/向导/时间轴/树/详情/字段详情各有专页）；对不上再读 `mobile-list.html` **只借列表卡**，禁止整页套成商品列表 |
 
 触屏顶栏四种（⑥ 按规格点名复制对应金样）：
@@ -66,4 +64,4 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 - 因 `ui/PAGE`「视觉细节=粗糙」而少画控件
 - 重画已有页时删掉 Chip、面包屑、横卡、图标、弹窗套件、金样脚本
 - 从零手写一套比金样更瘦的布局
-- 用 `desktop-list.html` 硬套工作台 / 树 / 设置 / 我的服务 / 向导 / 详情；用 `mobile-list.html` 硬套触屏树；用金刚或一排按钮冒充列表卡单行
+- 用 `desktop-lists.html` 硬套工作台 / 树 / 设置 / 我的服务 / 向导 / 详情；用 `mobile-list.html` 硬套触屏树；用金刚或一排按钮冒充列表卡单行

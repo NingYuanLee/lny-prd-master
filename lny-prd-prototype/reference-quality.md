@@ -96,7 +96,7 @@ exit 0 才可继续；exit 1 不得交付，按 F.1 整文件重写（coverage �
 | G5.7 | 不降质 | 重画不得删 Chip / 面包屑 / 横卡 / 图标 / `md-dialog`；不得因「粗糙」档简化 |
 | G5.8 | 舒适默认 | 列表/卡片页含隐藏骨架与插画空态；失败可重试；D1-1 有 `md-d1--list` + 语义 `md-col-*`；评论有时间行和附图槽。§2.3 漏写也要落地，不算发明业务 |
 | G5.9 | 金样脚本 | 本页规格需要的 `data-wheel` / `data-menu` + `md-menu--fixed` / `md-tabs--page` + `data-panel` 换业务时必须保留，禁止只剩静态壳。详情页根保留 `data-lightbox`；横卡多行图自动可预览，列表页不要整页加 `data-lightbox` |
-| G5.10 | 易误套页型 | 按页类型打开金样，禁止按 MP/AD 序号对齐。工作台/树/设置/我的/向导/时间轴/桌面详情用对应金样；禁止拿 `desktop-list` / `mobile-list` 整页硬套；禁止一排按钮冒充功能区 |
+| G5.10 | 易误套页型 | 按页类型打开金样，禁止按 MP/AD 序号对齐。工作台/树/设置/我的/向导/时间轴/桌面详情用对应金样；禁止拿 `desktop-lists` / `mobile-list` 整页硬套；禁止一排按钮冒充功能区 |
 | G5.11 | SKILL 标注 | 总入口 `prototypes/index.html` 页底右下有技能包地址小字（见 `reference-scope.md`）；各端 `index.html` 由 `proto-shell.js` 注入，禁止手写或删 |
 | G5.12 | 控件皮肤 | 可点操作用 `md-btn`（含 `--contained` / `--outlined` / `--soft` / `--text` / `--link`）或 `md-icon-btn` / `md-tab` / `md-menu__item` / `md-page-btn` / `md-tree__item`；无 `md-*` 的 `<button>` / `<input type="submit">` 不得交付（浏览器灰钮） |
 

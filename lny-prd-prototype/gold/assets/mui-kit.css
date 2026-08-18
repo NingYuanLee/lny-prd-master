@@ -2959,11 +2959,15 @@ button.md-tree__item {
   overflow: auto;
   gap: 16px;
 }
-.md-d1--cards .md-card-grid {
+.md-d1--cards .md-card-grid,
+.md-card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 12px;
   padding: 4px 0 12px;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
 }
 .md-d1--cards .md-d1__list {
   overflow: auto;
@@ -4204,6 +4208,13 @@ button.md-set-row:active { background: var(--md-selected); }
   gap: 6px;
   min-width: 0;
 }
+.md-card--tile:not(:has(> .md-card__media)) {
+  min-height: 148px;
+}
+.md-card--tile:not(:has(> .md-card__media)) .md-card__body {
+  padding: 16px;
+  flex: 1;
+}
 .md-card--tile .md-card__title {
   margin: 0;
   font-size: 0.875rem;
@@ -4571,6 +4582,7 @@ button.md-set-row:active { background: var(--md-selected); }
   border-bottom: 1px solid var(--md-divider);
   padding: 0 8px;
   flex-shrink: 0;
+  flex-wrap: wrap;
 }
 .md-tabs--page .md-tab {
   flex: 0 0 auto;

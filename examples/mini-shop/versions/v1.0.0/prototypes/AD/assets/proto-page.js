@@ -288,7 +288,8 @@
         var pane = document.getElementById(panelId);
         var root =
           pane && pane.parentElement ? pane.parentElement : document;
-        root.querySelectorAll(".md-tab-panel").forEach(function (p) {
+        Array.prototype.forEach.call(root.children, function (p) {
+          if (!p.classList || !p.classList.contains("md-tab-panel")) return;
           p.classList.toggle("is-active", p.id === panelId);
         });
       });
