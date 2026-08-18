@@ -45,16 +45,16 @@ description: >-
 
 | 页型标识（无需读取示例） | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
-| PAGE-MP-001 首页 | `gold/mobile-grid.html` | `md-immersive` `md-hero`；`md-module`；`md-card--cover` 精选 + `md-card--tile` 双列推荐；`md-king` 5 列 + `--pair`；有 TabBar 则无 `md-appbar` |
-| PAGE-MP-002 列表 | `gold/mobile-list.html` | 卡型与操作语义遵守共享 `PT-MOBILE-LIST`；多行落 `md-card--row`，值长且字段少再加 `md-card--long`，操作轨用 `__rail` / `--bar`；单行落 `md-stack`>`md-set-row`；卡统一 `--md-shadow-surface`，多行图片可预览；筛选半屏用 `data-wheel="daterange"` |
-| PAGE-MP-003 详情 | `gold/mobile-detail.html` | 含 `md-profile`（店铺资料示例；同组件可用于个人/公司资料）；目录四项；右下目录+回顶 |
+| PAGE-MP-001 首页 | `gold/mobile-grid.html` | L1 无顶栏 + `md-hero`；`md-module`；`md-card--cover` 精选 + `md-card--tile` 双列；`md-king` 5 列 + `--pair`；有 TabBar |
+| PAGE-MP-002 商品列表 | `gold/mobile-list.html` | L2 **`md-appbar--center`** + `md-list-toolbar`；`PT-MOBILE-LIST` 卡型；筛选半屏 `data-wheel="daterange"`；TabBar |
+| PAGE-MP-003 详情 | `gold/mobile-detail.html` | L3 **`md-appbar--overlay`** 滚变实底；`md-profile`；目录四项；右下目录+回顶 |
 | PAGE-MP-012 字段详情 | `gold/mobile-fields.html` | `md-detail-page`；标准顶栏；分组 `md-desc` 左名右值；`--stack` 长文案；非图文、非表单 |
 | PAGE-MP-004 表单（套件样例） | `gold/mobile-form.html` | **样例才整页铺齐**。`md-form-page` 浅灰底+白底 `md-module` 分组；返回顶栏；全部触屏表单控件；`md-action-bar` 贴底。业务表单按规格裁字段并同样分组。进度条见步骤向导 |
 | PAGE-MP-005 步骤向导 | `gold/mobile-wizard.html` | `md-form-page`；横向 `md-stepper`；分段 `md-advance md-advance--lg`；无极 `md-progress md-progress--lg`；当前步表单；`md-action-bar` 贴底，最后一步才提交 |
-| PAGE-MP-006 设置 | `gold/mobile-settings.html` | `md-set-page` 浅灰底；沉浸式；`md-appbar--cover`；**设置项**：开关可点；`md-set-picks` 选项面文字/图标/图片均可，未选显示 `radio-off`、已选 `check`；左图标可有可无；无极 / `data-menu` 改值 |
+| PAGE-MP-006 设置 | `gold/mobile-settings.html` | L6 **`md-appbar--cover`**；`md-set-page`；设置项/多选/图片单选等 |
 | PAGE-MP-010 我的/服务 | `gold/mobile-menu.html` | `md-set-page` 浅灰底；顶区 **`md-profile--me`**（圆角矩形头像/昵称均 **底半屏** 改）；**`md-svc-strip`**（2/3/4 等分；`__icon`+**`__badge`** / **`__value`+`__help`**）；功能入口通栏/`md-set-pair`；右可为文字或 **方形配图 `--thumb`**；组间距漏底 |
 | PAGE-MP-007 按钮（套件样例） | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、**浅底 `--soft`**、文字、**`--link`**、**通栏 `--block` / `md-btn-row`**、置灰、`md-badge`；贴底仅一钮自动占满。禁止当业务首页。禁止裸 `<button>` |
-| PAGE-MP-011 悬浮胶囊（套件样例） | `gold/mobile-pod.html` | 仅规格点名时按共享 `PT-FLOAT` 落到业务页；用 `md-pod` + `--tl` / `--bl` / `--br` 并写在页根，禁止用 `md-fab` 冒充成组 |
+| PAGE-MP-011 悬浮胶囊（套件样例） | `gold/mobile-pod.html` | L4 无顶栏 + **`md-pod--tl`**；`PT-FLOAT`；与页内顶栏互斥 |
 | PAGE-MP-008 分类 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左树右内容；浏览用 `data-tree-edit="off"`。桌面维护交互见 `desktop-split` |
 | PAGE-MP-009 时间轴 | `gold/mobile-timeline.html` | `md-timeline` 左 `__rail` 竖轨，右 `md-card--row` **横卡文本**（无左图，正文可 `__photos`）；`is-done` / `is-active`；点节点切高亮 |
 

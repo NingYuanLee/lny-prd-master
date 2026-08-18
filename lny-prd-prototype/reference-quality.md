@@ -90,7 +90,7 @@ exit 0 才可继续；exit 1 不得交付，按 F.1 整文件重写（coverage �
 | G5.1 | 数据像真 | 无「示例商品 A/B」「测试数据」；名称/价格像业务数据 |
 | G5.2 | 密度 | 直接执行共享 `PT-DENSITY`；不得把其中的列表门槛扩大到详情附属区或摘要短表，规格/API 明示条数优先 |
 | G5.3 | 封面 | `md-media-ph--1`～`--6` 轮换，无纯灰块。灯箱默认给详情页图（页根 `data-lightbox`；轮播/图文/评论各一组）、横卡多行卡内图（每卡一组）、**单图/多图/视频上传缩略**。封面叠字 / 双列 / Banner / 文件上传不可预览 |
-| G5.4 | 移动端 | 状态栏由 `proto-page.js` 注入；页根 `md-immersive` 或 `md-standard`；分区用 `md-module` + `md-section-head`；列表实现共享 `PT-MOBILE-LIST`，多行卡根必须有 `md-card--row` 且左图宽高双锁，单行用 `md-stack`>`md-set-row`；功能区明确 `md-king` / `--pair` / `md-set-group` / `md-set-pair`；详情非列表图默认 16:9；评论有时间行与最多五张约 40px 附图；有 TabBar 则无 `md-appbar`；MP 用 `md-mp` 和 `viewport-fit=cover`；悬浮控件实现共享 `PT-FLOAT` |
+| G5.4 | 移动端 | 状态栏由 `proto-page.js` 注入；页根 `md-immersive` 或 `md-standard`；触屏顶栏六种 L1–L6（有 TabBar 不用返回顶栏，可用 L2 居中）；分区用 `md-module` + `md-section-head`；列表 `PT-MOBILE-LIST`；MP 用 `md-mp` 和 `viewport-fit=cover`；悬浮 `PT-FLOAT` |
 | G5.5 | 桌面端 | 有 `md-breadcrumb`、无页内大标题；表格有 `md-thumb`/`md-chip`；表单字段 `md-field--sm`；D1-1 用 `md-d1--list` + 语义 `md-col-*` 并实现共享 `PT-DESKTOP-LIST`；向导数字步骤可点跳步，不要只留上一步/下一步；悬浮控件实现共享 `PT-FLOAT` |
 | G5.6 | 金样 | 写前已 Read `gold/` 对应文件并对标视觉下限（密度/类名不得低于金样）；未把金样演示功能（凡图即灯箱、全套表单样例）搬进规格没写的页；未给封面叠字 / 双列 / Banner / 文件上传加预览；HTML 无 `┌│└` 线框残留 |
 | G5.7 | 不降质 | 重画不得删 Chip / 面包屑 / 横卡 / 图标 / `md-dialog`；不得因「粗糙」档简化 |

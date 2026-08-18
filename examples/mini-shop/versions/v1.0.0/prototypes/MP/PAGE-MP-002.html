@@ -9,6 +9,9 @@
 </head>
 <body>
   <div class="md-mobile-page md-mp md-standard">
+    <header class="md-appbar md-appbar--mobile md-appbar--center">
+      <h1 class="md-appbar__title">在售商品</h1>
+    </header>
     <header class="md-list-toolbar">
       <form class="md-search-row" id="searchForm">
         <label class="md-search">
@@ -16,8 +19,7 @@
           <input class="md-search__input" type="search" name="q" placeholder="搜索在售商品" aria-label="搜索" enterkeyhint="search">
         </label>
       </form>
-      <div class="md-section-head">
-        <h1 class="md-section-head__title">在售商品</h1>
+      <div class="md-section-head md-section-head--trail">
         <div class="md-btn-group">
           <button type="button" class="md-btn md-btn--text" onclick="ProtoPage.openDrawer('shopSheet')">店铺</button>
           <button type="button" class="md-btn md-btn--text" onclick="ProtoPage.openDrawer('filterSheet')">筛选</button>

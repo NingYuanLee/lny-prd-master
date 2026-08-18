@@ -3053,6 +3053,21 @@
     });
   }
 
+  function bindOverlayAppbars() {
+    document.querySelectorAll(".md-mobile-page:has(.md-appbar--overlay)").forEach(function (page) {
+      if (page.getAttribute("data-overlay-bound") === "1") return;
+      page.setAttribute("data-overlay-bound", "1");
+      var bar = page.querySelector(".md-appbar--overlay");
+      var body = page.querySelector(".md-mobile-body");
+      if (!bar || !body) return;
+      function sync() {
+        bar.classList.toggle("is-solid", body.scrollTop > 24);
+      }
+      body.addEventListener("scroll", sync, { passive: true });
+      sync();
+    });
+  }
+
   function bindUi() {
     ensureStatusBar();
     ensureDetailNav();
@@ -3078,6 +3093,7 @@
     bindProgress();
     bindLightbox();
     bindOverflowTips();
+    bindOverlayAppbars();
     document.querySelectorAll(".md-drawer.md-drawer--bottom").forEach(ensureBottomDrawerClose);
     scheduleActionColWidths();
     window.addEventListener("resize", scheduleActionColWidths);

@@ -106,6 +106,7 @@ class PageParser(HTMLParser):
         self.has_breadcrumb = False
         self.has_tabbar = False
         self.has_mobile_appbar = False
+        self.has_center_appbar = False
         self.card_count = 0
         self.non_row_card_count = 0
         self.table_rows = 0
@@ -138,6 +139,8 @@ class PageParser(HTMLParser):
             self.has_breadcrumb = True
         if "md-tabbar" in classes:
             self.has_tabbar = True
+        if "md-appbar--center" in classes:
+            self.has_center_appbar = True
         if "md-appbar--mobile" in classes or (
             tag in {"header"} and "md-appbar" in classes
         ):
@@ -335,8 +338,11 @@ def check_visual_floor(path: Path, text: str, parser: PageParser) -> list[str]:
         errors.append(prefix + "mobile list cards must use md-card--row")
     if parser.is_mobile and "md-tabbar" in text and "data-icon" not in text:
         errors.append(prefix + "tabbar missing data-icon")
-    if parser.has_tabbar and parser.has_mobile_appbar:
-        errors.append(prefix + "tabbar page must not use md-appbar (L1 title)")
+    if parser.has_tabbar and parser.has_mobile_appbar and not parser.has_center_appbar:
+        errors.append(
+            prefix
+            + "tabbar page: only L2 md-appbar--center allowed (not L3/L5/L6 return or overlay appbar)"
+        )
     if parser.is_mobile and "viewport-fit=cover" not in text:
         errors.append(prefix + "mobile page missing viewport-fit=cover")
     if parser.is_mobile and "md-immersive" not in text and "md-sink" not in text and "md-standard" not in text:

@@ -4343,6 +4343,20 @@ button.md-set-row:active { background: var(--md-selected); }
   min-height: 40px;
   line-height: 1.25;
 }
+/* L2 居中标题栏：无返回，标题居中（常与 TabBar 并存） */
+.md-appbar--center {
+  justify-content: center;
+}
+.md-appbar--center > .md-appbar__title {
+  flex: 1 1 auto;
+  text-align: center;
+  justify-content: center;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.md-section-head--trail {
+  justify-content: flex-end;
+}
 .md-mobile-page .md-card {
   border-radius: 12px;
   box-shadow: var(--md-shadow-surface);
@@ -6270,6 +6284,27 @@ a.md-card {
 .md-appbar--overlay .md-icon-btn:hover,
 .md-mobile-page .md-appbar--overlay .md-icon-btn:hover {
   background: rgba(0, 0, 0, 0.5);
+}
+/* L3 透明叠图顶栏：滚正文后变纯色不透明（JS 加 is-solid） */
+.md-appbar--overlay.is-solid {
+  position: fixed;
+  top: var(--md-status-h);
+  left: 0;
+  right: 0;
+  background: var(--md-bg-paper);
+  color: var(--md-text);
+  border-bottom: 1px solid var(--md-divider);
+  box-shadow: none;
+  z-index: 10;
+}
+.md-appbar--overlay.is-solid .md-icon-btn,
+.md-mobile-page .md-appbar--overlay.is-solid .md-icon-btn {
+  color: var(--md-text);
+  background: transparent;
+}
+.md-appbar--overlay.is-solid .md-icon-btn:hover,
+.md-mobile-page .md-appbar--overlay.is-solid .md-icon-btn:hover {
+  background: var(--md-hover);
 }
 
 .md-appbar--cover {

@@ -47,12 +47,14 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 其它桌面页 | 先按上表选最接近的金样；对不上再读 `desktop-lists.html` **只借控件**，禁止整页套成商品表 |
 | 其它移动页 | 先按上表选最接近的金样（设置/我的/向导/时间轴/树/详情/字段详情各有专页）；对不上再读 `mobile-list.html` **只借列表卡**，禁止整页套成商品列表 |
 
-触屏顶栏四种（⑥ 按规格点名复制对应金样）：
+触屏顶栏六种（⑥ 按规格点名复制对应金样）：
 
-1. **16:9 + slogan**：`mobile-grid.html`（`md-hero`，无页内顶栏）
-2. **16:9 + 返回和标题**：`mobile-detail.html`（`md-appbar--overlay`）
-3. **标准高度 + 返回和标题**：`mobile-form.html` / `mobile-wizard.html` / `mobile-tree.html` / `mobile-timeline.html`（`md-appbar--mobile`）
-4. **两倍标准高度 + 背景 + 标题**：`mobile-settings.html`（`md-appbar--cover`）
+1. **L1 无顶栏 + 自定义顶区**（TabBar）：`mobile-grid.html`（`md-hero`）；或 `md-list-toolbar` 搜索/筛选/页签
+2. **L2 居中标题**（TabBar，无返回）：`mobile-list.html`（`md-appbar--center`）
+3. **L3 透明叠图 + 滚变实底**：`mobile-detail.html`（`md-appbar--overlay`）
+4. **L4 无顶栏 + 左上胶囊**：`mobile-pod.html`（`md-pod--tl`，与页内顶栏互斥）
+5. **L5 标准返回 + 左标题**：`mobile-form.html` / `mobile-menu.html` / `mobile-wizard.html` 等（`md-appbar--mobile`）
+6. **L6 双层封面顶栏**：`mobile-settings.html`（`md-appbar--cover`，返回可选）
 
 对标时抄**视觉骨架**（类名、密度、本页规格需要的控件脚本：轮盘 `data-wheel`、更多 `data-menu`、页内签 `data-panel`）。禁止把金样演示交互整页搬来；禁止删掉本页规格需要的套件行为。§2.3 漏写时仍须落地舒适默认（骨架、空态插图、失败可重试、按下态、浮层过渡、语义列宽）。点图预览只默认给详情页与横卡多行。
 

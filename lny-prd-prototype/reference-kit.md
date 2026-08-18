@@ -228,7 +228,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 </div>
 ```
 
-有 TabBar 时 **不要**再写 `md-appbar`。**沉浸式下沉**：`md-immersive` + `md-hero` 时，Hero **绝对定位钉在页顶底层、不随滚**；`md-mobile-body` 内必须包一层 **`md-mobile-sheet`（白底、宽 100%、无外边距、可有内边距）**，滚动时白底从上层盖住 Banner；顶距由 `::before` 占位露图并可点穿轮播。详情 `md-appbar--overlay` 仍叠最上层。**触屏滚动区按模块切分**：每个 L3 分区包 `md-module`；`md-mobile-body` / `md-mobile-sheet` 用 `--md-module-gap`（16px）统一模块间距；分区头放在模块内，禁止用内联 margin 拉开模块。**列表卡点名一种**（见下节）。详情/内容页主图用 `md-swiper md-swiper--wide`（**16:9**），介绍配图用 `md-media--16x9`。评论附图用 `md-comment__photos`（约 **40px**、**1:1**、圆角、横向排布超出换行，不要按正文宽五等分）。触屏正文左右下走 `--md-safe-*`；标准顶栏左右 4px（不预留 96 胶囊空）；overlay/cover 仍避让胶囊。触屏 `md-search` 仅左图标+输入（无「搜索」文案、无右侧搜索按钮）。左/底/右半屏：`md-drawer--left/bottom/right`。移动页 `<meta viewport>` 须带 `viewport-fit=cover`。**禁止**在页内手写 `md-status-bar`：由 `proto-page.js` 注入固定顶演示层。页根必须标 **`md-immersive`**（状态栏背景透明）或 **`md-standard`**（状态栏背景不透明）。正文可点文案与 Tab 走左右下安全距；标准顶栏左右贴边。
+有 TabBar 时 **不用**返回型顶栏（`md-appbar--mobile` 带返回钮）；可用 **`md-appbar--center`** 居中标题，或 **不写 `md-appbar`** 改由 `md-hero` / `md-list-toolbar` / 金刚区等自定义顶区。**沉浸式下沉**：`md-immersive` + `md-hero` 时，Hero **绝对定位钉在页顶底层、不随滚**；`md-mobile-body` 内必须包一层 **`md-mobile-sheet`（白底、宽 100%、无外边距、可有内边距）**，滚动时白底从上层盖住 Banner；顶距由 `::before` 占位露图并可点穿轮播。详情 **`md-appbar--overlay`** 叠在 16:9 主图上，滚正文后 **`is-solid`** 变纯色顶栏（`proto-page.js` 自动绑定）。**触屏滚动区按模块切分**：每个 L3 分区包 `md-module`；`md-mobile-body` / `md-mobile-sheet` 用 `--md-module-gap`（16px）统一模块间距；分区头放在模块内，禁止用内联 margin 拉开模块。**列表卡点名一种**（见下节）。详情/内容页主图用 `md-swiper md-swiper--wide`（**16:9**），介绍配图用 `md-media--16x9`。评论附图用 `md-comment__photos`（约 **40px**、**1:1**、圆角、横向排布超出换行，不要按正文宽五等分）。触屏正文左右下走 `--md-safe-*`；标准顶栏左右 4px（不预留 96 胶囊空）；overlay/cover 仍避让胶囊。触屏 `md-search` 仅左图标+输入（无「搜索」文案、无右侧搜索按钮）。左/底/右半屏：`md-drawer--left/bottom/right`。移动页 `<meta viewport>` 须带 `viewport-fit=cover`。**禁止**在页内手写 `md-status-bar`：由 `proto-page.js` 注入固定顶演示层。页根必须标 **`md-immersive`**（状态栏背景透明）或 **`md-standard`**（状态栏背景不透明）。正文可点文案与 Tab 走左右下安全距；标准顶栏左右贴边。
 
 ### 触屏列表区
 
@@ -345,14 +345,35 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 | `__tag` | 状态标签贴**封面**左上或右上（`--tr`） |
 | `__photos` / `__photo` | ③横卡多行文本区小缩略图（约 40px、1:1），一排最多五张；不要按正文宽五等分。评论附图走 `md-comment__photos`，同样约 40px |
 
-触屏顶栏四种（规格点名一种，禁止混用、禁止把封面顶栏拉成 16:9）：
+触屏顶栏六种（规格点名一种；**有 TabBar 时不用返回型顶栏**，可用 L2 居中标题或 L1 自定义顶区；**左上悬浮胶囊与页内顶栏互斥**）：
 
-| 形态 | 用法 | 金样 |
-|------|------|------|
-| 16:9 大背景 + slogan | `md-immersive` + `md-hero` + `md-swiper`；有 TabBar 则无页内顶栏 | `gold/mobile-grid.html` |
-| 16:9 大背景 + 左上返回和标题 | `md-immersive` + `md-appbar--overlay` + `md-swiper--wide` | `gold/mobile-detail.html` |
-| 标准高度标题栏 + 靠左返回和标题 | `md-standard` + `md-appbar md-appbar--mobile` | `gold/mobile-form.html`（另加 `md-form-page`） |
-| 两倍标准高度封面 + 标题 | `md-immersive` + `md-appbar--cover` + `__cover` 背景图；高度约 `2 ×` 标准标题栏 | `gold/mobile-settings.html` |
+| # | 形态 | 用法 | 金样 |
+|---|------|------|------|
+| L1 | 底 TabBar + **无**标题栏 + 自定义顶区 | `md-hero` / `md-list-toolbar`（搜索+筛选+页签）/ 金刚区等；正文自定 | `gold/mobile-grid.html`；列表工具条见 `mobile-list.html` |
+| L2 | 底 TabBar + 标题栏（**无返回** + **标题居中**） | `md-appbar md-appbar--mobile md-appbar--center`；其下可再接 `md-list-toolbar` 等 | `gold/mobile-list.html` |
+| L3 | **透明叠图**顶栏 + 沉浸式正文 | `md-immersive` + `md-appbar--overlay` + `md-hero`/`md-swiper--wide`；半透明返回 + **标题靠左**；滚正文后 **`is-solid`** 变纯色 | `gold/mobile-detail.html` |
+| L4 | **无**标题栏 + **左上悬浮胶囊** + 沉浸式正文 | 页根 `md-pod--tl`（与 L2/L5 互斥）；`md-hero` + `md-mobile-sheet` | `gold/mobile-pod.html` |
+| L5 | **标准**标题栏 | `md-standard` + `md-appbar md-appbar--mobile`；纯色底 + **返回** + **标题靠左** | `gold/mobile-form.html`、`gold/mobile-menu.html` |
+| L6 | **双层高**封面顶栏 | `md-immersive` + `md-appbar--cover` + `md-appbar__cover`；高度约 **2×** 标准栏；**标题与返回靠下缘靠左**（返回可选） | `gold/mobile-settings.html` |
+
+```html
+<!-- L2 居中标题（TabBar 页常用） -->
+<header class="md-appbar md-appbar--mobile md-appbar--center">
+  <h1 class="md-appbar__title">在售商品</h1>
+</header>
+
+<!-- L3 透明叠图（滚正文后 is-solid） -->
+<header class="md-appbar md-appbar--mobile md-appbar--overlay">
+  <a class="md-icon-btn" href="#" aria-label="返回"><span class="md-icon" data-icon="chevron-left"></span></a>
+  <h1 class="md-appbar__title">商品详情</h1>
+</header>
+
+<!-- L5 标准 -->
+<header class="md-appbar md-appbar--mobile">
+  <a class="md-icon-btn" href="#" aria-label="返回"><span class="md-icon" data-icon="back"></span></a>
+  <h1 class="md-appbar__title">编辑资料</h1>
+</header>
+```
 
 ```html
 <header class="md-appbar md-appbar--mobile md-appbar--cover">
@@ -361,6 +382,8 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
   <h1 class="md-appbar__title">设置</h1>
 </header>
 ```
+
+禁止：有 TabBar 又写 L5 返回顶栏；L4 左上胶囊与 L2/L5/L6 页内顶栏同页并存；L3 不写 `md-immersive` 或漏绑滚动变实底；把 L6 封面顶栏拉成 16:9 Hero。
 
 金刚区默认 4/5 列（图标文字上下居中），**可出现在任意需要入口区的页面，不限首页**。信息多、要标题+说明时用 `md-king--pair` 双卡（小图标与文案均靠左）：
 
@@ -1003,7 +1026,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 字段详情 | 同 `md-detail-page` 壳；分组 `md-module`+`md-section-head`；`md-desc` 左名右值（`--stack` 上下、桌面 `--cols-2/3`、跨列 `--span`）；金样 `mobile-fields` / `desktop-detail` 字段签 |
 | 分区 / 模块 | `md-module`（L3，模块间距 `--md-module-gap`）`md-section-head` `md-section-head__title` |
 | 系统栏 | `md-status-bar`（`proto-page.js` 固定顶注入；页内禁止手写；时间/信号靠顶略放大，左右各收一个图标身位，不为胶囊留空） |
-| 触屏顶栏 | ① `md-hero` 16:9+slogan ② `--overlay` 叠 16:9 ③ 标准 `md-appbar--mobile` ④ `--cover` 两倍高度封面 |
+| 触屏顶栏 | L1 无栏+自定义顶区 · L2 `--center` 居中无返回 · L3 `--overlay` 透明滚变实 · L4 无栏+`md-pod--tl` · L5 标准返回+左标题 · L6 `--cover` 双层封面 |
 | 桌面面包屑 | `md-breadcrumb`（D1 内容区顶部，禁止再写 `md-page-head`） |
 | 操作列 | 阈值与收纳执行 `PT-DESKTOP-LIST`。`md-col-actions` 宽按直出按钮形态与数量钉整列（表头与单元格同宽；套件实测 `.md-actions`）；常规动作 `md-icon-btn` + `title`/`aria-label`；删除加 `md-icon--danger`；「更多」用 `data-menu` + `md-menu md-menu--fixed` |
 | 语义列宽 | `md-col-check` 勾选；`md-col-name` 名称硬锁定宽；`md-col-desc` / `md-col-note` 说明吃剩余；`md-col-date` / 最后数据列规则同前；`md-col-price` / `md-col-status` / `md-col-id` / `md-col-num`。**多字段单元格**用 `md-cell-stack`（`__primary` / `__secondary`）。长值省略不得溢出叠邻列；悬停看全文、点击复制 |
