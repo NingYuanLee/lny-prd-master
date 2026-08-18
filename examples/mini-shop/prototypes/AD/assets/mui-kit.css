@@ -5631,7 +5631,7 @@ button.md-set-row:active { background: var(--md-selected); }
   color: var(--md-text-secondary);
 }
 
-/* —— 服务条 md-svc-strip：一整块白底，2/3/4 等分入口；项间短竖线（不贯通）；图标+文字上下居中。非金刚区（无项间 gap/无独立灰底圆角） —— */
+/* —— 服务条 md-svc-strip：一整块白底，2/3/4 等分入口；项间短竖线（不贯通）；上区图标或统计数值 + 下区文字，上下居中。非金刚区（无项间 gap/无独立灰底圆角） —— */
 .md-svc-strip {
   display: flex;
   align-items: stretch;
@@ -5696,6 +5696,27 @@ button.md-set-row:active { background: var(--md-selected); }
 .md-svc-strip__icon .md-icon {
   width: 24px;
   height: 24px;
+}
+.md-svc-strip__value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 28px;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0 2px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--md-text);
+  font-variant-numeric: tabular-nums;
+  box-sizing: border-box;
+}
+.md-svc-strip__value--sm {
+  font-size: 0.9375rem;
+  font-weight: 600;
 }
 .md-svc-strip__label {
   display: block;
