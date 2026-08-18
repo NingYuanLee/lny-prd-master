@@ -5981,6 +5981,38 @@ body:has(.md-mobile-page) .md-drawer--bottom:has(> .md-drawer__close) > .md-draw
 body:has(.md-mobile-page) .md-drawer--bottom {
   max-height: 70vh;
 }
+/* 触屏抽屉（含侧滑筛选）：字段/底栏按钮与表单页同密度；抽屉常在 md-mobile-page 外，须单独约束 */
+body:has(.md-mobile-page) .md-drawer .md-field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+body:has(.md-mobile-page) .md-drawer .md-field__input:not(textarea),
+body:has(.md-mobile-page) .md-drawer .md-field select,
+body:has(.md-mobile-page) .md-drawer .md-select,
+body:has(.md-mobile-page) .md-drawer .md-picker-trigger,
+body:has(.md-mobile-page) .md-drawer button.md-field__input {
+  height: 40px;
+  padding: 8px 12px;
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+body:has(.md-mobile-page) .md-drawer .md-field:focus-within .md-field__input:not(textarea),
+body:has(.md-mobile-page) .md-drawer .md-field:focus-within select,
+body:has(.md-mobile-page) .md-drawer .md-field:focus-within .md-select,
+body:has(.md-mobile-page) .md-drawer .md-field:focus-within .md-picker-trigger,
+body:has(.md-mobile-page) .md-drawer .md-field:focus-within button.md-field__input {
+  padding: 7px 11px;
+}
+body:has(.md-mobile-page) .md-drawer__actions .md-btn:not(.md-icon-btn):not(.md-drawer__close) {
+  height: 34px;
+  min-height: 34px;
+  padding: 4px 14px;
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
 
 /* 触屏输入：独立成行防误触；表单单选/多选为标签+右上对号角标；列表仍用左侧圆/方 */
 .md-mobile-page .md-field,

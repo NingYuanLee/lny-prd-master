@@ -447,7 +447,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 </label>
 ```
 
-抽屉：`ProtoPage.openDrawer(id)` / `closeDrawer(id)`，遮罩 id 为 `{id}Backdrop`。**底半屏** `md-drawer--bottom`：高度随内容、最大 **70vh**，超出时 `__body` 滚动；关闭钮 `md-drawer__close` 在面板右上角（`openDrawer` / 页初始化会自动补，轮盘 `md-wheel` 除外）。**底半屏放选项时每项独占一行**（`md-drawer__opt` / `md-choice-group` / `md-set-picks` / 下拉 `md-select-sheet__opt`），不要用表单标签换行。
+抽屉：`ProtoPage.openDrawer(id)` / `closeDrawer(id)`，遮罩 id 为 `{id}Backdrop`。**触屏抽屉内** `md-field` / 底栏 `md-drawer__actions` 按钮自动用表单页密度（约 40px 输入、34px 按钮；抽屉常在页根外，勿依赖页内 `md-field--sm` 才变矮）。**底半屏** `md-drawer--bottom`：高度随内容、最大 **70vh**，超出时 `__body` 滚动；关闭钮 `md-drawer__close` 在面板右上角（`openDrawer` / 页初始化会自动补，轮盘 `md-wheel` 除外）。**底半屏放选项时每项独占一行**（`md-drawer__opt` / `md-choice-group` / `md-set-picks` / 下拉 `md-select-sheet__opt`），不要用表单标签换行。
 
 ```html
 <aside id="catSheet" class="md-drawer md-drawer--bottom">
