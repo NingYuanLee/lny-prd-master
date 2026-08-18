@@ -56,7 +56,7 @@ description: >-
 | PAGE-MP-007 按钮（套件样例） | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、**浅底 `--soft`**、文字、**`--link`**、**通栏 `--block` / `md-btn-row`**、置灰、`md-badge`；贴底仅一钮自动占满。禁止当业务首页。禁止裸 `<button>` |
 | PAGE-MP-011 悬浮胶囊（套件样例） | `gold/mobile-pod.html` | 仅规格点名时按共享 `PT-FLOAT` 落到业务页；用 `md-pod` + `--tl` / `--bl` / `--br` 并写在页根，禁止用 `md-fab` 冒充成组 |
 | PAGE-MP-008 分类 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左树右内容；浏览用 `data-tree-edit="off"`。桌面维护交互见 `desktop-split` |
-| PAGE-MP-009 时间轴 | `gold/mobile-timeline.html` | `md-timeline` 左 `__rail` 竖轨，右 `md-card--row` 图文；`is-done` / `is-active`；点节点切高亮 |
+| PAGE-MP-009 时间轴 | `gold/mobile-timeline.html` | `md-timeline` 左 `__rail` 竖轨，右 `md-card--row` **横卡文本**（无左图，正文可 `__photos`）；`is-done` / `is-active`；点节点切高亮 |
 
 **桌面端**
 
@@ -74,7 +74,7 @@ description: >-
 | PAGE-AD-014 页面分栏（套件样例） | `gold/desktop-layout.html` | `md-layout--full/2col/fix-left/fix-right/3col/pin`；**禁止** `md-d1__form` 冒充分栏。卡片列表见 `desktop-lists.html` |
 | PAGE-AD-006 设置 | `gold/desktop-settings.html` | `md-d1 md-set-page` 浅灰底；**设置项**：开关可点；`md-set-picks` 文字/图标/图片 + 未选空圈；左图标可有可无；无极 / `data-menu` 改值 |
 | PAGE-AD-010 我的/服务 | `gold/desktop-menu.html` | `md-d1 md-set-page` 浅灰底；功能入口通栏/`md-set-pair`；右可为文字或方形配图 `--thumb`。不要 `md-d1--list` |
-| PAGE-AD-007 时间轴 | `gold/desktop-timeline.html` | 通栏 `md-timeline` 左竖轨右 `md-card--row` 图文；点节点切高亮。不要左右分栏。触屏见 `mobile-timeline` |
+| PAGE-AD-007 时间轴 | `gold/desktop-timeline.html` | 通栏 `md-timeline` 左竖轨右 **横卡文本**（无左图，正文可 `__photos`）；点节点切高亮。不要左右分栏。触屏见 `mobile-timeline` |
 | PAGE-AD-011 悬浮按钮（套件样例） | `gold/desktop-pod.html` | 仅规格点名时按共享 `PT-FLOAT` 落到业务页；用 `md-pod md-pod--desk` + `position:fixed`，折叠态用 `md-pod--fold` + `__toggle`，禁止触屏方位类和 `md-fab` |
 | 关系图 | `prototypes/{端}/map.html` | `ProtoMap.boot`；预览区 **375×812**；连线端口错开 + 线中 `label`；底部色线图例；拖动写入 localStorage；「导出图片」 |
 

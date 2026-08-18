@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 金样：触屏时间轴。左竖轨右图文。写触屏时间轴页前必 Read。 -->
+<!-- LNY-PRD gold: 金样：触屏时间轴。左竖轨右横卡文本（可内嵌多小图）。写触屏时间轴页前必 Read。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -25,11 +25,10 @@
               <span class="md-timeline__line"></span>
             </div>
             <article class="md-timeline__body md-card md-card--row">
-              <div class="md-card__media md-media-ph md-media-ph--1"></div>
               <div class="md-card__body">
                 <div class="md-card__main">
                   <h2 class="md-card__title">已提交</h2>
-                  <p class="md-card__text">申请已进入审核队列，可在本节点查看摘要图文。</p>
+                  <p class="md-card__text">申请已进入审核队列，本节点仅展示文本摘要，无需左侧大图。</p>
                 </div>
                 <div class="md-card__foot">
                   <div class="md-card__meta">
@@ -45,11 +44,15 @@
               <span class="md-timeline__line"></span>
             </div>
             <article class="md-timeline__body md-card md-card--row">
-              <div class="md-card__media md-media-ph md-media-ph--2"></div>
               <div class="md-card__body">
                 <div class="md-card__main">
                   <h2 class="md-card__title">审核中</h2>
-                  <p class="md-card__text">左侧竖轨标记当前节点，右侧继续展示配图与说明。</p>
+                  <p class="md-card__text">左侧竖轨标记当前节点；正文下方可附带多张缩略图。</p>
+                </div>
+                <div class="md-card__photos">
+                  <div class="md-card__photo md-media-ph md-media-ph--2"></div>
+                  <div class="md-card__photo md-media-ph md-media-ph--3"></div>
+                  <div class="md-card__photo md-media-ph md-media-ph--4"></div>
                 </div>
                 <div class="md-card__foot">
                   <div class="md-card__meta">
@@ -65,7 +68,6 @@
               <span class="md-timeline__line"></span>
             </div>
             <article class="md-timeline__body md-card md-card--row">
-              <div class="md-card__media md-media-ph md-media-ph--3"></div>
               <div class="md-card__body">
                 <div class="md-card__main">
                   <h2 class="md-card__title">待发布</h2>
@@ -85,11 +87,14 @@
               <span class="md-timeline__line"></span>
             </div>
             <article class="md-timeline__body md-card md-card--row">
-              <div class="md-card__media md-media-ph md-media-ph--4"></div>
               <div class="md-card__body">
                 <div class="md-card__main">
                   <h2 class="md-card__title">已完成</h2>
                   <p class="md-card__text">末节点不再向下连线；点任意节点可切换当前高亮。</p>
+                </div>
+                <div class="md-card__photos">
+                  <div class="md-card__photo md-media-ph md-media-ph--5"></div>
+                  <div class="md-card__photo md-media-ph md-media-ph--6"></div>
                 </div>
                 <div class="md-card__foot">
                   <div class="md-card__meta">

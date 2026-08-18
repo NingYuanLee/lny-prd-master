@@ -716,11 +716,14 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
       <span class="md-timeline__line"></span>
     </div>
     <article class="md-timeline__body md-card md-card--row">
-      <div class="md-card__media md-media-ph md-media-ph--1"></div>
       <div class="md-card__body">
         <div class="md-card__main">
           <h2 class="md-card__title">已提交</h2>
-          <p class="md-card__text">右侧图文说明。</p>
+          <p class="md-card__text">横卡文本说明；需要时在正文下加多张小图。</p>
+        </div>
+        <div class="md-card__photos">
+          <div class="md-card__photo md-media-ph md-media-ph--1"></div>
+          <div class="md-card__photo md-media-ph md-media-ph--2"></div>
         </div>
       </div>
     </article>
@@ -730,7 +733,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 
 **时间轴** `md-timeline`：`__item` + `__rail`（`__node` + `__line`）+ `__body`。`is-done` 已完成、`is-active` 当前。点节点切高亮；若带 `data-target` / `data-section` 则滚动对应锚点。
 
-- **触屏 / 桌面**：右侧 `__body` 用 `md-card--row` 图文。金样 `gold/mobile-timeline.html` / `gold/desktop-timeline.html`。桌面不要左右分栏，章节大纲才走 `desktop-locator.html`。
+- **触屏 / 桌面**：右侧 `__body` 用 `md-card--row` **横卡文本**（**禁止左图**）；正文内可选 `md-card__photos` + `md-card__photo` 多张小图。金样 `gold/mobile-timeline.html` / `gold/desktop-timeline.html`。桌面不要左右分栏，章节大纲才走 `desktop-locator.html`。
 
 ## 无类名组合（禁止裸 HTML）
 
@@ -759,7 +762,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | 步骤条 | `md-stepper` + `md-step`；已完成 `is-done`；当前 `is-active`。桌面数字步骤可点跳步（`proto-page.js` 自动绑）；自管步进写 `data-wizard="off"` | 纯数字列表；桌面数字步骤不可点 |
 | 进步条 | `md-advance` + `__head` + `__track` + `__seg` + `__bar`；`data-segments`；触屏可 `--lg` | 用无极 `md-progress` 冒充分步 |
 | 进度条 | `md-progress` + `__head` + `__track` + `__bar`；不确定 `--indeterminate`；触屏可 `--lg` | 裸 `<progress>` / 自造色条 / 用分段 `md-advance` 冒充上传 |
-| 时间轴 | `md-timeline` + `__item` `__rail` `__node` `__line` `__body`；右图文 `md-card--row`；`is-done` / `is-active` | 用列表硬套竖轨；左图右线反过来；桌面做成左右分栏导航 |
+| 时间轴 | `md-timeline` + `__item` `__rail` `__node` `__line` `__body`；右 **横卡文本** `md-card--row`（无左图，正文可 `__photos`）；`is-done` / `is-active` | 用列表硬套竖轨；时间轴右卡加左图；桌面做成左右分栏导航 |
 | 图表 | `md-chart-ph` 占位条 | 手写 canvas / 自造柱 |
 | 页内分页签 | 桌面：`md-tabs md-tabs--page` 下划线（**平铺，无圆角阴影卡片壳**）；触屏：`md-tabs`（自动按钮组，浅底/选中色块） | 触屏用桌面下划线签；自造下划线 `div` / 裸 `<a>` 签；页内签套卡片壳 |
 | 主/线/浅底/字/链接按钮 | `md-btn md-btn--contained` / `--outlined` / **`--soft`（无边框浅底色字）** / `--text` / `--link`；**通栏整行** `--block`（或 `md-btn-row` 竖叠）；图标钮 `md-icon-btn`。触屏贴底 `md-action-bar` / 半屏 `md-drawer__actions` **仅一钮时自动占满** | 裸 `<button>`、`<input type="submit">`、Bootstrap/`btn`、浏览器灰钮；一行一主钮却缩成短条 |
@@ -988,7 +991,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 空态 | `md-empty md-empty--illus` + `__art` `__title` `__text` |
 | 骨架 | `md-skeleton` `--text/--title/--media/--row`；`md-skel-host` |
 | 步骤/树/图 | `md-stepper` `md-step` `md-tree` `md-chart-ph` `md-stat-grid` `md-stat-card` |
-| 时间轴 | `md-timeline` `__item` `__rail` `__node` `__line` `__body`；右图文 `md-card--row`；`is-done` / `is-active` |
+| 时间轴 | `md-timeline` `__item` `__rail` `__node` `__line` `__body`；右 **横卡文本** `md-card--row`（无左图，正文可 `__photos`）；`is-done` / `is-active` |
 | 进步条 | `md-advance` `__label` `__value` `__track` `__seg` `__bar`；`data-segments`；`--lg`；`ProtoPage.setAdvance` |
 | 进度条 | `md-progress` `__label` `__value` `__track` `__bar`；`--lg`；`--indeterminate`；`ProtoPage.setProgress` |
 | Chip/Alert | `md-chip` `md-badge` `md-alert md-alert--error/--info/--success/--warning` |
