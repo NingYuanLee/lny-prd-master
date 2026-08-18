@@ -932,11 +932,14 @@ textarea.md-field__input:disabled:focus,
   padding: 8px 12px;
 }
 .md-field:has(:disabled) .md-field__label,
-.md-field--readonly .md-field__label,
-.md-field--readonly:focus-within .md-field__label,
 .md-field:has(:disabled):focus-within .md-field__label {
   color: var(--md-text-disabled);
   background: var(--md-grey-200);
+}
+.md-field--readonly .md-field__label,
+.md-field--readonly:focus-within .md-field__label {
+  color: var(--md-text-disabled);
+  background: transparent;
 }
 
 .md-check, .md-radio {
