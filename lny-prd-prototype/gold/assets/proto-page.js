@@ -1085,7 +1085,7 @@
           item.getAttribute("data-target") ||
           item.getAttribute("data-section") ||
           "";
-        var host = tl.closest(".md-d1--split") || tl.closest(".md-d1") || document;
+        var host = tl.closest(".md-tab-panel") || tl.closest(".md-d1") || document;
         if (target) scrollToSectionTarget(host, target);
         tl.dispatchEvent(
           new CustomEvent("md-timeline-select", {
@@ -1106,6 +1106,8 @@
       document.querySelector('[data-section="' + sectionId + '"]');
     if (!el) return;
     var scrollRoot =
+      el.closest(".md-doc-scroll") ||
+      el.closest(".md-article") ||
       el.closest(".md-split__main") ||
       el.closest(".md-layout__pane") ||
       el.closest(".md-d1") ||
@@ -1138,7 +1140,11 @@
           btn.getAttribute("data-target") ||
           btn.getAttribute("data-section") ||
           "";
-        var host = nav.closest(".md-d1--split") || nav.closest(".md-d1") || document;
+        var host =
+          nav.closest(".md-tab-panel") ||
+          nav.closest(".md-article-host") ||
+          nav.closest(".md-d1") ||
+          document;
         scrollToSectionTarget(host, target);
         nav.dispatchEvent(
           new CustomEvent("md-locator-select", {
@@ -1146,6 +1152,35 @@
             detail: { item: btn, target: target },
           })
         );
+      });
+    });
+  }
+
+  function setOutlineOpen(host, open) {
+    if (!host) return;
+    if (host.classList.contains("md-locator-float")) {
+      host.classList.toggle("is-collapsed", !open);
+    } else {
+      host.classList.toggle("is-side-collapsed", !open);
+    }
+    host.querySelectorAll("[data-outline-toggle]").forEach(function (btn) {
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+      btn.setAttribute("aria-label", open ? "收起大纲" : "展开大纲");
+    });
+  }
+
+  function bindOutlineCollapse() {
+    document.querySelectorAll(".md-split--outline, .md-locator-float").forEach(function (host) {
+      if (host.getAttribute("data-md-bound") === "1") return;
+      host.setAttribute("data-md-bound", "1");
+      host.addEventListener("click", function (ev) {
+        var btn = ev.target.closest("[data-outline-toggle]");
+        if (!btn || !host.contains(btn)) return;
+        ev.preventDefault();
+        var collapsed = host.classList.contains("md-locator-float")
+          ? host.classList.contains("is-collapsed")
+          : host.classList.contains("is-side-collapsed");
+        setOutlineOpen(host, collapsed);
       });
     });
   }
@@ -2382,6 +2417,7 @@
     bindTrees();
     bindTimelines();
     bindLocators();
+    bindOutlineCollapse();
     bindNestTables();
     bindUploads();
     bindMobileSelects();

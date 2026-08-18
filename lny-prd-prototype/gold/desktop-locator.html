@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 章节大纲。与桌面时间轴同构：左大纲右全文，点左滚右。分类钮可用 md-locator--cats，不要做成树。写大纲/分类前必 Read。 -->
+<!-- LNY-PRD gold: 章节大纲两种：左侧可收缩 / 右侧悬浮可收起。点选滚锚点。不要做成树。写大纲/分类前必 Read。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -8,41 +8,102 @@
   <link rel="stylesheet" href="./assets/mui-kit.css">
 </head>
 <body>
-  <div class="md-d1 md-d1--split">
+  <div class="md-d1 md-d1--locator">
     <div class="md-breadcrumb">
       <span>套件</span><span>/</span><span class="is-current">章节大纲</span>
     </div>
-    <div class="md-split">
-      <aside class="md-split__side">
-        <div class="md-section-head"><span class="md-section-head__title">大纲</span></div>
-        <nav class="md-locator md-locator--outline" aria-label="大纲">
-          <button type="button" class="md-locator__item is-active" data-target="sec-fruit">一、水果</button>
-          <button type="button" class="md-locator__item md-locator__item--l2" data-target="sec-berry">浆果说明</button>
-          <button type="button" class="md-locator__item" data-target="sec-drink">二、饮品</button>
-          <button type="button" class="md-locator__item" data-target="sec-bake">三、烘焙</button>
-        </nav>
-        <p class="md-caption">时间轴见 desktop-timeline，左右结构相同。顶栏分类钮用 <code>md-locator--cats</code>。可展开树见 desktop-split。</p>
-      </aside>
-      <div class="md-split__main md-layout__pane md-layout__pane--flush md-doc-scroll">
-        <div class="md-module" data-section="sec-fruit" id="sec-fruit">
-          <h2 class="md-h3">一、水果</h2>
-          <p class="md-body2">点左侧大纲，右侧滚到本锚点。不是换一整棵树的数据域，也不要做成触屏时间轴那种整行横卡。</p>
-          <p class="md-body2">有机草莓与脐橙礼盒的产地、冷链和效期写在本段，方便对照大纲跳读。</p>
+    <p class="md-body2">两种择一。左侧占栏、可整栏收起；右侧悬浮压在正文上、可收成细条。点条目滚锚点。分类钮用 <code>md-locator--cats</code>。不要做成树。</p>
+    <nav class="md-tabs md-tabs--page">
+      <button type="button" class="md-tab is-active" data-panel="panelOutlineLeft">左侧大纲</button>
+      <button type="button" class="md-tab" data-panel="panelOutlineFloat">右侧悬浮大纲</button>
+    </nav>
+    <div class="md-tab-panels md-d1__workspace">
+      <div id="panelOutlineLeft" class="md-tab-panel is-active">
+        <div class="md-split md-split--outline">
+          <aside class="md-split__side">
+            <div class="md-locator-head">
+              <span class="md-locator-head__title">大纲</span>
+              <button type="button" class="md-icon-btn" data-outline-toggle aria-expanded="true" aria-label="收起大纲">
+                <span class="md-icon" data-icon="chevron-left" aria-hidden="true"></span>
+              </button>
+            </div>
+            <nav class="md-locator md-locator--outline" aria-label="左侧大纲">
+              <button type="button" class="md-locator__item is-active" data-target="ol-fruit">一、水果</button>
+              <button type="button" class="md-locator__item md-locator__item--l2" data-target="ol-berry">浆果说明</button>
+              <button type="button" class="md-locator__item" data-target="ol-drink">二、饮品</button>
+              <button type="button" class="md-locator__item" data-target="ol-bake">三、烘焙</button>
+            </nav>
+          </aside>
+          <button type="button" class="md-locator-rail" data-outline-toggle aria-expanded="false" aria-label="展开大纲">
+            <span class="md-icon" data-icon="chevron-right" aria-hidden="true"></span>
+            <span>大纲</span>
+          </button>
+          <div class="md-split__main md-layout__pane md-layout__pane--flush md-doc-scroll">
+            <div class="md-module" data-section="ol-fruit" id="ol-fruit">
+              <h2 class="md-h3">一、水果</h2>
+              <p class="md-body2">大纲在左侧占一栏。点条目，右侧滚到本锚点。不是换一整棵树的数据域，也不要做成时间轴那种整行横卡。</p>
+              <p class="md-body2">有机草莓与脐橙礼盒的产地、冷链和效期写在本段，方便对照大纲跳读。栏位可整栏收起，正文吃满宽度。</p>
+            </div>
+            <div class="md-module" data-section="ol-berry" id="ol-berry">
+              <h2 class="md-h3">浆果说明</h2>
+              <p class="md-body2">大纲二级项同样定位到锚点；不要做成树展开收起，也不要在左侧做增删改。</p>
+              <p class="md-body2">浆果短保、忌挤压。本段只承担阅读定位，筛选树仍走 desktop-split。</p>
+            </div>
+            <div class="md-module" data-section="ol-drink" id="ol-drink">
+              <h2 class="md-h3">二、饮品</h2>
+              <p class="md-body2">小粒咖啡与青柠蜂蜜茶的冲泡和冷藏要求写在本段。左侧高亮当前章。</p>
+              <p class="md-body2">分类按钮若出现，只做横向定位，不替代本页左侧大纲。</p>
+            </div>
+            <div class="md-module" data-section="ol-bake" id="ol-bake">
+              <h2 class="md-h3">三、烘焙</h2>
+              <p class="md-body2">全麦吐司的当日烘焙与保存写在本段。详情页右下「目录」也属本族。</p>
+              <p class="md-body2">末章同样只滚动全文。维护分类树、表内嵌套行见列表六型与 desktop-split。</p>
+            </div>
+          </div>
         </div>
-        <div class="md-module" data-section="sec-berry" id="sec-berry">
-          <h2 class="md-h3">浆果说明</h2>
-          <p class="md-body2">大纲二级项同样定位到锚点；不要做成树展开收起，也不要在左侧做增删改。</p>
-          <p class="md-body2">浆果短保、忌挤压。本段只承担阅读定位，筛选树仍走 desktop-split。</p>
-        </div>
-        <div class="md-module" data-section="sec-drink" id="sec-drink">
-          <h2 class="md-h3">二、饮品</h2>
-          <p class="md-body2">小粒咖啡与青柠蜂蜜茶的冲泡和冷藏要求写在本段。左侧高亮当前章。</p>
-          <p class="md-body2">分类按钮若出现，只做横向定位，不替代本页左侧大纲。</p>
-        </div>
-        <div class="md-module" data-section="sec-bake" id="sec-bake">
-          <h2 class="md-h3">三、烘焙</h2>
-          <p class="md-body2">全麦吐司的当日烘焙与保存写在本段。详情页右下「目录」也属本族（data-section）。</p>
-          <p class="md-body2">末章同样只滚动全文。维护分类树、表内嵌套行见列表六型与 desktop-split。</p>
+      </div>
+      <div id="panelOutlineFloat" class="md-tab-panel">
+        <div class="md-article-host">
+          <div class="md-article md-doc-scroll">
+            <div class="md-module" data-section="of-fruit" id="of-fruit">
+              <h2 class="md-h3">一、水果</h2>
+              <p class="md-body2">大纲悬浮在右侧，压在正文之上，不占左栏。点条目，正文滚到本锚点。</p>
+              <p class="md-body2">有机草莓与脐橙礼盒的产地、冷链和效期写在本段。悬浮条可收成右侧细条，再点展开。</p>
+            </div>
+            <div class="md-module" data-section="of-berry" id="of-berry">
+              <h2 class="md-h3">浆果说明</h2>
+              <p class="md-body2">二级项同样定位。悬浮大纲不是树，不要在这里做增删改或拖拽。</p>
+              <p class="md-body2">浆果短保、忌挤压。滚动时大纲停在可视区右侧，不随段落一起滚走。</p>
+            </div>
+            <div class="md-module" data-section="of-drink" id="of-drink">
+              <h2 class="md-h3">二、饮品</h2>
+              <p class="md-body2">小粒咖啡与青柠蜂蜜茶的冲泡和冷藏要求写在本段。当前章在悬浮大纲里高亮。</p>
+              <p class="md-body2">正文左侧留白给阅读，右侧给悬浮面板；收起后正文只让出一条细边。</p>
+            </div>
+            <div class="md-module" data-section="of-bake" id="of-bake">
+              <h2 class="md-h3">三、烘焙</h2>
+              <p class="md-body2">全麦吐司的当日烘焙与保存写在本段。详情右下「目录」是半屏目录，不是本页这种常驻悬浮大纲。</p>
+              <p class="md-body2">两种大纲都只负责定位滚动。时间轴用通栏竖轨右图文，不要再做成左右导航。</p>
+            </div>
+          </div>
+          <aside class="md-locator-float">
+            <div class="md-locator-head">
+              <span class="md-locator-head__title">大纲</span>
+              <button type="button" class="md-icon-btn" data-outline-toggle aria-expanded="true" aria-label="收起大纲">
+                <span class="md-icon" data-icon="chevron-right" aria-hidden="true"></span>
+              </button>
+            </div>
+            <nav class="md-locator md-locator--outline" aria-label="右侧悬浮大纲">
+              <button type="button" class="md-locator__item is-active" data-target="of-fruit">一、水果</button>
+              <button type="button" class="md-locator__item md-locator__item--l2" data-target="of-berry">浆果说明</button>
+              <button type="button" class="md-locator__item" data-target="of-drink">二、饮品</button>
+              <button type="button" class="md-locator__item" data-target="of-bake">三、烘焙</button>
+            </nav>
+            <button type="button" class="md-locator-float__peek" data-outline-toggle aria-expanded="false" aria-label="展开大纲">
+              <span class="md-icon" data-icon="chevron-left" aria-hidden="true"></span>
+              <span>大纲</span>
+            </button>
+          </aside>
         </div>
       </div>
     </div>
