@@ -7633,3 +7633,15 @@ button.md-select.md-select-trigger {
   border-top: 1px solid var(--md-divider);
   border-radius: 0;
 }
+.md-select-sheet__form {
+  flex-shrink: 0;
+  padding: 12px 20px 16px;
+  border-top: 1px solid var(--md-divider);
+  box-sizing: border-box;
+}
+.md-select-sheet__form .md-field {
+  margin: 0 0 12px;
+}
+.md-select-sheet__form .md-btn {
+  width: 100%;
+}

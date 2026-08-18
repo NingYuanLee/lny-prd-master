@@ -951,44 +951,105 @@
     syncDialogLock();
   }
 
+  function ensureNickPickSheet() {
+    if (document.getElementById("mdNickPickSheet")) return;
+    var mask = document.createElement("div");
+    mask.id = "mdNickPickSheetBackdrop";
+    mask.className = "md-backdrop md-select-sheet-backdrop";
+    var sheet = document.createElement("div");
+    sheet.id = "mdNickPickSheet";
+    sheet.className = "md-select-sheet md-select-sheet--bottom";
+    sheet.setAttribute("role", "dialog");
+    sheet.setAttribute("aria-hidden", "true");
+    sheet.innerHTML =
+      '<div class="md-select-sheet__handle" aria-hidden="true"></div>' +
+      '<h2 class="md-select-sheet__title">修改昵称</h2>' +
+      '<div class="md-select-sheet__list" role="listbox">' +
+      '<button type="button" class="md-select-sheet__opt" data-nick-pick="wx">微信昵称授权</button>' +
+      "</div>" +
+      '<div class="md-select-sheet__form">' +
+      '<label class="md-field md-field--sm">' +
+      '<span class="md-field__label">手动输入</span>' +
+      '<input type="text" class="md-field__input" data-nick-input maxlength="32" placeholder="请输入昵称" autocomplete="nickname">' +
+      "</label>" +
+      '<button type="button" class="md-btn md-btn--contained" data-nick-save>保存</button>' +
+      "</div>" +
+      '<button type="button" class="md-btn md-btn--text md-select-sheet__cancel">取消</button>';
+    document.body.appendChild(mask);
+    document.body.appendChild(sheet);
+    mask.addEventListener("click", closeNickPickSheet);
+    sheet.querySelector(".md-select-sheet__cancel").addEventListener("click", closeNickPickSheet);
+    sheet.querySelector("[data-nick-pick]").addEventListener("click", function () {
+      var btn = sheet._nickBtn;
+      closeNickPickSheet();
+      if (!btn) return;
+      btn.textContent = "微信昵称";
+      snackbar("已授权微信昵称");
+    });
+    sheet.querySelector("[data-nick-save]").addEventListener("click", function () {
+      applyNickPickManual();
+    });
+    sheet.querySelector("[data-nick-input]").addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter") {
+        ev.preventDefault();
+        applyNickPickManual();
+      }
+    });
+  }
+
+  function closeNickPickSheet() {
+    var sheet = document.getElementById("mdNickPickSheet");
+    var mask = document.getElementById("mdNickPickSheetBackdrop");
+    if (sheet) {
+      sheet.classList.remove("is-open");
+      sheet.setAttribute("aria-hidden", "true");
+      sheet._nickBtn = null;
+    }
+    if (mask) mask.classList.remove("is-open");
+    syncDialogLock();
+  }
+
+  function applyNickPickManual() {
+    var sheet = document.getElementById("mdNickPickSheet");
+    if (!sheet || !sheet._nickBtn) return;
+    var input = sheet.querySelector("[data-nick-input]");
+    var nickBtn = sheet._nickBtn;
+    var current = nickBtn.textContent.replace(/\s+/g, " ").trim();
+    var val = input ? input.value.replace(/\s+/g, " ").trim() : "";
+    if (!val) val = current;
+    closeNickPickSheet();
+    nickBtn.textContent = val;
+    if (val !== current) snackbar("昵称已保存");
+  }
+
+  function openNickPickSheet(nickBtn) {
+    ensureNickPickSheet();
+    var sheet = document.getElementById("mdNickPickSheet");
+    var mask = document.getElementById("mdNickPickSheetBackdrop");
+    var input = sheet && sheet.querySelector("[data-nick-input]");
+    if (!sheet || !mask || !nickBtn) return;
+    sheet._nickBtn = nickBtn;
+    if (input) {
+      input.value = nickBtn.textContent.replace(/\s+/g, " ").trim();
+    }
+    mask.classList.add("is-open");
+    sheet.classList.add("is-open");
+    sheet.setAttribute("aria-hidden", "false");
+    syncDialogLock();
+    if (input) {
+      window.setTimeout(function () {
+        input.focus();
+        input.select();
+      }, 320);
+    }
+  }
+
   function bindProfileNameEdit(nickBtn) {
     if (!nickBtn || nickBtn.getAttribute("data-name-bound") === "1") return;
     nickBtn.setAttribute("data-name-bound", "1");
     nickBtn.addEventListener("click", function () {
       if (nickBtn.tagName !== "BUTTON") return;
-      var current = nickBtn.textContent.replace(/\s+/g, " ").trim();
-      var input = document.createElement("input");
-      input.type = "text";
-      input.className = "md-profile__name-input";
-      input.value = current;
-      if (nickBtn.id) input.id = nickBtn.id;
-      nickBtn.replaceWith(input);
-      input.focus();
-      input.select();
-      function finish(save) {
-        var val = save ? input.value.replace(/\s+/g, " ").trim() || current : current;
-        var btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "md-profile__title md-profile__name";
-        if (input.id) btn.id = input.id;
-        btn.textContent = val;
-        input.replaceWith(btn);
-        bindProfileNameEdit(btn);
-        if (save && val !== current) snackbar("昵称已保存");
-      }
-      input.addEventListener("blur", function () {
-        finish(true);
-      });
-      input.addEventListener("keydown", function (ev) {
-        if (ev.key === "Enter") {
-          ev.preventDefault();
-          input.blur();
-        }
-        if (ev.key === "Escape") {
-          ev.preventDefault();
-          finish(false);
-        }
-      });
+      openNickPickSheet(nickBtn);
     });
   }
 
