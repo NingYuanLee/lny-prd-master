@@ -293,6 +293,7 @@
           p.classList.toggle("is-active", p.id === panelId);
         });
         syncLocatorSpies();
+        scheduleActionColWidths();
       });
     });
   }
@@ -2498,6 +2499,46 @@
     paint();
   }
 
+  function measureActionsWidth(pack) {
+    var probe = pack.cloneNode(true);
+    probe.querySelectorAll(".md-menu, script").forEach(function (n) {
+      n.remove();
+    });
+    probe.setAttribute("aria-hidden", "true");
+    probe.style.cssText =
+      "position:absolute;left:-9999px;top:0;display:flex;align-items:center;width:max-content;max-width:none;margin:0;visibility:hidden;pointer-events:none;";
+    document.body.appendChild(probe);
+    var w = probe.getBoundingClientRect().width;
+    probe.parentNode.removeChild(probe);
+    return Math.ceil(w);
+  }
+
+  function syncActionColWidths() {
+    document.querySelectorAll("table.md-table").forEach(function (table) {
+      var cells = table.querySelectorAll("td.md-col-actions");
+      if (!cells.length) return;
+      var max = 0;
+      cells.forEach(function (cell) {
+        var pack = cell.querySelector(".md-actions");
+        if (!pack) return;
+        var w = measureActionsWidth(pack);
+        if (w > max) max = w;
+      });
+      if (!max) return;
+      var cs = window.getComputedStyle(cells[0]);
+      var pad =
+        (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+      var col = Math.max(36, max + Math.ceil(pad));
+      table.style.setProperty("--md-col-actions-w", col + "px");
+    });
+  }
+
+  function scheduleActionColWidths() {
+    requestAnimationFrame(function () {
+      syncActionColWidths();
+    });
+  }
+
   function bindUi() {
     ensureStatusBar();
     ensureDetailNav();
@@ -2521,6 +2562,8 @@
     bindLightbox();
     bindOverflowTips();
     document.querySelectorAll(".md-drawer.md-drawer--bottom").forEach(ensureBottomDrawerClose);
+    scheduleActionColWidths();
+    window.addEventListener("resize", scheduleActionColWidths);
   }
 
   global.ProtoPage = {

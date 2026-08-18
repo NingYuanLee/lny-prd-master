@@ -1193,43 +1193,38 @@ textarea.md-field__input:disabled:focus,
 }
 .md-table .md-col-actions {
   right: 0;
-  /* 默认按内容收；子节点数/文字钮再由下方 :has 档位钉死，避免挤没与右冻失效 */
-  width: 72px;
-  min-width: 72px;
-  max-width: 220px;
-  padding-left: 2px;
-  padding-right: 2px;
+  /* 列宽由整表 --md-col-actions-w 钉死（表头与单元格同宽）；JS 按按钮形态+数量实测，下方 :has 为回退档 */
+  width: var(--md-col-actions-w, 64px);
+  min-width: var(--md-col-actions-w, 64px);
+  max-width: var(--md-col-actions-w, 64px);
+  padding-left: 4px;
+  padding-right: 4px;
   white-space: nowrap;
   overflow: visible;
   text-overflow: clip;
   box-shadow: -6px 0 8px -4px rgba(0, 0, 0, 0.18);
 }
-/* 操作列宽：按直出控件个数（图标钮） */
-.md-table .md-col-actions:has(.md-actions > :only-child) {
-  width: 40px;
-  min-width: 40px;
-  max-width: 48px;
+/* 回退：按直出子节点数（图标钮 28px）钉整列，含表头。后写覆盖先写，取最多钮那一档 */
+.md-table:has(td.md-col-actions .md-actions > :only-child) {
+  --md-col-actions-w: 36px;
 }
-.md-table .md-col-actions:has(.md-actions > :nth-child(2):last-child) {
-  width: 68px;
-  min-width: 68px;
-  max-width: 80px;
+.md-table:has(td.md-col-actions .md-actions > :nth-child(2):last-child) {
+  --md-col-actions-w: 64px;
 }
-.md-table .md-col-actions:has(.md-actions > :nth-child(3):last-child) {
-  width: 96px;
-  min-width: 96px;
-  max-width: 112px;
+.md-table:has(td.md-col-actions .md-actions > :nth-child(3):last-child) {
+  --md-col-actions-w: 92px;
 }
-.md-table .md-col-actions:has(.md-actions > :nth-child(4)) {
-  width: 124px;
-  min-width: 124px;
-  max-width: 148px;
+.md-table:has(td.md-col-actions .md-actions > :nth-child(4)) {
+  --md-col-actions-w: 120px;
 }
-/* 含文字钮时加宽，优先仍应收进「更多」 */
-.md-table .md-col-actions:has(.md-btn:not(.md-icon-btn)) {
-  width: auto;
-  min-width: 120px;
-  max-width: 220px;
+.md-table:has(td.md-col-actions .md-btn:not(.md-icon-btn)):has(td.md-col-actions .md-actions > :only-child) {
+  --md-col-actions-w: 88px;
+}
+.md-table:has(td.md-col-actions .md-btn:not(.md-icon-btn)):has(td.md-col-actions .md-actions > :nth-child(2):last-child) {
+  --md-col-actions-w: 132px;
+}
+.md-table:has(td.md-col-actions .md-btn:not(.md-icon-btn)):has(td.md-col-actions .md-actions > :nth-child(3)) {
+  --md-col-actions-w: 176px;
 }
 .md-table tbody tr.is-menu-host .md-col-actions,
 .md-table tbody tr:has(.md-menu.is-open) .md-col-actions {
@@ -2127,33 +2122,8 @@ body.md-lightbox-open { overflow: hidden; }
   padding-right: 8px;
 }
 .md-d1--list .md-d1__list .md-col-actions {
-  padding-left: 2px;
-  padding-right: 2px;
-}
-.md-d1--list .md-d1__list .md-col-actions:has(.md-actions > :only-child) {
-  width: 36px;
-  min-width: 36px;
-  max-width: 44px;
-}
-.md-d1--list .md-d1__list .md-col-actions:has(.md-actions > :nth-child(2):last-child) {
-  width: 64px;
-  min-width: 64px;
-  max-width: 72px;
-}
-.md-d1--list .md-d1__list .md-col-actions:has(.md-actions > :nth-child(3):last-child) {
-  width: 92px;
-  min-width: 92px;
-  max-width: 104px;
-}
-.md-d1--list .md-d1__list .md-col-actions:has(.md-actions > :nth-child(4)) {
-  width: 120px;
-  min-width: 120px;
-  max-width: 136px;
-}
-.md-d1--list .md-d1__list .md-col-actions:has(.md-btn:not(.md-icon-btn)) {
-  width: auto;
-  min-width: 112px;
-  max-width: 200px;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 .md-d1--list .md-d1__list .md-thumb {
   width: 28px;
@@ -2934,6 +2904,12 @@ button.md-tree__item {
 .md-layout--pin {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 }
+.md-layout--fix-left {
+  grid-template-columns: var(--md-layout-aside, 240px) minmax(0, 1fr);
+}
+.md-layout--fix-right {
+  grid-template-columns: minmax(0, 1fr) var(--md-layout-aside, 240px);
+}
 .md-layout__pane {
   min-width: 0;
   min-height: 0;
@@ -2966,8 +2942,7 @@ button.md-tree__item {
 .md-card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  grid-auto-rows: min-content;
-  align-items: start;
+  align-items: stretch;
   align-content: start;
   gap: 12px;
   padding: 4px 0 12px;
@@ -2976,11 +2951,15 @@ button.md-tree__item {
   overflow: auto;
 }
 .md-card-grid > .md-card {
-  height: auto;
-  align-self: start;
+  height: 100%;
+  min-height: 0;
+  align-self: stretch;
 }
 .md-card-grid > .md-card--tile .md-card__body {
-  flex: 0 0 auto;
+  flex: 1 1 auto;
+}
+.md-card-grid > .md-card--tile .md-price {
+  margin-top: auto;
 }
 .md-d1--cards .md-d1__list {
   overflow: auto;
@@ -4362,7 +4341,7 @@ button.md-set-row:active { background: var(--md-selected); }
 }
 .md-card-grid > .md-card--tile:not(:has(> .md-card__media)) .md-card__body {
   padding: 16px;
-  flex: 0 0 auto;
+  flex: 1 1 auto;
 }
 .md-card--tile .md-card__title {
   margin: 0;

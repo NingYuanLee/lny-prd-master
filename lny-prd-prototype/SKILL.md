@@ -62,7 +62,7 @@ description: >-
 
 | 页型标识（无需读取示例） | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
-| PAGE-AD-001 列表 | `gold/desktop-lists.html` | 六型合一，**金样只对标列表区**（无搜索栏、无功能栏）。分页标准：`md-d1 md-d1--list`、操作列按钮数定宽、`md-cell-stack`。树表：`md-table--nest`、子行缩进、+/−。卡片：`md-card-grid` 高度随内容、放不下换行。筛区/功能栏按规格另加，不要从金样抄成「不要筛」 |
+| PAGE-AD-001 列表 | `gold/desktop-lists.html` | 六型合一，**金样只对标列表区**（无搜索栏、无功能栏）。分页标准：`md-d1 md-d1--list`、操作列按按钮形态与数量定宽、`md-cell-stack`。树表：`md-table--nest`、子行缩进、+/−。卡片：`md-card-grid` 同一行等高、放不下换行。筛区/功能栏按规格另加，不要从金样抄成「不要筛」 |
 | PAGE-AD-002 商品表单 | `gold/desktop-form.html` | `md-breadcrumb`；`md-field--sm`；栅格有行距。**按规格裁字段**；分栏布局勿用本表单；状态导览见 wizard / state-flow |
 | PAGE-AD-009 表单（套件样例） | `gold/desktop-form.html` | **样例才整页铺齐**。`--cols-1/3` 可选。**不要**加 `md-d1--list`，不要触屏 `data-wheel`，不要当页面左右分栏 |
 | PAGE-AD-008 详情 | `gold/desktop-detail.html` | 整页浅灰；白底区块；`md-profile`；灯箱分区；右下目录+回顶。图文签。不要沉浸式 |
@@ -71,7 +71,7 @@ description: >-
 | PAGE-AD-004 工作台 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
 | PAGE-AD-005 树+内容 | `gold/desktop-split.html` | 不分页维护树：`md-d1--split` + `md-tree` + `md-tree-bar`；增子/重命名/删除；拖到上/中/下。只读树与表内嵌套读 `desktop-lists.html`。**不是**分类钮 |
 | PAGE-AD-013 章节大纲（套件样例） | `gold/desktop-locator.html` | 两种：左可收缩 / 右悬浮可收起；点选滚锚点；**滚正文时大纲高亮联动**；与树分离 |
-| PAGE-AD-014 页面分栏（套件样例） | `gold/desktop-layout.html` | `md-layout--full/2col/3col/pin`；**禁止** `md-d1__form` 冒充分栏。卡片列表见 `desktop-lists.html` |
+| PAGE-AD-014 页面分栏（套件样例） | `gold/desktop-layout.html` | `md-layout--full/2col/fix-left/fix-right/3col/pin`；**禁止** `md-d1__form` 冒充分栏。卡片列表见 `desktop-lists.html` |
 | PAGE-AD-006 设置 | `gold/desktop-settings.html` | `md-d1 md-set-page` 浅灰底；**设置项**：开关可点；`md-set-picks` 文字/图标/图片 + 未选空圈；左图标可有可无；无极 / `data-menu` 改值 |
 | PAGE-AD-010 我的/服务 | `gold/desktop-menu.html` | `md-d1 md-set-page` 浅灰底；功能入口通栏/`md-set-pair`；右可为文字或方形配图 `--thumb`。不要 `md-d1--list` |
 | PAGE-AD-007 时间轴 | `gold/desktop-timeline.html` | 通栏 `md-timeline` 左竖轨右 `md-card--row` 图文；点节点切高亮。不要左右分栏。触屏见 `mobile-timeline` |

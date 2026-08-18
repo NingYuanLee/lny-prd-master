@@ -35,5 +35,5 @@
 - 关系图页面块按真机 375×812 比例完整预览；拖动位置写入浏览器缓存；可导出画布为 PNG。
 - 📁 新增：桌面商品详情夹具 PAGE-AD-008（金样 `desktop-detail.html`）：面包屑、16:9 图集、图文说明、评论时间行与附图；列表「查看」仍为展示弹窗。
 - 📁 新增：桌面套件表单夹具 PAGE-AD-009（金样 `desktop-form.html`）：一页铺齐文本/选择/滑动条/日期时间段/省市区/三类上传；商品表单 PAGE-AD-002 仍为业务录入。
-- 📁 夹具跟上金样：PAGE-AD-005 不分页维护树（总控/拖拽，金样 `desktop-split`）；PAGE-AD-013 章节大纲（金样 `desktop-locator`，点选与滚动双向联动）；PAGE-AD-014 页面布局（金样 `desktop-layout`）。字段详情夹具 PAGE-AD-012 对标 `desktop-detail` 字段签（一条对象，不套 lists 分组字段）；商品详情 PAGE-AD-008 对标图文签。列表夹具 PAGE-AD-001 仍为分页标准列表且含筛+功能栏（六型总览只在金样 `desktop-lists`）。
+- 📁 夹具跟上金样：PAGE-AD-005 不分页维护树（总控/拖拽，金样 `desktop-split`）；PAGE-AD-013 章节大纲（金样 `desktop-locator`，点选与滚动双向联动）；PAGE-AD-014 页面布局（金样 `desktop-layout`，含左定右填 / 左填右定）。字段详情夹具 PAGE-AD-012 对标 `desktop-detail` 字段签（一条对象，不套 lists 分组字段）；商品详情 PAGE-AD-008 对标图文签。列表夹具 PAGE-AD-001 仍为分页标准列表且含筛+功能栏（六型总览只在金样 `desktop-lists`）。卡片栅格同一行等高；操作列宽按按钮形态与数量钉整列。
 - 触屏与桌面点图片放大阅览：同页图片为一组，按顺序翻页查看，到头不循环。

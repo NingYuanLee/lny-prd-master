@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 桌面页面级布局。通栏 / 双列 / 三列 / 品字形。禁止用表单窄双列栅格冒充页面左右布局。卡片列表见 desktop-lists。写 D1-3 分栏前必 Read。 -->
+<!-- LNY-PRD gold: 桌面页面级布局。通栏 / 均分双列 / 左定右填 / 左填右定 / 三列 / 品字形。禁止用表单窄双列栅格冒充页面左右布局。卡片列表见 desktop-lists。写 D1-3 分栏前必 Read。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -12,7 +12,7 @@
     <div class="md-breadcrumb">
       <span>套件</span><span>/</span><span class="is-current">页面布局</span>
     </div>
-    <p class="md-body2">页面布局用 <code>md-layout</code>。字段并排才用表单窄双列栅格（D1-2 表单金样）。二者不要混用。卡片列表见 desktop-lists，不要写进本页。</p>
+    <p class="md-body2">页面布局用 <code>md-layout</code>。字段并排才用表单窄双列栅格（D1-2 表单金样）。二者不要混用。卡片列表见 desktop-lists，不要写进本页。定宽栏默认 240px，可用 <code>--md-layout-aside</code> 改。</p>
 
     <div class="md-section-head"><h2 class="md-section-head__title">标准通栏</h2></div>
     <p class="md-caption">D1 默认：面包屑下一块内容铺满内容区，不再左右切开。不是品字里的「上通栏」。无规格要求分栏时先用通栏。</p>
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="md-section-head"><h2 class="md-section-head__title">双列</h2></div>
+    <div class="md-section-head"><h2 class="md-section-head__title">双列（左右均分）</h2></div>
     <div class="md-layout md-layout--2col">
       <div class="md-layout__pane">
         <h3 class="md-h3">左栏职责</h3>
@@ -32,6 +32,32 @@
       <div class="md-layout__pane">
         <h3 class="md-h3">右栏主区</h3>
         <p class="md-body2">主操作与主内容落在此栏。</p>
+      </div>
+    </div>
+
+    <div class="md-section-head"><h2 class="md-section-head__title">左定右填</h2></div>
+    <p class="md-caption">左侧定宽，右侧吃满剩余。适合左导航/筛选、右主工作区。不要用左树维护页冒充（维护树走 desktop-split）。</p>
+    <div class="md-layout md-layout--fix-left">
+      <div class="md-layout__pane">
+        <h3 class="md-h3">左侧定宽</h3>
+        <p class="md-body2">导航或筛选。宽度固定，不随窗口均分。</p>
+      </div>
+      <div class="md-layout__pane">
+        <h3 class="md-h3">右侧主区</h3>
+        <p class="md-body2">表格、详情或长文落在这一栏，吃掉剩下的宽度。</p>
+      </div>
+    </div>
+
+    <div class="md-section-head"><h2 class="md-section-head__title">左填右定</h2></div>
+    <p class="md-caption">右侧定宽，左侧吃满剩余。适合右辅助信息、左主工作区。</p>
+    <div class="md-layout md-layout--fix-right">
+      <div class="md-layout__pane">
+        <h3 class="md-h3">左侧主区</h3>
+        <p class="md-body2">主操作与主内容。窗口变宽时这一栏变宽。</p>
+      </div>
+      <div class="md-layout__pane">
+        <h3 class="md-h3">右侧定宽</h3>
+        <p class="md-body2">摘要、属性或操作条。宽度固定。</p>
       </div>
     </div>
 
