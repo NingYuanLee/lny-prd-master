@@ -846,6 +846,7 @@
       var suffix = el.getAttribute("data-suffix") || "";
       var isSteps = box.classList.contains("md-slider--steps");
       var ticks = isSteps ? box.querySelectorAll(".md-slider__tick") : null;
+      var dots = isSteps ? box.querySelectorAll(".md-slider__dot") : null;
       function paint() {
         if (isSteps && ticks && ticks.length) {
           var min = Number(el.min);
@@ -854,6 +855,11 @@
           ticks.forEach(function (tick, i) {
             tick.classList.toggle("is-active", i === idx);
           });
+          if (dots && dots.length) {
+            dots.forEach(function (dot, i) {
+              dot.classList.toggle("is-active", i === idx);
+            });
+          }
           return;
         }
         if (!out) return;
