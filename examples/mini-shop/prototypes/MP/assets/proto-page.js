@@ -845,14 +845,17 @@
       var labels = box.getAttribute("data-labels");
       var suffix = el.getAttribute("data-suffix") || "";
       var isSteps = box.classList.contains("md-slider--steps");
-      var ticks = isSteps ? box.querySelectorAll(".md-slider__tick") : null;
+      var slots = isSteps ? box.querySelectorAll(".md-slider__slot") : null;
+      if (isSteps && slots && slots.length) {
+        box.style.setProperty("--md-slider-steps", String(slots.length));
+      }
       function paint() {
-        if (isSteps && ticks && ticks.length) {
+        if (isSteps && slots && slots.length) {
           var min = Number(el.min);
           if (isNaN(min)) min = 0;
           var idx = Number(el.value) - min;
-          ticks.forEach(function (tick, i) {
-            tick.classList.toggle("is-active", i === idx);
+          slots.forEach(function (slot, i) {
+            slot.classList.toggle("is-active", i === idx);
           });
           return;
         }

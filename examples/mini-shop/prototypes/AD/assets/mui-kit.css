@@ -6892,59 +6892,88 @@ button.md-field__input,
   color: var(--md-text-secondary);
   padding: 0 2px;
 }
-/* 五步滑动条：轨道上的刻度圆点 + 下方标题与 thumb 中心对齐 */
+/* 五档位滑动条：先分档，每档圆点+文字同轴居中；选中档文字加粗、圆点高亮大圆 */
 .md-slider--steps {
-  --md-slider-thumb: 20px;
+  --md-slider-steps: 5;
+  --md-slider-dot: 8px;
+  --md-slider-dot-active: 10px;
+  --md-slider-halo: 24px;
 }
-.md-slider--steps .md-slider__row {
-  gap: 0;
-}
-.md-slider--steps .md-slider__track {
+.md-slider--steps .md-slider__segments-wrap {
   position: relative;
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  align-items: center;
+  width: 100%;
+  min-height: 52px;
+  padding: 4px 0 2px;
+  box-sizing: border-box;
 }
-.md-slider--steps .md-slider__dots {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 calc(var(--md-slider-thumb) / 2);
+.md-slider--steps .md-slider__segments {
+  display: grid;
+  grid-template-columns: repeat(var(--md-slider-steps), minmax(0, 1fr));
+  position: relative;
   pointer-events: none;
+}
+.md-slider--steps .md-slider__rail-line {
+  position: absolute;
+  left: calc(50% / var(--md-slider-steps));
+  right: calc(50% / var(--md-slider-steps));
+  top: calc(var(--md-slider-halo) / 2);
+  height: 2px;
+  background: var(--md-grey-300);
+  transform: translateY(-50%);
   z-index: 0;
+  pointer-events: none;
+}
+.md-slider--steps .md-slider__slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  min-width: 0;
+  z-index: 1;
+}
+.md-slider--steps .md-slider__dot-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: var(--md-slider-halo);
+  flex-shrink: 0;
 }
 .md-slider--steps .md-slider__dot {
-  width: 8px;
-  height: 8px;
+  position: relative;
+  width: var(--md-slider-dot);
+  height: var(--md-slider-dot);
   border-radius: 50%;
   background: var(--md-grey-400, #bdbdbd);
   box-sizing: border-box;
   flex-shrink: 0;
-  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  transition: background 0.15s ease, width 0.15s ease, height 0.15s ease;
 }
-.md-slider--steps .md-slider__dot.is-active {
-  background: var(--md-primary);
-  transform: scale(1.125);
-  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2);
-}
-.md-slider--steps input[type="range"] {
-  position: relative;
-  z-index: 1;
-  width: 100%;
+.md-slider--steps .md-slider__dot::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--md-slider-halo);
+  height: var(--md-slider-halo);
+  margin: calc(var(--md-slider-halo) / -2) 0 0 calc(var(--md-slider-halo) / -2);
+  border-radius: 50%;
   background: transparent;
+  transform: scale(0.6);
+  opacity: 0;
+  transition: transform 0.15s ease, opacity 0.15s ease, background 0.15s ease;
+  z-index: -1;
 }
-.md-slider--steps .md-slider__value {
-  display: none;
+.md-slider--steps .md-slider__slot.is-active .md-slider__dot {
+  width: var(--md-slider-dot-active);
+  height: var(--md-slider-dot-active);
+  background: var(--md-primary);
 }
-.md-slider--steps .md-slider__ticks {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-  gap: 0;
-  padding: 0 calc(var(--md-slider-thumb) / 2);
-  margin-top: 2px;
+.md-slider--steps .md-slider__slot.is-active .md-slider__dot::before {
+  background: rgba(25, 118, 210, 0.2);
+  transform: scale(1);
+  opacity: 1;
 }
 .md-slider--steps .md-slider__tick {
   min-width: 0;
@@ -6952,10 +6981,24 @@ button.md-field__input,
   line-height: 1.25;
   color: var(--md-text-secondary);
   text-align: center;
+  transition: color 0.15s ease, font-weight 0.15s ease;
 }
-.md-slider--steps .md-slider__tick.is-active {
+.md-slider--steps .md-slider__slot.is-active .md-slider__tick {
   color: var(--md-primary);
-  font-weight: 500;
+  font-weight: 600;
+}
+.md-slider--steps input[type="range"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+.md-slider--steps .md-slider__value {
+  display: none;
 }
 
 .md-upload--single {
