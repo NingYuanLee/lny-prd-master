@@ -6885,10 +6885,13 @@ a.md-card {
   background: rgba(25, 118, 210, 0.18);
 }
 
-/* 我的页个人信息：同 md-profile 左定宽右填满；圆头像 + 昵称/ID/扩展行；右上可选浅底编辑 */
+/* 我的页个人信息：同 md-profile 左定宽右填满；圆角矩形头像 + 昵称/ID/扩展行；右上可选浅底编辑 */
 .md-profile--me {
   position: relative;
   gap: 0;
+}
+.md-profile--me .md-profile__media--avatar {
+  border-radius: 10px;
 }
 .md-profile--me .md-profile__edit {
   position: absolute;

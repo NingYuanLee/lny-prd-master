@@ -903,7 +903,7 @@
     mask.className = "md-backdrop md-select-sheet-backdrop";
     var sheet = document.createElement("div");
     sheet.id = "mdAvatarPickSheet";
-    sheet.className = "md-select-sheet";
+    sheet.className = "md-select-sheet md-select-sheet--bottom";
     sheet.setAttribute("role", "dialog");
     sheet.setAttribute("aria-hidden", "true");
     sheet.innerHTML =
