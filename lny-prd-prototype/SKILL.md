@@ -64,7 +64,7 @@ description: >-
 |--------|------|----------------|
 | PAGE-AD-001 列表 | `gold/desktop-lists.html` | 六型合一，**金样只对标列表区**（无搜索栏、无功能栏）。分页标准：`md-d1 md-d1--list`、操作列按按钮形态与数量定宽、`md-cell-stack`。树表：`md-table--nest`、子行缩进、+/−。卡片：`md-card-grid` 同一行等高、放不下换行。筛区/功能栏按规格另加，不要从金样抄成「不要筛」 |
 | PAGE-AD-002 商品表单 | `gold/desktop-form.html` | `md-breadcrumb`；`md-field--sm`；栅格有行距。**按规格裁字段**；分栏布局勿用本表单；状态导览见 wizard / state-flow |
-| PAGE-AD-009 表单（套件样例） | `gold/desktop-form.html` | **样例才整页铺齐**。`--cols-1/3` 可选。**不要**加 `md-d1--list`，不要触屏 `data-wheel`，不要当页面左右分栏 |
+| PAGE-AD-009 表单（套件样例） | `gold/desktop-form.html` | **样例才整页铺齐**。`--cols-1/2/3/4` + `md-combo` 七种下拉。**不要**加 `md-d1--list`，不要触屏 `data-wheel`，不要当页面左右分栏 |
 | PAGE-AD-008 详情 | `gold/desktop-detail.html` | 整页浅灰；白底区块；`md-profile`；灯箱分区；右下目录+回顶。图文签。不要沉浸式 |
 | PAGE-AD-012 字段详情 | `gold/desktop-detail.html` 字段签 | 同详情壳；分组 `md-desc`；桌面 `--cols-2`；跨列 `--span`。一条对象。不要沉浸式、不要当表单、不要套 lists 的 `md-group-list` |
 | PAGE-AD-003 向导 | `gold/desktop-wizard.html` + `gold/desktop-state-flow.html` | 状态导览族：`md-stepper` + `md-advance` +（可选）`md-progress`；当前步包在 `md-d1__form`；数字可点跳步 |

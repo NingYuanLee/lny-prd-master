@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 金样：桌面 D1-2 表单套件。一页铺齐桌面表单控件。写整页表单前必 Read。字段用 md-field--sm，禁止 56px 大输入框。禁止漏控件。业务商品表单按规格裁字段，不要少了本页已有的控件种类。 -->
+<!-- LNY-PRD gold: 金样：桌面 D1-2 表单套件。一页铺齐桌面表单控件。字段用 md-field--sm；栅格 1/2/3/4 列且 row-gap 保留上下呼吸；表单通栏不限宽，最小宽只落在字段。禁止漏控件、禁止字段贴死、禁止用字段栅格冒充页面左右分栏（分栏见 desktop-layout）。业务商品表单按规格裁字段。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -15,6 +15,63 @@
       <span class="is-current">表单</span>
     </div>
     <form class="md-d1__form" id="kitForm">
+      <div class="md-section-head">
+        <h2 class="md-section-head__title">栅格</h2>
+      </div>
+      <p class="md-caption">表单通栏不限宽；字段最小宽 180px。可一行一个，也可一行 2 / 3 / 4 个。页面左右分栏不要用本表单。</p>
+      <div class="md-form-block md-form-block--cols-1">
+        <span class="md-form-label">一行一个</span>
+        <label class="md-field md-field--sm">
+          <span class="md-field__label">字段 A</span>
+          <input class="md-field__input" type="text" placeholder="整行">
+        </label>
+      </div>
+      <div class="md-form-block md-form-block--cols-2">
+        <span class="md-form-label">一行两个</span>
+        <label class="md-field md-field--sm">
+          <span class="md-field__label">字段 B1</span>
+          <input class="md-field__input" type="text" placeholder="左">
+        </label>
+        <label class="md-field md-field--sm">
+          <span class="md-field__label">字段 B2</span>
+          <input class="md-field__input" type="text" placeholder="右">
+        </label>
+      </div>
+      <div class="md-form-block md-form-block--cols-3">
+        <span class="md-form-label">一行三个</span>
+        <label class="md-field md-field--sm">
+          <span class="md-field__label">字段 C1</span>
+          <input class="md-field__input" type="text" placeholder="一">
+        </label>
+        <label class="md-field md-field--sm">
+          <span class="md-field__label">字段 C2</span>
+          <input class="md-field__input" type="text" placeholder="二">
+        </label>
+        <label class="md-field md-field--sm">
+          <span class="md-field__label">字段 C3</span>
+          <input class="md-field__input" type="text" placeholder="三">
+        </label>
+      </div>
+      <div class="md-form-block md-form-block--cols-4">
+        <span class="md-form-label">一行四个</span>
+        <label class="md-field md-field--sm">
+          <span class="md-field__label">字段 D1</span>
+          <input class="md-field__input" type="text" placeholder="一">
+        </label>
+        <label class="md-field md-field--sm">
+          <span class="md-field__label">字段 D2</span>
+          <input class="md-field__input" type="text" placeholder="二">
+        </label>
+        <label class="md-field md-field--sm">
+          <span class="md-field__label">字段 D3</span>
+          <input class="md-field__input" type="text" placeholder="三">
+        </label>
+        <label class="md-field md-field--sm">
+          <span class="md-field__label">字段 D4</span>
+          <input class="md-field__input" type="text" placeholder="四">
+        </label>
+      </div>
+
       <div class="md-section-head">
         <h2 class="md-section-head__title">文本</h2>
       </div>
@@ -33,6 +90,10 @@
       <label class="md-field md-field--sm md-field--readonly">
         <span class="md-field__label">只读</span>
         <input class="md-field__input" type="text" value="不可编辑" readonly>
+      </label>
+      <label class="md-field md-field--sm">
+        <span class="md-field__label">禁用</span>
+        <input class="md-field__input" type="text" value="不可修改" disabled>
       </label>
       <label class="md-field md-field--sm">
         <span class="md-field__label">多行文本</span>
@@ -82,6 +143,288 @@
           <option value="乳品">乳品</option>
         </select>
       </label>
+      <div class="md-field md-field--sm md-field--combo">
+        <span class="md-field__label">普通下拉多选</span>
+        <div class="md-combo" data-mode="multi" data-placeholder="请选择渠道">
+          <input class="md-combo__value" type="hidden" name="fPlainMulti" value="">
+          <button type="button" class="md-combo__trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span class="md-combo__ph">请选择渠道</span>
+            <span class="md-combo__caret" aria-hidden="true"></span>
+          </button>
+          <div class="md-combo__panel">
+            <ul class="md-combo__list">
+              <li><button type="button" class="md-combo__opt is-active" data-value="mini">小程序</button></li>
+              <li><button type="button" class="md-combo__opt" data-value="admin">后台展示</button></li>
+              <li><button type="button" class="md-combo__opt" data-value="pickup">到店自提</button></li>
+              <li><button type="button" class="md-combo__opt" data-value="express">快递发货</button></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="md-field md-field--sm md-field--combo">
+        <span class="md-field__label">模糊搜索下拉单选</span>
+        <div class="md-combo" data-search="1" data-placeholder="搜索并选择商品">
+          <input class="md-combo__value" type="hidden" name="fSearchSingle" value="">
+          <button type="button" class="md-combo__trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span class="md-combo__ph">搜索并选择商品</span>
+            <span class="md-combo__caret" aria-hidden="true"></span>
+          </button>
+          <div class="md-combo__panel">
+            <div class="md-combo__search-row">
+              <span class="md-icon" data-icon="search" aria-hidden="true"></span>
+              <input class="md-combo__search" type="text" placeholder="搜索">
+            </div>
+            <ul class="md-combo__list">
+              <li><button type="button" class="md-combo__opt" data-value="strawberry">有机草莓 250g</button></li>
+              <li><button type="button" class="md-combo__opt" data-value="orange">赣南脐橙 5斤</button></li>
+              <li><button type="button" class="md-combo__opt" data-value="coffee">云南小粒咖啡 227g</button></li>
+              <li><button type="button" class="md-combo__opt" data-value="tea">青柠蜂蜜茶 500ml</button></li>
+              <li><button type="button" class="md-combo__opt" data-value="toast">全麦吐司</button></li>
+              <li><button type="button" class="md-combo__opt" data-value="almond">巴旦木 200g</button></li>
+            </ul>
+            <div class="md-combo__empty is-hidden">无匹配</div>
+          </div>
+        </div>
+      </div>
+      <div class="md-field md-field--sm md-field--combo">
+        <span class="md-field__label">模糊搜索下拉多选</span>
+        <div class="md-combo" data-search="1" data-mode="multi" data-placeholder="搜索并多选">
+          <input class="md-combo__value" type="hidden" name="fSearchMulti" value="">
+          <button type="button" class="md-combo__trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span class="md-combo__ph">搜索并多选</span>
+            <span class="md-combo__caret" aria-hidden="true"></span>
+          </button>
+          <div class="md-combo__panel">
+            <div class="md-combo__search-row">
+              <span class="md-icon" data-icon="search" aria-hidden="true"></span>
+              <input class="md-combo__search" type="text" placeholder="搜索">
+            </div>
+            <ul class="md-combo__list">
+              <li><button type="button" class="md-combo__opt is-active" data-value="strawberry">有机草莓 250g</button></li>
+              <li><button type="button" class="md-combo__opt" data-value="orange">赣南脐橙 5斤</button></li>
+              <li><button type="button" class="md-combo__opt is-active" data-value="coffee">云南小粒咖啡 227g</button></li>
+              <li><button type="button" class="md-combo__opt" data-value="tea">青柠蜂蜜茶 500ml</button></li>
+              <li><button type="button" class="md-combo__opt" data-value="toast">全麦吐司</button></li>
+              <li><button type="button" class="md-combo__opt" data-value="almond">巴旦木 200g</button></li>
+            </ul>
+            <div class="md-combo__empty is-hidden">无匹配</div>
+          </div>
+        </div>
+      </div>
+      <div class="md-field md-field--sm md-field--combo">
+        <span class="md-field__label">普通下拉树形叶节点单选</span>
+        <div class="md-combo" data-tree="leaf" data-placeholder="请选择末级分类">
+          <input class="md-combo__value" type="hidden" name="fTreeLeaf" value="">
+          <button type="button" class="md-combo__trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span class="md-combo__ph">请选择末级分类</span>
+            <span class="md-combo__caret" aria-hidden="true"></span>
+          </button>
+          <div class="md-combo__panel">
+            <ul class="md-combo__tree">
+              <li class="is-open">
+                <div class="md-combo__node">
+                  <button type="button" class="md-combo__twist" data-combo-twist aria-label="展开"></button>
+                  <span class="md-combo__label">水果</span>
+                </div>
+                <ul>
+                  <li class="is-open">
+                    <div class="md-combo__node">
+                      <button type="button" class="md-combo__twist" data-combo-twist aria-label="展开"></button>
+                      <span class="md-combo__label">浆果</span>
+                    </div>
+                    <ul>
+                      <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="strawberry">有机草莓 250g</button></li>
+                      <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="blueberry">蓝莓 125g</button></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <div class="md-combo__node">
+                      <button type="button" class="md-combo__twist" data-combo-twist aria-label="展开"></button>
+                      <span class="md-combo__label">柑橘</span>
+                    </div>
+                    <ul>
+                      <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="orange">赣南脐橙 5斤</button></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <div class="md-combo__node">
+                  <button type="button" class="md-combo__twist" data-combo-twist aria-label="展开"></button>
+                  <span class="md-combo__label">饮品</span>
+                </div>
+                <ul>
+                  <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="coffee">云南小粒咖啡 227g</button></li>
+                  <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="tea">青柠蜂蜜茶 500ml</button></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="md-field md-field--sm md-field--combo">
+        <span class="md-field__label">普通下拉树形多选</span>
+        <div class="md-combo" data-mode="multi" data-tree="1" data-placeholder="请选择分类">
+          <input class="md-combo__value" type="hidden" name="fTreeMulti" value="">
+          <button type="button" class="md-combo__trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span class="md-combo__ph">请选择分类</span>
+            <span class="md-combo__caret" aria-hidden="true"></span>
+          </button>
+          <div class="md-combo__panel">
+            <ul class="md-combo__tree">
+              <li class="is-open">
+                <div class="md-combo__node">
+                  <button type="button" class="md-combo__twist" data-combo-twist aria-label="展开"></button>
+                  <button type="button" class="md-combo__opt" data-value="fruit" data-branch="1">水果</button>
+                </div>
+                <ul>
+                  <li class="is-open">
+                    <div class="md-combo__node">
+                      <button type="button" class="md-combo__twist" data-combo-twist aria-label="展开"></button>
+                      <button type="button" class="md-combo__opt" data-value="berry" data-branch="1">浆果</button>
+                    </div>
+                    <ul>
+                      <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="strawberry">有机草莓 250g</button></li>
+                      <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="blueberry">蓝莓 125g</button></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <div class="md-combo__node">
+                      <button type="button" class="md-combo__twist" data-combo-twist aria-label="展开"></button>
+                      <button type="button" class="md-combo__opt" data-value="citrus" data-branch="1">柑橘</button>
+                    </div>
+                    <ul>
+                      <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="orange">赣南脐橙 5斤</button></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <div class="md-combo__node">
+                  <button type="button" class="md-combo__twist" data-combo-twist aria-label="展开"></button>
+                  <button type="button" class="md-combo__opt" data-value="drink" data-branch="1">饮品</button>
+                </div>
+                <ul>
+                  <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="coffee">云南小粒咖啡 227g</button></li>
+                  <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="tea">青柠蜂蜜茶 500ml</button></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="md-field md-field--sm md-field--combo">
+        <span class="md-field__label">模糊搜索下拉树形叶节点单选</span>
+        <div class="md-combo" data-search="1" data-tree="leaf" data-placeholder="搜索末级分类">
+          <input class="md-combo__value" type="hidden" name="fSearchTreeLeaf" value="">
+          <button type="button" class="md-combo__trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span class="md-combo__ph">搜索末级分类</span>
+            <span class="md-combo__caret" aria-hidden="true"></span>
+          </button>
+          <div class="md-combo__panel">
+            <div class="md-combo__search-row">
+              <span class="md-icon" data-icon="search" aria-hidden="true"></span>
+              <input class="md-combo__search" type="text" placeholder="搜索">
+            </div>
+            <ul class="md-combo__tree">
+              <li class="is-open">
+                <div class="md-combo__node">
+                  <button type="button" class="md-combo__twist" data-combo-twist aria-label="展开"></button>
+                  <span class="md-combo__label">水果</span>
+                </div>
+                <ul>
+                  <li class="is-open">
+                    <div class="md-combo__node">
+                      <button type="button" class="md-combo__twist" data-combo-twist aria-label="展开"></button>
+                      <span class="md-combo__label">浆果</span>
+                    </div>
+                    <ul>
+                      <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="strawberry">有机草莓 250g</button></li>
+                      <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="blueberry">蓝莓 125g</button></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <div class="md-combo__node">
+                      <button type="button" class="md-combo__twist" data-combo-twist aria-label="展开"></button>
+                      <span class="md-combo__label">柑橘</span>
+                    </div>
+                    <ul>
+                      <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="orange">赣南脐橙 5斤</button></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <div class="md-combo__node">
+                  <button type="button" class="md-combo__twist" data-combo-twist aria-label="展开"></button>
+                  <span class="md-combo__label">饮品</span>
+                </div>
+                <ul>
+                  <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="coffee">云南小粒咖啡 227g</button></li>
+                  <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="tea">青柠蜂蜜茶 500ml</button></li>
+                </ul>
+              </li>
+            </ul>
+            <div class="md-combo__empty is-hidden">无匹配</div>
+          </div>
+        </div>
+      </div>
+      <div class="md-field md-field--sm md-field--combo">
+        <span class="md-field__label">模糊搜索下拉树形多选</span>
+        <div class="md-combo" data-search="1" data-mode="multi" data-tree="1" data-placeholder="搜索并多选分类">
+          <input class="md-combo__value" type="hidden" name="fSearchTreeMulti" value="">
+          <button type="button" class="md-combo__trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span class="md-combo__ph">搜索并多选分类</span>
+            <span class="md-combo__caret" aria-hidden="true"></span>
+          </button>
+          <div class="md-combo__panel">
+            <div class="md-combo__search-row">
+              <span class="md-icon" data-icon="search" aria-hidden="true"></span>
+              <input class="md-combo__search" type="text" placeholder="搜索">
+            </div>
+            <ul class="md-combo__tree">
+              <li class="is-open">
+                <div class="md-combo__node">
+                  <button type="button" class="md-combo__twist" data-combo-twist aria-label="展开"></button>
+                  <button type="button" class="md-combo__opt" data-value="fruit" data-branch="1">水果</button>
+                </div>
+                <ul>
+                  <li class="is-open">
+                    <div class="md-combo__node">
+                      <button type="button" class="md-combo__twist" data-combo-twist aria-label="展开"></button>
+                      <button type="button" class="md-combo__opt" data-value="berry" data-branch="1">浆果</button>
+                    </div>
+                    <ul>
+                      <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="strawberry">有机草莓 250g</button></li>
+                      <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="blueberry">蓝莓 125g</button></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <div class="md-combo__node">
+                      <button type="button" class="md-combo__twist" data-combo-twist aria-label="展开"></button>
+                      <button type="button" class="md-combo__opt" data-value="citrus" data-branch="1">柑橘</button>
+                    </div>
+                    <ul>
+                      <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="orange">赣南脐橙 5斤</button></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <div class="md-combo__node">
+                  <button type="button" class="md-combo__twist" data-combo-twist aria-label="展开"></button>
+                  <button type="button" class="md-combo__opt" data-value="drink" data-branch="1">饮品</button>
+                </div>
+                <ul>
+                  <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="coffee">云南小粒咖啡 227g</button></li>
+                  <li><button type="button" class="md-combo__opt md-combo__leaf" data-value="tea">青柠蜂蜜茶 500ml</button></li>
+                </ul>
+              </li>
+            </ul>
+            <div class="md-combo__empty is-hidden">无匹配</div>
+          </div>
+        </div>
+      </div>
 
       <div class="md-section-head">
         <h2 class="md-section-head__title">滑动条</h2>

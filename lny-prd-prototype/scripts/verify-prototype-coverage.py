@@ -202,6 +202,7 @@ class PageParser(HTMLParser):
                     "md-switch",
                     "md-upload",
                     "md-upload-grid__add",
+                    "md-combo",
                 }
                 & prev
                 for prev in ancestors

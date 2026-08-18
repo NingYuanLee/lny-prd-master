@@ -262,6 +262,16 @@
     openDialog("mdConfirmDlg");
   }
 
+  function closeCombos(except) {
+    document.querySelectorAll(".md-combo.is-open").forEach(function (el) {
+      if (el !== except) {
+        el.classList.remove("is-open");
+        var trig = el.querySelector(".md-combo__trigger");
+        if (trig) trig.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
   function closeMenus(except) {
     document.querySelectorAll(".md-menu.is-open").forEach(function (m) {
       if (m !== except) m.classList.remove("is-open");
@@ -273,6 +283,7 @@
       if (except && el.contains(except)) return;
       el.classList.remove("is-menu-host");
     });
+    if (!except || !except.closest || !except.closest(".md-combo")) closeCombos();
   }
 
   function bindTabs() {
@@ -339,15 +350,20 @@
         !ev.target.closest(".md-menu") &&
         !ev.target.closest(".md-cal-pop") &&
         !ev.target.closest(".md-field--date") &&
-        !ev.target.closest(".md-field--daterange")
+        !ev.target.closest(".md-field--daterange") &&
+        !ev.target.closest(".md-combo")
       ) {
         closeMenus();
+        closeCombos();
       }
     });
     document.addEventListener(
       "scroll",
-      function () {
+      function (ev) {
+        var t = ev.target;
+        if (t && t.closest && t.closest(".md-combo__panel")) return;
         closeMenus();
+        closeCombos();
       },
       true
     );
@@ -2549,6 +2565,210 @@
     });
   }
 
+  function comboIsMulti(root) {
+    return root.getAttribute("data-mode") === "multi";
+  }
+
+  function comboLeafOnly(root) {
+    return root.getAttribute("data-tree") === "leaf";
+  }
+
+  function comboOpts(root) {
+    return root.querySelectorAll(".md-combo__opt");
+  }
+
+  function comboOptLabel(opt) {
+    return (opt.getAttribute("data-label") || opt.textContent || "").replace(/\s+/g, " ").trim();
+  }
+
+  function comboOptValue(opt) {
+    return opt.getAttribute("data-value") || comboOptLabel(opt);
+  }
+
+  function comboPaintTrigger(root) {
+    var trigger = root.querySelector(".md-combo__trigger");
+    if (!trigger) return;
+    var ph = root.getAttribute("data-placeholder") || "请选择";
+    var vals = [];
+    var labels = [];
+    comboOpts(root).forEach(function (opt) {
+      if (!opt.classList.contains("is-active")) return;
+      vals.push(comboOptValue(opt));
+      labels.push(comboOptLabel(opt));
+    });
+    trigger.querySelectorAll(".md-combo__tag, .md-combo__ph, .md-combo__text").forEach(function (n) {
+      n.parentNode.removeChild(n);
+    });
+    var caret = trigger.querySelector(".md-combo__caret");
+    function insert(node) {
+      if (caret) trigger.insertBefore(node, caret);
+      else trigger.appendChild(node);
+    }
+    if (!vals.length) {
+      var phEl = document.createElement("span");
+      phEl.className = "md-combo__ph";
+      phEl.textContent = ph;
+      insert(phEl);
+    } else if (comboIsMulti(root)) {
+      labels.forEach(function (lab, i) {
+        var tag = document.createElement("span");
+        tag.className = "md-combo__tag";
+        var labEl = document.createElement("span");
+        labEl.textContent = lab;
+        tag.appendChild(labEl);
+        var x = document.createElement("button");
+        x.type = "button";
+        x.className = "md-combo__tag-x";
+        x.setAttribute("data-combo-remove", vals[i]);
+        x.setAttribute("aria-label", "移除");
+        x.textContent = "×";
+        tag.appendChild(x);
+        insert(tag);
+      });
+    } else {
+      var t = document.createElement("span");
+      t.className = "md-combo__text";
+      t.textContent = labels[0];
+      insert(t);
+    }
+    var hidden = root.querySelector(".md-combo__value");
+    if (hidden) hidden.value = vals.join(",");
+  }
+
+  function comboFilter(root, q) {
+    q = (q || "").trim().toLowerCase();
+    var empty = root.querySelector(".md-combo__empty");
+    var shown = 0;
+    comboOpts(root).forEach(function (opt) {
+      var hit =
+        !q ||
+        comboOptLabel(opt).toLowerCase().indexOf(q) >= 0 ||
+        comboOptValue(opt).toLowerCase().indexOf(q) >= 0;
+      opt.classList.toggle("is-filtered", !hit);
+      if (hit) shown += 1;
+    });
+    root.querySelectorAll(".md-combo__tree li").forEach(function (li) {
+      var any = li.querySelector(".md-combo__opt:not(.is-filtered)");
+      li.classList.toggle("is-hidden", !any);
+      if (q && any) li.classList.add("is-open");
+    });
+    if (empty) empty.classList.toggle("is-hidden", shown > 0);
+  }
+
+  function comboClearFilter(root) {
+    var search = root.querySelector(".md-combo__search");
+    if (search) search.value = "";
+    comboFilter(root, "");
+  }
+
+  function comboSetOpt(root, opt, on) {
+    if (!opt) return;
+    opt.classList.toggle("is-active", on);
+    if (comboIsMulti(root) && root.querySelector(".md-combo__tree")) {
+      var li = opt.closest("li");
+      if (li && on) {
+        li.querySelectorAll(".md-combo__opt").forEach(function (child) {
+          child.classList.add("is-active");
+        });
+      }
+      if (li && !on) {
+        li.querySelectorAll(".md-combo__opt").forEach(function (child) {
+          child.classList.remove("is-active");
+        });
+        var walk = li.parentElement;
+        while (walk && walk !== root) {
+          if (walk.tagName === "LI") {
+            var parentOpt = walk.querySelector(":scope > .md-combo__node .md-combo__opt");
+            if (parentOpt) parentOpt.classList.remove("is-active");
+          }
+          walk = walk.parentElement;
+        }
+      }
+    }
+    comboPaintTrigger(root);
+  }
+
+  function comboToggleOpt(root, opt) {
+    if (!opt || opt.classList.contains("is-disabled")) return;
+    if (comboLeafOnly(root) && opt.getAttribute("data-branch") === "1") return;
+    if (!comboIsMulti(root)) {
+      comboOpts(root).forEach(function (o) {
+        o.classList.remove("is-active");
+      });
+      opt.classList.add("is-active");
+      comboPaintTrigger(root);
+      root.classList.remove("is-open");
+      var trig = root.querySelector(".md-combo__trigger");
+      if (trig) trig.setAttribute("aria-expanded", "false");
+      return;
+    }
+    comboSetOpt(root, opt, !opt.classList.contains("is-active"));
+  }
+
+  function bindCombos() {
+    document.querySelectorAll(".md-combo").forEach(function (root) {
+      if (root.getAttribute("data-md-bound") === "1") return;
+      root.setAttribute("data-md-bound", "1");
+      comboPaintTrigger(root);
+      var trigger = root.querySelector(".md-combo__trigger");
+      var search = root.querySelector(".md-combo__search");
+      if (trigger) {
+        trigger.addEventListener("click", function (ev) {
+          if (ev.target.closest("[data-combo-remove]")) return;
+          ev.preventDefault();
+          var open = !root.classList.contains("is-open");
+          closeMenus();
+          closeCombos(open ? root : null);
+          root.classList.toggle("is-open", open);
+          trigger.setAttribute("aria-expanded", open ? "true" : "false");
+          if (open && search) {
+            comboClearFilter(root);
+            setTimeout(function () {
+              search.focus();
+            }, 0);
+          }
+        });
+      }
+      root.addEventListener("click", function (ev) {
+        var rm = ev.target.closest("[data-combo-remove]");
+        if (rm && root.contains(rm)) {
+          ev.preventDefault();
+          ev.stopPropagation();
+          var val = rm.getAttribute("data-combo-remove") || "";
+          comboOpts(root).forEach(function (opt) {
+            if (comboOptValue(opt) === val) comboSetOpt(root, opt, false);
+          });
+          return;
+        }
+        var twist = ev.target.closest("[data-combo-twist]");
+        if (twist && root.contains(twist)) {
+          ev.preventDefault();
+          ev.stopPropagation();
+          var li = twist.closest("li");
+          if (li) li.classList.toggle("is-open");
+          return;
+        }
+        var opt = ev.target.closest(".md-combo__opt");
+        if (opt && root.contains(opt)) {
+          ev.preventDefault();
+          comboToggleOpt(root, opt);
+        }
+      });
+      if (search) {
+        search.addEventListener("input", function () {
+          comboFilter(root, search.value);
+        });
+        search.addEventListener("click", function (ev) {
+          ev.stopPropagation();
+        });
+      }
+    });
+    document.addEventListener("keydown", function (ev) {
+      if (ev.key !== "Escape") return;
+      closeCombos();
+    });
+  }
+
   function bindUi() {
     ensureStatusBar();
     ensureDetailNav();
@@ -2567,6 +2787,7 @@
     bindOutlineCollapse();
     bindNestTables();
     bindUploads();
+    bindCombos();
     bindMobileSelects();
     bindProgress();
     bindLightbox();
