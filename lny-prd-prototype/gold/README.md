@@ -24,20 +24,24 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 移动展示 / 详情 | `mobile-detail.html`（含 `md-profile` 店铺资料示例；组件亦用于个人/公司资料） |
 | 移动字段详情 | `mobile-fields.html`（浅灰底+白底分组；`md-desc` 左名右值；标准顶栏；非图文、非表单） |
 | 移动表单 | `mobile-form.html`（**套件样例**；`md-form-page` 浅灰底+白底分组；一页铺齐触屏表单控件：文本/选择/滑动条/单日/日期段/省市区/三类上传 + 贴底提交；进度条见步骤向导） |
-| 桌面表格 / 筛选列表 / 弹窗维护 | `desktop-list.html`（语义按共享 `PT-DESKTOP-LIST`；实现用 `md-d1--list`、语义 `md-col-*`、`md-menu--fixed`、隐藏骨架+插画空态与 `md-field--daterange`） |
-| 桌面整页表单 | `desktop-form.html`（**套件样例**，一页铺齐桌面表单控件：文本/选择/滑动条/单日/时间/日期段/省市区/三类上传。业务表单按规格裁字段；进度条见步骤向导） |
+| 桌面标准列表 / 表格 | `desktop-list.html`（`PT-DESKTOP-LIST` 三型之标准列表；操作列按钮数定宽；`md-cell-stack` 多行单元格；语义 `md-col-*`） |
+| 桌面页面分栏 | `desktop-layout.html`（双列/三列/品字 + 卡片列表示意；**禁止**用 `md-d1__form` 窄双列冒充分栏） |
+| 桌面整页表单 | `desktop-form.html`（**套件样例**；双列栅格有行距，`--cols-1/3` 可选。业务表单按规格裁；进度条见状态导览/向导） |
 | 桌面展示 / 详情 | `desktop-detail.html`（整页浅灰+白底区块；资料卡片；灯箱分区；右下目录+回顶。禁止沉浸式） |
 | 桌面字段详情 | `desktop-fields.html`（分组 `md-desc`；桌面可双列；禁止沉浸式、禁止当表单） |
 | 工作台 / 仪表盘 | `desktop-dashboard.html`（`md-stat-grid` 指标卡 + `md-chart-ph` + 短表。禁止拿 `desktop-list` 硬套） |
-| 树 + 内容 / 分栏 | `desktop-split.html`（`md-d1--split` 左树右内容；箭头展开收起，点树只换右区） |
+| 树 + 内容（不分页） | `desktop-split.html`（`md-d1--split` 左树右内容；箭头展开收起。**不是**分类钮） |
+| 表内父子嵌套 | `desktop-tree-nest.html`（分页列表里的树；`md-table--nest`） |
+| 定位导航（分类/大纲） | `desktop-locator.html`（与时间轴同族；点选定位右侧锚点；与树分离） |
 | 桌面设置 | `desktop-settings.html`（**设置项**：当页当行直接操作；左图标可有可无） |
 | 桌面我的 / 服务 | `desktop-menu.html`（功能入口；右可为文字或方形配图 `--thumb`） |
-| 桌面向导 | `desktop-wizard.html`（`md-stepper` + 分段 `md-advance`；数字步骤可点跳步；当前步 `[data-step]` 吃表单双列间距，最后一步才提交） |
+| 桌面向导 | `desktop-wizard.html`（`md-stepper` + 分段 `md-advance`；数字步骤可点跳步；当前步吃表单双列间距） |
+| 桌面状态导览合览 | `desktop-state-flow.html`（页签 + 步骤 + 进步/进度同族说明） |
 | 移动设置 / 偏好 | `mobile-settings.html`（**设置项**：当页当行直接操作；沉浸式封面顶栏；左图标可有可无） |
 | 移动我的 / 服务 | `mobile-menu.html`（功能入口；右可为文字或方形配图 `--thumb`） |
 | 移动步骤向导 | `mobile-wizard.html`（`md-form-page`；横向 `md-stepper` + 分段 `md-advance--lg` + 无极 `md-progress` + 当前步表单，贴底上一步/下一步） |
 | 移动时间轴 | `mobile-timeline.html`（`md-timeline` 左竖轨右图文） |
-| 桌面时间轴 | `desktop-timeline.html`（面包屑 + `md-timeline` 左竖轨右图文） |
+| 桌面时间轴 | `desktop-timeline.html`（面包屑 + `md-timeline` 左竖轨右图文；属定位导航族） |
 | 移动按钮样例 | `mobile-buttons.html`（小/中/大三档：线框、色块、浅底 `--soft`、线框/色块/浅底置灰、带角标；页签按钮组） |
 | 触屏悬浮胶囊 | `mobile-pod.html`（钉在页根、不进滚动层；左上横向且与标题栏互斥；左下/右下竖向并避开 TabBar/操作条；单个圆形、多个成组细线分割。规格点名才画，不要右上） |
 | 桌面悬浮按钮 | `desktop-pod.html`（语义按共享 `PT-FLOAT`，实现用 `md-pod--desk` / `md-pod--fold`） |

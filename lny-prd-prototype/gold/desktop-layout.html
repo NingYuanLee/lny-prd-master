@@ -1,0 +1,72 @@
+<!-- LNY-PRD gold: 桌面页面级分栏。双列 / 三列 / 品字形。禁止用表单窄双列栅格冒充页面左右布局。写 D1-3 分栏前必 Read。 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>桌面分栏布局</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./assets/mui-kit.css">
+</head>
+<body>
+  <div class="md-d1">
+    <div class="md-breadcrumb">
+      <span>套件</span><span>/</span><span class="is-current">页面分栏</span>
+    </div>
+    <p class="md-body2">页面分栏用 <code>md-layout</code>。字段并排才用表单窄双列栅格（D1-2 表单金样）。二者不要混用。</p>
+
+    <div class="md-section-head"><h2 class="md-section-head__title">双列</h2></div>
+    <div class="md-layout md-layout--2col">
+      <div class="md-layout__pane">
+        <h3 class="md-h3">左栏职责</h3>
+        <p class="md-body2">筛选、导航或次要信息。本栏可独立滚动。</p>
+      </div>
+      <div class="md-layout__pane">
+        <h3 class="md-h3">右栏主区</h3>
+        <p class="md-body2">主操作与主内容落在此栏。</p>
+      </div>
+    </div>
+
+    <div class="md-section-head"><h2 class="md-section-head__title">三列</h2></div>
+    <div class="md-layout md-layout--3col">
+      <div class="md-layout__pane"><h3 class="md-h3">左</h3><p class="md-body2">导航</p></div>
+      <div class="md-layout__pane"><h3 class="md-h3">中</h3><p class="md-body2">主工作区</p></div>
+      <div class="md-layout__pane"><h3 class="md-h3">右</h3><p class="md-body2">辅助</p></div>
+    </div>
+
+    <div class="md-section-head"><h2 class="md-section-head__title">品字形（上通栏 + 下左右）</h2></div>
+    <div class="md-layout md-layout--pin">
+      <div class="md-layout__pane md-layout__pane--span">
+        <h3 class="md-h3">上通栏</h3>
+        <p class="md-body2">指标、说明或工具条。</p>
+      </div>
+      <div class="md-layout__pane"><h3 class="md-h3">下左</h3><p class="md-body2">列表或图</p></div>
+      <div class="md-layout__pane"><h3 class="md-h3">下右</h3><p class="md-body2">详情或表单摘要</p></div>
+    </div>
+
+    <div class="md-section-head"><h2 class="md-section-head__title">卡片列表（列表三型之一）</h2></div>
+    <div class="md-d1--cards">
+      <div class="md-card-grid">
+        <article class="md-card md-card--tile">
+          <div class="md-card__media md-media-ph md-media-ph--1"></div>
+          <div class="md-card__body"><h3 class="md-card__title">有机草莓</h3><p class="md-card__text">图文重、非强对齐列时用卡片列表，不要硬套标准表。</p></div>
+        </article>
+        <article class="md-card md-card--tile">
+          <div class="md-card__media md-media-ph md-media-ph--2"></div>
+          <div class="md-card__body"><h3 class="md-card__title">脐橙礼盒</h3><p class="md-card__text">标准列表 / 表格 / 卡片列表三型择一。</p></div>
+        </article>
+        <article class="md-card md-card--tile">
+          <div class="md-card__media md-media-ph md-media-ph--3"></div>
+          <div class="md-card__body"><h3 class="md-card__title">小粒咖啡</h3><p class="md-card__text">嵌入短表见工作台金样，勿整页套商品表壳。</p></div>
+        </article>
+        <article class="md-card md-card--tile">
+          <div class="md-card__media md-media-ph md-media-ph--4"></div>
+          <div class="md-card__body"><h3 class="md-card__title">全麦吐司</h3><p class="md-card__text">卡片列表默认态至少四张，便于对标密度。</p></div>
+        </article>
+      </div>
+    </div>
+  </div>
+  <script src="./assets/md-icons.js"></script>
+  <script src="./assets/icons-extra.js"></script>
+  <script src="./assets/proto-page.js"></script>
+</body>
+</html>

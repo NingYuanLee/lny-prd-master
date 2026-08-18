@@ -1,6 +1,6 @@
 # LNY-PRD — 李宁远产品工作流
 
-**工具包版本：2.7.0**
+**工具包版本：2.8.0**
 
 ## 背景
 
@@ -437,7 +437,7 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 │   ├── reference-icons.md          #     闭集 + search-icons.py
 │   ├── reference-shell.md
 │   ├── reference-quality.md
-│   ├── gold/                       #     视觉金样（列表/表单/详情 + 工作台/树/设置/向导/时间轴）
+│   ├── gold/                       #     视觉金样（列表/表单/详情 + 分栏/定位/状态导览/树嵌套/工作台等）
 │   ├── kit/                        #     mui-kit.css / proto-shell.* / proto-map.js / md-icons.js
 │   └── scripts/                    #     copy-kit.py、search-icons.py、verify-prototype-utf8.py、verify-prototype-coverage.py
 ├── lny-prd-check/SKILL.md + reference-checks.md
@@ -454,6 +454,7 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 └── LICENSE
 ```
 
+`lny-prd-ui` 另含 `reference-mobile-design.md` 与 `reference-desktop-design.md`（桌面分栏/表单栅格/列表三型/状态导览/定位与树）。
 ## 十、维护回归
 
 首次本地使用时，在仓库根创建持久虚拟环境并安装依赖（只需执行一次）：

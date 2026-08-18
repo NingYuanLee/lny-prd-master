@@ -748,12 +748,15 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | 空态 | `md-empty md-empty--illus` | 一行灰字 / 空白 |
 | 加载 | `md-skeleton` / `data-state="loading"` + `md-skel-host` | 纯文字「加载中」 |
 | 封面 / 图片位 | 必须挂在点名形态内：`md-card--cover` / `--tile` / `--row` 的 `md-card__media md-media-ph--1`～`--6`；横卡根节点必须带 `md-card--row`（左图**宽高双锁**）；详情主图 `md-swiper--wide`；介绍配图 `md-media--16x9`；页顶大背景 `md-hero` / `md-appbar--cover` | **裸** `md-card__media` 或横卡漏写 `--row` / 左图 `height:auto`（会被拉高再撑宽挤掉正文）；`style="background:#xxx"` 色块；无编号灰块；给封面叠字 / 双列 / Banner / 文件上传加预览 |
-| D1-2 表单 | `md-d1` + `md-d1__form` + `md-field--sm` | 无纸面的裸 label 堆叠；弹窗内 56px 大输入框；**弹窗表单双列并排**（须单列一行一项）；向导用 `[data-step]` 包当前步（套件给步进容器双列间距），禁止字段上下贴死 |
+| D1-2 表单 | `md-d1` + `md-d1__form` + `md-field--sm`；行距靠 grid `row-gap`；可选 `--cols-1/3` | 无纸面的裸 label 堆叠；弹窗内双列并排；字段包进无 gap 的裸 div 导致上下贴死；**用表单窄双列冒充页面左右分栏** |
+| 页面分栏 | `md-layout--2col/3col/pin` | 用 `md-d1__form` 当页面布局 |
+| 进步条 / 进度条 / 页签 | 同属状态导览：`md-tabs` / `md-stepper` / `md-advance` / `md-progress` | 用无极冒充分段；把签与进步条写成互不相关两套 |
+| 定位导航 | `md-locator` `--cats` / `--outline`；时间轴 `md-timeline` | 用 `md-tree` 冒充分类钮；用分类冒充可展开树 |
+| 树 | 不分页 `md-tree` + `__item` `__toggle` `__label`；表内 `md-table--nest` | 无类名嵌套 `ul`；用分类定位冒充树；触屏用列表硬套分类树 |
 | 步骤条 | `md-stepper` + `md-step`；已完成 `is-done`；当前 `is-active`。桌面数字步骤可点跳步（`proto-page.js` 自动绑）；自管步进写 `data-wizard="off"` | 纯数字列表；桌面数字步骤不可点 |
 | 进步条 | `md-advance` + `__head` + `__track` + `__seg` + `__bar`；`data-segments`；触屏可 `--lg` | 用无极 `md-progress` 冒充分步 |
 | 进度条 | `md-progress` + `__head` + `__track` + `__bar`；不确定 `--indeterminate`；触屏可 `--lg` | 裸 `<progress>` / 自造色条 / 用分段 `md-advance` 冒充上传 |
 | 时间轴 | `md-timeline` + `__item` `__rail` `__node` `__line` `__body`；右图文 `md-card--row`；`is-done` / `is-active` | 用列表硬套竖轨；左图右线反过来 |
-| 树 | `md-tree` + `__item` `__toggle` `__label`；分支 `li.is-open`；当前 `is-active` | 无类名嵌套 `ul`；触屏用列表硬套分类树 |
 | 图表 | `md-chart-ph` 占位条 | 手写 canvas / 自造柱 |
 | 页内分页签 | 桌面：`md-tabs md-tabs--page` 下划线（**平铺，无圆角阴影卡片壳**）；触屏：`md-tabs`（自动按钮组，浅底/选中色块） | 触屏用桌面下划线签；自造下划线 `div` / 裸 `<a>` 签；页内签套卡片壳 |
 | 主/线/浅底/字/链接按钮 | `md-btn md-btn--contained` / `--outlined` / **`--soft`（无边框浅底色字）** / `--text` / `--link`；**通栏整行** `--block`（或 `md-btn-row` 竖叠）；图标钮 `md-icon-btn`。触屏贴底 `md-action-bar` / 半屏 `md-drawer__actions` **仅一钮时自动占满** | 裸 `<button>`、`<input type="submit">`、Bootstrap/`btn`、浏览器灰钮；一行一主钮却缩成短条 |
@@ -952,11 +955,15 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 系统栏 | `md-status-bar`（`proto-page.js` 固定顶注入；页内禁止手写；时间/信号靠顶略放大，左右各收一个图标身位，不为胶囊留空） |
 | 触屏顶栏 | ① `md-hero` 16:9+slogan ② `--overlay` 叠 16:9 ③ 标准 `md-appbar--mobile` ④ `--cover` 两倍高度封面 |
 | 桌面面包屑 | `md-breadcrumb`（D1 内容区顶部，禁止再写 `md-page-head`） |
-| 操作列 | 阈值与收纳直接执行共享 `PT-DESKTOP-LIST`。实现用窄 `md-col-actions`；常规动作落 `md-icon-btn` 并提供 `title`/`aria-label`，删除加 `md-icon--danger`；共享规则要求菜单时用 `data-menu` + `md-menu md-menu--fixed` |
-| 语义列宽 | `md-col-check` 勾选；`md-col-name` 名称/昵称硬锁定宽；`md-col-desc` / `md-col-note` 说明/备注吃剩余；`md-col-date` 无说明时日期/时间吃剩余；再无则**最后一列数据列**吃剩余（有 `md-col-actions` 时取操作列前一列）；`md-col-price` 金额窄右齐；`md-col-status` 状态/短枚举；`md-col-id` 短码；`md-col-num` 数量。**列宽须盖住字段标题**；**慎用 `width:auto`**（易压成一字），吃剩余用 `%`+坚实 `min-width`。禁止所有列均分、禁止名称列空荡拉长。**溢出省略**的表头/单元格：悬停看全文，点击复制（套件自动） |
-| D1-1 紧凑 | 根节点 `md-d1 md-d1--list`（矮行、小内外距）；**不要**套到 D1-2 表单页 |
+| 操作列 | 阈值与收纳执行 `PT-DESKTOP-LIST`。`md-col-actions` 宽按直出控件个数自动分档（1/2/3 图标；含文字钮加宽）；常规动作 `md-icon-btn` + `title`/`aria-label`；删除加 `md-icon--danger`；「更多」用 `data-menu` + `md-menu md-menu--fixed` |
+| 语义列宽 | `md-col-check` 勾选；`md-col-name` 名称硬锁定宽；`md-col-desc` / `md-col-note` 说明吃剩余；`md-col-date` / 最后数据列规则同前；`md-col-price` / `md-col-status` / `md-col-id` / `md-col-num`。**多字段单元格**用 `md-cell-stack`（`__primary` / `__secondary`）。长值省略不得溢出叠邻列；悬停看全文、点击复制 |
+| D1-1 紧凑 | 根节点 `md-d1 md-d1--list`；**不要**套到 D1-2 表单页 |
+| 列表三型 | 标准列表 `md-d1--list`；嵌入表格可只用 `md-table`；卡片列表 `md-d1--cards` + `md-card-grid` |
 | 工作台 | `md-stat-grid` `md-stat-card`；趋势 `md-chart-ph` |
-| 分栏 | `md-d1--split` / 触屏 `md-tree-page`；`md-split` `__side` `__main`；树 `md-tree` `__item` `__toggle` `__label` `is-open` `is-active` |
+| 页面分栏 | `md-layout` `--2col` / `--3col` / `--pin` + `__pane` / `__pane--span`。**禁止**用 `md-d1__form` 冒充 |
+| 分栏 / 树 | `md-d1--split`；`md-split` `__side` `__main`；树 `md-tree`；定位导航 `md-locator` `--cats` / `--outline`（`data-target`） |
+| 表内嵌套树 | `md-table--nest` + `md-row--child` + `md-nest-toggle`；`data-row-id` / `data-parent` |
+| D1-2 表单栅格 | `md-d1__form`（默认双列，`row-gap` 保留）；`--cols-1` / `--cols-3`；嵌套 `md-form-block` 同样有 gap。弹窗 `md-dialog__form` 单列 |
 | 设置分组 | `md-set-group` `__title` `md-set-row`（**设置项**：当页当行直接操作；左 `md-icon` 可有可无 + `__label`；右开关/值/本行菜单）；开关 `md-switch`（热区铺满，可点）；无极 `md-set-block` + `md-slider--fluid`；横向多选 `md-set-picks` / `md-set-pick`（`__face` 可为 `__label` 文字 / 图标 / `__media` 图片；`__mark` 含 `__off`+`__on`，未选也显示空圈）；下拉 `md-set-row` + `data-menu` |
 | 列表单行 | 仅在共享 `PT-MOBILE-LIST` 判定为单行时使用 `md-stack` > `md-set-row`；结构用 `__lead`（图标+`__label`）+ `__trail`（说明/计数/小标签，一般无箭头） |
 | 功能区通栏 / 一行两个 | **功能入口**：通栏 `md-set-group`；一行两个 `md-set-pair`；右可为 `__hint` 或 **方形 `__thumb`**（`--thumb`，行更高）；常带箭头；**无圆角阴影卡片壳**；触屏**跟正文同左右安全距**，分割线内缩 |

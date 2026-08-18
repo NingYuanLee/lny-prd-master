@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 金样：桌面 D1-1 列表。顶为面包屑无大标题；签在筛上整区切换；分页与表横条贴底；勾选左冻/操作右冻定宽。常规操作（查看/编辑/删除/新增/启停等）默认图标钮；本页有 3 个操作故示范「查看图标 + 更多图标」；若规格操作 ≤2 个须全部直出、禁止照抄「更多」。操作列左右内边距尽量小。列宽按字段语义；紧凑密度一屏多行。写 PC/AD 表格页前必 Read。 -->
+<!-- LNY-PRD gold: 金样：桌面 D1-1 标准列表。顶为面包屑无大标题；签在筛上整区切换；分页与表横条贴底；勾选左冻/操作右冻。操作列宽按直出图标个数收（1/2/3 档），禁止挤没。常规操作默认图标钮；本页 3 个操作示范「查看+更多」；≤2 须全直出。列宽语义+长值省略不叠列；多字段单元格用 md-cell-stack。列表三型：标准列表（本页）/ 表格（嵌入短表）/ 卡片列表（desktop-layout）。写 PC/AD 表格页前必 Read。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -76,7 +76,12 @@
               <tbody class="js-tbody">
                 <tr>
                   <td class="md-col-check"><label class="md-check"><input type="checkbox"></label></td>
-                  <td class="md-col-name"><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--1"></span>有机草莓 250g</span></td>
+                  <td class="md-col-name"><span class="md-row-goods"><span class="md-thumb md-media-ph md-media-ph--1"></span>
+                    <span class="md-cell-stack">
+                      <span class="md-cell-stack__primary">有机草莓 250g</span>
+                      <span class="md-cell-stack__secondary">冷链鲜果 · 次日达</span>
+                    </span>
+                  </span></td>
                   <td class="md-col-price">¥19.90</td>
                   <td class="md-col-status"><span class="md-chip md-chip--success">有货</span></td>
                   <td class="md-col-date">2026-03-12</td>
