@@ -327,7 +327,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 ### 触屏功能区
 
-金刚宫格 `md-king`（4/5 列）/ 金刚双卡 `md-king--pair` / 通栏 `md-set-row` / 一行两个 `md-set-pair`。**金刚不限首页**。**金刚双卡 vs 一行两个**：信息多（要标题+说明）用双卡；信息少（图标+短标题）用一行两个。通栏与一行两个的 **分组标题可有可无**。通栏包在 `md-set-group` 里连成一片；组内用 **淡色内缩分割线**（`--md-divider-soft`，左右仍留距）。**触屏功能区跟正文同左右安全距**（通栏/一行两个/金刚不要负边距贴手机框）。**设置项与功能入口同壳**：设置项在当前行直接操作（开关等）；功能入口只跳转或开半屏/弹窗（常带右箭头）。**功能区**与 **页内签**：**不要**圆角、轻阴影卡片壳。**我的 / 设置** 页根加 **`md-set-page`**（浅灰 `#f7f7f7` 同详情），组与组靠外边距/gap 漏底。列表单行是内容、独立有缝、一般不带箭头；数据流可无限。金样：金刚见 `gold/mobile-grid.html`，入口见 `gold/mobile-menu.html`，设置见 `gold/mobile-settings.html`。
+金刚宫格 `md-king`（4/5 列）/ 金刚双卡 `md-king--pair` / **服务条 `md-svc-strip`**（2/3/4 等分一整块、项间**不贯通**短竖线、图标文字上下居中）/ 通栏 `md-set-row` / 一行两个 `md-set-pair`。**金刚不限首页**。**金刚双卡 vs 一行两个**：信息多（要标题+说明）用双卡；信息少（图标+短标题）用一行两个。通栏与一行两个的 **分组标题可有可无**。通栏包在 `md-set-group` 里连成一片；组内用 **淡色内缩分割线**（`--md-divider-soft`，左右仍留距）。**触屏功能区跟正文同左右安全距**（通栏/一行两个/金刚不要负边距贴手机框）。**设置项与功能入口同壳**：设置项在当前行直接操作（开关等）；功能入口只跳转或开半屏/弹窗（常带右箭头）。**功能区**与 **页内签**：**不要**圆角、轻阴影卡片壳。**我的 / 设置** 页根加 **`md-set-page`**（浅灰 `#f7f7f7` 同详情），组与组靠外边距/gap 漏底。列表单行是内容、独立有缝、一般不带箭头；数据流可无限。金样：金刚见 `gold/mobile-grid.html`，入口见 `gold/mobile-menu.html`，设置见 `gold/mobile-settings.html`。
 
 | 节点 | 规则 |
 |------|------|
@@ -373,6 +373,20 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
   </button>
 </nav>
 ```
+
+**服务条 `md-svc-strip`**（我的/服务页常用）：**一整块白底**，一排 **2 / 3 / 4** 个入口等分；项间 **不贯通** 的细竖线；每项 **图标 + 文字上下居中**。与金刚区不同：**无项间 gap、无独立灰底圆角块**；也不同于通栏（无左右箭头/说明）。
+
+```html
+<nav class="md-svc-strip md-svc-strip--cols-4" aria-label="常用服务">
+  <a class="md-svc-strip__item" href="#">
+    <span class="md-svc-strip__icon"><span class="md-icon" data-icon="goods" aria-hidden="true"></span></span>
+    <span class="md-svc-strip__label">待付款</span>
+  </a>
+  <!-- 2～4 项；修饰符 --cols-2 / --cols-3 / --cols-4 -->
+</nav>
+```
+
+禁止：把服务条写成 `md-king` 多列宫格；项间拉满高度的竖线；入口左对齐（须整体居中）；每项单独圆角阴影底。
 
 **COMP 切态**（iframe 内）
 
@@ -741,6 +755,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | 侧滑 / 抽屉 | `md-drawer md-drawer--left/right/bottom` + `md-backdrop`；底半屏高度随内容、最大 70vh、`__close` 右上角；选项用 `__opt` / `md-choice-group` 且每项一行 | 自造 `position:fixed` 面板；`display` 瞬切；底半屏定死全高或关闭钮只放底栏；底半屏选项标签换行挤一行 |
 | 轮播 Banner | `md-swiper` + `__track` + `__slide` + `__dots` | 自造横向滚动无指示点 |
 | 金刚区 | `md-king` + `md-king__item`（4/5 列：图标+文字上下居中同底）；或 `md-king--pair`（一排两张大卡，小图标与 `__name`/`__desc` 均靠左）。**不限首页**；信息多用双卡 | 图标单独色块、文字露在底外；无热区的纯文字宫格；双卡内容居中；把双卡和一行两个按是否首页选型 |
+| 服务条 | `md-svc-strip` + `__item` + `__icon` + `__label`；修饰符 `--cols-2/3/4`；一整块白底、项间短竖线、上下居中 | 冒充 `md-king` 宫格；贯通竖线；项独立圆角灰底 |
 | 方形图标按钮 | `md-btn--stack` 或金刚项同款：图标上、文字下、共一块底 | 图标独立成钮、文字在旁或底外 |
 | 贴底主操作 | `md-action-bar` 或 `md-tabbar`；**一行仅一钮时占满整行** | 主按钮写在滚动内容末尾；单钮却缩成短条靠左 |
 | 上传 | `md-upload`；单图 `md-upload--single`；多图 `md-upload-grid`；文件 `md-upload--file`。**单图/多图/视频缩略默认可点预览**（多图一组）；文件上传不进灯箱；`data-preview=off` 可关 | 裸 `<input type="file">`；上传缩略不可点放大 |
