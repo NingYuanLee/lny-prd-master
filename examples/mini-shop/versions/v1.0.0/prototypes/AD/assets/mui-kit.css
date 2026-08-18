@@ -5640,7 +5640,7 @@ button.md-set-row:active { background: var(--md-selected); }
   padding: 0;
   background: var(--md-bg-paper);
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible;
 }
 .md-svc-strip__item {
   position: relative;
@@ -5685,6 +5685,7 @@ button.md-set-row:active { background: var(--md-selected); }
   pointer-events: none;
 }
 .md-svc-strip__icon {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -5692,20 +5693,43 @@ button.md-set-row:active { background: var(--md-selected); }
   height: 28px;
   flex-shrink: 0;
   color: var(--md-primary);
+  overflow: visible;
 }
 .md-svc-strip__icon .md-icon {
   width: 24px;
   height: 24px;
 }
-.md-svc-strip__value {
-  display: flex;
+.md-svc-strip__badge {
+  position: absolute;
+  top: -5px;
+  right: -9px;
+  z-index: 1;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--md-error);
+  color: #fff;
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+.md-svc-strip__value {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
   min-height: 28px;
   flex-shrink: 0;
   margin: 0;
-  padding: 0 2px;
+  padding: 0 10px 0 2px;
   font-size: 1.125rem;
   font-weight: 600;
   line-height: 1.2;
@@ -5717,6 +5741,38 @@ button.md-set-row:active { background: var(--md-selected); }
 .md-svc-strip__value--sm {
   font-size: 0.9375rem;
   font-weight: 600;
+}
+.md-svc-strip__help {
+  position: absolute;
+  top: 0;
+  right: -2px;
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--md-text-disabled);
+  border-radius: 50%;
+  background: var(--md-bg-paper);
+  color: var(--md-text-disabled);
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+.md-svc-strip__help:hover {
+  color: var(--md-primary);
+  border-color: var(--md-primary);
+}
+.md-svc-strip__help:active {
+  transform: scale(0.92);
 }
 .md-svc-strip__label {
   display: block;

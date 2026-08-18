@@ -250,13 +250,32 @@
   function confirm(opts) {
     opts = opts || {};
     ensureConfirm();
+    var cancelBtn = document.getElementById("mdConfirmCancel");
+    cancelBtn.hidden = false;
     document.getElementById("mdConfirmTitle").textContent = opts.title || "确认";
     document.getElementById("mdConfirmBody").textContent = opts.body || "";
     var okBtn = document.getElementById("mdConfirmOk");
     okBtn.textContent = opts.ok || "确定";
-    document.getElementById("mdConfirmCancel").textContent = opts.cancel || "取消";
+    cancelBtn.textContent = opts.cancel || "取消";
     okBtn.onclick = function () {
       closeDialog("mdConfirmDlg");
+      if (typeof opts.onOk === "function") opts.onOk();
+    };
+    openDialog("mdConfirmDlg");
+  }
+
+  function alertInfo(opts) {
+    opts = opts || {};
+    ensureConfirm();
+    var cancelBtn = document.getElementById("mdConfirmCancel");
+    document.getElementById("mdConfirmTitle").textContent = opts.title || "说明";
+    document.getElementById("mdConfirmBody").textContent = opts.body || "";
+    var okBtn = document.getElementById("mdConfirmOk");
+    okBtn.textContent = opts.ok || "知道了";
+    cancelBtn.hidden = true;
+    okBtn.onclick = function () {
+      closeDialog("mdConfirmDlg");
+      cancelBtn.hidden = false;
       if (typeof opts.onOk === "function") opts.onOk();
     };
     openDialog("mdConfirmDlg");
@@ -1013,6 +1032,21 @@
         });
       }
       bindProfileNameEdit(root.querySelector(".md-profile__name"));
+    });
+  }
+
+  function bindSvcStrips() {
+    document.querySelectorAll(".md-svc-strip__help[data-svc-help]").forEach(function (btn) {
+      if (btn.getAttribute("data-md-bound") === "1") return;
+      btn.setAttribute("data-md-bound", "1");
+      btn.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        alertInfo({
+          title: btn.getAttribute("data-svc-help-title") || "说明",
+          body: btn.getAttribute("data-svc-help") || "",
+        });
+      });
     });
   }
 
@@ -2977,6 +3011,7 @@
     bindNestTables();
     bindUploads();
     bindMeProfiles();
+    bindSvcStrips();
     bindCombos();
     bindMobileSelects();
     bindProgress();
@@ -2997,6 +3032,7 @@
     openDrawer: openDrawer,
     closeDrawer: closeDrawer,
     confirm: confirm,
+    alertInfo: alertInfo,
     closeMenus: closeMenus,
   };
 

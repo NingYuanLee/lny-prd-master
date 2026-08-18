@@ -374,23 +374,30 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 </nav>
 ```
 
-**服务条 `md-svc-strip`**（我的/服务页常用）：**一整块白底**，一排 **2 / 3 / 4** 个入口等分；项间 **不贯通** 的细竖线；每项 **上区图标或统计数值 + 下区文字**，上下居中。上区二选一：`__icon`（图标）或 **`__value`**（统计数值，字号更大）；金额等较长可用 `__value--sm`。与金刚区不同：**无项间 gap、无独立灰底圆角块**；也不同于通栏（无左右箭头/说明）。
+**服务条 `md-svc-strip`**（我的/服务页常用）：**一整块白底**，一排 **2 / 3 / 4** 个入口等分；项间 **不贯通** 的细竖线；每项 **上区图标或统计数值 + 下区文字**，上下居中。上区二选一：`__icon`（图标，可挂 **`__badge` 数字角标**）或 **`__value`**（统计数值，可挂可点 **`__help` 问号** 看说明弹窗，`data-svc-help-title` / `data-svc-help`）；金额等较长可用 `__value--sm`。与金刚区不同：**无项间 gap、无独立灰底圆角块**；也不同于通栏（无左右箭头/说明）。
 
 ```html
 <nav class="md-svc-strip md-svc-strip--cols-4" aria-label="常用服务">
   <a class="md-svc-strip__item" href="#">
-    <span class="md-svc-strip__value">2</span>
+    <span class="md-svc-strip__icon">
+      <span class="md-icon" data-icon="goods" aria-hidden="true"></span>
+      <span class="md-svc-strip__badge">2</span>
+    </span>
     <span class="md-svc-strip__label">待付款</span>
   </a>
   <a class="md-svc-strip__item" href="#">
-    <span class="md-svc-strip__icon"><span class="md-icon" data-icon="refresh" aria-hidden="true"></span></span>
-    <span class="md-svc-strip__label">退换售后</span>
+    <span class="md-svc-strip__value">
+      1,280
+      <button type="button" class="md-svc-strip__help" aria-label="积分说明"
+        data-svc-help-title="积分说明" data-svc-help="100 积分抵 1 元。">?</button>
+    </span>
+    <span class="md-svc-strip__label">积分</span>
   </a>
   <!-- 2～4 项；修饰符 --cols-2 / --cols-3 / --cols-4 -->
 </nav>
 ```
 
-禁止：把服务条写成 `md-king` 多列宫格；项间拉满高度的竖线；入口左对齐（须整体居中）；每项单独圆角阴影底；统计数值与图标同项叠放。
+禁止：把服务条写成 `md-king` 多列宫格；项间拉满高度的竖线；入口左对齐（须整体居中）；每项单独圆角阴影底；统计数值与图标同项叠放；角标可点（须 `pointer-events: none`）；问号说明用 Toast 代替弹窗。
 
 **COMP 切态**（iframe 内）
 
@@ -759,7 +766,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | 侧滑 / 抽屉 | `md-drawer md-drawer--left/right/bottom` + `md-backdrop`；底半屏高度随内容、最大 70vh、`__close` 右上角；选项用 `__opt` / `md-choice-group` 且每项一行 | 自造 `position:fixed` 面板；`display` 瞬切；底半屏定死全高或关闭钮只放底栏；底半屏选项标签换行挤一行 |
 | 轮播 Banner | `md-swiper` + `__track` + `__slide` + `__dots` | 自造横向滚动无指示点 |
 | 金刚区 | `md-king` + `md-king__item`（4/5 列：图标+文字上下居中同底）；或 `md-king--pair`（一排两张大卡，小图标与 `__name`/`__desc` 均靠左）。**不限首页**；信息多用双卡 | 图标单独色块、文字露在底外；无热区的纯文字宫格；双卡内容居中；把双卡和一行两个按是否首页选型 |
-| 服务条 | `md-svc-strip` + `__item` + `__icon`/`__value` + `__label`；修饰符 `--cols-2/3/4`；一整块白底、项间短竖线、上下居中 | 冒充 `md-king` 宫格；贯通竖线；项独立圆角灰底；同项既图标又数值 |
+| 服务条 | `md-svc-strip` + `__item` + `__icon`/`__value` + `__label`；图标可挂 **`__badge`**；数值可挂 **`__help`**（`data-svc-help*` 弹窗说明）；修饰符 `--cols-2/3/4` | 冒充 `md-king`；贯通竖线；项独立圆角灰底；同项既图标又数值；角标可点 |
 | 方形图标按钮 | `md-btn--stack` 或金刚项同款：图标上、文字下、共一块底 | 图标独立成钮、文字在旁或底外 |
 | 贴底主操作 | `md-action-bar` 或 `md-tabbar`；**一行仅一钮时占满整行** | 主按钮写在滚动内容末尾；单钮却缩成短条靠左 |
 | 上传 | `md-upload`；单图 `md-upload--single`；多图 `md-upload-grid`；文件 `md-upload--file`。**单图/多图/视频缩略默认可点预览**（多图一组）；文件上传不进灯箱；`data-preview=off` 可关 | 裸 `<input type="file">`；上传缩略不可点放大 |
