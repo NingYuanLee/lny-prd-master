@@ -18,13 +18,10 @@
           <span class="md-icon" data-icon="search" aria-hidden="true"></span>
           <input class="md-search__input" type="search" name="q" placeholder="搜索在售商品" aria-label="搜索" enterkeyhint="search">
         </label>
+        <button type="button" class="md-icon-btn md-search-row__filter" data-filter-drawer="filterSheet" aria-label="筛选" onclick="ProtoPage.openDrawer('filterSheet')">
+          <span class="md-icon" data-icon="filter" aria-hidden="true"></span>
+        </button>
       </form>
-      <div class="md-section-head md-section-head--trail">
-        <div class="md-btn-group">
-          <button type="button" class="md-btn md-btn--text" onclick="ProtoPage.openDrawer('shopSheet')">店铺</button>
-          <button type="button" class="md-btn md-btn--text" onclick="ProtoPage.openDrawer('filterSheet')">筛选</button>
-        </div>
-      </div>
       <nav class="md-tabs">
         <button type="button" class="md-tab is-active" data-panel="listAll">全部</button>
         <button type="button" class="md-tab" data-panel="listIn">有货</button>
@@ -298,23 +295,13 @@
         <span>商品</span>
       </a>
     </nav>
-    <div id="shopSheetBackdrop" class="md-backdrop" onclick="ProtoPage.closeDrawer('shopSheet')"></div>
-    <aside id="shopSheet" class="md-drawer md-drawer--left">
-      <h2 class="md-drawer__title">店铺</h2>
-      <div class="md-drawer__body">
-        <p class="md-body2">迷你小店 · 当日鲜配。点卡片可看商品详情。</p>
-      </div>
-      <div class="md-drawer__actions">
-        <button type="button" class="md-btn md-btn--text" onclick="ProtoPage.closeDrawer('shopSheet')">关闭</button>
-      </div>
-    </aside>
     <div id="filterSheetBackdrop" class="md-backdrop" onclick="ProtoPage.closeDrawer('filterSheet')"></div>
     <aside id="filterSheet" class="md-drawer md-drawer--right">
       <h2 class="md-drawer__title">筛选</h2>
       <div class="md-drawer__body">
         <div class="md-choice-group">
           <span class="md-choice-group__label">库存</span>
-          <label class="md-check"><input type="checkbox" checked> 有货</label>
+          <label class="md-check"><input type="checkbox" checked data-default-checked> 有货</label>
           <label class="md-check"><input type="checkbox"> 缺货</label>
         </div>
         <label class="md-field md-field--select">
@@ -357,6 +344,12 @@
         title: "清空",
         body: "确定清空当前筛选条件？",
         onOk: function () {
+          var drawer = document.getElementById("filterSheet");
+          if (drawer) {
+            drawer.querySelectorAll(".md-check input[type=checkbox]").forEach(function (cb) {
+              cb.checked = cb.hasAttribute("data-default-checked");
+            });
+          }
           var cat = document.getElementById("fCat");
           if (cat) {
             cat.value = "";

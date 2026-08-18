@@ -4257,11 +4257,13 @@ button.md-set-row:active { background: var(--md-selected); }
 .md-status-bar--standard {
   color: var(--md-text);
   background: var(--md-bg-paper);
+  transition: background-color 180ms var(--md-ease), color 180ms var(--md-ease);
 }
 .md-status-bar--immersive {
   color: #fff;
   background: transparent;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  transition: background-color 180ms var(--md-ease), color 180ms var(--md-ease), text-shadow 180ms var(--md-ease);
 }
 .md-mobile-page.md-standard,
 .md-mobile-page:not(.md-immersive):not(.md-sink) { padding-top: var(--md-status-h); }
@@ -6228,14 +6230,27 @@ a.md-card {
   padding-right: max(var(--md-safe-r), 12px);
 }
 .md-list-toolbar .md-search-row {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   width: 100%;
   margin: 0;
 }
 .md-list-toolbar .md-search {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
+  width: auto;
   height: 44px;
   box-sizing: border-box;
+}
+.md-search-row__filter {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  color: var(--md-text-secondary);
+}
+.md-search-row__filter.is-active {
+  color: var(--md-primary);
 }
 /* 触屏搜索：仅左侧图标 + 输入；不要「搜索」文案，不要右侧搜索按钮 */
 .md-mobile-page .md-search .md-caption,
@@ -6270,11 +6285,20 @@ a.md-card {
   z-index: 6;
   padding-left: var(--md-safe-l);
   padding-right: max(var(--md-safe-r), 96px);
+  transition: background-color 180ms var(--md-ease), color 180ms var(--md-ease), border-color 180ms var(--md-ease);
 }
 .md-mobile-page.md-immersive .md-appbar--overlay {
   background: transparent;
   border: 0;
   color: #fff;
+}
+.md-mobile-page.md-immersive .md-appbar--overlay.is-solid {
+  background: var(--md-bg-paper);
+  color: var(--md-text);
+  border-bottom: 1px solid var(--md-divider);
+}
+.md-mobile-page.md-immersive .md-appbar--overlay.is-solid > .md-appbar__title {
+  color: var(--md-text);
 }
 .md-appbar--overlay .md-icon-btn,
 .md-mobile-page .md-appbar--overlay .md-icon-btn {

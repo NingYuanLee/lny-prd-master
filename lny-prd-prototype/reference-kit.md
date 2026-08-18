@@ -361,6 +361,11 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 <header class="md-appbar md-appbar--mobile md-appbar--center">
   <h1 class="md-appbar__title">在售商品</h1>
 </header>
+<!-- 列表工具条：搜索与筛选图标同一行；筛选改条件后 md-search-row__filter 高亮 -->
+<form class="md-search-row">
+  <label class="md-search">…</label>
+  <button type="button" class="md-icon-btn md-search-row__filter" data-filter-drawer="filterSheet" aria-label="筛选">…</button>
+</form>
 
 <!-- L3 透明叠图（滚正文后 is-solid） -->
 <header class="md-appbar md-appbar--mobile md-appbar--overlay">
