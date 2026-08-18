@@ -265,7 +265,7 @@
 |------|--------|----------|
 | 工作台 / 仪表盘 | D1-3 | 指标卡 3～4 张一排；趋势用 `md-chart-ph`；下面短表或待办。金样 `gold/desktop-dashboard.html` |
 | 页面分栏 | D1-3 | 双列/三列/品字；金样 `gold/desktop-layout.html`。**禁止**用 `md-d1__form` 窄双列冒充 |
-| 树 + 内容 | 触屏左树右内容 / D1-3 | **不分页树**；当前项高亮；箭头展开收起；右区随选中切换。金样 `gold/mobile-tree.html` / `gold/desktop-split.html`。表内嵌套见 `desktop-tree-nest.html` |
+| 树 + 内容 | 触屏左树右内容 / D1-3 | **不分页树**；桌面含总控与节点维护、拖到上/中/下。金样 `gold/mobile-tree.html` / `gold/desktop-split.html`。表内嵌套见 `desktop-tree-nest.html` |
 | 定位导航 | D1-3 | 分类按钮 / 时间轴节点 / 章节大纲：点选定位锚点。金样 `desktop-locator.html` / `desktop-timeline.html`。**与树分离** |
 | 设置 | 移动分组列表 / D1-2 分组 | **功能服务 · 设置项**：同 `md-set-group` 通栏；页根 **`md-set-page`**（浅灰底、组间距漏底）；成组有限；左图标可有可无；**在当前行直接操作**（开关 / 无极 / 横向勾选 / 本行下拉改值），不是拿整行当跳转入口。金样 `gold/mobile-settings.html` / `gold/desktop-settings.html` |
 | 我的 / 服务 | 移动分组列表 / D1-2 分组 | **功能服务 · 入口**：通栏、一行两个、或按需金刚（宫格/双卡，**不限首页**）；信息多用金刚双卡。**只跳转或打开半屏/弹窗**。金样入口见 `gold/mobile-menu.html` / `gold/desktop-menu.html`，金刚形态见 `gold/mobile-grid.html`。禁止按钮堆 |

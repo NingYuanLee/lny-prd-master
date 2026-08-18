@@ -76,6 +76,7 @@ python <skillDir>/scripts/search-icons.py 客服 --pick 0 --name kefu --out <prd
 | close | 关闭 | 规格说明 |
 | chevron-left / chevron-right | — | 分页 |
 | arrow-up | 返回顶部、向上 | 详情页悬浮导航 |
-| list | 目录、列表 | 详情页悬浮导航 |
+| unfold | 全部展开 | 树总控 |
+| fold | 全部收起 | 树总控 |
 
 同一终端本批风格统一：检索默认 `--type fill`。禁止 fill/line 混用。

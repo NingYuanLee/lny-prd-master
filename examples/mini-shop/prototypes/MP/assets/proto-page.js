@@ -1169,7 +1169,9 @@
     document.querySelectorAll(".md-tree").forEach(function (tree) {
       if (tree.getAttribute("data-md-bound") === "1") return;
       tree.setAttribute("data-md-bound", "1");
+      enhanceTree(tree);
       tree.addEventListener("click", function (ev) {
+        if (handleTreeAction(tree, ev)) return;
         var toggle = ev.target.closest(".md-tree__toggle");
         var item = ev.target.closest(".md-tree__item");
         if (toggle && tree.contains(toggle)) {
@@ -1182,23 +1184,380 @@
           return;
         }
         if (!item || !tree.contains(item)) return;
-        tree.querySelectorAll(".md-tree__item.is-active").forEach(function (n) {
-          n.classList.remove("is-active");
-        });
-        item.classList.add("is-active");
-        var li = item.closest("li");
-        if (li && li.querySelector(":scope > ul")) li.classList.add("is-open");
-        var cat = item.getAttribute("data-cat") || "";
-        var title = document.getElementById("catTitle");
-        if (title && cat) title.textContent = cat;
-        tree.dispatchEvent(
-          new CustomEvent("md-tree-select", {
-            bubbles: true,
-            detail: { item: item, cat: cat },
-          })
-        );
+        if (ev.target.closest(".md-tree__rename")) return;
+        selectTreeItem(tree, item);
       });
+      bindTreeDrag(tree);
     });
+  }
+
+  function treeEditOn(tree) {
+    return tree.getAttribute("data-tree-edit") !== "off";
+  }
+
+  function treeLeafLocked(tree, li) {
+    if (!li) return true;
+    if (li.hasAttribute("data-leaf")) return true;
+    if (tree.getAttribute("data-leaf-add") === "off" && !li.querySelector(":scope > ul")) {
+      return true;
+    }
+    return false;
+  }
+
+  function treeItemOf(li) {
+    return li ? li.querySelector(":scope > .md-tree__row > .md-tree__item, :scope > .md-tree__item") : null;
+  }
+
+  function treeRowOf(li) {
+    if (!li) return null;
+    var row = li.querySelector(":scope > .md-tree__row");
+    if (row) return row;
+    var item = li.querySelector(":scope > .md-tree__item");
+    return item ? ensureTreeRow(item) : null;
+  }
+
+  function treeLabelOf(item) {
+    return item ? item.querySelector(".md-tree__label") : null;
+  }
+
+  function treeNotify(tree, action, detail) {
+    var payload = detail || {};
+    payload.action = action;
+    tree.dispatchEvent(new CustomEvent("md-tree-change", { bubbles: true, detail: payload }));
+  }
+
+  function pruneEmptyBranch(li) {
+    if (!li) return;
+    var ul = li.querySelector(":scope > ul");
+    if (ul && !ul.children.length) ul.remove();
+  }
+
+  function childListOf(li, create) {
+    var ul = li.querySelector(":scope > ul");
+    if (!ul && create) {
+      ul = document.createElement("ul");
+      li.appendChild(ul);
+    }
+    return ul;
+  }
+
+  function ensureTreeRow(item) {
+    if (item.parentElement && item.parentElement.classList.contains("md-tree__row")) {
+      return item.parentElement;
+    }
+    var row = document.createElement("div");
+    row.className = "md-tree__row";
+    item.parentNode.insertBefore(row, item);
+    row.appendChild(item);
+    return row;
+  }
+
+  function ensureTreeOps(row) {
+    if (row.querySelector(".md-tree__ops")) return;
+    var ops = document.createElement("div");
+    ops.className = "md-tree__ops";
+    ops.innerHTML =
+      '<button type="button" class="md-icon-btn" data-tree-act="add" title="增子节点" aria-label="增子节点">' +
+      '<span class="md-icon" data-icon="add" aria-hidden="true"></span></button>' +
+      '<button type="button" class="md-icon-btn" data-tree-act="rename" title="重命名" aria-label="重命名">' +
+      '<span class="md-icon" data-icon="edit" aria-hidden="true"></span></button>' +
+      '<button type="button" class="md-icon-btn" data-tree-act="delete" title="删除" aria-label="删除">' +
+      '<span class="md-icon md-icon--danger" data-icon="delete" aria-hidden="true"></span></button>';
+    row.appendChild(ops);
+    paintIcon(ops);
+  }
+
+  function ensureTreeBar(tree) {
+    var prev = tree.previousElementSibling;
+    if (prev && prev.classList.contains("md-tree-bar")) return prev;
+    var bar = document.createElement("div");
+    bar.className = "md-tree-bar";
+    bar.innerHTML =
+      '<button type="button" class="md-icon-btn" data-tree-act="expand" title="全部展开" aria-label="全部展开">' +
+      '<span class="md-icon" data-icon="unfold" aria-hidden="true"></span></button>' +
+      '<button type="button" class="md-icon-btn" data-tree-act="collapse" title="全部收起" aria-label="全部收起">' +
+      '<span class="md-icon" data-icon="fold" aria-hidden="true"></span></button>' +
+      '<button type="button" class="md-btn md-btn--contained md-btn--sm" data-tree-act="add-root">' +
+      '<span class="md-icon" data-icon="add" aria-hidden="true"></span>根节点</button>';
+    tree.parentNode.insertBefore(bar, tree);
+    paintIcon(bar);
+    return bar;
+  }
+
+  function enhanceTree(tree) {
+    if (!treeEditOn(tree)) return;
+    var bar = ensureTreeBar(tree);
+    if (bar.getAttribute("data-md-bound") !== "1") {
+      bar.setAttribute("data-md-bound", "1");
+      bar.addEventListener("click", function (ev) {
+        handleTreeAction(tree, ev);
+      });
+    }
+    tree.querySelectorAll(".md-tree__item").forEach(function (item) {
+      var row = ensureTreeRow(item);
+      ensureTreeOps(row);
+    });
+  }
+
+  function uniqueTreeName(tree, base) {
+    var names = {};
+    tree.querySelectorAll(".md-tree__label").forEach(function (el) {
+      names[el.textContent.trim()] = true;
+    });
+    if (!names[base]) return base;
+    var i = 2;
+    while (names[base + " " + i]) i += 1;
+    return base + " " + i;
+  }
+
+  function createTreeLi(tree, name) {
+    var li = document.createElement("li");
+    var row = document.createElement("div");
+    row.className = "md-tree__row";
+    var item = document.createElement("button");
+    item.type = "button";
+    item.className = "md-tree__item";
+    item.setAttribute("data-cat", name);
+    item.innerHTML =
+      '<span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>' +
+      '<span class="md-tree__label"></span>';
+    item.querySelector(".md-tree__label").textContent = name;
+    row.appendChild(item);
+    ensureTreeOps(row);
+    li.appendChild(row);
+    paintIcon(li);
+    return li;
+  }
+
+  function selectTreeItem(tree, item) {
+    if (!item) return;
+    tree.querySelectorAll(".md-tree__item.is-active").forEach(function (n) {
+      n.classList.remove("is-active");
+    });
+    item.classList.add("is-active");
+    var li = item.closest("li");
+    if (li && li.querySelector(":scope > ul")) li.classList.add("is-open");
+    var cat = item.getAttribute("data-cat") || (treeLabelOf(item) ? treeLabelOf(item).textContent.trim() : "");
+    if (treeLabelOf(item) && !item.getAttribute("data-cat")) item.setAttribute("data-cat", cat);
+    var title = document.getElementById("catTitle");
+    if (title && cat) title.textContent = cat;
+    tree.dispatchEvent(
+      new CustomEvent("md-tree-select", {
+        bubbles: true,
+        detail: { item: item, cat: cat, li: li },
+      })
+    );
+  }
+
+  function startTreeRename(tree, item) {
+    var label = treeLabelOf(item);
+    if (!label || item.querySelector(".md-tree__rename")) return;
+    var input = document.createElement("input");
+    input.type = "text";
+    input.className = "md-field__input md-tree__rename";
+    input.value = label.textContent.trim();
+    label.replaceWith(input);
+    input.focus();
+    input.select();
+    var done = false;
+    function commit(ok) {
+      if (done) return;
+      done = true;
+      var next = document.createElement("span");
+      next.className = "md-tree__label";
+      var val = input.value.replace(/^\s+|\s+$/g, "");
+      if (!ok || !val) val = item.getAttribute("data-cat") || "未命名";
+      next.textContent = val;
+      item.setAttribute("data-cat", val);
+      input.replaceWith(next);
+      if (item.classList.contains("is-active")) {
+        var title = document.getElementById("catTitle");
+        if (title) title.textContent = val;
+      }
+      treeNotify(tree, "rename", { item: item, cat: val });
+    }
+    input.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter") {
+        ev.preventDefault();
+        commit(true);
+      } else if (ev.key === "Escape") {
+        ev.preventDefault();
+        commit(false);
+      }
+    });
+    input.addEventListener("blur", function () { commit(true); });
+  }
+
+  function addTreeChild(tree, parentLi) {
+    if (treeLeafLocked(tree, parentLi)) {
+      snackbar("末级节点不可新增子节点");
+      return;
+    }
+    var name = uniqueTreeName(tree, "新节点");
+    var li = createTreeLi(tree, name);
+    childListOf(parentLi, true).appendChild(li);
+    parentLi.classList.add("is-open");
+    var item = treeItemOf(li);
+    selectTreeItem(tree, item);
+    startTreeRename(tree, item);
+    treeNotify(tree, "add-child", { item: item, parent: parentLi });
+  }
+
+  function addTreeRoot(tree) {
+    var name = uniqueTreeName(tree, "新节点");
+    var li = createTreeLi(tree, name);
+    tree.appendChild(li);
+    var item = treeItemOf(li);
+    selectTreeItem(tree, item);
+    startTreeRename(tree, item);
+    treeNotify(tree, "add-root", { item: item });
+  }
+
+  function deleteTreeLi(tree, li) {
+    var item = treeItemOf(li);
+    var label = item ? (treeLabelOf(item) ? treeLabelOf(item).textContent.trim() : "") : "";
+    confirm({
+      title: "删除节点",
+      body: "确定删除「" + (label || "该节点") + "」？子节点将一并删除。",
+      ok: "删除",
+      onOk: function () {
+        var parentLi = li.parentElement && li.parentElement.closest("li");
+        var wasActive = !!(item && item.classList.contains("is-active"));
+        li.remove();
+        pruneEmptyBranch(parentLi);
+        if (wasActive) {
+          var next = parentLi ? treeItemOf(parentLi) : tree.querySelector(".md-tree__item");
+          if (next) selectTreeItem(tree, next);
+        }
+        treeNotify(tree, "delete", { cat: label });
+      },
+    });
+  }
+
+  function setTreeOpenAll(tree, open) {
+    tree.querySelectorAll("li").forEach(function (li) {
+      if (li.querySelector(":scope > ul")) {
+        li.classList.toggle("is-open", open);
+      }
+    });
+  }
+
+  function handleTreeAction(tree, ev) {
+    var btn = ev.target.closest("[data-tree-act]");
+    if (!btn) return false;
+    var bar = tree.previousElementSibling;
+    var inBar = bar && bar.classList.contains("md-tree-bar") && bar.contains(btn);
+    var inOps = tree.contains(btn) && btn.closest(".md-tree__ops");
+    if (!inBar && !inOps) return false;
+    ev.preventDefault();
+    ev.stopPropagation();
+    var act = btn.getAttribute("data-tree-act");
+    if (act === "expand") setTreeOpenAll(tree, true);
+    else if (act === "collapse") setTreeOpenAll(tree, false);
+    else if (act === "add-root") addTreeRoot(tree);
+    else if (act === "add") addTreeChild(tree, btn.closest("li"));
+    else if (act === "rename") startTreeRename(tree, treeItemOf(btn.closest("li")));
+    else if (act === "delete") deleteTreeLi(tree, btn.closest("li"));
+    return true;
+  }
+
+  function clearTreeDrop(tree) {
+    tree.querySelectorAll(".is-drop-before, .is-drop-into, .is-drop-after").forEach(function (el) {
+      el.classList.remove("is-drop-before", "is-drop-into", "is-drop-after");
+    });
+  }
+
+  function treeDropZone(row, clientY, tree, targetLi) {
+    var rect = row.getBoundingClientRect();
+    var y = (clientY - rect.top) / (rect.height || 1);
+    if (y < 0.28) return "before";
+    if (y > 0.72) return "after";
+    if (treeLeafLocked(tree, targetLi)) return y < 0.5 ? "before" : "after";
+    return "into";
+  }
+
+  function applyTreeMove(tree, dragLi, targetLi, zone) {
+    if (!dragLi || !targetLi || dragLi === targetLi || dragLi.contains(targetLi)) return false;
+    var oldParent = dragLi.parentElement && dragLi.parentElement.closest("li");
+    if (zone === "into") {
+      childListOf(targetLi, true).appendChild(dragLi);
+      targetLi.classList.add("is-open");
+    } else if (zone === "before") {
+      targetLi.parentNode.insertBefore(dragLi, targetLi);
+    } else {
+      targetLi.parentNode.insertBefore(dragLi, targetLi.nextSibling);
+    }
+    pruneEmptyBranch(oldParent);
+    treeNotify(tree, "move", { li: dragLi, target: targetLi, zone: zone });
+    return true;
+  }
+
+  function bindTreeDrag(tree) {
+    if (!treeEditOn(tree)) return;
+    var dragLi = null;
+    var dragging = false;
+    var startX = 0;
+    var startY = 0;
+    var suppressClick = false;
+
+    function endDrag(apply, ev) {
+      var clientY = ev && ev.clientY;
+      var clientX = ev && ev.clientX;
+      var hit = clientX != null ? document.elementFromPoint(clientX, clientY) : null;
+      var row = hit && hit.closest ? hit.closest(".md-tree__row") : null;
+      var targetLi = row && tree.contains(row) ? row.closest("li") : null;
+      var zone = row && targetLi ? treeDropZone(row, clientY, tree, targetLi) : "";
+      if (apply && dragging) applyTreeMove(tree, dragLi, targetLi, zone);
+      if (dragging) suppressClick = true;
+      clearTreeDrop(tree);
+      if (dragLi) dragLi.classList.remove("is-dragging");
+      dragLi = null;
+      dragging = false;
+      document.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerup", onUp);
+      document.removeEventListener("pointercancel", onCancel);
+    }
+
+    function onMove(ev) {
+      if (!dragLi) return;
+      if (!dragging) {
+        if (Math.abs(ev.clientX - startX) < 6 && Math.abs(ev.clientY - startY) < 6) return;
+        dragging = true;
+        dragLi.classList.add("is-dragging");
+      }
+      ev.preventDefault();
+      var hit = document.elementFromPoint(ev.clientX, ev.clientY);
+      var row = hit && hit.closest ? hit.closest(".md-tree__row") : null;
+      clearTreeDrop(tree);
+      if (!row || !tree.contains(row)) return;
+      var targetLi = row.closest("li");
+      if (!targetLi || dragLi === targetLi || dragLi.contains(targetLi)) return;
+      row.classList.add("is-drop-" + treeDropZone(row, ev.clientY, tree, targetLi));
+    }
+
+    function onUp(ev) { endDrag(true, ev); }
+    function onCancel(ev) { endDrag(false, ev); }
+
+    tree.addEventListener("pointerdown", function (ev) {
+      if (ev.button) return;
+      if (ev.target.closest(".md-tree__ops, .md-tree__rename, .md-tree__toggle")) return;
+      var row = ev.target.closest(".md-tree__row");
+      if (!row || !tree.contains(row)) return;
+      dragLi = row.closest("li");
+      if (!dragLi) return;
+      startX = ev.clientX;
+      startY = ev.clientY;
+      dragging = false;
+      document.addEventListener("pointermove", onMove);
+      document.addEventListener("pointerup", onUp);
+      document.addEventListener("pointercancel", onCancel);
+    });
+    tree.addEventListener("click", function (ev) {
+      if (!suppressClick) return;
+      suppressClick = false;
+      ev.preventDefault();
+      ev.stopPropagation();
+    }, true);
   }
 
   function previewSkip(el) {

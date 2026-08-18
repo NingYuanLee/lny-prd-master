@@ -55,7 +55,7 @@ description: >-
 | PAGE-MP-010 我的/服务 | `gold/mobile-menu.html` | `md-set-page` 浅灰底；功能入口通栏/`md-set-pair`；右可为文字或 **方形配图 `--thumb`**（行更高）；组间距漏底 |
 | PAGE-MP-007 按钮（套件样例） | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、**浅底 `--soft`**、文字、**`--link`**、**通栏 `--block` / `md-btn-row`**、置灰、`md-badge`；贴底仅一钮自动占满。禁止当业务首页。禁止裸 `<button>` |
 | PAGE-MP-011 悬浮胶囊（套件样例） | `gold/mobile-pod.html` | 仅规格点名时按共享 `PT-FLOAT` 落到业务页；用 `md-pod` + `--tl` / `--bl` / `--br` 并写在页根，禁止用 `md-fab` 冒充成组 |
-| PAGE-MP-008 分类 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左树右内容；`md-tree` `__toggle` 展开收起；点节点只换右区 |
+| PAGE-MP-008 分类 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左树右内容；浏览用 `data-tree-edit="off"`。桌面维护交互见 `desktop-split` |
 | PAGE-MP-009 时间轴 | `gold/mobile-timeline.html` | `md-timeline` 左 `__rail` 竖轨，右 `md-card--row` 图文；`is-done` / `is-active`；点节点切高亮 |
 
 **桌面端**
@@ -69,7 +69,7 @@ description: >-
 | PAGE-AD-012 字段详情 | `gold/desktop-fields.html` | `md-detail-page`；分组 `md-desc`；桌面 `--cols-2`；跨列 `--span`。不要沉浸式、不要当表单 |
 | PAGE-AD-003 向导 | `gold/desktop-wizard.html` + `gold/desktop-state-flow.html` | 状态导览族：`md-stepper` + `md-advance` +（可选）`md-progress`；当前步包在 `md-d1__form`；数字可点跳步 |
 | PAGE-AD-004 工作台 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
-| PAGE-AD-005 树+内容 | `gold/desktop-split.html` | 不分页树：`md-d1--split` + `md-tree`；表内嵌套另读 `desktop-tree-nest.html`。**不是**分类钮 |
+| PAGE-AD-005 树+内容 | `gold/desktop-split.html` | 不分页树：`md-d1--split` + `md-tree` + `md-tree-bar`；增子/重命名/删除；拖到上/中/下。表内嵌套另读 `desktop-tree-nest.html`。**不是**分类钮 |
 | 定位导航 | `gold/desktop-locator.html` | 分类/大纲 `md-locator`；与时间轴同族；点选定位锚点 |
 | 页面分栏 | `gold/desktop-layout.html` | `md-layout--2col/3col/pin`；卡片列表；**禁止** `md-d1__form` 冒充分栏 |
 | PAGE-AD-006 设置 | `gold/desktop-settings.html` | `md-d1 md-set-page` 浅灰底；**设置项**：开关可点；`md-set-picks` 文字/图标/图片 + 未选空圈；左图标可有可无；无极 / `data-menu` 改值 |

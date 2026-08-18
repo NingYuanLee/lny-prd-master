@@ -2634,9 +2634,33 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
   width: 100%;
 }
 
-.md-tree { list-style: none; margin: 0; padding: 8px 0; }
+.md-tree { list-style: none; margin: 0; padding: 8px 0; user-select: none; }
 .md-tree ul { list-style: none; margin: 0; padding-left: 16px; }
 .md-tree li:not(.is-open) > ul { display: none; }
+.md-tree-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 4px 8px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--md-divider);
+  flex-shrink: 0;
+}
+.md-tree-bar .md-btn--sm { min-height: 28px; padding: 0 8px; }
+.md-tree-bar .md-icon-btn { width: 28px; height: 28px; }
+.md-split__side > .md-tree {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.md-tree__row {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  position: relative;
+  cursor: grab;
+}
 .md-tree__item {
   min-height: 36px;
   display: flex;
@@ -2644,6 +2668,11 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
   gap: 4px;
   padding: 4px 8px;
   border-radius: var(--md-radius);
+}
+.md-tree__row > .md-tree__item {
+  flex: 1;
+  min-width: 0;
+  width: auto;
 }
 button.md-tree__item {
   border: 0;
@@ -2664,10 +2693,12 @@ button.md-tree__item {
   color: var(--md-text-secondary);
   transition: transform 150ms var(--md-ease);
 }
-.md-tree li.is-open > .md-tree__item > .md-tree__toggle {
+.md-tree li.is-open > .md-tree__item > .md-tree__toggle,
+.md-tree li.is-open > .md-tree__row > .md-tree__item > .md-tree__toggle {
   transform: rotate(90deg);
 }
-.md-tree li:not(:has(> ul)) > .md-tree__item > .md-tree__toggle {
+.md-tree li:not(:has(> ul)) > .md-tree__item > .md-tree__toggle,
+.md-tree li:not(:has(> ul)) > .md-tree__row > .md-tree__item > .md-tree__toggle {
   visibility: hidden;
   pointer-events: none;
 }
@@ -2678,12 +2709,79 @@ button.md-tree__item {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.md-tree__rename {
+  flex: 1;
+  min-width: 0;
+  height: 28px;
+  padding: 2px 8px;
+  font: inherit;
+  font-size: 0.8125rem;
+  user-select: text;
+}
+.md-tree__ops {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0;
+  opacity: 0;
+  pointer-events: none;
+  padding-right: 2px;
+  cursor: default;
+}
+.md-tree__row:hover > .md-tree__ops,
+.md-tree__row:focus-within > .md-tree__ops,
+.md-tree__row.is-menu-host > .md-tree__ops {
+  opacity: 1;
+  pointer-events: auto;
+}
+.md-tree__ops .md-icon-btn {
+  width: 24px;
+  height: 24px;
+  color: var(--md-text-secondary);
+}
+.md-tree__ops .md-icon-btn .md-icon {
+  width: 16px;
+  height: 16px;
+}
+.md-tree__ops .md-icon-btn:has(.md-icon--danger) { color: var(--md-error); }
+.md-tree[data-leaf-add="off"] li:not(:has(> ul)) .md-tree__ops [data-tree-act="add"],
+.md-tree li[data-leaf] .md-tree__ops [data-tree-act="add"] {
+  display: none;
+}
 .md-tree__item:hover { background: var(--md-hover); }
 .md-tree__item.is-active {
   background: var(--md-focus);
   color: var(--md-primary);
 }
 .md-tree__item.is-active .md-tree__toggle { color: var(--md-primary); }
+.md-tree li.is-dragging {
+  opacity: 0.45;
+  pointer-events: none;
+}
+.md-tree__row.is-drop-before::before,
+.md-tree__row.is-drop-after::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  height: 2px;
+  background: var(--md-primary);
+  z-index: 2;
+  pointer-events: none;
+}
+.md-tree__row.is-drop-before::before { top: 0; }
+.md-tree__row.is-drop-after::after { bottom: 0; }
+.md-tree__row.is-drop-into > .md-tree__item {
+  outline: 2px solid var(--md-primary);
+  outline-offset: -2px;
+  background: var(--md-focus);
+}
+@media (hover: none) {
+  .md-tree__ops {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
 
 .md-chart-ph {
   min-height: 180px;
@@ -2739,11 +2837,16 @@ button.md-tree__item {
 .md-split__side {
   width: 240px;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
   overflow: auto;
   background: var(--md-bg-paper);
   box-shadow: var(--md-shadow-1);
   border-radius: var(--md-radius);
   padding: 8px;
+}
+.md-split__side:has(> .md-tree) {
+  overflow: hidden;
 }
 .md-split__main {
   flex: 1;

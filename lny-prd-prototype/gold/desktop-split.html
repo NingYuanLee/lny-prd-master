@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 金样：左树右内容（不分页树）。箭头展开收起，点树只换右区。分类按钮/大纲定位见 desktop-locator；表内父子嵌套见 desktop-tree-nest。 -->
+<!-- LNY-PRD gold: 金样：左树右内容（不分页树）。总控（全部展开/收起、新增根节点）；节点增子/重命名/删除；拖到节点上=同级紧前、节点中=末个子节点、节点下=同级紧后。末级可否增子由 data-leaf-add / data-leaf 控制。分类定位见 desktop-locator；表内嵌套见 desktop-tree-nest。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -14,6 +14,13 @@
     </div>
     <div class="md-split">
       <aside class="md-split__side">
+        <div class="md-tree-bar">
+          <button type="button" class="md-btn md-btn--text md-btn--sm" data-tree-act="expand">全部展开</button>
+          <button type="button" class="md-btn md-btn--text md-btn--sm" data-tree-act="collapse">全部收起</button>
+          <button type="button" class="md-btn md-btn--contained md-btn--sm" data-tree-act="add-root">
+            <span class="md-icon" data-icon="add" aria-hidden="true"></span>根节点
+          </button>
+        </div>
         <ul class="md-tree">
           <li class="is-open">
             <button type="button" class="md-tree__item is-active" data-cat="水果">
@@ -63,7 +70,7 @@
               </li>
             </ul>
           </li>
-          <li>
+          <li data-leaf>
             <button type="button" class="md-tree__item" data-cat="烘焙">
               <span class="md-icon md-tree__toggle" data-icon="chevron-right" aria-hidden="true"></span>
               <span class="md-tree__label">烘焙</span>

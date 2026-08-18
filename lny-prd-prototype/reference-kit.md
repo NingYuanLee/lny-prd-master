@@ -752,7 +752,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | 页面分栏 | `md-layout--2col/3col/pin` | 用 `md-d1__form` 当页面布局 |
 | 进步条 / 进度条 / 页签 | 同属状态导览：`md-tabs` / `md-stepper` / `md-advance` / `md-progress` | 用无极冒充分段；把签与进步条写成互不相关两套 |
 | 定位导航 | `md-locator` `--cats` / `--outline`；时间轴 `md-timeline` | 用 `md-tree` 冒充分类钮；用分类冒充可展开树 |
-| 树 | 不分页 `md-tree` + `__item` `__toggle` `__label`；表内 `md-table--nest` | 无类名嵌套 `ul`；用分类定位冒充树；触屏用列表硬套分类树 |
+| 树 | 不分页 `md-tree` + `__item` `__toggle` `__label`；总控 `md-tree-bar`；节点 `__ops`（增子/重命名/删除）；拖放 `上/中/下`；表内 `md-table--nest`。只读 `data-tree-edit="off"`；末级禁增 `data-leaf` / `data-leaf-add="off"` | 无类名嵌套 `ul`；用分类定位冒充树；触屏用列表硬套分类树 |
 | 步骤条 | `md-stepper` + `md-step`；已完成 `is-done`；当前 `is-active`。桌面数字步骤可点跳步（`proto-page.js` 自动绑）；自管步进写 `data-wizard="off"` | 纯数字列表；桌面数字步骤不可点 |
 | 进步条 | `md-advance` + `__head` + `__track` + `__seg` + `__bar`；`data-segments`；触屏可 `--lg` | 用无极 `md-progress` 冒充分步 |
 | 进度条 | `md-progress` + `__head` + `__track` + `__bar`；不确定 `--indeterminate`；触屏可 `--lg` | 裸 `<progress>` / 自造色条 / 用分段 `md-advance` 冒充上传 |
@@ -961,7 +961,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 列表三型 | 标准列表 `md-d1--list`；嵌入表格可只用 `md-table`；卡片列表 `md-d1--cards` + `md-card-grid` |
 | 工作台 | `md-stat-grid` `md-stat-card`；趋势 `md-chart-ph` |
 | 页面分栏 | `md-layout` `--2col` / `--3col` / `--pin` + `__pane` / `__pane--span`。**禁止**用 `md-d1__form` 冒充 |
-| 分栏 / 树 | `md-d1--split`；`md-split` `__side` `__main`；树 `md-tree`；定位导航 `md-locator` `--cats` / `--outline`（`data-target`） |
+| 分栏 / 树 | `md-d1--split`；`md-split` `__side` `__main`；树 `md-tree` `__row` `__ops` `md-tree-bar`；拖到节点上/中/下；只读 `data-tree-edit="off"`；定位导航 `md-locator` `--cats` / `--outline`（`data-target`） |
 | 表内嵌套树 | `md-table--nest` + `md-row--child` + `md-nest-toggle`；`data-row-id` / `data-parent` |
 | D1-2 表单栅格 | `md-d1__form`（默认双列，`row-gap` 保留）；`--cols-1` / `--cols-3`；嵌套 `md-form-block` 同样有 gap。弹窗 `md-dialog__form` 单列 |
 | 设置分组 | `md-set-group` `__title` `md-set-row`（**设置项**：当页当行直接操作；左 `md-icon` 可有可无 + `__label`；右开关/值/本行菜单）；开关 `md-switch`（热区铺满，可点）；无极 `md-set-block` + `md-slider--fluid`；横向多选 `md-set-picks` / `md-set-pick`（`__face` 可为 `__label` 文字 / 图标 / `__media` 图片；`__mark` 含 `__off`+`__on`，未选也显示空圈）；下拉 `md-set-row` + `data-menu` |

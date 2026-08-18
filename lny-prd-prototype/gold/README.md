@@ -30,7 +30,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 桌面展示 / 详情 | `desktop-detail.html`（整页浅灰+白底区块；资料卡片；灯箱分区；右下目录+回顶。禁止沉浸式） |
 | 桌面字段详情 | `desktop-fields.html`（分组 `md-desc`；桌面可双列；禁止沉浸式、禁止当表单） |
 | 工作台 / 仪表盘 | `desktop-dashboard.html`（`md-stat-grid` 指标卡 + `md-chart-ph` + 短表。禁止拿 `desktop-list` 硬套） |
-| 树 + 内容（不分页） | `desktop-split.html`（`md-d1--split` 左树右内容；箭头展开收起。**不是**分类钮） |
+| 树 + 内容（不分页） | `desktop-split.html`（`md-d1--split` 左树右内容；总控展开/收起/增根；节点维护与拖到上/中/下。**不是**分类钮） |
 | 表内父子嵌套 | `desktop-tree-nest.html`（分页列表里的树；`md-table--nest`） |
 | 定位导航（分类/大纲） | `desktop-locator.html`（与时间轴同族；点选定位右侧锚点；与树分离） |
 | 桌面设置 | `desktop-settings.html`（**设置项**：当页当行直接操作；左图标可有可无） |
