@@ -5637,7 +5637,7 @@ button.md-set-row:active { background: var(--md-selected); }
 .md-king--pair {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  padding: 4px 0 12px;
+  padding: 0;
   box-shadow: none;
 }
 .md-king--pair .md-king__item {

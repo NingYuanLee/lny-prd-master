@@ -24,7 +24,44 @@
 | 按钮 | 可点操作用套件类：`md-btn` + `--contained` / `--outlined` / `--soft` / `--text` / `--link`，或 `md-icon-btn` / `md-tab` / `md-menu__item` / `md-page-btn` / `md-tree__item`。禁止裸 `<button>`、禁止 `<input type="submit">` 露出浏览器灰钮/立体边 |
 | 移动端 | 状态栏由 `proto-page.js` 固定顶注入；页根须标 `md-immersive` 或 `md-standard`；`md-section-head`；**列表区** `md-card--cover` / `--tile` / `--row`（多行，可无左图+小图）/ `md-set-row`（单行）；**功能区** `md-king` / `--pair` / `md-set-row` 通栏 / `md-set-pair`；触屏 `md-search` 仅左图标+输入；`viewport-fit=cover`；正文左右下走 `--md-safe-*`；标准顶栏左右 4px |
 | 桌面端 | 必须有 `md-breadcrumb`（内容区顶部，不要 `md-page-head` 大标题）；表格首列可用 `md-row-goods` + `md-thumb md-media-ph--n`。D1-1 的冻结、操作阈值、语义列宽、紧凑密度和底部对齐直接执行共享 `PT-DESKTOP-LIST`：根用 `md-d1--list`，列用对应 `md-col-*`，更多菜单用 `md-actions` + `data-menu`，汇总/分页用 `md-d1__stats` / `md-d1__pager`。触屏弹窗/半屏内边距收紧；底半屏高度随内容、最大 70vh、超出正文滚动、关闭钮在面板右上角（`md-drawer__close`）。规格出现的弹窗/签/下拉/日期/按钮组必须用本节 AD 控件，禁止裸 `alert` / 无样式 `<select>` |
-| 间距 | **先内边距、后外边距**：优先用区块自身 `padding` 撑开呼吸感；仅当相邻两块贴死或视觉仍挤时才补块间 `gap`/`margin`（≥ `--md-space`）。**两侧都已有足够内边距时可不再加块间外边距**；只有一侧有则视情况补另一侧或父级 `gap`。滚动区模块用 `md-module` + `--md-module-gap`；固定顶区/工具条见套件（如 `md-list-toolbar`）。禁止内联 `margin` 当排版 |
+| 间距 | 触屏走 **§触屏间距三层联动**（间距预算）：父级 `gap` 定兄弟节奏；块 **seam 边**（朝向相邻兄弟的上下边）不重复叠 padding/margin；块内 content padding 写在 `__item`/`__body`。禁止内联 `margin` 当排版 |
+
+## 触屏间距三层联动（间距预算）
+
+写触屏页时，**父级 gap、兄弟 margin、自身 padding** 只选一层承担「块与块之间」的缝，避免叠成 24～28px 的大空白。
+
+| 层 | 负责什么 | 典型 token / 类 | 规则 |
+|----|----------|-----------------|------|
+| **L1 父级弹性 gap** | 兄弟块之间的默认节奏 | `md-mobile-sheet` / `md-mobile-body` → `--md-module-gap`（16px）；`md-module` → `--md-space`（8px）；`md-list-toolbar` → `--md-space` | **不轻易为单个块改父 gap**（会影响其它无内边距 sibling） |
+| **L2 兄弟外边距** | 非 flex、或需负补偿时偶用 | `margin-top` / `margin-bottom` | 父已有 `gap` 时 **禁止** sibling 再叠上下 margin |
+| **L3 块 padding** | 块内触控区、文字缩进 | `md-king__item`、`md-set-row` 行内距等 | **seam 边**（顶/底朝向相邻兄弟）**不**重复 L1；只给 **content** 留 padding |
+
+**间距预算**（兄弟 A、B 之间的视觉缝）：
+
+```text
+缝 ≈ parent.gap + A.padding-bottom + B.padding-top + A.margin-bottom + B.margin-top
+```
+
+目标：≈ **一个节奏单位**（8 或 16px），不要叠成双倍。
+
+**决策顺序**
+
+1. 找最近的 **flex 列父级**及其 `gap`。
+2. 标记每个直接子块：seam 方向有无上下 padding/margin。
+3. **混合 sibling**（有的有 padding、有的无）→ **保留父 gap**，去掉有 padding 块在 seam 方向的上下 padding（**不要**动父 gap）。
+4. **全部 sibling 都要块级外距且要露底**（如 `md-set-page` 浅灰分组）→ 可减父 gap，改靠组外边距/gap 漏底。
+5. 仅需 **块内** 呼吸 → padding 写在 `__item` / `__body`，外层 `nav`/`section` seam 边为 0。
+
+**正反例**
+
+| 场景 | 做法 |
+|------|------|
+| ✅ 首页专题入口 | `md-mobile-sheet { gap:16px }` + `md-module` + `md-king--pair { padding:0 }` + `md-king__item { padding:14px 16px }` |
+| ❌ 叠缝 | sheet `gap:16px` **且** `md-king--pair { padding:4px 0 12px }` → 缝 20～28px |
+| ✅ 列表工具条 | 搜索行/tab  seam 边无 padding → 父 `md-list-toolbar { gap:8px }` |
+| ✅ 模块内标题+列表 | `md-module { gap:8px }`；`md-section-head` 无额外上下 margin |
+
+金样：`gold/mobile-grid.html`（专题 `md-king--pair`）、`gold/mobile-list.html`（`md-list-toolbar`）。
 
 ## 复制
 
@@ -390,7 +427,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 禁止：有 TabBar 又写 L5 返回顶栏；L4 左上胶囊与 L2/L5/L6 页内顶栏同页并存；L3 不写 `md-immersive` 或漏绑滚动变实底；把 L6 封面顶栏拉成 16:9 Hero。
 
-金刚区默认 4/5 列（图标文字上下居中），**可出现在任意需要入口区的页面，不限首页**。信息多、要标题+说明时用 `md-king--pair` 双卡（小图标与文案均靠左）：
+金刚区默认 4/5 列（图标文字上下居中），**可出现在任意需要入口区的页面，不限首页**。信息多、要标题+说明时用 `md-king--pair` 双卡（小图标与文案均靠左；**外层 `padding:0`**，块间距靠父级 `md-module`/`md-mobile-sheet` 的 `gap`，内距只在 `md-king__item`）：
 
 ```html
 <nav class="md-king md-king--pair">
