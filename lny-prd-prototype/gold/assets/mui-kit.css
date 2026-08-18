@@ -2708,7 +2708,7 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
   border-radius: 50%;
   box-sizing: border-box;
   flex-shrink: 0;
-  margin-top: 18px;
+  margin-top: 22px;
   background: var(--md-grey-300);
   border: 2px solid var(--md-grey-300);
   z-index: 1;
@@ -2740,7 +2740,7 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
 .md-timeline__body {
   flex: 1 1 auto;
   min-width: 0;
-  margin: 0 0 16px;
+  margin: 0 0 20px;
 }
 .md-timeline__item:last-child .md-timeline__body {
   margin-bottom: 0;
@@ -2751,10 +2751,26 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
 }
 .md-timeline__body.md-card--row .md-card__body {
   min-height: 0;
-  padding: 12px 14px;
+  padding: 16px 16px;
+  gap: 10px;
+}
+.md-timeline__body.md-card--row .md-card__main {
+  gap: 6px;
+}
+.md-timeline__body.md-card--row .md-card__title {
+  line-height: 1.45;
+}
+.md-timeline__body.md-card--row .md-card__subtitle,
+.md-timeline__body.md-card--row .md-card__text {
+  line-height: 1.55;
+}
+.md-timeline__body.md-card--row .md-card__foot {
+  margin-top: 2px;
+  padding-top: 2px;
 }
 .md-timeline__body.md-card--row .md-card__photos {
-  gap: 6px;
+  gap: 8px;
+  margin-top: 2px;
 }
 .md-timeline__body.md-card--row .md-card__photo {
   width: 40px;
