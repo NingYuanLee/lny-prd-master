@@ -99,5 +99,6 @@ exit 0 才可继续；exit 1 不得交付，按 F.1 整文件重写（coverage �
 | G5.10 | 易误套页型 | 按页类型打开金样，禁止按 MP/AD 序号对齐。工作台/树/设置/我的/向导/时间轴/桌面详情用对应金样；禁止拿 `desktop-lists` / `mobile-list` 整页硬套；禁止一排按钮冒充功能区 |
 | G5.11 | SKILL 标注 | 总入口 `prototypes/index.html` 页底右下有技能包地址小字（见 `reference-scope.md`）；各端 `index.html` 由 `proto-shell.js` 注入，禁止手写或删 |
 | G5.12 | 控件皮肤 | 可点操作用 `md-btn`（含 `--contained` / `--outlined` / `--soft` / `--text` / `--link`）或 `md-icon-btn` / `md-tab` / `md-menu__item` / `md-page-btn` / `md-tree__item`；无 `md-*` 的 `<button>` / `<input type="submit">` 不得交付（浏览器灰钮） |
+| G5.13 | 区块间距 | 相邻功能块不得贴死：滚动区 `md-module` + `--md-module-gap`；固定顶区/工具条（`md-list-toolbar`、筛选+页签等）子块之间 ≥ `--md-space`（8px），优先父级 `gap` 或套件规则，禁止零间距堆叠 |
 
 禁止：对照未过就汇报「已更新」；把 G.3（UTF-8/控制台）当成功能齐套；按 ASCII 线框从零手写一页更瘦的布局。
