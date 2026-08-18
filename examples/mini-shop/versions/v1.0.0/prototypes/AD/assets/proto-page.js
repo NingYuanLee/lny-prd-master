@@ -844,7 +844,18 @@
       var out = box.querySelector(".md-slider__value");
       var labels = box.getAttribute("data-labels");
       var suffix = el.getAttribute("data-suffix") || "";
+      var isSteps = box.classList.contains("md-slider--steps");
+      var ticks = isSteps ? box.querySelectorAll(".md-slider__tick") : null;
       function paint() {
+        if (isSteps && ticks && ticks.length) {
+          var min = Number(el.min);
+          if (isNaN(min)) min = 0;
+          var idx = Number(el.value) - min;
+          ticks.forEach(function (tick, i) {
+            tick.classList.toggle("is-active", i === idx);
+          });
+          return;
+        }
         if (!out) return;
         if (labels) {
           var arr = labels.split(",");
