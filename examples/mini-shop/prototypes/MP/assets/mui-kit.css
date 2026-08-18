@@ -939,7 +939,7 @@ textarea.md-field__input:disabled:focus,
 .md-field--readonly .md-field__label,
 .md-field--readonly:focus-within .md-field__label {
   color: var(--md-text-disabled);
-  background: transparent;
+  background: var(--md-grey-200);
 }
 
 .md-check, .md-radio {

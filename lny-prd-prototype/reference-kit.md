@@ -529,7 +529,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 单日用 `md-field--date`（聚焦弹出月历）。日期段用 `md-field--daterange`：先点开始日、再点结束日，输入框显示 `YYYY-MM-DD ~ YYYY-MM-DD`，起止写在 `data-start` / `data-end`。时间用 `md-field--time` + `type="time"`。禁止再写 `datetime-local` 裸控件。
 
-**只读 / 禁用输入**（**灰底** `#eee`、淡字；日期段触发器的 `readonly` 不要套本类）
+**只读 / 禁用输入**（**视觉一致**：灰底 `#eee`、标签缺口同色灰底、淡字；语义上 `readonly` 仍可复制文本，`disabled` 不参与提交。日期段触发器的 `readonly` 不要套 `md-field--readonly`）
 
 ```html
 <label class="md-field md-field--readonly">
