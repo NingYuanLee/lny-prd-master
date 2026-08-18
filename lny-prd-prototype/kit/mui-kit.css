@@ -1124,6 +1124,7 @@ textarea.md-field__input:disabled:focus,
   letter-spacing: 0.0075em;
   flex: 1;
   min-width: 0;
+  margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -4319,6 +4320,12 @@ button.md-set-row:active { background: var(--md-selected); }
 .md-mobile-page .md-appbar--mobile .md-btn {
   color: var(--md-text);
 }
+.md-mobile-page .md-appbar--mobile > .md-appbar__title {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  line-height: 1.25;
+}
 .md-mobile-page .md-card {
   border-radius: 12px;
   box-shadow: var(--md-shadow-surface);
@@ -6290,6 +6297,17 @@ a.md-card {
 .md-appbar--cover > *:not(.md-appbar__cover) {
   position: relative;
   z-index: 1;
+}
+.md-appbar--cover > .md-icon-btn,
+.md-appbar--cover > a.md-icon-btn {
+  flex-shrink: 0;
+}
+.md-appbar--cover > .md-appbar__title {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  line-height: 1.25;
+  margin: 0;
 }
 .md-appbar--cover .md-icon-btn,
 .md-mobile-page .md-appbar--cover .md-icon-btn,

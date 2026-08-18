@@ -1050,8 +1050,9 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 
 ```html
 <!-- 放在 .md-mobile-page 下，与 md-tabbar / md-action-bar 同级；不要放进 md-mobile-body -->
-<nav class="md-pod md-pod--tl" aria-label="返回与分享">
+<nav class="md-pod md-pod--tl" aria-label="返回、首页与分享">
   <button type="button" class="md-pod__item" aria-label="返回"><span class="md-icon" data-icon="chevron-left"></span></button>
+  <button type="button" class="md-pod__item" aria-label="首页"><span class="md-icon" data-icon="home"></span></button>
   <button type="button" class="md-pod__item" aria-label="分享"><span class="md-icon" data-icon="share"></span></button>
 </nav>
 <nav class="md-pod md-pod--br" aria-label="收藏">
