@@ -3089,6 +3089,11 @@ button.md-tree__item {
   background: transparent;
   box-shadow: none;
 }
+.md-d1--locator .md-tab-panels > .md-tab-panel.is-active {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
 .md-locator-head {
   display: flex;
   align-items: center;
@@ -3150,10 +3155,19 @@ button.md-tree__item {
 }
 .md-article-host {
   position: relative;
+  display: flex;
+  flex-direction: column;
   flex: 1;
   min-width: 0;
   min-height: 0;
   overflow: hidden;
+}
+.md-article-host > .md-article,
+.md-article-host > .md-doc-scroll {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
 }
 .md-article {
   flex: 1;

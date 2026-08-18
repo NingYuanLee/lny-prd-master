@@ -293,6 +293,11 @@
           p.classList.toggle("is-active", p.id === panelId);
         });
         syncLocatorSpies();
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            syncLocatorSpies();
+          });
+        });
         scheduleActionColWidths();
       });
     });
@@ -1136,6 +1141,10 @@
   }
 
   function locatorScrollRoot(nav) {
+    var floatHost = nav.closest(".md-article-host");
+    if (floatHost) {
+      return floatHost.querySelector(".md-doc-scroll") || floatHost.querySelector(".md-article") || floatHost;
+    }
     var scope = locatorScope(nav);
     return (
       scope.querySelector(".md-doc-scroll") ||
@@ -1158,9 +1167,10 @@
       n.classList.remove("is-active");
     });
     btn.classList.add("is-active");
-    if (typeof btn.scrollIntoView === "function") {
-      btn.scrollIntoView({ block: "nearest" });
-    }
+    var navRect = nav.getBoundingClientRect();
+    var btnRect = btn.getBoundingClientRect();
+    if (btnRect.top < navRect.top) nav.scrollTop += btnRect.top - navRect.top;
+    else if (btnRect.bottom > navRect.bottom) nav.scrollTop += btnRect.bottom - navRect.bottom;
   }
 
   function syncLocatorSpy(nav) {
@@ -1202,7 +1212,7 @@
     nav._locatorUnlock = setTimeout(function () {
       nav.removeAttribute("data-locator-lock");
       syncLocatorSpy(nav);
-    }, 480);
+    }, 640);
   }
 
   function bindLocators() {
