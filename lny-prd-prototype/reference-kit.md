@@ -941,6 +941,28 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 
 禁止：中层竖线拉满整行高度；下层用描边主按钮冒充浅底；左图裸 `md-card__media`；把资料卡当成列表横卡 `--row`；精简形态再拆成裸头像+正文另排；**页顶资料卡顶到状态栏**（须 `--top` 或依赖自动避让）；给资料卡加列表式圆角轻阴影（默认必须平铺）。
 
+**我的页个人信息 `md-profile--me`**：与详情店铺资料卡同根组件，只保留上层 `__head`；左 `__media--avatar`（可 `--lg`）点选换头像；右三行：`__name` 昵称（大号黑字，可内联改）→ `__uid`（小字灰 + 线框复制）→ `__extra`（按需留空或加文案/按钮）；右上可选 `__edit` 浅底小钮跳资料设置。不要套 `__stats` / `__foot` / 店铺标签 unless 规格要求。
+
+```html
+<article class="md-profile md-profile--me">
+  <a class="md-btn md-btn--soft md-btn--sm md-profile__edit" href="./PAGE-MP-006.html">编辑</a>
+  <div class="md-profile__head">
+    <button type="button" class="md-profile__media md-profile__media--avatar md-profile__media--lg md-media-ph md-media-ph--1" aria-label="更换头像" data-profile-avatar></button>
+    <label class="md-upload is-hidden" aria-hidden="true">
+      <input type="file" accept="image/*" data-profile-avatar-file tabindex="-1">
+    </label>
+    <div class="md-profile__main">
+      <button type="button" class="md-profile__title md-profile__name">阿宁</button>
+      <p class="md-profile__uid">
+        <span class="md-profile__uid-text">ID：8829103</span>
+        <button type="button" class="md-btn md-btn--outlined md-btn--sm md-profile__copy" data-copy="8829103">复制</button>
+      </p>
+      <div class="md-profile__extra"></div>
+    </div>
+  </div>
+</article>
+```
+
 ## 组件速查
 
 | 用途 | 类名 |

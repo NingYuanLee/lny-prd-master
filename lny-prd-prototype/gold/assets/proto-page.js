@@ -877,6 +877,145 @@
     return "md-media-ph md-media-ph--" + ((n % 6) + 1);
   }
 
+  function ensureAvatarPickSheet() {
+    if (document.getElementById("mdAvatarPickSheet")) return;
+    var mask = document.createElement("div");
+    mask.id = "mdAvatarPickSheetBackdrop";
+    mask.className = "md-backdrop md-select-sheet-backdrop";
+    var sheet = document.createElement("div");
+    sheet.id = "mdAvatarPickSheet";
+    sheet.className = "md-select-sheet";
+    sheet.setAttribute("role", "dialog");
+    sheet.setAttribute("aria-hidden", "true");
+    sheet.innerHTML =
+      '<div class="md-select-sheet__handle" aria-hidden="true"></div>' +
+      '<h2 class="md-select-sheet__title">更换头像</h2>' +
+      '<div class="md-select-sheet__list" role="listbox">' +
+      '<button type="button" class="md-select-sheet__opt" data-avatar-pick="wx">微信头像授权</button>' +
+      '<button type="button" class="md-select-sheet__opt" data-avatar-pick="album">从相册选择</button>' +
+      "</div>" +
+      '<button type="button" class="md-btn md-btn--text md-select-sheet__cancel">取消</button>';
+    document.body.appendChild(mask);
+    document.body.appendChild(sheet);
+    mask.addEventListener("click", closeAvatarPickSheet);
+    sheet.querySelector(".md-select-sheet__cancel").addEventListener("click", closeAvatarPickSheet);
+    sheet.querySelector(".md-select-sheet__list").addEventListener("click", function (ev) {
+      var opt = ev.target.closest("[data-avatar-pick]");
+      if (!opt) return;
+      var cb = sheet._onPick;
+      closeAvatarPickSheet();
+      if (typeof cb === "function") cb(opt.getAttribute("data-avatar-pick"));
+    });
+  }
+
+  function closeAvatarPickSheet() {
+    var sheet = document.getElementById("mdAvatarPickSheet");
+    var mask = document.getElementById("mdAvatarPickSheetBackdrop");
+    if (sheet) {
+      sheet.classList.remove("is-open");
+      sheet.setAttribute("aria-hidden", "true");
+      sheet._onPick = null;
+    }
+    if (mask) mask.classList.remove("is-open");
+    syncDialogLock();
+  }
+
+  function openAvatarPickSheet(onPick) {
+    ensureAvatarPickSheet();
+    var sheet = document.getElementById("mdAvatarPickSheet");
+    var mask = document.getElementById("mdAvatarPickSheetBackdrop");
+    if (!sheet || !mask) return;
+    sheet._onPick = onPick;
+    mask.classList.add("is-open");
+    sheet.classList.add("is-open");
+    sheet.setAttribute("aria-hidden", "false");
+    syncDialogLock();
+  }
+
+  function bindProfileNameEdit(nickBtn) {
+    if (!nickBtn || nickBtn.getAttribute("data-name-bound") === "1") return;
+    nickBtn.setAttribute("data-name-bound", "1");
+    nickBtn.addEventListener("click", function () {
+      if (nickBtn.tagName !== "BUTTON") return;
+      var current = nickBtn.textContent.replace(/\s+/g, " ").trim();
+      var input = document.createElement("input");
+      input.type = "text";
+      input.className = "md-profile__name-input";
+      input.value = current;
+      if (nickBtn.id) input.id = nickBtn.id;
+      nickBtn.replaceWith(input);
+      input.focus();
+      input.select();
+      function finish(save) {
+        var val = save ? input.value.replace(/\s+/g, " ").trim() || current : current;
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "md-profile__title md-profile__name";
+        if (input.id) btn.id = input.id;
+        btn.textContent = val;
+        input.replaceWith(btn);
+        bindProfileNameEdit(btn);
+        if (save && val !== current) snackbar("昵称已保存");
+      }
+      input.addEventListener("blur", function () {
+        finish(true);
+      });
+      input.addEventListener("keydown", function (ev) {
+        if (ev.key === "Enter") {
+          ev.preventDefault();
+          input.blur();
+        }
+        if (ev.key === "Escape") {
+          ev.preventDefault();
+          finish(false);
+        }
+      });
+    });
+  }
+
+  function bindMeProfiles() {
+    document.querySelectorAll(".md-profile--me").forEach(function (root) {
+      if (root.getAttribute("data-md-bound") === "1") return;
+      root.setAttribute("data-md-bound", "1");
+      var avatar = root.querySelector("[data-profile-avatar]");
+      var fileInput = root.querySelector('input[type="file"][data-profile-avatar-file]');
+      root.querySelectorAll("[data-copy]").forEach(function (btn) {
+        btn.addEventListener("click", function (ev) {
+          ev.preventDefault();
+          ev.stopPropagation();
+          var text = btn.getAttribute("data-copy") || "";
+          copyPlainText(text).then(
+            function () {
+              snackbar("已复制");
+            },
+            function () {
+              snackbar("复制失败", { severity: "error" });
+            }
+          );
+        });
+      });
+      if (avatar) {
+        avatar.addEventListener("click", function () {
+          openAvatarPickSheet(function (pick) {
+            if (pick === "wx") snackbar("已授权微信头像");
+            else if (pick === "album" && fileInput) fileInput.click();
+          });
+        });
+      }
+      if (fileInput && avatar) {
+        fileInput.addEventListener("change", function () {
+          var file = fileInput.files && fileInput.files[0];
+          if (file && file.type.indexOf("image/") === 0) {
+            avatar.style.backgroundImage = "url(" + URL.createObjectURL(file) + ")";
+            snackbar("头像已更新");
+          }
+          fileInput.value = "";
+        });
+      }
+      bindProfileNameEdit(root.querySelector(".md-profile__name"));
+    });
+  }
+
   function bindUploads() {
     document.querySelectorAll('[data-upload="single"]').forEach(function (box) {
       var input = box.querySelector('input[type="file"]');
@@ -2837,6 +2976,7 @@
     bindOutlineCollapse();
     bindNestTables();
     bindUploads();
+    bindMeProfiles();
     bindCombos();
     bindMobileSelects();
     bindProgress();

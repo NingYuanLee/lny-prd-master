@@ -6722,6 +6722,106 @@ a.md-card {
   background: rgba(25, 118, 210, 0.18);
 }
 
+/* 我的页个人信息：同 md-profile 左定宽右填满；圆头像 + 昵称/ID/扩展行；右上可选浅底编辑 */
+.md-profile--me {
+  position: relative;
+  gap: 0;
+}
+.md-profile--me .md-profile__edit {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  z-index: 1;
+  min-width: 0;
+  height: 28px;
+  padding: 2px 10px;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+.md-profile--me:has(.md-profile__edit) .md-profile__head {
+  padding-right: 52px;
+  box-sizing: border-box;
+}
+.md-profile--me button.md-profile__media {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.md-profile--me .md-profile__main {
+  gap: 6px;
+}
+.md-profile--me .md-profile__name,
+.md-profile--me button.md-profile__title.md-profile__name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--md-text);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.md-profile__name-input {
+  width: 100%;
+  max-width: 100%;
+  height: 32px;
+  padding: 4px 8px;
+  border: 1px solid var(--md-primary);
+  border-radius: var(--md-radius);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--md-text);
+  box-sizing: border-box;
+  outline: none;
+}
+.md-profile__uid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+}
+.md-profile__uid-text {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--md-text-secondary);
+}
+.md-profile__copy {
+  height: 24px;
+  min-width: 0;
+  padding: 0 8px;
+  font-size: 0.6875rem;
+  line-height: 1.35;
+}
+.md-profile__extra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+.md-profile__extra:empty {
+  display: none;
+}
+.md-mobile-page.md-set-page .md-module:has(> .md-profile--me) {
+  background: transparent;
+  padding: 0;
+  gap: 0;
+}
+
 /* 表单页：左右安全距落在白底区块内边距，勿再给 body 叠一层 */
 .md-mobile-page.md-form-page:has(form) .md-mobile-body,
 .md-mobile-page.md-form-page .md-mobile-body {

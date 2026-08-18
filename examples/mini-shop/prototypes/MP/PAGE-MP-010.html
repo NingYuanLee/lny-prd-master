@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 功能入口。通栏/一行两个；右侧可为文字说明或方形配图（md-set-row--thumb / __thumb，行更高）。 -->
+<!-- LNY-PRD gold: 功能入口。顶区 md-profile--me 个人信息（同详情资料卡结构）；通栏/一行两个；右侧可为文字说明或方形配图（md-set-row--thumb / __thumb，行更高）。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -16,6 +16,25 @@
       <h1 class="md-appbar__title">我的服务</h1>
     </header>
     <main class="md-mobile-body">
+      <section class="md-module">
+        <article class="md-profile md-profile--me">
+          <a class="md-btn md-btn--soft md-btn--sm md-profile__edit" href="./PAGE-MP-006.html">编辑</a>
+          <div class="md-profile__head">
+            <button type="button" class="md-profile__media md-profile__media--avatar md-profile__media--lg md-media-ph md-media-ph--1" aria-label="更换头像" data-profile-avatar></button>
+            <label class="md-upload is-hidden" aria-hidden="true">
+              <input type="file" accept="image/*" data-profile-avatar-file tabindex="-1">
+            </label>
+            <div class="md-profile__main">
+              <button type="button" class="md-profile__title md-profile__name" id="meNick">阿宁</button>
+              <p class="md-profile__uid">
+                <span class="md-profile__uid-text">ID：8829103</span>
+                <button type="button" class="md-btn md-btn--outlined md-btn--sm md-profile__copy" data-copy="8829103">复制</button>
+              </p>
+              <div class="md-profile__extra"></div>
+            </div>
+          </div>
+        </article>
+      </section>
       <section class="md-module">
         <div class="md-set-group">
           <div class="md-set-group__title">订单</div>
