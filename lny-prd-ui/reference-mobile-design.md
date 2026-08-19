@@ -40,7 +40,7 @@
 | 间距圆角 | 「区块有呼吸；卡片勿厚重浮块」 | `--md-space: 8px` 倍数；触屏卡 12px 圆角 |
 | 图片 | 「列表区点名形态；叠字/瓷砖可横可竖或定宽随图；横卡左图 1:1 或竖图；详情主图 16:9；详情图、横卡多行图、上传缩略默认可点预览」 | `--cover` / `--tile`（`--ratio-*` / `--ratio-auto`）/ `--row`（左图 `--ratio-1x1` / `--ratio-3x4` / `--ratio-2x3`）/ `md-set-row`；`md-swiper--wide`；详情页根 `data-lightbox`；上传 `md-upload` / `md-upload-grid` |
 
-列表区的横卡多行/单行选择、字段层级和操作位置直接遵守共享页型规则 `PT-MOBILE-LIST`；本文件只补封面叠字、双列和轻阴影等移动视觉原则。功能区：**成组**、每组入口有限；金刚宫格 / 金刚双卡（**不限首页**）/ 通栏 / 一行两个——**功能区与页内签不要圆角阴影卡片壳**。**金刚双卡 vs 一行两个**：信息多用双卡，信息少用一行两个。**设置项**＝当页当行直接操作；**功能入口**＝只跳转或开半屏/弹窗（同壳不同行为）。详见 prototype `reference-kit`。
+列表区的横卡多行/单行选择、字段层级和操作位置直接遵守共享页型规则 `PT-MOBILE-LIST`；本文件只补封面叠字、双列和轻阴影等移动视觉原则。功能区形态选型遵守共享 **`PT-MOBILE-FUNC`**（详表 `lny-prd-ui` **§1.3.6**）：成组、每组入口有限；宫格/双卡/通栏/一行两个/**宫格+双卡**；**不限首页**；**无列表时倾向双卡填实**。**设置项**＝当页当行直接操作；**功能入口**＝只跳转或开半屏/弹窗（同壳不同行为）。详见 prototype `reference-kit`。
 
 ## 3. 组件规范（工具箱）
 
@@ -52,7 +52,7 @@
 | 表单 | 开关、单选多选、下拉、轮盘；页根 `md-form-page`（浅灰底+白底分组） | `md-form-page` + `md-module` 分组；`md-switch` `md-check` `md-radio` `md-select` `data-wheel` |
 | 反馈 | 对话框、Toast、骨架、空态 | `md-dialog` `snackbar` `md-skeleton` `md-empty` |
 | 展示 | 标签（含卡片角标）、头像/缩略、轮播、进步/进度、时间轴 | `md-chip` `md-card__tag`；`md-swiper` `md-advance` `md-progress` `md-timeline` |
-| 功能区 | 金刚宫格、金刚双卡、通栏、一行两个 | `md-king` / `md-king--pair`（**不限首页**）；通栏 `md-set-group`>`md-set-row`；一行两个 `md-set-pair`。**信息多 → 金刚双卡**；信息少 → 一行两个。**平铺、无圆角阴影卡片壳**；触屏**跟正文同左右安全距**，组内分割线仍内缩。**我的/设置**加 `md-set-page` 浅灰底，组间距漏底。成组、每组入口有限 |
+| 功能区 | 宫格、双卡、通栏、一行两个、宫格+双卡 | 按 **`PT-MOBILE-FUNC`** / `md-king` / `md-king--pair` / `md-set-group`>`md-set-row` / `md-set-pair`；**平铺、无圆角阴影卡片壳**；触屏跟正文同左右安全距。金样 `mobile-grid`（合览）、`mobile-menu`（通栏） |
 | 导航 | TabBar、返回顶栏、页内签 | `md-tabbar` `md-appbar`；触屏页内签 `md-tabs` 按钮组（禁止下划线） |
 | 悬浮胶囊 | 按共享 `PT-FLOAT` 选择的浮层图标组 | ② 写清功能、避让对象与反馈；位置和折叠阈值不在本文件另存 |
 

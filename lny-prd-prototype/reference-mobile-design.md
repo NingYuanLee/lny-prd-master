@@ -48,7 +48,7 @@
 | Tag / Avatar / Swipe / Progress | `md-chip`；**`md-card__tag` `--tl/--tr`**（封面角）；`md-card__thumb`；`md-swiper`；`md-progress`/`md-advance`；时间轴 `md-timeline` |
 | TabBar / NavBar / 页内签 | `md-tabbar`；`md-appbar--*`；触屏页内签 `md-tabs` 按钮组（禁止下划线） |
 | 悬浮胶囊 | `md-pod` 钉在页根、不进滚动层；`--tl` 横向且与标题栏互斥 / `--bl` `--br` 竖向并避开底栏。规格点名才画，不要右上 |
-| 功能区 | `md-king` / `md-king--pair`（无阴影）；通栏 `md-set-group`>`md-set-row`；一行两个 `md-set-pair`；右说明可为文字或 **方形 `__thumb`**（`--thumb`，行更高） |
+| 功能区 | 按 **`PT-MOBILE-FUNC`**：`md-king` / `md-king--pair`（无阴影）；通栏 `md-set-group`>`md-set-row`；一行两个 `md-set-pair`；无列表时倾向双卡填实 |
 
 搜索：`md-search` = 左 `search` 图标 + `md-search__input`，无 caption、无右侧搜索按钮。
 
@@ -64,7 +64,7 @@
 | L1 固定 vs L3 吸顶 | L1 在 body **外**（搜索/筛选/顶栏）；吸顶在 body **内** sticky | 列表 `md-list-toolbar`；吸顶 `md-module--sticky` + `top` |
 | 弹性列表卡 | `--cover` / `--tile` 可横可竖或 `--ratio-auto`；`--row` 左图仅 1:1 或竖图 / `md-stack`>`md-set-row` 单行独立有缝 |
 | 安全区 | 正文 `--md-safe-l/r` 左右 **12**；标准顶栏左右 4（不预留 96 胶囊空）；状态栏 28 贴上边框；底栏 48 贴下边框；overlay/cover 仍避让胶囊 |
-| 栅格 | 双列 `md-grid-2`（配 `--tile`）；金刚 4/5 列 |
+| 栅格 | 双列 `md-grid-2`（配 `--tile`）；金刚 4/5 列（见 **`PT-MOBILE-FUNC`**，4 个+说明→双卡勿机械 4 列） |
 | 树 + 内容 | `md-tree-page` + `md-split`；`md-tree` `__toggle` 展开收起，点节点只换右区 |
 | 时间轴 | `md-timeline`；左竖轨 `__rail`，右 **横卡文本** `md-card--row`（无左图，正文可 `__photos`） |
 | 模块间距 | L3 包 `md-module`；父级 `--md-module-gap`（16px）。**滚动容器**统一基础 padding/背景（见 `reference-kit` §滚动容器底与边）；`md-king--pair` 等 seam 边 `padding:0` |

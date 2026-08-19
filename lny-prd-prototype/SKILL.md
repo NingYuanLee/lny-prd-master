@@ -46,7 +46,7 @@ description: >-
 
 | 页型标识（无需读取示例） | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
-| PAGE-MP-001 首页 | `gold/mobile-grid.html` | L2【下沉首屏】页级 `md-hero`（与 body 同级）+ sheet；L3 `md-module`；`md-card--cover` + `md-card--tile`；`md-king`；TabBar |
+| PAGE-MP-001 首页 | `gold/mobile-grid.html` | L2【下沉首屏】页级 `md-hero`（与 body 同级）+ sheet；L3 `md-module`；`PT-MOBILE-FUNC` 宫格+双卡+列表合览；**规格无列表时改双卡/宫格+双卡**；`md-card--cover` + `md-card--tile`；TabBar |
 | PAGE-MP-002 商品列表 | `gold/mobile-list.html` | L1 固定 `md-appbar--center` + `md-list-toolbar`（body 外）；L2 只滚列表；`PT-MOBILE-LIST`；TabBar |
 | PAGE-MP-003 详情 | `gold/mobile-detail.html` | L3 **`md-appbar--overlay`** 滚变实底；`md-profile`；目录四项；右下目录+回顶 |
 | PAGE-MP-012 字段列表 | `gold/mobile-fields.html` | **列表族·无分页·多条按组**；默认 sheet（safe）+ `md-group-list` 白卡浮灰；标准顶栏；= 桌面 lists 第三签；非图文、非横卡列表、非表单 |
