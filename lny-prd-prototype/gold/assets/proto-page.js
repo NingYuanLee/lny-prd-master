@@ -167,6 +167,24 @@
     );
   }
 
+  function ensureDialogBackdrop(id, dlg) {
+    var maskId = id + "Backdrop";
+    var mask = document.getElementById(maskId);
+    if (mask) return mask;
+    mask = document.createElement("div");
+    mask.id = maskId;
+    mask.className = "md-backdrop";
+    mask.addEventListener("click", function () {
+      closeDialog(id);
+    });
+    if (dlg && dlg.parentNode) {
+      dlg.parentNode.insertBefore(mask, dlg);
+    } else {
+      document.body.appendChild(mask);
+    }
+    return mask;
+  }
+
   function closeDialog(id) {
     var dlg = document.getElementById(id);
     var mask = document.getElementById(id + "Backdrop");
@@ -180,7 +198,7 @@
 
   function openDialog(id) {
     var dlg = document.getElementById(id);
-    var mask = document.getElementById(id + "Backdrop");
+    var mask = ensureDialogBackdrop(id, dlg);
     if (mask) mask.classList.add("is-open");
     if (dlg) {
       dlg.classList.add("is-open");

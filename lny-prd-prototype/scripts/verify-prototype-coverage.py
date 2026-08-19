@@ -350,6 +350,37 @@ def is_wizard_demo_page(text: str, page_id: str) -> bool:
     return any(marker in text for marker in WIZARD_DEMO_MARKERS)
 
 
+DIALOG_ID_RE = re.compile(
+    r'<div\b[^>]*\bid="([^"]+)"[^>]*\bclass="[^"]*\bmd-dialog\b',
+    re.I,
+)
+
+
+def check_dialog_backdrop(path: Path, text: str) -> list[str]:
+    """D5 dialog must pair md-backdrop to block click-through."""
+    errors: list[str] = []
+    prefix = str(path) + ": "
+    for m in DIALOG_ID_RE.finditer(text):
+        dlg_id = m.group(1)
+        if dlg_id == "mdConfirmDlg":
+            continue
+        backdrop_id = dlg_id + "Backdrop"
+        if not re.search(
+            r'<div\b[^>]*\bid="' + re.escape(backdrop_id) + r'"[^>]*\bclass="[^"]*\bmd-backdrop\b',
+            text,
+            re.I,
+        ):
+            errors.append(
+                prefix
+                + "md-dialog #"
+                + dlg_id
+                + " missing md-backdrop #"
+                + backdrop_id
+                + " (semi-transparent mask blocks click-through)"
+            )
+    return errors
+
+
 def check_wizard_nav(path: Path, page_id: str, text: str) -> list[str]:
     """PT-STATE-FLOW: one wizard nav type per business page; no gold tab-demo on business pages."""
     errors: list[str] = []
@@ -398,6 +429,7 @@ def check_visual_floor(path: Path, page_id: str, text: str, parser: PageParser) 
     errors: list[str] = []
     prefix = str(path) + ": "
     errors.extend(check_wizard_nav(path, page_id, text))
+    errors.extend(check_dialog_backdrop(path, text))
     if BOX_DRAW_RE.search(text):
         errors.append(prefix + "ASCII wireframe leaked into HTML")
     if not parser.is_mobile and not parser.is_desktop:
