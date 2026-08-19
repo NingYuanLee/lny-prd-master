@@ -162,7 +162,7 @@
 
 | 页型 / 场景 | 承担层（DOM） | 基础背景色 | 基础内边距（语义） | L3 模块 |
 |-------------|---------------|------------|-------------------|---------|
-| **通用 / 列表 / 无下沉** | `md-mobile-body` | 白底 `--md-bg-paper` | 上 8；左右 `--md-safe-l/r`（16）；下 12 + 底安全区 | 不再叠页级左右 padding / 整页白底 |
+| **通用 / 列表 / 无下沉** | `md-mobile-body` > **`md-mobile-sheet`** | 白底 `--md-bg-paper` | 上 8；左右 safe 16；下 12 + 底安全区 | **sheet** 承担底与边；body 透明透传 |
 | **下沉滚过** | `md-mobile-sheet`（`md-mobile-body` 透明透传） | 白底 `--md-bg-paper` | **与上表相同**（padding 落在 sheet，不落在 body） | 同上 |
 | **浅灰壳**（详情 `md-detail-page` / 表单 `md-form-page` / 设置·我的 `md-set-page`） | `md-mobile-body` 或 sheet | 浅灰 `#f7f7f7` | 滚动容器 **左右 0**（灰底通栏）；组间距靠父 `gap` 漏灰 | **白底** `md-module` **块内**再写左右 safe（16） |
 

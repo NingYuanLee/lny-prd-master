@@ -69,18 +69,16 @@
 
 | 场景 | 承担层 | 背景 | 内边距（套件默认） | 模块 |
 |------|--------|------|-------------------|------|
-| 通用 / 列表 | `md-mobile-body` | `var(--md-bg-paper)` 白 | `8px` 上；`var(--md-safe-l/r)` 左右；`12px + safe-b` 下；`gap: var(--md-module-gap)` | 外层不再叠 safe / 白底 |
+| 通用 / 列表 | `md-mobile-body` > `md-mobile-sheet` | `var(--md-bg-paper)` 白 | `8px` 上；safe 左右；`12px + safe-b` 下；`gap: var(--md-module-gap)` | 外层不再叠 safe / 白底 |
 | 下沉滚过 | `md-mobile-sheet` | 白 | **同上**（body 透明、`padding:0`） | 同上 |
 | 浅灰壳（`md-detail-page` / `md-form-page` / `md-set-page`） | body 或 sheet | `#f7f7f7` | 滚动容器 **左右 0**；组间距 `gap` 漏灰 | 白底 `md-module` **块内** `16px + safe-l/r` |
 
 ```text
-通用页：  [ md-mobile-body | 白底 + safe padding + gap ]
-            └── md-module（块内 padding  only）
+通用页：  [ md-mobile-body 透明 ] > md-mobile-sheet [ 白底 + safe padding + gap ] > md-module
 下沉页：  [ md-mobile-body 透明 ]
             └── md-mobile-sheet | 白底 + safe padding + gap ]
                   └── md-module
-浅灰壳：  [ md-mobile-body | 灰底 + gap，左右 0 ]
-            └── md-module | 白底 + 块内 safe ]
+浅灰壳：  [ md-mobile-body | 灰底 + gap，左右 0 ] > md-mobile-sheet [ 透明透传 ] > md-module [ 白底 + 块内 safe ]
 ```
 
 **禁止**：下沉页给 `md-mobile-body` 叠白底/内边距；通用页每个 `md-module` 写 `padding-left/right: var(--md-safe-*)`；浅灰壳却在滚动容器叠左右 safe（应落在白 module 内）。
@@ -272,15 +270,17 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 </div>
 ```
 
-**B. 无下沉 / 随滚 Banner** — 页根 **不要** 并列 `md-hero`；Banner 放在 body/sheet 内第一个 `md-module`：
+**B. 无下沉 / 随滚 Banner** — 页根 **不要** 并列 `md-hero`；Banner 放在 sheet 内第一个 `md-module`：
 
 ```html
 <div class="md-mobile-page md-mp md-standard">
   <main class="md-mobile-body">
-    <section class="md-module">
-      <div class="md-swiper">…Banner 随内容滚…</div>
-    </section>
-    <section class="md-module">…</section>
+    <div class="md-mobile-sheet">
+      <section class="md-module">
+        <div class="md-swiper">…Banner 随内容滚…</div>
+      </section>
+      <section class="md-module">…</section>
+    </div>
   </main>
 </div>
 ```
@@ -291,7 +291,9 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 <div class="md-mobile-page md-mp md-standard">
   <header class="md-appbar md-appbar--mobile md-appbar--center">…</header>
   <div class="md-list-toolbar">…搜索+筛选+页内签…</div>
-  <main class="md-mobile-body">…仅 L3 列表模块…</main>
+  <main class="md-mobile-body">
+    <div class="md-mobile-sheet">…仅 L3 列表模块…</div>
+  </main>
   <nav class="md-tabbar">…</nav>
 </div>
 ```

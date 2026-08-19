@@ -2273,7 +2273,11 @@ body.md-lightbox-open { overflow: hidden; }
   overflow-x: hidden;
   overflow-y: auto;
   scrollbar-width: none;
-  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
 }
 .md-mobile-body::-webkit-scrollbar {
   width: 0;
@@ -3581,6 +3585,22 @@ button.md-tree__item {
   padding-top: var(--md-set-page-gap);
   box-sizing: border-box;
 }
+.md-mobile-page.md-set-page > .md-mobile-body:has(> .md-mobile-sheet) {
+  gap: 0;
+  padding-bottom: 0;
+}
+.md-mobile-page.md-set-page > .md-mobile-body > .md-mobile-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-set-page-gap);
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  box-sizing: border-box;
+}
 .md-mobile-page.md-set-page .md-module:has(> .md-set-group),
 .md-mobile-page.md-set-page .md-module:has(> .md-set-pair) {
   background: transparent;
@@ -3616,6 +3636,22 @@ button.md-tree__item {
   padding-top: var(--md-form-page-gap);
   padding-left: 0;
   padding-right: 0;
+  box-sizing: border-box;
+}
+.md-mobile-page.md-form-page > .md-mobile-body:has(> .md-mobile-sheet) {
+  gap: 0;
+  padding-bottom: 0;
+}
+.md-mobile-page.md-form-page > .md-mobile-body > .md-mobile-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-form-page-gap);
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
   box-sizing: border-box;
 }
 .md-mobile-page.md-form-page form {
@@ -4363,13 +4399,6 @@ button.md-set-row:active { background: var(--md-selected); }
   border-radius: 12px;
   box-shadow: var(--md-shadow-surface);
 }
-.md-mobile-body {
-  width: 100%;
-  margin: 0;
-  padding: 8px var(--md-safe-r) calc(12px + var(--md-safe-b)) var(--md-safe-l);
-  background: var(--md-bg-paper);
-}
-
 .md-card--row {
   flex-direction: row;
   flex-wrap: wrap;
@@ -5521,22 +5550,7 @@ button.md-set-row:active { background: var(--md-selected); }
   min-height: 0;
 }
 .md-mobile-page.md-immersive:has(> .md-hero) > .md-mobile-body > .md-mobile-sheet {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--md-module-gap);
-  flex: 0 0 auto;
-  width: 100%;
-  margin: 0;
-  min-height: 0;
-  padding: 8px var(--md-safe-r) calc(12px + var(--md-safe-b)) var(--md-safe-l);
-  background: var(--md-bg-paper);
-  box-sizing: border-box;
   pointer-events: auto;
-}
-.md-mobile-page.md-immersive:has(> .md-hero):has(.md-tabbar) > .md-mobile-body > .md-mobile-sheet {
-  padding-bottom: 12px;
 }
 .md-mobile-page.md-immersive:has(> .md-hero) > .md-mobile-body > .md-mobile-sheet > * {
   pointer-events: auto;
@@ -5902,23 +5916,43 @@ button.md-set-row:active { background: var(--md-selected); }
 .md-tabbar .md-tabbar__item:last-child {
   padding-right: 8px;
 }
-.md-mobile-body {
+/* —— 触屏 L2 滚动容器：body 滚动壳 + sheet 统一底与边 —— */
+.md-mobile-page > .md-mobile-body > .md-mobile-sheet {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: var(--md-module-gap);
+  flex: 0 0 auto;
   width: 100%;
   margin: 0;
+  min-height: 0;
   padding: 8px var(--md-safe-r) calc(12px + var(--md-safe-b)) var(--md-safe-l);
   background: var(--md-bg-paper);
+  box-sizing: border-box;
+}
+.md-mobile-page > .md-mobile-body:has(> .md-mobile-sheet) {
+  gap: 0;
+  padding: 0;
+  background: transparent;
+  background-image: none;
+}
+.md-mobile-page > .md-mobile-body:not(:has(> .md-mobile-sheet)) {
+  gap: var(--md-module-gap);
+  padding: 8px var(--md-safe-r) calc(12px + var(--md-safe-b)) var(--md-safe-l);
+  background: var(--md-bg-paper);
+}
+.md-mobile-page:has(.md-tabbar) > .md-mobile-body > .md-mobile-sheet {
+  padding-bottom: 12px;
+}
+.md-mobile-page:has(.md-tabbar) > .md-mobile-body:not(:has(> .md-mobile-sheet)) {
+  padding-bottom: 12px;
 }
 .md-mobile-page.md-immersive:has(> .md-hero) > .md-mobile-body {
   gap: 0;
   padding: 0;
   background: transparent;
   background-image: none;
-}
-.md-mobile-page:has(.md-tabbar) .md-mobile-body {
-  padding-bottom: 12px;
 }
 .md-mobile-page.md-immersive:has(> .md-hero):has(.md-tabbar) > .md-mobile-body {
   padding-bottom: 0;
@@ -7301,7 +7335,10 @@ a.md-card {
   font-size: 1.1875rem;
 }
 .md-mobile-page .md-action-bar + .md-mobile-body,
-.md-mobile-page .md-mobile-body:has(+ .md-action-bar) {
+.md-mobile-page .md-mobile-body:has(+ .md-action-bar):not(:has(> .md-mobile-sheet)) {
+  padding-bottom: 8px;
+}
+.md-mobile-page .md-mobile-body:has(+ .md-action-bar) > .md-mobile-sheet {
   padding-bottom: 8px;
 }
 
