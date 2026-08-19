@@ -6711,6 +6711,9 @@ a.md-card {
   overscroll-behavior-x: contain;
   text-indent: 0;
 }
+.md-article__table-wrap + .md-btn-row {
+  margin-top: 12px;
+}
 .md-article__table,
 .md-article .md-table {
   width: max(100%, 36rem);
