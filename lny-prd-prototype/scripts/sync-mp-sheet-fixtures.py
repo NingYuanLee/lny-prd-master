@@ -1,0 +1,124 @@
+# -*- coding: utf-8 -*-
+"""Align mini-shop MP fixtures and gold mobile headers with sheet DOM rules."""
+from __future__ import annotations
+
+import re
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+GOLD_DIR = ROOT / "lny-prd-prototype" / "gold"
+MP_DIR = ROOT / "examples" / "mini-shop" / "prototypes" / "MP"
+VER_DIR = ROOT / "examples" / "mini-shop" / "versions" / "v1.0.0" / "prototypes" / "MP"
+
+GOLD_DOM = {
+    "mobile-grid.html": "DOM：md-hero 与 body 并列；body > md-mobile-sheet（默认 safe-x）。",
+    "mobile-list.html": "DOM：md-list-toolbar 在 body 外；body > md-mobile-sheet（默认 safe-x）。",
+    "mobile-detail.html": "DOM：body > md-mobile-sheet--flush-x + md-detail-content。",
+    "mobile-fields.html": "DOM：body > md-mobile-sheet--flush-x + md-detail-content。",
+    "mobile-form.html": "DOM：body > md-mobile-sheet（md-form-page 自动 lr0）。",
+    "mobile-wizard.html": "DOM：body > md-mobile-sheet（md-form-page 自动 lr0）。",
+    "mobile-settings.html": "DOM：body > md-mobile-sheet（md-set-page 自动 lr0）。",
+    "mobile-buttons.html": "DOM：body > md-mobile-sheet（默认 safe-x）。",
+    "mobile-timeline.html": "DOM：body > md-mobile-sheet（默认 safe-x）。",
+    "mobile-menu.html": "DOM：body > md-mobile-sheet（md-set-page 自动 lr0）。",
+    "mobile-tree.html": "DOM：body > md-mobile-sheet--flush-x（全幅 split）。",
+    "mobile-pod.html": "DOM：md-hero 与 body 并列；body > md-mobile-sheet（默认 safe-x）；md-pod 在页根。",
+}
+
+PAGE_TO_GOLD = {
+    "PAGE-MP-001.html": "mobile-grid.html",
+    "PAGE-MP-002.html": "mobile-list.html",
+    "PAGE-MP-003.html": "mobile-detail.html",
+    "PAGE-MP-004.html": "mobile-form.html",
+    "PAGE-MP-005.html": "mobile-wizard.html",
+    "PAGE-MP-006.html": "mobile-settings.html",
+    "PAGE-MP-007.html": "mobile-buttons.html",
+    "PAGE-MP-008.html": "mobile-tree.html",
+    "PAGE-MP-009.html": "mobile-timeline.html",
+    "PAGE-MP-010.html": "mobile-menu.html",
+    "PAGE-MP-011.html": "mobile-pod.html",
+    "PAGE-MP-012.html": "mobile-fields.html",
+}
+
+FIXTURE_INTRO = {
+    "PAGE-MP-001.html": "夹具：对标 mobile-grid.html。",
+    "PAGE-MP-002.html": "夹具：对标 mobile-list.html。",
+    "PAGE-MP-003.html": "夹具：对标 mobile-detail.html。",
+    "PAGE-MP-004.html": "夹具：对标 mobile-form.html。",
+    "PAGE-MP-005.html": "夹具：对标 mobile-wizard.html。",
+    "PAGE-MP-006.html": "夹具：对标 mobile-settings.html。",
+    "PAGE-MP-007.html": "夹具：对标 mobile-buttons.html。",
+    "PAGE-MP-008.html": "夹具：对标 mobile-tree.html。",
+    "PAGE-MP-009.html": "夹具：对标 mobile-timeline.html。",
+    "PAGE-MP-010.html": "夹具：对标 mobile-menu.html。",
+    "PAGE-MP-011.html": "夹具：对标 mobile-pod.html。",
+    "PAGE-MP-012.html": "夹具：对标 mobile-fields.html。一条对象的字段名+字段值；禁止当图文、禁止当表单。",
+}
+
+
+def normalize_comment_spacing(text: str) -> str:
+    return re.sub(r"<!--\s{2,}", "<!-- ", text)
+
+
+def patch_gold_headers() -> None:
+    for fname, dom in GOLD_DOM.items():
+        path = GOLD_DIR / fname
+        text = normalize_comment_spacing(path.read_text(encoding="utf-8"))
+        # strip any existing DOM suffix then re-append
+        text = re.sub(r"\s*DOM：[^。]+。", "", text, count=0)
+        match = re.match(r"(<!-- LNY-PRD gold: .*? -->)", text, re.S)
+        if not match:
+            print("SKIP no comment", fname)
+            continue
+        old = match.group(1)
+        inner = old[4:-3].strip()
+        if not inner.endswith("。"):
+            inner += "。"
+        new = f"<!-- {inner} {dom} -->"
+        path.write_text(normalize_comment_spacing(text.replace(old, new, 1)), encoding="utf-8", newline="\n")
+        print("gold", fname)
+
+
+def fix_tree_flush_x(directory: Path) -> None:
+    path = directory / "PAGE-MP-008.html"
+    if not path.exists():
+        return
+    text = path.read_text(encoding="utf-8")
+    needle = '<div class="md-mobile-sheet">'
+    repl = '<div class="md-mobile-sheet md-mobile-sheet--flush-x">'
+    if needle in text and repl not in text:
+        path.write_text(text.replace(needle, repl, 1), encoding="utf-8", newline="\n")
+        print("flush-x", path)
+
+
+def patch_fixture_comments() -> None:
+    for page, gold_file in PAGE_TO_GOLD.items():
+        path = MP_DIR / page
+        if not path.exists():
+            continue
+        intro = FIXTURE_INTRO[page]
+        dom = GOLD_DOM[gold_file]
+        text = path.read_text(encoding="utf-8")
+        text = re.sub(r"<!-- .*? -->", f"<!-- LNY-PRD gold: {intro} {dom} -->", text, count=1, flags=re.S)
+        path.write_text(normalize_comment_spacing(text), encoding="utf-8", newline="\n")
+        print("fixture", page)
+
+
+def mirror_mp_to_version() -> None:
+    VER_DIR.mkdir(parents=True, exist_ok=True)
+    for src in sorted(MP_DIR.glob("PAGE-MP-*.html")):
+        dst = VER_DIR / src.name
+        dst.write_bytes(src.read_bytes())
+        print("mirror", src.name)
+
+
+def main() -> None:
+    patch_gold_headers()
+    fix_tree_flush_x(MP_DIR)
+    patch_fixture_comments()
+    mirror_mp_to_version()
+    fix_tree_flush_x(VER_DIR)
+
+
+if __name__ == "__main__":
+    main()

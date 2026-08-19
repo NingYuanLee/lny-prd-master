@@ -43,9 +43,11 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 移动按钮样例 | `mobile-buttons.html`（小/中/大三档：线框、色块、浅底 `--soft`、线框/色块/浅底置灰、带角标；页签按钮组） |
 | 触屏悬浮胶囊 | `mobile-pod.html`（钉在页根、不进滚动层；左上横向且与标题栏互斥；左下/右下竖向并避开 TabBar/操作条；单个圆形、多个成组细线分割。规格点名才画，不要右上） |
 | 桌面悬浮按钮 | `desktop-pod.html`（语义按共享 `PT-FLOAT`，实现用 `md-pod--desk` / `md-pod--fold`） |
-| 移动树 + 内容 | `mobile-tree.html`（`md-tree-page`；`body` > **`md-mobile-sheet`（透明全幅）** > `md-split` 左树右内容） |
+| 移动树 + 内容 | `mobile-tree.html`（`md-tree-page`；`body` > **`md-mobile-sheet--flush-x`** > `md-split` 左树右内容；Hero/顶栏不进 sheet） |
 | 其它桌面页 | 先按上表选最接近的金样；对不上再读 `desktop-lists.html` **只借控件**，禁止整页套成商品表 |
 | 其它移动页 | 先按上表选最接近的金样（设置/我的/向导/时间轴/树/详情/字段详情各有专页）；对不上再读 `mobile-list.html` **只借列表卡**，禁止整页套成商品列表 |
+
+**触屏滚动 sheet（L2）**：凡 `md-mobile-body` 内 **必有** `md-mobile-sheet`（唯一直接子层）。**没有 sheet 的**：L1 固定区、下沉 `md-hero`、TabBar、贴底条、浮层——均在 body **外**并列。默认 sheet 带左右 safe；详情/字段/树用 `--flush-x`；表单/设置靠页根 `md-form-page` / `md-set-page` 自动 lr0。详见 `reference-kit.md`「何时有 sheet」与 `reference.md` §1.3.4。
 
 触屏顶栏六种（⑥ 按规格点名复制对应金样）：
 

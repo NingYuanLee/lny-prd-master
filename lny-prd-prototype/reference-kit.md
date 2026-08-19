@@ -981,7 +981,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 <div class="md-mobile-page md-immersive md-detail-page" data-lightbox>
   <!-- 主图 md-hero … -->
   <main class="md-mobile-body">
-    <div class="md-mobile-sheet md-detail-content">
+    <div class="md-mobile-sheet md-mobile-sheet--flush-x md-detail-content">
       <section class="md-module">
         <div class="md-detail-head">
           <h1 class="md-detail-head__title">有机草莓 250g</h1>
