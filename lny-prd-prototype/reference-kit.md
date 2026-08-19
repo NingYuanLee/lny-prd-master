@@ -855,7 +855,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 <button type="button" class="md-btn md-btn--contained md-btn--sm">角标<span class="md-badge">8</span></button>
 ```
 
-功能区通栏 / 一行两个对照金样 `gold/mobile-menu.html` / `gold/desktop-menu.html`。分组标题可无。短说明可省略，通栏箭头保留。**右侧说明位也可换成方形配图**：`md-set-row--thumb` + `__thumb`（1:1，约 52px），行高随之加高；有图时不再叠文字 `__hint`。字段多改列表区横卡多行。
+功能区通栏 / 一行两个对照金样 `gold/mobile-menu.html` / `gold/desktop-menu.html`。桌面宽屏用 **`md-set-grid--cols-2/3/4`** 包多列 `md-set-row`；触屏仍通栏 / `md-set-pair`。分组标题可无。短说明可省略，通栏箭头保留。**右侧说明位也可换成方形配图**：`md-set-row--thumb` + `__thumb`（1:1，约 52px），行高随之加高；有图时不再叠文字 `__hint`。字段多改列表区横卡多行。
 
 ```html
 <a class="md-set-row" href="./PAGE-MP-002.html">
@@ -985,7 +985,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | 下拉 | 少选项：`md-field--select` + `md-select`；多选/搜索/树：`md-field--combo` + `md-combo`（`data-mode="multi"` / `data-search="1"` / `data-tree="leaf|1"`）；菜单：`md-select-btn` + `md-menu` | 未包 `md-field` 的裸 `<select>`；触屏用系统原生选择器；自造 autocomplete 面板 |
 | 日期 / 时间 | `md-field--date` / `md-field--daterange` / `md-field--time` + `type="date|time|datetime-local"` | 自造日历、两个裸日期框冒充日期段 |
 | 开关 | `md-switch-row` + `md-switch` | 自造滑块 / 裸 checkbox 当开关 |
-| 功能区通栏 / 一行两个 | 通栏包 `md-set-group`；一行两个 `md-set-pair`（信息少）。右说明可为文字 `__hint` 或方形 `__thumb`（`--thumb`，整行加高）。信息多改 `md-king--pair`。**平铺，无圆角阴影卡片壳** | 一排 `md-btn`；右图用列表横卡冒充；功能入口右图进灯箱；信息多却硬用一行两个；功能区套列表卡圆角阴影 |
+| 功能区通栏 / 一行两个 | 通栏包 `md-set-group`；触屏单列通栏 / `md-set-pair` 一行两个。桌面 **`md-d1.md-set-page` + `md-set-grid--cols-2/3/4`** 多列入口（仍 `md-set-row`）。右说明可为文字 `__hint` 或方形 `__thumb`（`--thumb`，行更高）。信息多改 `md-king--pair`。**平铺，无圆角阴影卡片壳** | 一排 `md-btn`；右图用列表横卡冒充；功能入口右图进灯箱；信息多却硬用一行两个；功能区套列表卡圆角阴影 |
 | 单选 | 桌面/列表：`md-choice-group` + `md-radio`；触屏表单：同上（自动标签角标） | 未包 `md-radio` 的裸 `<input type="radio">` |
 | 多选 | 桌面/列表：`md-choice-group` + `md-check`；触屏表单：同上（自动标签角标）；列表行勿包成标签 | 未包 `md-check` 的裸 `<input type="checkbox">` |
 | 弹窗 / 确认 | `md-dialog` + `md-backdrop`；确认用 `ProtoPage.confirm` | `alert()` / `confirm()` |
@@ -1214,7 +1214,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 下拉组合框 | `md-combo` + `md-combo__trigger` / `__panel` / `__value`（hidden）；`data-search="1"` 模糊搜；`data-mode="multi"` 多选；`data-tree="leaf"` 叶节点单选；`data-tree="1"` 树多选。`ProtoPage.bindCombos` 自动绑 |
 | 设置分组 | `md-set-group` `__title` `md-set-row`（**设置项**：当页当行直接操作；左 `md-icon` 可有可无 + `__label`；右开关/值/本行菜单）；开关 `md-switch`（热区铺满，可点）；无极 `md-set-block` + `md-slider--fluid`；横向多选 `md-set-picks` / `md-set-pick`（`__face` 可为 `__label` 文字 / 图标 / `__media` 图片；图片竖版大图用 **`md-set-picks--media-9x16` + `__media--9x16`**；`__mark` 含 `__off`+`__on`，未选也显示空圈）；下拉 `md-set-row` + `data-menu` |
 | 列表单行 | 仅在共享 `PT-MOBILE-LIST` 判定为单行时使用 `md-stack` > `md-set-row`；结构用 `__lead`（图标+`__label`）+ `__trail`（说明/计数/小标签，一般无箭头） |
-| 功能区通栏 / 一行两个 | **功能入口**：通栏 `md-set-group`；一行两个 `md-set-pair`；右可为 `__hint` 或 **方形 `__thumb`**（`--thumb`，行更高）；常带箭头；**无圆角阴影卡片壳**；触屏**跟正文同左右安全距**，分割线内缩 |
+| 功能区通栏 / 一行两个 | **功能入口**：触屏通栏 `md-set-group` / 一行两个 `md-set-pair`；**桌面** `md-set-grid--cols-2/3/4` 多列 `md-set-row`；右可为 `__hint` 或 **方形 `__thumb`**；常带箭头；**无圆角阴影卡片壳**；触屏**跟正文同左右安全距**，分割线内缩 |
 | 汇总分页 | `md-d1__footer`：`md-d1__stats`（`md-d1__stats-num` 高亮条数）靠左；`md-d1__pager`（浅底条 + 每页 + 页码 + `md-pagination` 胶囊）靠右 |
 | 列表开关列 | `md-col-switch` + `md-switch md-switch--compact`（标准列表某一列内直接操作） |
 | 卡片列表操作 | `md-card--tile` 的 `md-card__head`（标题+右上角开关）/ `md-card__foot`（价格左、右下角 `md-card__actions` 按钮） |

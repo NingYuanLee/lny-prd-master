@@ -75,8 +75,8 @@ description: >-
 | PAGE-AD-005 商品分类 | `gold/desktop-split.html` | 不分页维护树：`md-d1--split` + `md-tree` + `md-tree-bar`（左根节点、右展开/收起切换）；右区 **分类表单**；增子/重命名/删除；拖到上/中/下。只读树与表内嵌套读 `desktop-lists.html`。**不是**分类钮 |
 | PAGE-AD-013 章节大纲（套件样例） | `gold/desktop-locator.html` | 两种：左可收缩 / 右悬浮可收起；**收起后点线轨**；点选滚锚点；**滚正文时当前点高亮**；与树分离 |
 | PAGE-AD-014 页面分栏（套件样例） | `gold/desktop-layout.html` | `md-layout--full/2col/fix-left/fix-right/3col/pin`；**禁止** `md-d1__form` 冒充分栏。卡片列表见 `desktop-lists.html` |
-| PAGE-AD-006 设置 | `gold/desktop-settings.html` | `md-d1 md-set-page` 浅灰底；**设置项**：开关可点；`md-set-picks` 文字/图标/图片 + 未选空圈；左图标可有可无；无极 / `data-menu` 改值 |
-| PAGE-AD-010 我的/服务 | `gold/desktop-menu.html` | `md-set-page` 浅灰底；**`md-svc-strip--desk`** 订单待办/经营概览；功能入口通栏/`md-set-pair`；右可为文字或方形配图 `--thumb`。不要 `md-d1--list` |
+| PAGE-AD-006 设置 | `gold/desktop-settings.html` | `md-d1 md-set-page` 浅灰底；**设置项**：开关可点；桌面 **`md-set-grid`** 多列；`md-set-picks` 文字/图标/图片 + 未选空圈；左图标可有可无；无极 / `data-menu` 改值 |
+| PAGE-AD-010 我的/服务 | `gold/desktop-menu.html` | `md-set-page` 浅灰底；**`md-svc-strip--desk`** 订单待办/经营概览；桌面功能入口 **`md-set-grid--cols-2/3/4`**（触屏仍通栏/`md-set-pair`）；右可为文字或方形配图 `--thumb`。不要 `md-d1--list` |
 | PAGE-AD-007 时间轴 | `gold/desktop-timeline.html` | 通栏 `md-timeline--static` 只读物流轴；**仅已发生节点**、倒序；左竖轨右 **横卡文本**。可交互章节导航见 `desktop-locator`，禁止可点切换进度 |
 | PAGE-AD-011 悬浮按钮（套件样例） | `gold/desktop-pod.html` | 仅规格点名时按共享 `PT-FLOAT` 落到业务页；用 `md-pod md-pod--desk` + `position:fixed`，折叠态用 `md-pod--fold` + `__toggle`，禁止触屏方位类和 `md-fab` |
 | 关系图 | `prototypes/{端}/map.html` | `ProtoMap.boot`；预览区 **375×812**；连线端口错开 + 线中 `label`；底部色线图例；拖动写入 localStorage；「导出图片」 |

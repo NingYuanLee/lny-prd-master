@@ -4237,6 +4237,67 @@ button.md-set-row:active { background: var(--md-selected); }
 .md-set-pair > .md-set-row .md-set-row__lead { gap: 8px; }
 .md-set-pair > .md-set-row .md-set-row__trail { max-width: 40%; }
 
+/* 桌面功能/设置：通栏入口 2/3/4 列栅格（触屏仍单列通栏） */
+.md-set-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  min-width: 0;
+}
+.md-d1.md-set-page .md-set-grid--cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.md-d1.md-set-page .md-set-grid--cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.md-d1.md-set-page .md-set-grid--cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.md-set-group > .md-set-grid > .md-set-row,
+.md-set-group > .md-set-grid > button.md-set-row,
+.md-set-group > .md-set-grid > a.md-set-row {
+  min-width: 0;
+  min-height: 56px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  border-top: 0;
+  border-right: 0;
+  position: relative;
+}
+.md-set-grid > .md-set-row--thumb,
+.md-set-grid > .md-set-row:has(.md-set-row__thumb) {
+  min-height: 76px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.md-set-grid > .md-set-row .md-set-row__trail {
+  max-width: 42%;
+}
+.md-set-grid--cols-2 > .md-set-row:not(:nth-child(2n))::after,
+.md-set-grid--cols-3 > .md-set-row:not(:nth-child(3n))::after,
+.md-set-grid--cols-4 > .md-set-row:not(:nth-child(4n))::after {
+  content: "";
+  position: absolute;
+  top: var(--md-set-divider-inset-y);
+  bottom: var(--md-set-divider-inset-y);
+  right: 0;
+  width: 1px;
+  background: var(--md-divider-soft);
+  pointer-events: none;
+}
+.md-set-grid--cols-2 > .md-set-row:nth-child(n + 3)::before,
+.md-set-grid--cols-3 > .md-set-row:nth-child(n + 4)::before,
+.md-set-grid--cols-4 > .md-set-row:nth-child(n + 5)::before {
+  content: "";
+  position: absolute;
+  left: var(--md-set-divider-inset-x);
+  right: var(--md-set-divider-inset-x);
+  top: 0;
+  height: 1px;
+  background: var(--md-divider-soft);
+  pointer-events: none;
+}
+
 /* 功能通栏 / 设置组：条目挨着（无行间外边距），靠内边距加高；分割线左右内缩、淡色 */
 .md-set-group > .md-set-row,
 .md-set-group > .md-set-block,
@@ -4267,7 +4328,16 @@ button.md-set-row:active { background: var(--md-selected); }
 .md-set-group > .md-set-block + .md-set-pair,
 .md-set-group > .md-set-pair + .md-set-block,
 .md-set-group > .md-set-picks + .md-set-pair,
-.md-set-group > .md-set-pair + .md-set-picks {
+.md-set-group > .md-set-pair + .md-set-picks,
+.md-set-group > .md-set-grid + .md-set-grid,
+.md-set-group > .md-set-grid + .md-set-row,
+.md-set-group > .md-set-row + .md-set-grid,
+.md-set-group > .md-set-block + .md-set-grid,
+.md-set-group > .md-set-grid + .md-set-block,
+.md-set-group > .md-set-picks + .md-set-grid,
+.md-set-group > .md-set-grid + .md-set-picks,
+.md-set-group > .md-set-pair + .md-set-grid,
+.md-set-group > .md-set-grid + .md-set-pair {
   position: relative;
   margin-top: 0;
 }
@@ -4286,7 +4356,16 @@ button.md-set-row:active { background: var(--md-selected); }
 .md-set-group > .md-set-block + .md-set-pair::before,
 .md-set-group > .md-set-pair + .md-set-block::before,
 .md-set-group > .md-set-picks + .md-set-pair::before,
-.md-set-group > .md-set-pair + .md-set-picks::before {
+.md-set-group > .md-set-pair + .md-set-picks::before,
+.md-set-group > .md-set-grid + .md-set-grid::before,
+.md-set-group > .md-set-grid + .md-set-row::before,
+.md-set-group > .md-set-row + .md-set-grid::before,
+.md-set-group > .md-set-block + .md-set-grid::before,
+.md-set-group > .md-set-grid + .md-set-block::before,
+.md-set-group > .md-set-picks + .md-set-grid::before,
+.md-set-group > .md-set-grid + .md-set-picks::before,
+.md-set-group > .md-set-pair + .md-set-grid::before,
+.md-set-group > .md-set-grid + .md-set-pair::before {
   content: "";
   position: absolute;
   left: var(--md-set-divider-inset-x);
