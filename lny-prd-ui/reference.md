@@ -162,13 +162,13 @@
 
 | 页型 / 场景 | 承担层（DOM） | 基础背景色 | 基础内边距（语义） | L3 模块 |
 |-------------|---------------|------------|-------------------|---------|
-| **通用 / 列表 / 无下沉** | `md-mobile-body` > **`md-mobile-sheet`** | 白底 `--md-bg-paper` | 上 8；左右 safe 16；下 12 + 底安全区 | **sheet** 承担底与边；body 透明透传 |
-| **下沉滚过** | `md-mobile-sheet`（`md-mobile-body` 透明透传） | 白底 `--md-bg-paper` | **与上表相同**（padding 落在 sheet，不落在 body） | 同上 |
-| **浅灰壳**（详情 `md-detail-page` / 表单 `md-form-page` / 设置·我的 `md-set-page`） | `md-mobile-body` 或 sheet | 浅灰 `#f7f7f7` | 滚动容器 **左右 0**（灰底通栏）；组间距靠父 `gap` 漏灰 | **白底** `md-module` **块内**再写左右 safe（16） |
+| **通用 / 列表 / 无下沉** | `md-mobile-body` > **`md-mobile-sheet`** | 浅灰 `#f7f7f7` | sheet：**上 8、左右 safe、下 12+safe**；body **透明无 padding** | 列表卡/模块自带白底 |
+| **下沉滚过** | 同上 | 浅灰 sheet | 同上 | Hero 与 body 同级 |
+| **贴边浅灰壳**（详情 / 表单 / 设置 / 树） | sheet 加 **`--flush-x`** 或页根类自动 lr0 | 浅灰 | sheet **左右 0**；白 **`md-module` 块内 safe** | 组间 `gap` 露灰 |
 
 **规格怎么写**：L2【滚动容器】一行点名 **基础背景**（白 / 浅灰壳）即可；默认白底通用页 **不必抄 px**。浅灰壳页须写「滚动区浅灰、白底模块分组、组间露灰」。**禁止**在 L3 写「每个模块左右 16、白底」当通用页的默认——那是浅灰壳专属分工。
 
-**⑥ 禁止**：给每个 `md-module` 写页级 `padding-left/right: var(--md-safe-*)` 或 `background: #fff` 替代滚动容器；下沉页给 `md-mobile-body` 叠白底/内边距（应落在 sheet）；通用页滚动容器改浅灰却不加页根类。
+**⑥ 禁止**：body 叠 padding/底色；sheet 与 body 同时 safe；贴边页 sheet 未 `--flush-x` 却在 module 外留白；白底内容不包进 module/卡片却指望 sheet 变白。
 
 ### 1.4 桌面端：布局结构类型与内容区固定结构
 

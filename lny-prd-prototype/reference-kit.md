@@ -69,19 +69,19 @@
 
 | 场景 | 承担层 | 背景 | 内边距（套件默认） | 模块 |
 |------|--------|------|-------------------|------|
-| 通用 / 列表 | `md-mobile-body` > `md-mobile-sheet` | `var(--md-bg-paper)` 白 | `8px` 上；safe 左右；`12px + safe-b` 下；`gap: var(--md-module-gap)` | 外层不再叠 safe / 白底 |
-| 下沉滚过 | `md-mobile-sheet` | 白 | **同上**（body 透明、`padding:0`） | 同上 |
-| 浅灰壳（`md-detail-page` / `md-form-page` / `md-set-page`） | body 或 sheet | `#f7f7f7` | 滚动容器 **左右 0**；组间距 `gap` 漏灰 | 白底 `md-module` **块内** `16px + safe-l/r` |
+| **body（纯滚动壳）** | `md-mobile-body` | **透明** | **0** | 只负责 overflow，不承担 safe |
+| **sheet（默认）** | `md-mobile-sheet` | **浅灰** `#f7f7f7` | 上 8；**左右 safe 16**；下 12 + 底安全区；`gap` 16 | 白底块在 `md-module` / 卡片内 |
+| **sheet 贴边** | `md-mobile-sheet--flush-x` | 浅灰 | **左右 0**（上下仍统一） | 详情/表单/设置/树等白块通栏 |
+| **下沉滚过** | 同上 sheet | 浅灰 | 同上 | Hero 在 body 外同级 |
 
 ```text
-通用页：  [ md-mobile-body 透明 ] > md-mobile-sheet [ 白底 + safe padding + gap ] > md-module
-下沉页：  [ md-mobile-body 透明 ]
-            └── md-mobile-sheet | 白底 + safe padding + gap ]
-                  └── md-module
-浅灰壳：  [ md-mobile-body | 灰底 + gap，左右 0 ] > md-mobile-sheet [ 透明透传 ] > md-module [ 白底 + 块内 safe ]
+body：    md-mobile-body          透明 + padding 0（纯滚动）
+sheet：   md-mobile-sheet         浅灰 #f7f7f7 + 统一上下/左右内边距（默认左右有 safe）
+贴边：    md-mobile-sheet--flush-x  左右 padding 0（详情/表单/设置/树）
+模块：    md-module / 卡片        白底内容；块内 safe 写在 module（贴边 sheet 时）
 ```
 
-**禁止**：下沉页给 `md-mobile-body` 叠白底/内边距；通用页每个 `md-module` 写 `padding-left/right: var(--md-safe-*)`；浅灰壳却在滚动容器叠左右 safe（应落在白 module 内）。
+**禁止**：body 与 sheet 同时叠 safe；sheet 改白底却不在 module 里做白块；贴边页忘记 `--flush-x` 又在 module 外留 safe。
 
 **触屏金样 DOM 纪律**：凡 `md-mobile-body` 内 **必有** `md-mobile-sheet`。树页 sheet **透明全幅**透传 `md-split`；详情/字段详情 sheet 加 `md-detail-content`；浅灰壳 sheet 透明、白底在 module。无 sheet 的旧 DOM 仅 CSS `:not(:has(> .md-mobile-sheet))` 兼容，**新页/金样禁止省略**。
 
