@@ -21,6 +21,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 |----------|------|
 | 移动宫格 / 推荐 / 双列卡片 | `mobile-grid.html`（**沉浸式**；`md-hero` 钉底层；`md-mobile-sheet`；`md-module`；**封面叠字** `md-card--cover` + **双列瓷砖** `md-card--tile`；金刚 5 列或 `md-king--pair`） |
 | 移动列表 / 动态流 / 横卡 | `mobile-list.html`（语义按共享 `PT-MOBILE-LIST`；多行 `md-card--row`、长值 `md-card--long`、单行 `md-stack`>`md-set-row`；左/右半屏；`data-wheel="daterange"`） |
+| 移动订单列表 | `mobile-order-list.html`（顶栏返回+搜索；页签+筛选弹窗；`md-card--order` 横卡：店头/多行商品/合计/浅底操作，多则「更多」菜单） |
 | 移动展示 / 详情 | `mobile-detail.html`（含 `md-profile` 店铺资料示例；组件亦用于个人/公司资料） |
 | 移动字段列表 | `mobile-fields.html`（sheet safe + `md-group-list` 白卡浮灰；标准顶栏；非图文、非横卡列表、非表单） |
 | 移动表单 | `mobile-form.html`（**套件样例**；`md-form-page` 浅灰底+白底分组；一页铺齐触屏表单控件：文本/选择/滑动条/单日/日期段/省市区/三类上传 + 贴底提交；进度条见步骤向导） |
@@ -38,7 +39,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 移动设置 / 偏好 | `mobile-settings.html`（**设置项**：当页当行直接操作；沉浸式封面顶栏；左图标可有可无） |
 | 移动我的 / 服务 | `mobile-menu.html`（功能入口；右可为文字或方形配图 `--thumb`） |
 | 移动步骤向导 | `mobile-wizard.html`（`md-form-page`；横向 `md-stepper` + 分段 `md-advance--lg` + 无极 `md-progress` + 当前步表单，贴底上一步/下一步） |
-| 移动物流时间轴 | `mobile-timeline.html`（`md-timeline` 左竖轨右横卡文本，可内嵌多小图；mini-shop 夹具示范物流轨迹） |
+| 移动物流时间轴 | `mobile-timeline.html`（`md-timeline` 左竖轨右横卡文本，可内嵌多小图；mini-shop 夹具示范物流轨迹，**节点按时间倒序**） |
 | 桌面时间轴 | `desktop-timeline.html`（通栏竖轨右横卡文本，不要左图、不要左右分开。触屏见 `mobile-timeline`） |
 | 移动按钮样例 | `mobile-buttons.html`（小/中/大三档：线框、色块、浅底 `--soft`、线框/色块/浅底置灰、带角标；页签按钮组） |
 | 触屏悬浮胶囊 | `mobile-pod.html`（钉在页根、不进滚动层；左上横向且与标题栏互斥；左下/右下竖向并避开 TabBar/操作条；单个圆形、多个成组细线分割。规格点名才画，不要右上） |

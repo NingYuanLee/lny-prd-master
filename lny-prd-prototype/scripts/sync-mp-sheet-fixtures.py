@@ -26,6 +26,7 @@ GOLD_DOM = {
     "mobile-menu.html": "DOM：body > md-mobile-sheet（md-set-page 自动 lr0）。",
     "mobile-tree.html": "DOM：body > md-mobile-sheet--flush-x（全幅 split）。",
     "mobile-locator.html": "DOM：body > md-mobile-sheet--flush-x（全幅 split）。",
+    "mobile-order-list.html": "DOM：md-list-toolbar 在 body 外；body > md-mobile-sheet（默认 safe-x）。",
     "mobile-pod.html": "DOM：md-hero 与 body 并列；body > md-mobile-sheet（默认 safe-x）；md-pod 在页根。",
 }
 
@@ -43,6 +44,7 @@ PAGE_TO_GOLD = {
     "PAGE-MP-011.html": "mobile-pod.html",
     "PAGE-MP-012.html": "mobile-fields.html",
     "PAGE-MP-013.html": "mobile-locator.html",
+    "PAGE-MP-014.html": "mobile-order-list.html",
 }
 
 FIXTURE_INTRO = {
@@ -54,11 +56,12 @@ FIXTURE_INTRO = {
     "PAGE-MP-006.html": "夹具：对标 mobile-settings.html。",
     "PAGE-MP-007.html": "夹具：对标 mobile-buttons.html。",
     "PAGE-MP-008.html": "夹具：对标 mobile-tree.html。商品·分类树；左多级树右图文介绍。禁止当横卡列表、禁止当定位导航。",
-    "PAGE-MP-009.html": "夹具：对标 mobile-timeline.html。",
+    "PAGE-MP-009.html": "夹具：对标 mobile-timeline.html。订单·物流时间轴；节点按时间倒序。",
     "PAGE-MP-010.html": "夹具：对标 mobile-menu.html。",
     "PAGE-MP-011.html": "夹具：对标 mobile-pod.html。",
     "PAGE-MP-012.html": "夹具：对标 mobile-fields.html。商品·字段列表；单商品多维度按组。禁止当图文、禁止当表单。",
     "PAGE-MP-013.html": "夹具：对标 mobile-locator.html。商品·分类导航；左一级分组右分组横卡，滚动联动。禁止当树。",
+    "PAGE-MP-014.html": "夹具：对标 mobile-order-list.html。订单·订单列表。",
 }
 
 

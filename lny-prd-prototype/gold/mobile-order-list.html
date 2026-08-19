@@ -1,0 +1,235 @@
+<!-- LNY-PRD gold: 金样：触屏订单列表。顶栏返回+搜索；工具条页签+筛选弹窗；订单横卡（店头/多行商品/合计/浅底操作）。写订单列表前必 Read。 DOM：md-list-toolbar 在 body 外；body > md-mobile-sheet（默认 safe-x）。 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+<title>PAGE-MP-014 订单列表</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="./assets/mui-kit.css">
+</head>
+<body>
+  <div class="md-mobile-page md-mp md-standard">
+    <header class="md-appbar md-appbar--mobile md-appbar--with-search">
+      <a class="md-icon-btn" href="#" aria-label="返回"><span class="md-icon" data-icon="chevron-left"></span></a>
+      <form class="md-search md-appbar__search" id="orderSearchForm">
+        <span class="md-icon" data-icon="search" aria-hidden="true"></span>
+        <input class="md-search__input" type="search" name="q" placeholder="搜索订单号/商品" aria-label="搜索订单" enterkeyhint="search">
+      </form>
+    </header>
+    <header class="md-list-toolbar md-list-toolbar--tabs-only">
+      <div class="md-search-row md-search-row--tabs">
+        <nav class="md-tabs md-tabs--stretch">
+          <button type="button" class="md-tab is-active" data-panel="ordAll">全部</button>
+          <button type="button" class="md-tab" data-panel="ordPay">待付款</button>
+          <button type="button" class="md-tab" data-panel="ordShip">待收货</button>
+          <button type="button" class="md-tab" data-panel="ordDone">已完成</button>
+        </nav>
+        <button type="button" class="md-icon-btn md-search-row__filter" data-filter-drawer="orderFilterSheet" aria-label="筛选" onclick="ProtoPage.openDrawer('orderFilterSheet')">
+          <span class="md-icon" data-icon="filter" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+    <main class="md-mobile-body">
+      <div class="md-mobile-sheet">
+      <div class="md-tab-panels">
+      <div id="ordAll" class="md-tab-panel is-active">
+      <div class="md-module md-stack" data-section="订单列表">
+        <article class="md-card md-card--order">
+          <header class="md-order-card__head">
+            <a class="md-order-card__shop" href="./PAGE-MP-003.html">鲜果直达旗舰店<span class="md-order-card__shop-go" aria-hidden="true">）</span></a>
+            <span class="md-order-card__status">运输中</span>
+          </header>
+          <div class="md-order-card__body">
+            <a class="md-order-card__line" href="./PAGE-MP-003.html">
+              <div class="md-order-card__thumb md-media-ph md-media-ph--1" aria-hidden="true"></div>
+              <div class="md-order-card__main">
+                <p class="md-order-card__name">有机草莓 250g</p>
+                <p class="md-order-card__spec">250g · x1</p>
+              </div>
+            </a>
+            <a class="md-order-card__line" href="./PAGE-MP-003.html">
+              <div class="md-order-card__thumb md-media-ph md-media-ph--6" aria-hidden="true"></div>
+              <div class="md-order-card__main">
+                <p class="md-order-card__name">当季蓝莓 125g</p>
+                <p class="md-order-card__spec">125g · x1</p>
+              </div>
+            </a>
+          </div>
+          <p class="md-order-card__total">共 2 件商品&nbsp;&nbsp;合计：<strong>¥36.60</strong></p>
+          <div class="md-order-card__actions md-card__actions--bar">
+            <div class="md-select-wrap">
+              <button type="button" class="md-btn md-btn--link md-btn--sm" data-menu="orderMore1">更多</button>
+              <ul id="orderMore1" class="md-menu md-menu--fixed">
+                <li><button type="button" class="md-menu__item" onclick="ProtoPage.snackbar('已复制订单号')">复制订单号</button></li>
+                <li><button type="button" class="md-menu__item" onclick="ProtoPage.snackbar('联系客服')">联系客服</button></li>
+                <li><button type="button" class="md-menu__item" onclick="ProtoPage.snackbar('已删除')">删除订单</button></li>
+              </ul>
+            </div>
+            <a class="md-btn md-btn--soft md-btn--sm" href="./PAGE-MP-009.html">查看物流</a>
+            <button type="button" class="md-btn md-btn--soft md-btn--sm" onclick="ProtoPage.snackbar('确认收货')">确认收货</button>
+          </div>
+        </article>
+        <article class="md-card md-card--order">
+          <header class="md-order-card__head">
+            <a class="md-order-card__shop" href="./PAGE-MP-003.html">云豆咖啡专营店<span class="md-order-card__shop-go" aria-hidden="true">）</span></a>
+            <span class="md-order-card__status">待付款</span>
+          </header>
+          <div class="md-order-card__body">
+            <a class="md-order-card__line" href="./PAGE-MP-003.html">
+              <div class="md-order-card__thumb md-media-ph md-media-ph--2" aria-hidden="true"></div>
+              <div class="md-order-card__main">
+                <p class="md-order-card__name">云南小粒咖啡 227g</p>
+                <p class="md-order-card__spec">227g · x1</p>
+              </div>
+            </a>
+          </div>
+          <p class="md-order-card__total">共 1 件商品&nbsp;&nbsp;合计：<strong>¥29.90</strong></p>
+          <div class="md-order-card__actions md-card__actions--bar">
+            <button type="button" class="md-btn md-btn--soft md-btn--sm" onclick="ProtoPage.snackbar('取消订单')">取消订单</button>
+            <button type="button" class="md-btn md-btn--contained md-btn--sm" onclick="ProtoPage.snackbar('去支付')">去支付</button>
+          </div>
+        </article>
+        <article class="md-card md-card--order">
+          <header class="md-order-card__head">
+            <a class="md-order-card__shop" href="./PAGE-MP-003.html">迷你烘焙工坊<span class="md-order-card__shop-go" aria-hidden="true">）</span></a>
+            <span class="md-order-card__status md-order-card__status--muted">已完成</span>
+          </header>
+          <div class="md-order-card__body">
+            <a class="md-order-card__line" href="./PAGE-MP-003.html">
+              <div class="md-order-card__thumb md-media-ph md-media-ph--4" aria-hidden="true"></div>
+              <div class="md-order-card__main">
+                <p class="md-order-card__name">全麦吐司 400g</p>
+                <p class="md-order-card__spec">400g · x2</p>
+              </div>
+            </a>
+          </div>
+          <p class="md-order-card__total">共 1 件商品&nbsp;&nbsp;合计：<strong>¥19.80</strong></p>
+          <div class="md-order-card__actions md-card__actions--bar">
+            <div class="md-select-wrap">
+              <button type="button" class="md-btn md-btn--link md-btn--sm" data-menu="orderMore2">更多</button>
+              <ul id="orderMore2" class="md-menu md-menu--fixed">
+                <li><button type="button" class="md-menu__item" onclick="ProtoPage.snackbar('已复制订单号')">复制订单号</button></li>
+                <li><button type="button" class="md-menu__item" onclick="ProtoPage.snackbar('已删除')">删除订单</button></li>
+              </ul>
+            </div>
+            <button type="button" class="md-btn md-btn--soft md-btn--sm" onclick="ProtoPage.snackbar('再次购买')">再次购买</button>
+            <button type="button" class="md-btn md-btn--soft md-btn--sm" onclick="ProtoPage.snackbar('评价')">评价</button>
+            <button type="button" class="md-btn md-btn--soft md-btn--sm" onclick="ProtoPage.snackbar('开发票')">开发票</button>
+          </div>
+        </article>
+      </div>
+      </div>
+      <div id="ordPay" class="md-tab-panel">
+        <div class="md-module md-stack">
+          <article class="md-card md-card--order">
+            <header class="md-order-card__head">
+              <a class="md-order-card__shop" href="./PAGE-MP-003.html">云豆咖啡专营店<span class="md-order-card__shop-go" aria-hidden="true">）</span></a>
+              <span class="md-order-card__status">待付款</span>
+            </header>
+            <div class="md-order-card__body">
+              <a class="md-order-card__line" href="./PAGE-MP-003.html">
+                <div class="md-order-card__thumb md-media-ph md-media-ph--2" aria-hidden="true"></div>
+                <div class="md-order-card__main">
+                  <p class="md-order-card__name">云南小粒咖啡 227g</p>
+                  <p class="md-order-card__spec">227g · x1</p>
+                </div>
+              </a>
+            </div>
+            <p class="md-order-card__total">共 1 件商品&nbsp;&nbsp;合计：<strong>¥29.90</strong></p>
+            <div class="md-order-card__actions md-card__actions--bar">
+              <button type="button" class="md-btn md-btn--soft md-btn--sm" onclick="ProtoPage.snackbar('取消订单')">取消订单</button>
+              <button type="button" class="md-btn md-btn--contained md-btn--sm" onclick="ProtoPage.snackbar('去支付')">去支付</button>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div id="ordShip" class="md-tab-panel">
+        <div class="md-module md-stack">
+          <article class="md-card md-card--order">
+            <header class="md-order-card__head">
+              <a class="md-order-card__shop" href="./PAGE-MP-003.html">鲜果直达旗舰店<span class="md-order-card__shop-go" aria-hidden="true">）</span></a>
+              <span class="md-order-card__status">运输中</span>
+            </header>
+            <div class="md-order-card__body">
+              <a class="md-order-card__line" href="./PAGE-MP-003.html">
+                <div class="md-order-card__thumb md-media-ph md-media-ph--1" aria-hidden="true"></div>
+                <div class="md-order-card__main">
+                  <p class="md-order-card__name">有机草莓 250g</p>
+                  <p class="md-order-card__spec">250g · x1</p>
+                </div>
+              </a>
+            </div>
+            <p class="md-order-card__total">共 1 件商品&nbsp;&nbsp;合计：<strong>¥19.90</strong></p>
+            <div class="md-order-card__actions md-card__actions--bar">
+              <a class="md-btn md-btn--soft md-btn--sm" href="./PAGE-MP-009.html">查看物流</a>
+              <button type="button" class="md-btn md-btn--soft md-btn--sm" onclick="ProtoPage.snackbar('确认收货')">确认收货</button>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div id="ordDone" class="md-tab-panel">
+        <div class="md-module md-stack">
+          <article class="md-card md-card--order">
+            <header class="md-order-card__head">
+              <a class="md-order-card__shop" href="./PAGE-MP-003.html">迷你烘焙工坊<span class="md-order-card__shop-go" aria-hidden="true">）</span></a>
+              <span class="md-order-card__status md-order-card__status--muted">已完成</span>
+            </header>
+            <div class="md-order-card__body">
+              <a class="md-order-card__line" href="./PAGE-MP-003.html">
+                <div class="md-order-card__thumb md-media-ph md-media-ph--4" aria-hidden="true"></div>
+                <div class="md-order-card__main">
+                  <p class="md-order-card__name">全麦吐司 400g</p>
+                  <p class="md-order-card__spec">400g · x2</p>
+                </div>
+              </a>
+            </div>
+            <p class="md-order-card__total">共 1 件商品&nbsp;&nbsp;合计：<strong>¥19.80</strong></p>
+            <div class="md-order-card__actions md-card__actions--bar">
+              <button type="button" class="md-btn md-btn--soft md-btn--sm" onclick="ProtoPage.snackbar('再次购买')">再次购买</button>
+              <button type="button" class="md-btn md-btn--soft md-btn--sm" onclick="ProtoPage.snackbar('评价')">评价</button>
+            </div>
+          </article>
+        </div>
+      </div>
+      </div>
+      </div>
+    </main>
+    <div id="orderFilterBackdrop" class="md-backdrop" onclick="ProtoPage.closeDrawer('orderFilterSheet')"></div>
+    <aside id="orderFilterSheet" class="md-drawer md-drawer--right">
+      <h2 class="md-drawer__title">筛选订单</h2>
+      <div class="md-drawer__body">
+        <div class="md-choice-group">
+          <span class="md-choice-group__label">下单时间</span>
+          <label class="md-check"><input type="checkbox" checked data-default-checked> 近三个月</label>
+          <label class="md-check"><input type="checkbox"> 今年内</label>
+        </div>
+        <label class="md-field md-field--select">
+          <span class="md-field__label">订单类型</span>
+          <select class="md-select">
+            <option value="">全部</option>
+            <option>实物商品</option>
+            <option>预售</option>
+          </select>
+        </label>
+      </div>
+      <div class="md-drawer__actions">
+        <button type="button" class="md-btn md-btn--text" id="btnClearOrderFilter">清空</button>
+        <button type="button" class="md-btn md-btn--contained" onclick="ProtoPage.closeDrawer('orderFilterSheet'); ProtoPage.snackbar('已应用筛选');">确定</button>
+      </div>
+    </aside>
+  </div>
+  <script src="./assets/md-icons.js"></script>
+  <script src="./assets/icons-extra.js"></script>
+  <script src="./assets/proto-page.js"></script>
+  <script>
+    document.getElementById("orderSearchForm").addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      ProtoPage.snackbar("已搜索订单");
+    });
+    document.getElementById("btnClearOrderFilter").addEventListener("click", function () {
+      ProtoPage.closeDrawer("orderFilterSheet");
+      ProtoPage.snackbar("已清空筛选");
+    });
+  </script>
+</body>
+</html>
