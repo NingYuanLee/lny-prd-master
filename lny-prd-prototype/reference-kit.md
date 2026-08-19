@@ -133,7 +133,7 @@ sheet：   md-mobile-sheet         浅灰 #f7f7f7 + 统一上下/左右内边距
 
 **② 页型选型**（列表型 vs 浅灰壳、何时改页型、详情评论 hybrid）：见 [`lny-prd-ui/reference.md`](../lny-prd-ui/reference.md) §1.3.4「滚动区页型选型」；② 写 L2 时引用，⑥ 按选型落 sheet 修饰类。
 
-**触屏金样 DOM 纪律**：12 个 `mobile-*.html` **全部** `body` > `sheet`；⑥ 新页照抄。改 `kit/` 后须对业务 `prototypes/{终端}/` 与 `versions/{v}/prototypes/{终端}/` 执行 `copy-kit.py`（或 `sync-mp-sheet-fixtures.py` 一键同步 HTML + assets）。
+**触屏金样 DOM 纪律**：14 个 `mobile-*.html` **全部** `body` > `sheet`；⑥ 新页照抄。改 `kit/` 后须对业务 `prototypes/{终端}/` 与 `versions/{v}/prototypes/{终端}/` 执行 `copy-kit.py`（或 **`sync-mp-sheet-fixtures.py`** 一键同步 MP+AD 夹具注释、kit、版本镜像）。对照 **`verify-fixture-gold-parity.py`** 确认 14×MP + 14×AD 夹具与金样文件齐套。
 
 ## 复制
 
@@ -1061,7 +1061,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 
 ### 字段列表（MP-012 / AD-012）
 
-对照金样 `gold/mobile-fields.html` / `gold/desktop-lists.html` 第三签 / 夹具 `PAGE-AD-012`。**产品定性：列表族 · 无分页 · 多条记录按组**（字段列表页；按组扫读字段名+值，不是图文详情，不是横卡列表）。触屏用 **默认 sheet（safe-x）** + **`md-group-list`**（白底组卡浮浅灰，与横卡列表同滚动壳）。桌面用 **`md-d1 md-d1--list`** + 同结构 `md-group-list`。`desktop-detail` 字段签仅作 **单组 `md-desc` 排版参考**，不是 MP-012 页型。
+对照金样 `gold/mobile-fields.html` / `gold/desktop-fields.html`（六型合览见 `desktop-lists.html` 第三签）/ 夹具 `PAGE-AD-012`。**产品定性：列表族 · 无分页 · 多条记录按组**（字段列表页；按组扫读字段名+值，不是图文详情，不是横卡列表）。触屏用 **默认 sheet（safe-x）** + **`md-group-list`**（白底组卡浮浅灰，与横卡列表同滚动壳）。桌面用 **`md-d1 md-d1--list`** + 同结构 `md-group-list`。`desktop-detail` 字段签仅作 **单组 `md-desc` 排版参考**，不是 MP-012 页型。
 
 | 层级 | 写法 | 规则 |
 |------|------|------|

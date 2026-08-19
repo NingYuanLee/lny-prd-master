@@ -31,6 +31,7 @@ description: >-
 - 搜图标：`<skillDir>/scripts/search-icons.py`
 - UTF-8 校验：`<skillDir>/scripts/verify-prototype-utf8.py`
 - 规格对照校验：`<skillDir>/scripts/verify-prototype-coverage.py`
+- 夹具·金样对照：`scripts/verify-fixture-gold-parity.py`；一键同步 kit+夹具注释+版本镜像：`scripts/sync-mp-sheet-fixtures.py`
 - 框架排除：`lny-prd-master/framework-exclusions.md`
 
 ## 三步对照（防错用）
@@ -68,7 +69,7 @@ description: >-
 | PAGE-AD-002 商品表单 | `gold/desktop-form.html` | `md-breadcrumb`；`md-field--sm`；栅格有行距。**按规格裁字段**；分栏布局勿用本表单；状态导览见 wizard / state-flow |
 | PAGE-AD-009 表单（套件样例） | `gold/desktop-form.html` | **样例才整页铺齐**。`--cols-1/2/3/4` + `md-combo` 七种下拉。**不要**加 `md-d1--list`，不要触屏 `data-wheel`，不要当页面左右分栏 |
 | PAGE-AD-008 详情 | `gold/desktop-detail.html` | 整页浅灰；白底区块；`md-profile`；灯箱分区；右下目录+回顶。图文签。不要沉浸式 |
-| PAGE-AD-012 字段列表 | `gold/desktop-lists.html` 第三签 / 夹具 | **列表族·无分页·多条按组**；`md-d1--list` + `md-group-list`；桌面 `--cols-2` / `--span`。非图文、非表单、非 D1-1 标准表壳 |
+| PAGE-AD-012 字段列表 | `gold/desktop-fields.html`（六型合览见 `desktop-lists.html` 第三签） | **列表族·无分页·多条按组**；`md-d1--list` + `md-group-list`；桌面 `--cols-2` / `--span`。非图文、非表单、非 D1-1 标准表壳 |
 | PAGE-AD-003 向导 | `gold/desktop-wizard.html` + `gold/desktop-state-flow.html` | 状态导览族：`md-stepper` + `md-advance` +（可选）`md-progress`；当前步包在 `md-d1__form`；数字可点跳步 |
 | PAGE-AD-004 工作台 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
 | PAGE-AD-005 商品分类 | `gold/desktop-split.html` | 不分页维护树：`md-d1--split` + `md-tree` + `md-tree-bar`；增子/重命名/删除；拖到上/中/下。只读树与表内嵌套读 `desktop-lists.html`。**不是**分类钮 |

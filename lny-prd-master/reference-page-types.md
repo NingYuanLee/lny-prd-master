@@ -31,7 +31,7 @@ PAGE 编号按终端独立分配，MP 与 AD 的相同序号不代表相同页�
 | 首页/宫格 | MP-001 | — | `mobile-grid.html` | — |
 | 列表（六型） | MP-002 | AD-001 | `mobile-list.html` | `desktop-lists.html` |
 | 展示详情 | MP-003 | AD-008 | `mobile-detail.html` | `desktop-detail.html` |
-| **字段列表** | MP-012 | AD-012 | `mobile-fields.html` | `desktop-lists.html`（第三签 **不分页分组字段**；夹具 `PAGE-AD-012`） |
+| **字段列表** | MP-012 | AD-012 | `mobile-fields.html` | `desktop-fields.html`（专页；六型合览见 `desktop-lists.html` 第三签） |
 | 业务表单 | MP-004 控件参考 | AD-002 | `mobile-form.html` | `desktop-form.html` |
 | 表单铺齐样例 | MP-004 | AD-009 | `mobile-form.html` | `desktop-form.html` |
 | 步骤向导 / 状态导览 | MP-005 | AD-003 | `mobile-wizard.html` | `desktop-wizard.html` + `desktop-state-flow.html` |
@@ -51,7 +51,42 @@ PAGE 编号按终端独立分配，MP 与 AD 的相同序号不代表相同页�
 
 ## 金样边界
 
-MP-004、MP-007、MP-011、AD-003～AD-007、AD-009～AD-014 是套件/形态样例，不是每个业务项目的必有页面。业务表单按规格裁字段；悬浮胶囊或按钮仅在规格点名时加入业务页。列表页顶部是搜索与筛选工具条，不是返回标题栏。夹具 `PAGE-AD-001` 是**分页标准列表**且含筛+功能栏；六型总览与树表/卡片只在金样 `desktop-lists.html`（只对标列表区）。商品**字段列表**夹具 `PAGE-MP-012` / `PAGE-AD-012` 对标 `mobile-fields` / lists 第三签（不是 `desktop-detail` 字段签）。表内嵌套无独立夹具 PAGE，见 `desktop-lists.html` 第二签（分页树形列表）。状态导览合览无独立夹具 PAGE，见 `PAGE-AD-003` 与 `desktop-state-flow.html`。
+MP-004、MP-007、MP-011、AD-003～AD-007、AD-009～AD-014 是套件/形态样例，不是每个业务项目的必有页面。业务表单按规格裁字段；悬浮胶囊或按钮仅在规格点名时加入业务页。列表页顶部是搜索与筛选工具条，不是返回标题栏。夹具 `PAGE-AD-001` 是**分页标准列表**且含筛+功能栏；六型总览与树表/卡片只在金样 `desktop-lists.html`（只对标列表区）。商品**字段列表**夹具 `PAGE-MP-012` / `PAGE-AD-012` 对标 `mobile-fields` / **`desktop-fields`**（不是 `desktop-detail` 字段签）。表内嵌套无独立夹具 PAGE，见 `desktop-lists.html` 第二签（分页树形列表）。状态导览合览无独立夹具 PAGE，见 `PAGE-AD-003` 与 `desktop-state-flow.html`。
+
+## mini-shop 夹具 · 金样 · 套件对照（回归）
+
+`examples/mini-shop/prototypes/{MP|AD}/PAGE-*.html` 为各端 **14 页回归夹具**；金样在 `lny-prd-prototype/gold/`（触屏 14 + 桌面 14 个 `*.html`，其中 `desktop-state-flow.html` 为 AD-003 合览、无独立夹具）；套件经 `copy-kit.py` 写入各端 `assets/`。一键同步夹具注释、kit、版本镜像：`python lny-prd-prototype/scripts/sync-mp-sheet-fixtures.py`；对照校验：`verify-fixture-gold-parity.py`。
+
+| 夹具 | 金样 | 说明 |
+|------|------|------|
+| `PAGE-MP-001` | `mobile-grid.html` | 宫格/首页 |
+| `PAGE-MP-002` | `mobile-list.html` | 商品列表 |
+| `PAGE-MP-003` | `mobile-detail.html` | 详情 |
+| `PAGE-MP-004` | `mobile-form.html` | 表单铺齐样例 |
+| `PAGE-MP-005` | `mobile-wizard.html` | 步骤向导 |
+| `PAGE-MP-006` | `mobile-settings.html` | 设置 |
+| `PAGE-MP-007` | `mobile-buttons.html` | 按钮样例 |
+| `PAGE-MP-008` | `mobile-tree.html` | 分类树 |
+| `PAGE-MP-009` | `mobile-timeline.html` | 物流时间轴 |
+| `PAGE-MP-010` | `mobile-menu.html` | 我的/服务 |
+| `PAGE-MP-011` | `mobile-pod.html` | 悬浮胶囊样例 |
+| `PAGE-MP-012` | `mobile-fields.html` | 字段列表 |
+| `PAGE-MP-013` | `mobile-locator.html` | 分类导航 |
+| `PAGE-MP-014` | `mobile-order-list.html` | 订单列表 |
+| `PAGE-AD-001` | `desktop-lists.html` | 分页标准列表（含筛+功能栏） |
+| `PAGE-AD-002` | `desktop-form.html` | 业务表单 |
+| `PAGE-AD-003` | `desktop-wizard.html` + `desktop-state-flow.html` | 向导（合览无独立夹具） |
+| `PAGE-AD-004` | `desktop-dashboard.html` | 工作台 |
+| `PAGE-AD-005` | `desktop-split.html` | 分类树维护 |
+| `PAGE-AD-006` | `desktop-settings.html` | 设置 |
+| `PAGE-AD-007` | `desktop-timeline.html` | 时间轴 |
+| `PAGE-AD-008` | `desktop-detail.html` | 图文详情 |
+| `PAGE-AD-009` | `desktop-form.html` | 表单铺齐样例 |
+| `PAGE-AD-010` | `desktop-menu.html` | 我的/服务 |
+| `PAGE-AD-011` | `desktop-pod.html` | 悬浮按钮样例 |
+| `PAGE-AD-012` | `desktop-fields.html` | 字段列表（lists 第三签同构） |
+| `PAGE-AD-013` | `desktop-locator.html` | 定位导航/大纲 |
+| `PAGE-AD-014` | `desktop-layout.html` | 页面分栏样例 |
 
 ## 跨步骤不变量
 

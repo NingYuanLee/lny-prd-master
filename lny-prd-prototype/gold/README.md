@@ -4,7 +4,9 @@
 
 `pages_prd` 的 ASCII 线框只定**分区顺序**。金样定**控件密度与套件类名**。视觉冲突以金样为准；**功能**以本页 `pages_prd` / `ui` §2.3 / feature 为准。
 
-**按页类型打开金样，不要按 PAGE 序号左右对齐**：`PAGE-MP-003` 是详情（`mobile-detail`），`PAGE-AD-003` 是向导（`desktop-wizard`）。完整编号、金样文件与夹具 PAGE 对照见 [`lny-prd-master/reference-page-types.md`](../../lny-prd-master/reference-page-types.md)。套件样例夹具可整页对标金样；业务夹具按规格裁（桌面列表夹具含筛+功能栏，金样六型只对标列表区）。
+**按页类型打开金样，不要按 PAGE 序号左右对齐**：`PAGE-MP-003` 是详情（`mobile-detail`），`PAGE-AD-003` 是向导（`desktop-wizard`）。完整编号、金样文件与夹具 PAGE 对照见 [`lny-prd-master/reference-page-types.md`](../../lny-prd-master/reference-page-types.md)「mini-shop 夹具 · 金样 · 套件对照」。套件样例夹具可整页对标金样；业务夹具按规格裁（桌面列表夹具含筛+功能栏，金样六型只对标列表区）。
+
+**库存**：触屏金样 **14** 个 `mobile-*.html`；桌面金样 **14** 个 `desktop-*.html`（含 `desktop-state-flow.html` 合览，无独立夹具）；mini-shop 各端夹具各 **14** 页；套件源 `kit/mui-kit.css` 等经 `copy-kit.py` 同步到 `gold/assets/` 与各端 `prototypes/*/assets/`。
 
 禁止两个极端：
 
@@ -24,11 +26,12 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 移动订单列表 | `mobile-order-list.html`（顶栏返回+搜索；下划线可滚动页签+筛选遮罩；店名后 `chevron-right`；`md-card--order` 推广条/商品行价量/实付款/浅底操作） |
 | 移动展示 / 详情 | `mobile-detail.html`（含 `md-profile` 店铺资料示例；组件亦用于个人/公司资料） |
 | 移动字段列表 | `mobile-fields.html`（sheet safe + `md-group-list` 白卡浮灰；标准顶栏；非图文、非横卡列表、非表单） |
+| 桌面字段列表 | `desktop-fields.html`（`md-d1--list` + `md-group-list` + `md-desc--cols-2`；面包屑；多条按组。六型合览见 `desktop-lists.html` 第三签；夹具 `PAGE-AD-012`） |
 | 移动表单 | `mobile-form.html`（**套件样例**；`md-form-page` 浅灰底+白底分组；一页铺齐触屏表单控件：文本/选择/滑动条/单日/日期段/省市区/三类上传 + 贴底提交；进度条见步骤向导） |
 | 桌面列表六型 | `desktop-lists.html`（只对标列表区：分页标准 / **分页树表** / 分组字段 / 只读树 / **分页无图卡片列表** / **分页有图卡片列表**；树表含 `md-table--nest` 嵌套行；卡片同一行等高、底栏统计分页；操作列按钮形态与数量定宽。筛区/功能栏按规格另加。夹具 `PAGE-AD-001` 是分页标准列表且含筛+功能栏） |
 | 桌面页面布局 | `desktop-layout.html`（通栏/均分双列/左定右填/左填右定/三列/品字；**禁止**用 `md-d1__form` 窄双列冒充分栏。夹具 `PAGE-AD-014`） |
 | 桌面整页表单 | `desktop-form.html`（**套件样例**；通栏 1～4 列栅格有行距；`md-combo` 七种下拉 + `md-select`；多图上传 80×80。业务表单按规格裁；进度条见状态导览/向导） |
-| 桌面展示 / 详情 | `desktop-detail.html`（图文签 + 字段签；整页浅灰+白底区块；资料卡片；灯箱；右下目录+回顶。字段签=详情内单组 `md-desc` 排版参考。禁止沉浸式、禁止当表单。夹具图文 `PAGE-AD-008`；**字段列表** `PAGE-AD-012` 见 lists 第三签 / `mobile-fields`） |
+| 桌面展示 / 详情 | `desktop-detail.html`（图文签 + 字段签；整页浅灰+白底区块；资料卡片；灯箱；右下目录+回顶。字段签=详情内单组 `md-desc` 排版参考。禁止沉浸式、禁止当表单。夹具图文 `PAGE-AD-008`；**字段列表** `PAGE-AD-012` → `desktop-fields.html`） |
 | 工作台 / 仪表盘 | `desktop-dashboard.html`（`md-stat-grid` 指标卡 + `md-chart-ph` + 短表。禁止拿 `desktop-lists` 硬套） |
 | 树 + 内容（不分页） | `desktop-split.html`（`md-d1--split` 左树右内容；总控展开/收起/增根；节点维护与拖到上/中/下。**不是**分类钮。夹具 `PAGE-AD-005`） |
 | 定位导航（章节大纲） | `desktop-locator.html`（左侧可收缩 / 右侧悬浮可收起；**收起后点线轨**，滚正文当前点高亮；与树分离。夹具 `PAGE-AD-013`） |

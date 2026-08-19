@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Align mini-shop MP fixtures and gold mobile headers with sheet DOM rules."""
+"""Sync mini-shop MP/AD fixtures, gold mobile DOM headers, kit assets, and version mirrors."""
 from __future__ import annotations
 
 import re
@@ -64,6 +64,40 @@ FIXTURE_INTRO = {
     "PAGE-MP-014.html": "夹具：对标 mobile-order-list.html。订单·订单列表。",
 }
 
+AD_PAGE_TO_GOLD = {
+    "PAGE-AD-001.html": "desktop-lists.html",
+    "PAGE-AD-002.html": "desktop-form.html",
+    "PAGE-AD-003.html": "desktop-wizard.html",
+    "PAGE-AD-004.html": "desktop-dashboard.html",
+    "PAGE-AD-005.html": "desktop-split.html",
+    "PAGE-AD-006.html": "desktop-settings.html",
+    "PAGE-AD-007.html": "desktop-timeline.html",
+    "PAGE-AD-008.html": "desktop-detail.html",
+    "PAGE-AD-009.html": "desktop-form.html",
+    "PAGE-AD-010.html": "desktop-menu.html",
+    "PAGE-AD-011.html": "desktop-pod.html",
+    "PAGE-AD-012.html": "desktop-fields.html",
+    "PAGE-AD-013.html": "desktop-locator.html",
+    "PAGE-AD-014.html": "desktop-layout.html",
+}
+
+AD_FIXTURE_INTRO = {
+    "PAGE-AD-001.html": "夹具：对标 desktop-lists.html 第一签。商品·分页标准列表；含筛+功能栏。金样只对标列表区。",
+    "PAGE-AD-002.html": "夹具：对标 desktop-form.html。商品·业务表单；按规格裁字段。",
+    "PAGE-AD-003.html": "夹具：对标 desktop-wizard.html。状态导览/向导；合览见 desktop-state-flow.html。",
+    "PAGE-AD-004.html": "夹具：对标 desktop-dashboard.html。工作台；指标卡+趋势+短表。",
+    "PAGE-AD-005.html": "夹具：对标 desktop-split.html。商品·分类树维护；左树右内容。",
+    "PAGE-AD-006.html": "夹具：对标 desktop-settings.html。设置项；当页当行操作。",
+    "PAGE-AD-007.html": "夹具：对标 desktop-timeline.html。时间轴；通栏竖轨右横卡文本。",
+    "PAGE-AD-008.html": "夹具：对标 desktop-detail.html。商品·图文详情；字段签仅单组排版参考。",
+    "PAGE-AD-009.html": "夹具：对标 desktop-form.html。表单铺齐样例；整页控件演示。",
+    "PAGE-AD-010.html": "夹具：对标 desktop-menu.html。我的/服务；功能入口。",
+    "PAGE-AD-011.html": "夹具：对标 desktop-pod.html。悬浮按钮样例；规格点名才用。",
+    "PAGE-AD-012.html": "夹具：对标 desktop-fields.html。商品·字段列表；单商品多维度按组。禁止沉浸式、禁止当表单、禁止 D1-1 标准表壳。",
+    "PAGE-AD-013.html": "夹具：对标 desktop-locator.html。章节大纲/定位导航；左可收缩或右悬浮。",
+    "PAGE-AD-014.html": "夹具：对标 desktop-layout.html。页面分栏样例；禁止用表单窄双列冒充。",
+}
+
 
 def normalize_comment_spacing(text: str) -> str:
     return re.sub(r"<!--\s{2,}", "<!-- ", text)
@@ -101,6 +135,24 @@ def fix_split_flush_x(directory: Path) -> None:
             print("flush-x", path)
 
 
+def patch_ad_fixture_comments() -> None:
+    for page, gold_file in AD_PAGE_TO_GOLD.items():
+        path = AD_DIR / page
+        if not path.exists():
+            continue
+        intro = AD_FIXTURE_INTRO[page]
+        text = path.read_text(encoding="utf-8")
+        text = re.sub(
+            r"<!-- .*? -->",
+            f"<!-- LNY-PRD gold: {intro} -->",
+            text,
+            count=1,
+            flags=re.S,
+        )
+        path.write_text(normalize_comment_spacing(text), encoding="utf-8", newline="\n")
+        print("ad-fixture", page)
+
+
 def patch_fixture_comments() -> None:
     for page, gold_file in PAGE_TO_GOLD.items():
         path = MP_DIR / page
@@ -119,7 +171,15 @@ def mirror_mp_to_version() -> None:
     for src in sorted(MP_DIR.glob("PAGE-MP-*.html")):
         dst = VER_DIR / src.name
         dst.write_bytes(src.read_bytes())
-        print("mirror", src.name)
+        print("mirror-mp", src.name)
+
+
+def mirror_ad_to_version() -> None:
+    AD_VER_DIR.mkdir(parents=True, exist_ok=True)
+    for src in sorted(AD_DIR.glob("PAGE-AD-*.html")):
+        dst = AD_VER_DIR / src.name
+        dst.write_bytes(src.read_bytes())
+        print("mirror-ad", src.name)
 
 
 def copy_kit_to_fixtures() -> None:
@@ -143,7 +203,9 @@ def main() -> None:
     patch_gold_headers()
     fix_split_flush_x(MP_DIR)
     patch_fixture_comments()
+    patch_ad_fixture_comments()
     mirror_mp_to_version()
+    mirror_ad_to_version()
     fix_split_flush_x(VER_DIR)
 
 
