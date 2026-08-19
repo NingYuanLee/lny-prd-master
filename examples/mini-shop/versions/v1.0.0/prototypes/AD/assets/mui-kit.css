@@ -34,7 +34,7 @@
   --md-grey-400: #bdbdbd;
   --md-radius: 4px;
   --md-space: 8px;
-  --md-module-gap: 16px;
+  --md-module-gap: 12px;
   --md-scroll-bg: #f7f7f7;
   --md-scroll-pad-top: 12px;
   --md-scroll-pad-bottom: calc(12px + var(--md-safe-b, 0px));
@@ -1635,6 +1635,12 @@ textarea.md-field__input:disabled:focus,
 .md-mobile-page .md-tab-panels {
   background: transparent;
 }
+.md-mobile-page .md-tab-panels > .md-tab-panel.is-active {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-module-gap);
+  min-width: 0;
+}
 
 .md-tabbar {
   display: flex;
@@ -2113,7 +2119,7 @@ body.md-lightbox-open { overflow: hidden; }
   flex: 1;
   min-height: 0;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--md-module-gap);
 }
 .md-d1__workspace > .md-tab-panel.is-active {
   display: flex;
@@ -3582,7 +3588,7 @@ button.md-tree__item {
 /* 我的 / 设置等功能服务页：浅灰底（同详情），组与组间距漏出背景 */
 .md-set-page {
   --md-set-page-bg: #f7f7f7;
-  --md-set-page-gap: 12px;
+  --md-set-page-gap: var(--md-module-gap);
   background: var(--md-set-page-bg);
 }
 .md-mobile-page.md-set-page {
@@ -3612,7 +3618,7 @@ button.md-tree__item {
 /* 触屏表单页：浅灰底 + 白底分组区块（内边距；组间露灰） */
 .md-form-page {
   --md-form-page-bg: #f7f7f7;
-  --md-form-page-gap: 12px;
+  --md-form-page-gap: var(--md-module-gap);
   background: var(--md-form-page-bg);
 }
 .md-mobile-page.md-form-page {
@@ -4298,6 +4304,19 @@ button.md-set-row:active { background: var(--md-selected); }
   width: 6px;
   height: 6px;
   border-radius: 50%;
+}
+
+/* 多个 md-module 兄弟：父级 flex 列 + 模块间距（sheet / 详情 / 表单 / 页签面板等） */
+:is(
+  .md-mobile-page > .md-mobile-body > .md-mobile-sheet,
+  .md-detail-content,
+  .md-mobile-page.md-form-page form,
+  .md-d1.md-detail-page > .md-detail-content,
+  .md-d1.md-detail-page .md-tab-panel > .md-detail-content
+):has(> .md-module + .md-module) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-module-gap);
 }
 
 .md-module {
@@ -6429,7 +6448,7 @@ a.md-card {
 /* —— 详情：极浅灰页底；白底区块靠外边距/间隙露灰 —— */
 .md-detail-page {
   --md-detail-bg: #f7f7f7;
-  --md-detail-block-gap: 12px;
+  --md-detail-block-gap: var(--md-module-gap);
   background: var(--md-detail-bg);
 }
 .md-mobile-page.md-detail-page {

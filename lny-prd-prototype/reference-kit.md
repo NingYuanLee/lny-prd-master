@@ -32,7 +32,7 @@
 
 | 层 | 负责什么 | 典型 token / 类 | 规则 |
 |----|----------|-----------------|------|
-| **L1 父级弹性 gap** | 兄弟块之间的默认节奏 | `md-mobile-sheet` / `md-mobile-body` → `--md-module-gap`（16px）；`md-module` → `--md-space`（8px）；`md-list-toolbar` → `--md-space` | **不轻易为单个块改父 gap**（会影响其它无内边距 sibling） |
+| **L1 父级弹性 gap** | 兄弟块之间的默认节奏 | `md-mobile-sheet` / `md-mobile-body` → `--md-module-gap`（**12px**）；`md-module` → `--md-space`（8px）；`md-list-toolbar` → `--md-space` | **不轻易为单个块改父 gap**（会影响其它无内边距 sibling） |
 | **L2 兄弟外边距** | 非 flex、或需负补偿时偶用 | `margin-top` / `margin-bottom` | 父已有 `gap` 时 **禁止** sibling 再叠上下 margin |
 | **L3 块 padding** | 块内触控区、文字缩进 | `md-king__item`、`md-set-row` 行内距等 | **seam 边**（顶/底朝向相邻兄弟）**不**重复 L1；只给 **content** 留 padding |
 
@@ -56,7 +56,7 @@
 
 | 场景 | 做法 |
 |------|------|
-| ✅ 首页专题入口 | `md-mobile-sheet { gap:16px }` + `md-module` + `md-king--pair { padding:0 }` + `md-king__item { padding:14px 16px }` |
+| ✅ 首页专题入口 | `md-mobile-sheet { gap:12px }` + `md-module` + `md-king--pair { padding:0 }` + `md-king__item { padding:14px 16px }` |
 | ❌ 叠缝 | sheet `gap:16px` **且** `md-king--pair { padding:4px 0 12px }` → 缝 20～28px |
 | ✅ 列表工具条 | 搜索行/tab  seam 边无 padding → 父 `md-list-toolbar { gap:8px }` |
 | ✅ 模块内标题+列表 | `md-module { gap:8px }`；`md-section-head` 无额外上下 margin |
@@ -70,7 +70,7 @@
 | 场景 | 承担层 | 背景 | 内边距（套件默认） | 模块 |
 |------|--------|------|-------------------|------|
 | **body（纯滚动壳）** | `md-mobile-body` | **透明** | **0** | 只负责 overflow，不承担 safe |
-| **sheet（默认）** | `md-mobile-sheet` | **浅灰** `#f7f7f7` | 上 **12**；**左右 safe 12**；下 12 + 底安全区；`gap` 16 | 白底块在 `md-module` / 卡片内 |
+| **sheet（默认）** | `md-mobile-sheet` | **浅灰** `#f7f7f7` | 上 **12**；**左右 safe 12**；下 12 + 底安全区；`gap` **12** | 白底块在 `md-module` / 卡片内 |
 | **sheet 贴边** | `md-mobile-sheet--flush-x` | 浅灰 | **左右 0**（上下仍统一） | 详情/表单/设置/树等白块通栏 |
 | **下沉滚过** | 同上 sheet | 浅灰 | 同上 | Hero 在 body 外同级 |
 
