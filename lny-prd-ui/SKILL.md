@@ -35,7 +35,7 @@ description: >-
 
 ## 页型速查（写 PAGE 前扫一眼）
 
-用户**不必**自备设计规范：未另给时一律采用 [`reference.md`](reference.md) **§1.7.0 默认体验规范**。同类页按表落盘，然后 **§2.3 必须再写舒适默认**，禁止只抄控件名交差。细则 **§1.3.3 / §1.4.3 / §1.7**；视觉边界以共享页型映射与 `lny-prd-prototype/gold/` 为准，不依赖仓库示例。
+用户**不必**自备设计规范：未另给时一律采用 [`reference.md`](reference.md) **§1.7.0 默认体验规范**。同类页按表落盘，然后 **§2.3 必须再写舒适默认**，禁止只抄控件名交差。细则 **§1.3.3 / §1.3.4 / §1.4.3 / §1.7**；**移动端滚动区选型**（列表型 vs 浅灰壳、何时改页型）见 [`reference.md` §1.3.4「滚动区页型选型」](reference.md)；视觉边界以共享页型映射与 `lny-prd-prototype/gold/` 为准，不依赖仓库示例。
 
 **移动端（MP）**
 
@@ -98,7 +98,7 @@ description: >-
 
 Read `lny-prd-master/framework-exclusions.md` 及本项目追加排除。不为框架通用已排除项建 `ui/PAGE-*`。Read `main_spec` §1.5「明确不做」（若有）：**禁止**为清单中的能力建 PAGE。**新立项只走目录化**（`ui_manifest` 只留索引 + `ui/` 明细）；旧「manifest 内嵌全文」只读兼容，禁止双轨扩写。
 
-写任何 `ui/PAGE-*` 前必须 Read 共享页型映射、[`reference.md`](reference.md) **§1.7**（先 **§1.7.0**）与 [`reference-mobile-design.md`](reference-mobile-design.md)（移动端）、[`reference-desktop-design.md`](reference-desktop-design.md)（桌面端），并在该页写 **§2.3**。移动端另读 **§1.3.3** 与 **§1.3.4**（L2 下沉/滚动、L3 吸顶、Banner 两种形态）。桌面 D1-1 另读 **§1.4.3**。再扫上方 **页型速查**：按默认体验规范写舒适默认；对不上号时按页型找金样，禁止按 MP/AD 序号对齐，禁止拿商品列表硬套，禁止用表单窄双列冒充页面分栏。禁止只写「有个列表、有个按钮」就把球踢给 `/lny-prd-prototype`。用户另给交互规范时只覆盖冲突项，其余仍用 §1.7.0。
+写任何 `ui/PAGE-*` 前必须 Read 共享页型映射、[`reference.md`](reference.md) **§1.7**（先 **§1.7.0**）与 [`reference-mobile-design.md`](reference-mobile-design.md)（移动端）、[`reference-desktop-design.md`](reference-desktop-design.md)（桌面端），并在该页写 **§2.3**。移动端另读 **§1.3.3** 与 **§1.3.4**（L2 下沉/滚动、**滚动区页型选型**、L3 吸顶、Banner 两种形态）。桌面 D1-1 另读 **§1.4.3**。再扫上方 **页型速查**：按默认体验规范写舒适默认；对不上号时按页型找金样，禁止按 MP/AD 序号对齐，禁止拿商品列表硬套，禁止用表单窄双列冒充页面分栏。禁止只写「有个列表、有个按钮」就把球踢给 `/lny-prd-prototype`。用户另给交互规范时只覆盖冲突项，其余仍用 §1.7.0。
 
 ## 职责与禁止
 
