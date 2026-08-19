@@ -55,7 +55,8 @@ description: >-
 | PAGE-MP-010 我的/服务 | `gold/mobile-menu.html` | `md-set-page` 浅灰底；顶区 **`md-profile--me`**（圆角矩形头像/昵称均 **底半屏** 改）；**`md-svc-strip`**（2/3/4 等分；`__icon`+**`__badge`** / **`__value`+`__help`**）；功能入口通栏/`md-set-pair`；右可为文字或 **方形配图 `--thumb`**；组间距漏底 |
 | PAGE-MP-007 按钮（套件样例） | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、**浅底 `--soft`**、文字、**`--link`**、**通栏 `--block` / `md-btn-row`**、置灰、`md-badge`；贴底仅一钮自动占满。禁止当业务首页。禁止裸 `<button>` |
 | PAGE-MP-011 悬浮胶囊（套件样例） | `gold/mobile-pod.html` | L4 无顶栏 + **`md-pod--tl`**；`PT-FLOAT`；与页内顶栏互斥 |
-| PAGE-MP-008 商品分类 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左树右内容；浏览用 `data-tree-edit="off"`。桌面维护交互见 `desktop-split` |
+| PAGE-MP-008 分类树 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左多级树右 **图文介绍**（`md-cat-intro`）；浏览用 `data-tree-edit="off"`；点节点只换右区。桌面维护树见 `desktop-split` |
+| PAGE-MP-013 分类导航 | `gold/mobile-locator.html` | `md-locator-page`；左一级 `md-locator--outline`；右分组 **横卡列表**；点选滚锚点 + 滚正文高亮联动（对标 `desktop-locator` 左栏）。**不是**树 |
 | PAGE-MP-009 物流时间轴 | `gold/mobile-timeline.html` | `md-timeline` 左 `__rail` 竖轨，右 `md-card--row` **横卡文本**（无左图，正文可 `__photos`）；`is-done` / `is-active`；点节点切高亮；夹具示范物流轨迹 |
 
 **桌面端**

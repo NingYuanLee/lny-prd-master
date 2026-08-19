@@ -1,9 +1,9 @@
-<!-- LNY-PRD gold: 夹具：对标 mobile-tree.html。 DOM：body > md-mobile-sheet--flush-x（全幅 split）。 -->
+<!-- LNY-PRD gold: 夹具：对标 mobile-tree.html。商品·分类树；左多级树右图文介绍。禁止当横卡列表、禁止当定位导航。 DOM：body > md-mobile-sheet--flush-x（全幅 split）。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-<title>PAGE-MP-008 商品分类</title>
+<title>PAGE-MP-008 分类树</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <link rel="stylesheet" href="./assets/mui-kit.css">
 </head>
@@ -11,7 +11,7 @@
   <div class="md-mobile-page md-mp md-standard md-tree-page">
     <header class="md-appbar md-appbar--mobile">
       <a class="md-icon-btn" href="./PAGE-MP-001.html" aria-label="返回"><span class="md-icon" data-icon="chevron-left"></span></a>
-      <h1 class="md-appbar__title">商品分类</h1>
+      <h1 class="md-appbar__title">分类树</h1>
     </header>
     <main class="md-mobile-body">
       <div class="md-mobile-sheet md-mobile-sheet--flush-x">
@@ -75,68 +75,71 @@
           </ul>
         </aside>
         <div class="md-split__main">
-          <div class="md-section-head">
-            <h2 class="md-section-head__title" id="catTitle">水果</h2>
-          </div>
-          <div class="md-grid-2" data-section="分类商品">
-            <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default" data-tree-item="水果,浆果,草莓">
-              <div class="md-card__media md-media-ph md-media-ph--1">
-                <span class="md-card__tag md-chip md-chip--success">有货</span>
-              </div>
-              <div class="md-card__body">
-                <h3 class="md-card__title">有机草莓 250g</h3>
-                <p class="md-price">¥19.90</p>
-              </div>
-            </article>
-            <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default" data-tree-item="水果,柑橘">
-              <div class="md-card__media md-media-ph md-media-ph--3">
-                <span class="md-card__tag md-chip md-chip--primary">新品</span>
-              </div>
-              <div class="md-card__body">
-                <h3 class="md-card__title">赣南脐橙 5斤</h3>
-                <p class="md-price">¥32.80</p>
-              </div>
-            </article>
-            <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default" data-tree-item="饮品,咖啡">
-              <div class="md-card__media md-media-ph md-media-ph--2">
-                <span class="md-card__tag md-card__tag--tr md-chip md-chip--error">售罄</span>
-              </div>
-              <div class="md-card__body">
-                <h3 class="md-card__title">云南小粒咖啡 227g</h3>
-                <p class="md-price">¥29.90</p>
-              </div>
-            </article>
-            <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default" data-tree-item="饮品">
-              <div class="md-card__media md-media-ph md-media-ph--5"></div>
-              <div class="md-card__body">
-                <h3 class="md-card__title">青柠蜂蜜茶 500ml</h3>
-                <p class="md-price">¥12.50</p>
-              </div>
-            </article>
-            <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default" data-tree-item="烘焙">
-              <div class="md-card__media md-media-ph md-media-ph--4"></div>
-              <div class="md-card__body">
-                <h3 class="md-card__title">全麦吐司 400g</h3>
-                <p class="md-price">¥9.90</p>
-              </div>
-            </article>
-            <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default" data-tree-item="水果,浆果,蓝莓">
-              <div class="md-card__media md-media-ph md-media-ph--6"></div>
-              <div class="md-card__body">
-                <h3 class="md-card__title">当季蓝莓 125g</h3>
-                <p class="md-price">¥16.80</p>
-              </div>
-            </article>
-          </div>
-          <div class="md-skel-host is-hidden" data-skel-for="COMP-001">
-            <div class="md-skeleton md-skeleton--media"></div>
-            <div class="md-skeleton md-skeleton--title"></div>
-          </div>
-          <div class="md-empty md-empty--illus is-hidden" data-empty-for="COMP-001" data-empty-text="该分类暂无商品" data-error-text="加载失败">
-            <div class="md-empty__art" aria-hidden="true"></div>
-            <p class="md-empty__title">暂无内容</p>
-            <p class="md-empty__text">该分类暂无商品</p>
-          </div>
+          <article class="md-cat-intro" data-cat-panel="水果">
+            <div class="md-cat-intro__media md-media-ph md-media-ph--1" aria-hidden="true"></div>
+            <div class="md-detail-head">
+              <h2 class="md-detail-head__title">水果</h2>
+              <p class="md-detail-head__lead">当季鲜果分区，支持按品类查看产地、冷链与赏味说明。</p>
+            </div>
+            <p class="md-body2">树型分类适合层级较深：点左侧任意节点，右侧只换本类图文介绍，不滚动联动、不展示商品横卡列表。</p>
+            <p class="md-body2">浆果、柑橘等子类可继续展开；末级如草莓会展示更具体的品种与产地故事。</p>
+          </article>
+          <article class="md-cat-intro is-hidden" data-cat-panel="浆果">
+            <div class="md-cat-intro__media md-media-ph md-media-ph--6" aria-hidden="true"></div>
+            <div class="md-detail-head">
+              <h2 class="md-detail-head__title">浆果</h2>
+              <p class="md-detail-head__lead">短保易损，建议冷链；含草莓、蓝莓等核果与浆果小类。</p>
+            </div>
+            <p class="md-body2">浆果类图文侧重储存温度与运输时效，右侧不出现价格或加购按钮。</p>
+          </article>
+          <article class="md-cat-intro is-hidden" data-cat-panel="草莓">
+            <div class="md-cat-intro__media md-media-ph md-media-ph--1" aria-hidden="true"></div>
+            <div class="md-detail-head">
+              <h2 class="md-detail-head__title">草莓</h2>
+              <p class="md-detail-head__lead">丹东、盐城等产区当季棚栽；有机与普通分级展示。</p>
+            </div>
+            <p class="md-body2">有机草莓 250g 等 SKU 的图文可在详情页查看；本页只承担分类说明与品牌故事。</p>
+          </article>
+          <article class="md-cat-intro is-hidden" data-cat-panel="蓝莓">
+            <div class="md-cat-intro__media md-media-ph md-media-ph--5" aria-hidden="true"></div>
+            <div class="md-detail-head">
+              <h2 class="md-detail-head__title">蓝莓</h2>
+              <p class="md-detail-head__lead">进口与国产并行；盒装 125g 为主流规格。</p>
+            </div>
+            <p class="md-body2">果粉完整、颗粒饱满为选品要点；图文可附采摘与质检示意。</p>
+          </article>
+          <article class="md-cat-intro is-hidden" data-cat-panel="柑橘">
+            <div class="md-cat-intro__media md-media-ph md-media-ph--3" aria-hidden="true"></div>
+            <div class="md-detail-head">
+              <h2 class="md-detail-head__title">柑橘</h2>
+              <p class="md-detail-head__lead">赣南脐橙、沃柑等礼盒与散装并行。</p>
+            </div>
+            <p class="md-body2">柑橘类介绍侧重糖酸比与上市季；右侧为只读图文，不是列表筛选结果。</p>
+          </article>
+          <article class="md-cat-intro is-hidden" data-cat-panel="饮品">
+            <div class="md-cat-intro__media md-media-ph md-media-ph--2" aria-hidden="true"></div>
+            <div class="md-detail-head">
+              <h2 class="md-detail-head__title">饮品</h2>
+              <p class="md-detail-head__lead">咖啡、茶饮与冲调；常温与冷藏分区说明。</p>
+            </div>
+            <p class="md-body2">饮品分类图文可写冲泡建议与保存方式；需要浏览 SKU 横卡列表时用「分类导航」页型。</p>
+          </article>
+          <article class="md-cat-intro is-hidden" data-cat-panel="咖啡">
+            <div class="md-cat-intro__media md-media-ph md-media-ph--4" aria-hidden="true"></div>
+            <div class="md-detail-head">
+              <h2 class="md-detail-head__title">咖啡</h2>
+              <p class="md-detail-head__lead">云南小粒、意式拼配与挂耳；烘焙度分级说明。</p>
+            </div>
+            <p class="md-body2">咖啡子类图文侧重产区与烘焙曲线，不替代商品详情页的图集与评论。</p>
+          </article>
+          <article class="md-cat-intro is-hidden" data-cat-panel="烘焙">
+            <div class="md-cat-intro__media md-media-ph md-media-ph--4" aria-hidden="true"></div>
+            <div class="md-detail-head">
+              <h2 class="md-detail-head__title">烘焙</h2>
+              <p class="md-detail-head__lead">吐司、欧包与曲奇；当日现烤与短保提示。</p>
+            </div>
+            <p class="md-body2">烘焙类图文写明生产时段与复热建议；树页右侧不做加购。</p>
+          </article>
         </div>
       </div>
       </div>
@@ -147,21 +150,17 @@
   <script src="./assets/proto-page.js"></script>
   <script>
     (function () {
-      function paintCat(cat) {
-        var n = 0;
-        document.querySelectorAll("[data-tree-item]").forEach(function (row) {
-          var tags = (row.getAttribute("data-tree-item") || "").split(",");
-          var on = tags.indexOf(cat) !== -1;
-          row.classList.toggle("is-hidden", !on);
-          if (on) n += 1;
+      function showCatPanel(cat) {
+        document.querySelectorAll("[data-cat-panel]").forEach(function (panel) {
+          panel.classList.toggle("is-hidden", panel.getAttribute("data-cat-panel") !== cat);
         });
-        var empty = document.querySelector('[data-empty-for="COMP-001"]');
-        if (empty) empty.classList.toggle("is-hidden", n > 0);
+        var main = document.querySelector(".md-tree-page .md-split__main");
+        if (main) main.scrollTop = 0;
       }
       document.addEventListener("md-tree-select", function (ev) {
-        paintCat(ev.detail.cat);
+        showCatPanel(ev.detail.cat);
       });
-      paintCat("水果");
+      showCatPanel("水果");
     })();
   </script>
 </body>

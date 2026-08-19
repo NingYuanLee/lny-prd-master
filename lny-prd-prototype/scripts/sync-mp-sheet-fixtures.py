@@ -25,6 +25,7 @@ GOLD_DOM = {
     "mobile-timeline.html": "DOM：body > md-mobile-sheet（默认 safe-x）。",
     "mobile-menu.html": "DOM：body > md-mobile-sheet（md-set-page 自动 lr0）。",
     "mobile-tree.html": "DOM：body > md-mobile-sheet--flush-x（全幅 split）。",
+    "mobile-locator.html": "DOM：body > md-mobile-sheet--flush-x（全幅 split）。",
     "mobile-pod.html": "DOM：md-hero 与 body 并列；body > md-mobile-sheet（默认 safe-x）；md-pod 在页根。",
 }
 
@@ -41,6 +42,7 @@ PAGE_TO_GOLD = {
     "PAGE-MP-010.html": "mobile-menu.html",
     "PAGE-MP-011.html": "mobile-pod.html",
     "PAGE-MP-012.html": "mobile-fields.html",
+    "PAGE-MP-013.html": "mobile-locator.html",
 }
 
 FIXTURE_INTRO = {
@@ -51,11 +53,12 @@ FIXTURE_INTRO = {
     "PAGE-MP-005.html": "夹具：对标 mobile-wizard.html。",
     "PAGE-MP-006.html": "夹具：对标 mobile-settings.html。",
     "PAGE-MP-007.html": "夹具：对标 mobile-buttons.html。",
-    "PAGE-MP-008.html": "夹具：对标 mobile-tree.html。",
+    "PAGE-MP-008.html": "夹具：对标 mobile-tree.html。商品·分类树；左多级树右图文介绍。禁止当横卡列表、禁止当定位导航。",
     "PAGE-MP-009.html": "夹具：对标 mobile-timeline.html。",
     "PAGE-MP-010.html": "夹具：对标 mobile-menu.html。",
     "PAGE-MP-011.html": "夹具：对标 mobile-pod.html。",
     "PAGE-MP-012.html": "夹具：对标 mobile-fields.html。商品·字段列表；单商品多维度按组。禁止当图文、禁止当表单。",
+    "PAGE-MP-013.html": "夹具：对标 mobile-locator.html。商品·分类导航；左一级分组右分组横卡，滚动联动。禁止当树。",
 }
 
 
@@ -82,16 +85,17 @@ def patch_gold_headers() -> None:
         print("gold", fname)
 
 
-def fix_tree_flush_x(directory: Path) -> None:
-    path = directory / "PAGE-MP-008.html"
-    if not path.exists():
-        return
-    text = path.read_text(encoding="utf-8")
-    needle = '<div class="md-mobile-sheet">'
-    repl = '<div class="md-mobile-sheet md-mobile-sheet--flush-x">'
-    if needle in text and repl not in text:
-        path.write_text(text.replace(needle, repl, 1), encoding="utf-8", newline="\n")
-        print("flush-x", path)
+def fix_split_flush_x(directory: Path) -> None:
+    for page in ("PAGE-MP-008.html", "PAGE-MP-013.html"):
+        path = directory / page
+        if not path.exists():
+            continue
+        text = path.read_text(encoding="utf-8")
+        needle = '<div class="md-mobile-sheet">'
+        repl = '<div class="md-mobile-sheet md-mobile-sheet--flush-x">'
+        if needle in text and repl not in text:
+            path.write_text(text.replace(needle, repl, 1), encoding="utf-8", newline="\n")
+            print("flush-x", path)
 
 
 def patch_fixture_comments() -> None:
@@ -134,10 +138,10 @@ def copy_kit_to_fixtures() -> None:
 def main() -> None:
     copy_kit_to_fixtures()
     patch_gold_headers()
-    fix_tree_flush_x(MP_DIR)
+    fix_split_flush_x(MP_DIR)
     patch_fixture_comments()
     mirror_mp_to_version()
-    fix_tree_flush_x(VER_DIR)
+    fix_split_flush_x(VER_DIR)
 
 
 if __name__ == "__main__":

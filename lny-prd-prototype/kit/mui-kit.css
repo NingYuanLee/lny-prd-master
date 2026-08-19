@@ -3588,6 +3588,84 @@ button.md-tree__item {
   background: var(--md-bg-paper);
   gap: var(--md-module-gap);
 }
+/* 分类树右区：图文介绍（封面 + 标题摘要 + 正文） */
+.md-cat-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.md-cat-intro__media {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--md-radius);
+  overflow: hidden;
+}
+.md-cat-intro .md-detail-head {
+  margin: 0;
+}
+/* 触屏分类导航：左一级分组右分组横卡，滚正文与左栏高亮联动（对标 desktop-locator 左栏） */
+.md-mobile-page.md-locator-page .md-mobile-body {
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.md-mobile-page.md-locator-page > .md-mobile-body > .md-mobile-sheet {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+}
+.md-mobile-page.md-locator-page > .md-mobile-body > .md-mobile-sheet > .md-split {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  gap: 0;
+}
+.md-mobile-page.md-locator-page .md-split__side {
+  width: 88px;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 8px 0;
+  background: var(--md-grey-50);
+  border-right: 1px solid var(--md-divider);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.md-mobile-page.md-locator-page .md-locator--outline {
+  padding: 0 4px;
+  gap: 2px;
+}
+.md-mobile-page.md-locator-page .md-locator__item {
+  min-height: 44px;
+  padding: 8px 6px;
+  border-radius: 0;
+  font-size: 0.8125rem;
+  justify-content: center;
+  text-align: center;
+}
+.md-mobile-page.md-locator-page .md-split__main {
+  padding: 0 var(--md-safe-r) calc(12px + var(--md-safe-b)) 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--md-bg-default, #f7f7f7);
+  gap: var(--md-module-gap);
+}
+.md-mobile-page.md-locator-page .md-split__main > .md-module {
+  background: transparent;
+  gap: var(--md-module-gap);
+}
+.md-mobile-page.md-locator-page .md-section-head {
+  padding-left: 12px;
+}
+.md-mobile-page.md-locator-page .md-stack--cards {
+  padding-left: 12px;
+  gap: 8px;
+}
 .md-set-group {
   /* 功能区通栏 / 设置组：平铺，不要圆角阴影卡片壳 */
   background: var(--md-bg-paper);
