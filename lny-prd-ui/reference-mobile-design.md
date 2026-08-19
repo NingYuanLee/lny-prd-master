@@ -64,12 +64,14 @@
 
 | 项 | ② / L 层级 | ⑥ |
 |----|------------|---|
-| 结构 | 状态栏模式 + 顶栏/无顶栏 + 内容 + Tab/操作条 | `md-immersive` / `md-standard`；金样四种顶栏 |
+| 结构 | L0 沉浸式/标准；L1 页级固定；L2【下沉首屏】+【滚动容器】；L3 普通/吸顶模块 | `md-immersive` / `md-standard`；金样四种顶栏；详见 `reference.md` **§1.3.4** |
+| L2 下沉 vs 随滚 Banner | 下沉 → L2【下沉首屏】+ 沉浸式；随滚 → L3 普通模块内 Banner，不写 Hero 钉底 | 下沉：页级 `md-hero` ∥ `md-mobile-body`；随滚：sheet 内 `md-module` + `md-swiper` |
+| 固定 vs 吸顶 | L1：滚动容器**外**（搜索/筛选/返回/TabBar/贴底条）；L3 吸顶：容器**内** sticky（写顶距） | 列表 `md-list-toolbar` 在 body 外；吸顶模块 sticky 顶距避开 L1 |
 | 安全区 | 正文左右 16；标准顶栏左右 4；状态栏 28；底栏 48；overlay/cover 避让胶囊 | `--md-safe-l/r` 16；标准顶栏 inset 4 |
 | 弹性布局 | 「左图右文可伸缩；主文与底栏分开；树页左树右内容；时间轴左竖轨右**横卡文本**（无左图，正文可 `__photos`）」 | `__main` + `__foot` flex；树 `md-tree-page`；时间轴 `md-timeline` |
 | 适配基准 | 不写死唯一稿宽 | 预览逻辑宽 **375**；`viewport-fit=cover` |
 
-顶栏四选一（禁止混用）：① 16:9+slogan ② 16:9+返回标题 ③ 标准返回标题 ④ 两倍高度封面。
+顶栏四选一（禁止混用）：① 16:9+slogan ② 16:9+返回标题 ③ 标准返回标题 ④ 两倍高度封面。**沉浸式**（L0）与 **下沉滚过**（L2【下沉首屏】）是两套概念——见 `reference.md` §1.3.4。
 
 ## 5. 交互与反馈
 

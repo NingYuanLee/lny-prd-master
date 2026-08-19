@@ -230,6 +230,62 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 **移动页**
 
+> **L2/L3 与 ② 对齐**：规格 L2 =【下沉首屏】（可选）+【滚动容器】；L3 = 滚动容器内的 `md-module`（普通 / 吸顶）。完整决策表见 `lny-prd-ui/reference.md` **§1.3.4**。
+
+**A. 下沉式首页（Hero 钉底 + sheet 滚过）** — `gold/mobile-grid.html`
+
+```html
+<div class="md-mobile-page md-mp md-immersive">
+  <!-- L2【下沉首屏】：与 md-mobile-body 同级，勿放进 sheet -->
+  <div class="md-hero">
+    <div class="md-swiper">…Banner 下沉…</div>
+  </div>
+  <!-- L2【滚动容器】 -->
+  <main class="md-mobile-body">
+    <div class="md-mobile-sheet">
+      <section class="md-module">…L3 普通模块…</section>
+    </div>
+  </main>
+  <nav class="md-tabbar">…</nav>
+</div>
+```
+
+**B. 无下沉 / 随滚 Banner** — 页根 **不要** 并列 `md-hero`；Banner 放在 body/sheet 内第一个 `md-module`：
+
+```html
+<div class="md-mobile-page md-mp md-standard">
+  <main class="md-mobile-body">
+    <section class="md-module">
+      <div class="md-swiper">…Banner 随内容滚…</div>
+    </section>
+    <section class="md-module">…</section>
+  </main>
+</div>
+```
+
+**C. 列表页（L1 固定工具条在 body 外）** — `gold/mobile-list.html`
+
+```html
+<div class="md-mobile-page md-mp md-standard">
+  <header class="md-appbar md-appbar--mobile md-appbar--center">…</header>
+  <div class="md-list-toolbar">…搜索+筛选+页内签…</div>
+  <main class="md-mobile-body">…仅 L3 列表模块…</main>
+  <nav class="md-tabbar">…</nav>
+</div>
+```
+
+**D. L3 吸顶模块（规格点名时）** — 模块在 `md-mobile-body` / sheet **内**，滚过锚点后 sticky；顶距须 ≥ L1 固定区高度（若上方还有 overlay 顶栏一并计入）：
+
+```html
+<section class="md-module md-module--sticky" style="top: var(--md-sticky-top, 0px)">
+  …页内二级 Tab / 章节签…
+</section>
+```
+
+（`md-module--sticky` 为语义类名；实现为 `position: sticky` + 正确 `top`。当前金样以 L1 固定工具条为主，吸顶模块按规格补页。）
+
+**下沉式完整示例（宫格首页）**
+
 ```html
 <div class="md-mobile-page md-mp md-immersive">
   <div class="md-hero">
@@ -249,14 +305,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
           <a class="md-btn md-btn--link" href="./…">查看全部</a>
         </div>
         <div class="md-grid-2">
-          <article class="md-card md-card--tile" data-comp="COMP-001" data-state="default">
-            <div class="md-card__media md-media-ph md-media-ph--1"></div>
-            <div class="md-card__body">
-              <h2 class="md-card__title">标题最多两行</h2>
-              <p class="md-price">¥19.90</p>
-              <p class="md-card__time">今天上架</p>
-            </div>
-          </article>
+          <article class="md-card md-card--tile">…</article>
         </div>
       </section>
     </div>
@@ -265,7 +314,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 </div>
 ```
 
-有 TabBar 时 **不用**返回型顶栏（`md-appbar--mobile` 带返回钮）；可用 **`md-appbar--center`** 居中标题，或 **不写 `md-appbar`** 改由 `md-hero` / `md-list-toolbar` / 金刚区等自定义顶区。**沉浸式下沉**：`md-immersive` + `md-hero` 时，Hero **绝对定位钉在页顶底层、不随滚**；`md-mobile-body` 内必须包一层 **`md-mobile-sheet`（白底、宽 100%、无外边距、可有内边距）**，滚动时白底从上层盖住 Banner；顶距由 `::before` 占位露图并可点穿轮播。详情 **`md-appbar--overlay`** 叠在 16:9 主图上，滚正文后 **`is-solid`** 变纯色顶栏（`proto-page.js` 自动绑定）。**触屏滚动区按模块切分**：每个 L3 分区包 `md-module`；`md-mobile-body` / `md-mobile-sheet` 用 `--md-module-gap`（16px）统一模块间距；分区头放在模块内，禁止用内联 margin 拉开模块。**列表卡点名一种**（见下节）。详情/内容页主图用 `md-swiper md-swiper--wide`（**16:9**），介绍配图用 `md-media--16x9`。评论附图用 `md-comment__photos`（约 **40px**、**1:1**、圆角、横向排布超出换行，不要按正文宽五等分）。触屏正文左右下走 `--md-safe-*`；标准顶栏左右 4px（不预留 96 胶囊空）；overlay/cover 仍避让胶囊。触屏 `md-search` 仅左图标+输入（无「搜索」文案、无右侧搜索按钮）。左/底/右半屏：`md-drawer--left/bottom/right`。移动页 `<meta viewport>` 须带 `viewport-fit=cover`。**禁止**在页内手写 `md-status-bar`：由 `proto-page.js` 注入固定顶演示层。页根必须标 **`md-immersive`**（状态栏背景透明）或 **`md-standard`**（状态栏背景不透明）。正文可点文案与 Tab 走左右下安全距；标准顶栏左右贴边。
+有 TabBar 时 **不用**返回型顶栏（`md-appbar--mobile` 带返回钮）；可用 **`md-appbar--center`** 居中标题，或 **不写 `md-appbar`** 改由 `md-hero` / `md-list-toolbar` / 金刚区等自定义顶区。**沉浸式（L0）≠ 必下沉**：仅规格写 L2【下沉首屏】时用 **`md-immersive` + 页级 `md-hero`**；Hero **绝对定位钉底层、不随滚**；`md-mobile-body` 内 **必须** `md-mobile-sheet`，白底滚过盖住 Banner；顶距由 `::before` 占位露图并可点穿轮播。CSS 选择器：`.md-mobile-page.md-immersive:has(> .md-hero)`。**随滚 Banner** 禁止页级 `md-hero`，见上文 **B**。详情 **`md-appbar--overlay`** 叠在 16:9 主图上，滚正文后 **`is-solid`** 变纯色顶栏（`proto-page.js` 自动绑定）。**L3 模块**：每个分区包 `md-module`；`--md-module-gap`（16px）统一间距；分区头在模块内。**L1 固定**（`md-list-toolbar` 等）在 `md-mobile-body` **外**，与 **L3 吸顶**（body 内 sticky）勿混。**列表卡点名一种**（见下节）。详情主图 `md-swiper--wide`（16:9）；介绍配图 `md-media--16x9`。触屏正文 `--md-safe-*`；标准顶栏左右 4px；overlay/cover 避让胶囊。`md-search` 仅左图标+输入。半屏 `md-drawer--left/bottom/right`。`<meta viewport>` 须 `viewport-fit=cover`。**禁止**手写 `md-status-bar`（`proto-page.js` 注入）。页根 **`md-immersive`** 或 **`md-standard`**。
 
 ### 触屏列表区
 

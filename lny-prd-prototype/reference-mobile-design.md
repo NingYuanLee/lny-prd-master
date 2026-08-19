@@ -57,8 +57,11 @@
 | 项 | 落地 |
 |----|------|
 | 设计逻辑宽 | 预览 **375**；`viewport-fit=cover` |
-| 页面骨架 | 状态栏（脚本注入）+ 顶栏/Hero + `md-mobile-body` + Tab/操作条 |
-| 沉浸下沉 | `md-immersive`+`md-hero`：Hero 固定底层；`md-mobile-body` > **`md-mobile-sheet` 白底** 上层滚过盖住 Banner（顶距可点穿） |
+| 页面骨架 | 状态栏（脚本注入）+ L1 固定区 + L2【下沉首屏】/【滚动容器】+ Tab/操作条 | ② 分层见 `lny-prd-ui/reference.md` **§1.3.4** |
+| 沉浸 vs 下沉 | **沉浸式** = L0 状态栏透明；**下沉滚过** = L2【下沉首屏】+ sheet 盖住 Hero | 二者独立；无下沉时不要页级 `md-hero` |
+| 沉浸下沉 DOM | Hero 与 body **同级**；body 内 **必须** sheet | `md-immersive`+`md-hero` ∥ `md-mobile-body` > `md-mobile-sheet`；`gold/mobile-grid.html` |
+| 随滚 Banner | L3 普通模块内 `md-swiper` | **禁止**页级 `md-hero`；见 `reference-kit` 移动页 **B** |
+| L1 固定 vs L3 吸顶 | L1 在 body **外**（搜索/筛选/顶栏）；吸顶在 body **内** sticky | 列表 `md-list-toolbar`；吸顶 `md-module--sticky` + `top` |
 | 弹性列表卡 | `--cover` / `--tile` 可横可竖或 `--ratio-auto`；`--row` 左图仅 1:1 或竖图 / `md-stack`>`md-set-row` 单行独立有缝 |
 | 安全区 | 正文 `--md-safe-l/r` 左右 16；标准顶栏左右 4（不预留 96 胶囊空）；状态栏 28 贴上边框；底栏 48 贴下边框；overlay/cover 仍避让胶囊 |
 | 栅格 | 双列 `md-grid-2`（配 `--tile`）；金刚 4/5 列 |

@@ -45,8 +45,8 @@ description: >-
 
 | 页型标识（无需读取示例） | 金样 | 关键类 / 调用 |
 |--------|------|----------------|
-| PAGE-MP-001 首页 | `gold/mobile-grid.html` | L1 无顶栏 + `md-hero`；`md-module`；`md-card--cover` 精选 + `md-card--tile` 双列；`md-king` 5 列 + `--pair`；有 TabBar |
-| PAGE-MP-002 商品列表 | `gold/mobile-list.html` | L2 **`md-appbar--center`** + `md-list-toolbar`；`PT-MOBILE-LIST` 卡型；筛选半屏 `data-wheel="daterange"`；TabBar |
+| PAGE-MP-001 首页 | `gold/mobile-grid.html` | L2【下沉首屏】页级 `md-hero`（与 body 同级）+ sheet；L3 `md-module`；`md-card--cover` + `md-card--tile`；`md-king`；TabBar |
+| PAGE-MP-002 商品列表 | `gold/mobile-list.html` | L1 固定 `md-appbar--center` + `md-list-toolbar`（body 外）；L2 只滚列表；`PT-MOBILE-LIST`；TabBar |
 | PAGE-MP-003 详情 | `gold/mobile-detail.html` | L3 **`md-appbar--overlay`** 滚变实底；`md-profile`；目录四项；右下目录+回顶 |
 | PAGE-MP-012 字段详情 | `gold/mobile-fields.html` | `md-detail-page`；标准顶栏；分组 `md-desc` 左名右值；`--stack` 长文案；非图文、非表单 |
 | PAGE-MP-004 表单（套件样例） | `gold/mobile-form.html` | **样例才整页铺齐**。`md-form-page` 浅灰底+白底 `md-module` 分组；返回顶栏；全部触屏表单控件；`md-action-bar` 贴底。业务表单按规格裁字段并同样分组。进度条见步骤向导 |
