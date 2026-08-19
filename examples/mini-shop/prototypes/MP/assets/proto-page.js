@@ -2821,10 +2821,8 @@
     window.addEventListener("resize", hide);
   }
 
-  function bindDeskWizards() {
-    var host = document.querySelector(".md-d1");
-    if (!host || host.getAttribute("data-wizard") === "off") return;
-    var stepper = host.querySelector(".md-stepper");
+  /** 数字步骤与分段进步/无极进度互斥；有 stepper 时不同步 advance/progress。 */
+  function bindStepperWizard(host, stepper) {
     if (!stepper || stepper.getAttribute("data-wizard") === "off") return;
     if (stepper.getAttribute("data-bound") === "1") return;
     var steps = stepper.querySelectorAll(".md-step");
@@ -2836,10 +2834,10 @@
     });
     if (!panels.length) return;
     stepper.setAttribute("data-bound", "1");
-    var btnPrev = host.querySelector("#btnPrev, [data-wizard-prev]");
-    var btnNext = host.querySelector("#btnNext, [data-wizard-next]");
-    var advance = host.querySelector(".md-advance");
-    var progress = host.querySelector(".md-progress");
+    var btnPrev = host.querySelector("[data-wizard-prev]");
+    if (!btnPrev) btnPrev = host.querySelector("#btnPrev");
+    var btnNext = host.querySelector("[data-wizard-next]");
+    if (!btnNext) btnNext = host.querySelector("#btnNext");
     var total = steps.length;
     var step = 0;
 
@@ -2853,10 +2851,6 @@
       });
       if (btnPrev) btnPrev.disabled = step === 0;
       if (btnNext) btnNext.textContent = step === total - 1 ? "提交" : "下一步";
-      var pct = ((step + 1) / total) * 100;
-      var label = (step + 1) + " / " + total;
-      if (advance) setAdvance(advance, pct, label);
-      if (progress) setProgress(progress, pct);
     }
 
     function go(i) {
@@ -2892,6 +2886,77 @@
       });
     }
     paint();
+  }
+
+  function bindAdvanceOnlyWizard(host, advance) {
+    if (!advance || advance.getAttribute("data-bound") === "1") return;
+    var total = Number(advance.getAttribute("data-segments")) || 4;
+    if (total < 2) total = 2;
+    var form = host.querySelector(".md-d1__form") || host.querySelector("form");
+    if (!form) return;
+    var panels = Array.prototype.filter.call(form.children, function (el) {
+      return el.hasAttribute("data-step");
+    });
+    if (!panels.length) return;
+    advance.setAttribute("data-bound", "1");
+    var btnPrev = host.querySelector("[data-wizard-prev]");
+    if (!btnPrev) btnPrev = host.querySelector("#btnPrev");
+    var btnNext = host.querySelector("[data-wizard-next]");
+    if (!btnNext) btnNext = host.querySelector("#btnNext");
+    var step = 0;
+
+    function paint() {
+      panels.forEach(function (el) {
+        el.hidden = Number(el.getAttribute("data-step")) !== step;
+      });
+      if (btnPrev) btnPrev.disabled = step === 0;
+      if (btnNext) btnNext.textContent = step === total - 1 ? "提交" : "下一步";
+      var pct = ((step + 1) / total) * 100;
+      setAdvance(advance, pct, step + 1 + " / " + total);
+    }
+
+    function go(i) {
+      if (i < 0 || i >= total) return;
+      step = i;
+      paint();
+    }
+
+    if (btnPrev) {
+      btnPrev.addEventListener("click", function () {
+        go(step - 1);
+      });
+    }
+    if (btnNext) {
+      btnNext.addEventListener("click", function () {
+        if (step < total - 1) {
+          go(step + 1);
+          return;
+        }
+        snackbar("已提交");
+      });
+    }
+    paint();
+  }
+
+  function bindOneWizardHost(host) {
+    if (!host || host.getAttribute("data-wizard") === "off") return;
+    var stepper = host.querySelector(".md-stepper");
+    var advance = host.querySelector(".md-advance");
+    if (stepper && stepper.getAttribute("data-wizard") !== "off") {
+      bindStepperWizard(host, stepper);
+      return;
+    }
+    if (advance) bindAdvanceOnlyWizard(host, advance);
+  }
+
+  function bindDeskWizards() {
+    var hosts = document.querySelectorAll("[data-wizard-host]");
+    if (hosts.length) {
+      hosts.forEach(bindOneWizardHost);
+      return;
+    }
+    var legacy = document.querySelector(".md-d1");
+    if (legacy) bindOneWizardHost(legacy);
   }
 
   var _actionTextCanvas;

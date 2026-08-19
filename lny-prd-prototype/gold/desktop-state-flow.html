@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 状态导览合览。页内签 / 数字步骤 / 分段进步条 / 无极进度条：用当前状态控制展示内容。写签或向导前必 Read；业务页按规格只取需要的形态。 -->
+<!-- LNY-PRD gold: 状态导览合览。页内签 / 数字步骤 / 分段进步条 / 无极进度条：用当前状态控制展示内容。写签或向导前必 Read；业务页按规格只取一种导航形态。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -12,7 +12,7 @@
     <div class="md-breadcrumb">
       <span>套件</span><span>/</span><span class="is-current">状态导览</span>
     </div>
-    <p class="md-body2">页签、步骤、进步条、进度条同属「状态导览」：当前状态决定展示哪块。业务列表整区切换按规格；列表六型形态见 desktop-lists。分步提交见 desktop-wizard。</p>
+    <p class="md-body2">页签、步骤、进步条、进度条同属「状态导览」：当前状态决定展示哪块。业务列表整区切换按规格；列表六型形态见 desktop-lists。分步提交见 desktop-wizard。<strong>数字步骤、分段进步条、无极进度条互斥，业务页只选其一。</strong></p>
 
     <div class="md-section-head"><h2 class="md-section-head__title">页内签（并列视图）</h2></div>
     <nav class="md-tabs md-tabs--page">
@@ -28,12 +28,30 @@
       </div>
     </div>
 
-    <div class="md-section-head"><h2 class="md-section-head__title">有序步骤 + 分段进步 + 无极进度</h2></div>
-    <div class="md-stepper" role="list">
+    <div class="md-section-head"><h2 class="md-section-head__title">数字步骤</h2></div>
+    <p class="md-body2">只用 <code>md-stepper</code>，不与进步条/进度条同屏。</p>
+    <div class="md-stepper" id="flowStepper" role="list">
       <button type="button" class="md-step is-active" data-goto-step="1" role="listitem"><span class="md-step__index">1</span><span class="md-step__label">第一步</span></button>
       <button type="button" class="md-step" data-goto-step="2" role="listitem"><span class="md-step__index">2</span><span class="md-step__label">第二步</span></button>
       <button type="button" class="md-step" data-goto-step="3" role="listitem"><span class="md-step__index">3</span><span class="md-step__label">第三步</span></button>
     </div>
+    <form class="md-d1__form" id="flowStepForm">
+      <div data-step="1">
+        <label class="md-field md-field--sm">
+          <span class="md-field__label">名称</span>
+          <input class="md-field__input" type="text" placeholder="当前步表单，疏密与整页表单相同">
+        </label>
+      </div>
+      <div data-step="2" hidden><p class="md-body2">第二步内容。数字步骤可点跳步。</p></div>
+      <div data-step="3" hidden><p class="md-body2">最后一步才提交。</p></div>
+      <div class="md-btn-group">
+        <button type="button" class="md-btn md-btn--outlined" id="flowStepPrev">上一步</button>
+        <button type="button" class="md-btn md-btn--contained" id="flowStepNext">下一步</button>
+      </div>
+    </form>
+
+    <div class="md-section-head"><h2 class="md-section-head__title">分段进步条</h2></div>
+    <p class="md-body2">只用 <code>md-advance</code>，不与数字步骤同屏。</p>
     <div class="md-advance" id="flowAdvance" data-segments="3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33">
       <div class="md-advance__head">
         <span class="md-advance__label">分段进步条</span>
@@ -45,6 +63,23 @@
         <div class="md-advance__seg"><div class="md-advance__bar"></div></div>
       </div>
     </div>
+    <form class="md-d1__form" id="flowAdvForm">
+      <div data-step="1">
+        <label class="md-field md-field--sm">
+          <span class="md-field__label">备注</span>
+          <input class="md-field__input" type="text" placeholder="字段上下有行距">
+        </label>
+      </div>
+      <div data-step="2" hidden><p class="md-body2">第二步内容。</p></div>
+      <div data-step="3" hidden><p class="md-body2">最后一步才提交。</p></div>
+      <div class="md-btn-group">
+        <button type="button" class="md-btn md-btn--outlined" id="flowAdvPrev">上一步</button>
+        <button type="button" class="md-btn md-btn--contained" id="flowAdvNext">下一步</button>
+      </div>
+    </form>
+
+    <div class="md-section-head"><h2 class="md-section-head__title">无极进度条</h2></div>
+    <p class="md-body2">只用 <code>md-progress</code>，适合上传/任务类连续进度；不与步骤条同屏。</p>
     <div class="md-progress" id="flowProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33">
       <div class="md-progress__head">
         <span class="md-progress__label">无极进度条</span>
@@ -52,26 +87,18 @@
       </div>
       <div class="md-progress__track"><div class="md-progress__bar" style="width:33%"></div></div>
     </div>
-    <form class="md-d1__form" id="flowForm">
+    <form class="md-d1__form" id="flowProgForm">
       <div data-step="1">
         <label class="md-field md-field--sm">
-          <span class="md-field__label">名称</span>
-          <input class="md-field__input" type="text" placeholder="当前步表单，疏密与整页表单相同">
-        </label>
-        <label class="md-field md-field--sm">
-          <span class="md-field__label">备注</span>
-          <input class="md-field__input" type="text" placeholder="字段上下有行距">
+          <span class="md-field__label">文件</span>
+          <input class="md-field__input" type="text" placeholder="演示：按步推进进度条">
         </label>
       </div>
-      <div data-step="2" hidden>
-        <p class="md-body2">第二步内容。数字步骤可点跳步。</p>
-      </div>
-      <div data-step="3" hidden>
-        <p class="md-body2">最后一步才提交。</p>
-      </div>
+      <div data-step="2" hidden><p class="md-body2">第二步内容。</p></div>
+      <div data-step="3" hidden><p class="md-body2">最后一步才提交。</p></div>
       <div class="md-btn-group">
-        <button type="button" class="md-btn md-btn--outlined" id="flowPrev">上一步</button>
-        <button type="button" class="md-btn md-btn--contained" id="flowNext">下一步</button>
+        <button type="button" class="md-btn md-btn--outlined" id="flowProgPrev">上一步</button>
+        <button type="button" class="md-btn md-btn--contained" id="flowProgNext">下一步</button>
       </div>
     </form>
   </div>
@@ -80,38 +107,74 @@
   <script src="./assets/proto-page.js"></script>
   <script>
     (function () {
-      var step = 1;
-      var max = 3;
-      function paint() {
-        document.querySelectorAll("#flowForm [data-step]").forEach(function (el) {
-          el.hidden = String(el.getAttribute("data-step")) !== String(step);
-        });
-        document.querySelectorAll(".md-stepper .md-step").forEach(function (el, i) {
-          el.classList.toggle("is-active", i + 1 === step);
-          el.classList.toggle("is-done", i + 1 < step);
-        });
-        var pct = Math.round((step / max) * 100);
-        if (window.ProtoPage) {
-          ProtoPage.setAdvance("#flowAdvance", pct, step + " / " + max);
-          ProtoPage.setProgress("#flowProgress", pct);
+      function bindFlow(opts) {
+        var step = 1;
+        var max = 3;
+        function paint() {
+          document.querySelectorAll(opts.formSel + " [data-step]").forEach(function (el) {
+            el.hidden = String(el.getAttribute("data-step")) !== String(step);
+          });
+          if (opts.stepperSel) {
+            document.querySelectorAll(opts.stepperSel + " .md-step").forEach(function (el, i) {
+              el.classList.toggle("is-active", i + 1 === step);
+              el.classList.toggle("is-done", i + 1 < step);
+            });
+          }
+          var pct = Math.round((step / max) * 100);
+          if (opts.advanceSel && window.ProtoPage) {
+            ProtoPage.setAdvance(opts.advanceSel, pct, step + " / " + max);
+          }
+          if (opts.progressSel && window.ProtoPage) {
+            ProtoPage.setProgress(opts.progressSel, pct);
+          }
+          document.getElementById(opts.prevId).disabled = step <= 1;
+          document.getElementById(opts.nextId).textContent = step >= max ? "提交" : "下一步";
         }
-        document.getElementById("flowPrev").disabled = step <= 1;
-        document.getElementById("flowNext").textContent = step >= max ? "提交" : "下一步";
-      }
-      document.getElementById("flowPrev").addEventListener("click", function () {
-        if (step > 1) { step -= 1; paint(); }
-      });
-      document.getElementById("flowNext").addEventListener("click", function () {
-        if (step < max) { step += 1; paint(); }
-        else if (window.ProtoPage) ProtoPage.snackbar("已提交");
-      });
-      document.querySelectorAll(".md-stepper .md-step").forEach(function (el) {
-        el.addEventListener("click", function () {
-          var n = Number(el.getAttribute("data-goto-step") || 0);
-          if (n >= 1 && n <= max) { step = n; paint(); }
+        document.getElementById(opts.prevId).addEventListener("click", function () {
+          if (step > 1) {
+            step -= 1;
+            paint();
+          }
         });
+        document.getElementById(opts.nextId).addEventListener("click", function () {
+          if (step < max) {
+            step += 1;
+            paint();
+          } else if (window.ProtoPage) {
+            ProtoPage.snackbar("已提交");
+          }
+        });
+        if (opts.stepperSel) {
+          document.querySelectorAll(opts.stepperSel + " .md-step").forEach(function (el) {
+            el.addEventListener("click", function () {
+              var n = Number(el.getAttribute("data-goto-step") || 0);
+              if (n >= 1 && n <= max) {
+                step = n;
+                paint();
+              }
+            });
+          });
+        }
+        paint();
+      }
+      bindFlow({
+        formSel: "#flowStepForm",
+        stepperSel: "#flowStepper",
+        prevId: "flowStepPrev",
+        nextId: "flowStepNext",
       });
-      paint();
+      bindFlow({
+        formSel: "#flowAdvForm",
+        advanceSel: "#flowAdvance",
+        prevId: "flowAdvPrev",
+        nextId: "flowAdvNext",
+      });
+      bindFlow({
+        formSel: "#flowProgForm",
+        progressSel: "#flowProgress",
+        prevId: "flowProgPrev",
+        nextId: "flowProgNext",
+      });
     })();
   </script>
 </body>
