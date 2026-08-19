@@ -33,6 +33,16 @@ VOID_ELEMENTS = {
     "wbr",
 }
 CARD_DENSITY_CONTEXT_CLASSES = {"md-grid-2", "md-list-toolbar", "md-timeline"}
+LIST_MODULE_CLASSES = {
+    "md-card--cover",
+    "md-card--tile",
+    "md-card--row",
+    "md-card--order",
+    "md-grid-2",
+    "md-comment-list",
+    "md-group-list",
+}
+FUNC_AREA_CLASSES = {"md-king", "md-svc-strip", "md-set-pair", "md-set-group"}
 
 
 def terminal_of(page_id: str) -> str:
@@ -114,6 +124,8 @@ class PageParser(HTMLParser):
         self.has_card_density_context = False
         self.has_dense_data_table = False
         self.has_list_toolbar = False
+        self.has_list_module = False
+        self.has_func_area = False
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         ad = {k: (v or "") for k, v in attrs}
@@ -127,6 +139,10 @@ class PageParser(HTMLParser):
             self.has_dense_data_table = True
         if "md-list-toolbar" in classes:
             self.has_list_toolbar = True
+        if classes & LIST_MODULE_CLASSES:
+            self.has_list_module = True
+        if classes & FUNC_AREA_CLASSES:
+            self.has_func_area = True
         if "md-mobile-page" in classes:
             self.is_mobile = True
         if "md-d1" in classes:
@@ -287,7 +303,12 @@ def check_html(path: Path, page_id: str, comps: set[str], jumps: set[str], quote
     errors.extend(check_density(path, parser))
     if parser.is_mobile and "proto-page.js" not in parser.scripts:
         errors.append(str(path) + ": mobile page missing proto-page.js (injects fixed status bar)")
-    if parser.is_mobile and not parser.has_section_head and "md-set-page" not in text:
+    if (
+        parser.is_mobile
+        and not parser.has_section_head
+        and "md-set-page" not in text
+        and not (parser.has_func_area and not parser.has_list_module)
+    ):
         errors.append(str(path) + ": mobile page missing md-section-head")
     if parser.is_desktop and not parser.has_breadcrumb:
         errors.append(str(path) + ": desktop page missing md-breadcrumb")
