@@ -37,11 +37,11 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 定位导航（章节大纲） | `desktop-locator.html`（左侧可收缩 / 右侧悬浮可收起；**收起后点线轨**，滚正文当前点高亮；与树分离。夹具 `PAGE-AD-013`） |
 | 桌面设置 | `desktop-settings.html`（**设置项**：当页当行直接操作；左图标可有可无） |
 | 桌面我的 / 服务 | `desktop-menu.html`（**`md-svc-strip--desk`** 待办/概览条 + 功能入口；右可为文字或方形配图 `--thumb`） |
-| 桌面向导 | `desktop-wizard.html`（**数字 `md-stepper` 或分段 `md-advance` 二选一**；数字步骤可点跳步；当前步吃表单双列间距） |
+| 桌面向导 | `desktop-wizard.html`（**数字 `md-stepper` 或分段 `md-advance` 二选一**；**仅 stepper 可点跳步**；advance 只展示；当前步吃表单双列间距） |
 | 桌面状态导览合览 | `desktop-state-flow.html`（页签 + 步骤 + 进步/进度同族说明） |
 | 移动设置 / 偏好 | `mobile-settings.html`（**设置项**：当页当行直接操作；沉浸式封面顶栏；左图标可有可无） |
 | 移动我的 / 服务 | `mobile-menu.html`（功能入口；右可为文字或方形配图 `--thumb`） |
-| 移动步骤向导 | `mobile-wizard.html`（`md-form-page`；**数字步骤 / 分段进步 / 无极进度三选一**；当前步表单，贴底上一步/下一步） |
+| 移动步骤向导 | `mobile-wizard.html`（`md-form-page`；**数字步骤 / 分段进步 / 无极进度三选一**；**仅 stepper 可点跳步**；advance/progress 只展示；当前步表单，贴底上一步/下一步） |
 | 移动物流时间轴 | `mobile-timeline.html`（`md-timeline--static` 左竖轨右横卡文本；**仅已发生节点**、倒序、竖轨主色；夹具 PAGE-MP-009） |
 | 桌面时间轴 | `desktop-timeline.html`（通栏 `md-timeline--static` 物流只读：仅已发生节点、倒序、竖轨主色。可交互章节导航见 `desktop-locator.html`，勿在本页演示可点切换进度） |
 | 移动按钮样例 | `mobile-buttons.html`（小/中/大三档：线框、色块、浅底 `--soft`、线框/色块/浅底置灰、带角标；页签按钮组） |

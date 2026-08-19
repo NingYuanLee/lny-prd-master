@@ -905,7 +905,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 </div>
 ```
 
-**进步条** `md-advance`：分段分布，步骤/向导用。`data-segments` 默认 4（2–12）。`ProtoPage.setAdvance` 按百分比填已完成段、当前段余量、其余留空。缺 `__seg` 时脚本按 `data-segments` 补齐。触屏可用 `md-advance--lg`。
+**进步条** `md-advance`：分段分布；作**向导导航**时与数字步骤**二选一**（触屏三选一含无极进度），**只展示**完成段，**不可点击**切换步，靠上一步/下一步。`data-segments` 默认 4（2–12）。`ProtoPage.setAdvance` 按百分比填已完成段、当前段余量、其余留空。缺 `__seg` 时脚本按 `data-segments` 补齐。触屏可用 `md-advance--lg`。
 
 ```html
 <div class="md-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="40">
@@ -971,12 +971,12 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | D1-2 表单 | `md-d1` + `md-d1__form` + `md-field--sm`；通栏不限宽（`--md-field-min` 只约束字段）；行距靠 grid `row-gap`；整页 `--cols-1/2/3/4`；块内 `md-form-block--cols-*` | 无纸面的裸 label 堆叠；弹窗内双列并排；字段包进无 gap 的裸 div 导致上下贴死；**用表单栅格冒充页面左右分栏** |
 | 页面分栏 | `md-layout--full/2col/fix-left/fix-right/3col/pin`；定宽栏 `--md-layout-aside` | 用 `md-d1__form` 当页面布局 |
 | 进步条 / 进度条 / 页签 | 同属状态导览：`md-tabs` / `md-stepper` / `md-advance` / `md-progress` | 用无极冒充分段；把签与进步条写成互不相关两套 |
-| 步骤向导 | 数字 `md-stepper` **或** 分段 `md-advance` **或** 无极 `md-progress`（三选一，禁止同页叠加） | 同页叠 stepper + advance；用 progress 冒充分步导航 |
+| 步骤向导 | 数字 `md-stepper` **或** 分段 `md-advance` **或** 无极 `md-progress`（三选一，禁止同页叠加）；**仅 stepper 可点跳步** | 同页叠 stepper + advance；advance/progress 可点切换 |
 | 定位导航 | `md-locator` `--cats` / `--outline`；左栏 `md-split--outline` 可收缩为点线轨；右悬浮 `md-locator-float` 收起同样变点线轨；滚正文时当前章 `is-active` 联动 | 用 `md-tree` 冒充分类钮；用分类冒充可展开树；把时间轴做成大纲分栏 |
 | 树 | 不分页 `md-tree` + `__item` `__toggle` `__label`；总控 `md-tree-bar`（左 **根节点**、右 **展开/收起切换** `data-tree-act="toggle-all"`，`unfold`/`fold` 随态）；节点 `__ops`（增子/重命名/删除）；拖放 `上/中/下`；表内 `md-table--nest`。只读 `data-tree-edit="off"`；末级禁增 `data-leaf` / `data-leaf-add="off"` | 无类名嵌套 `ul`；用分类定位冒充树；触屏用列表硬套分类树 |
-| 步骤条 | `md-stepper` + `md-step`；已完成 `is-done`；当前 `is-active`。桌面数字步骤可点跳步（`proto-page.js` 自动绑）；自管步进写 `data-wizard="off"`。**不与 `md-advance` 同页** | 纯数字列表；桌面数字步骤不可点；与分段进步条同屏叠加 |
-| 进步条 | `md-advance` + `__head` + `__track` + `__seg` + `__bar`；`data-segments`；触屏可 `--lg`；可单独作向导导航（`data-wizard-host`）。**不与 `md-stepper` 同页** | 用无极 `md-progress` 冒充分步；与数字步骤同屏叠加 |
-| 进度条 | `md-progress` + `__head` + `__track` + `__bar`；不确定 `--indeterminate`；触屏可 `--lg` | 裸 `<progress>` / 自造色条 / 用分段 `md-advance` 冒充上传 |
+| 步骤条 | `md-stepper` + `md-step`；已完成 `is-done`；当前 `is-active`。**唯一可点跳步**的向导导航（`proto-page.js` 自动绑）；自管步进写 `data-wizard="off"`。**不与 `md-advance` 同页** | 纯数字列表；与分段进步条同屏叠加 |
+| 进步条 | `md-advance` + `__head` + `__track` + `__seg` + `__bar`；`data-segments`；触屏可 `--lg`；向导时 **只展示**（`data-wizard-host`）。**不与 `md-stepper` 同页** | 用无极 `md-progress` 冒充分步；段可点跳步 |
+| 进度条 | `md-progress` + `__head` + `__track` + `__bar`；不确定 `--indeterminate`；触屏可 `--lg`；向导时 **只展示** | 裸 `<progress>` / 自造色条 / 用分段 `md-advance` 冒充上传 / 进度条可点跳步 |
 | 时间轴 | `md-timeline` + `__item` `__rail` `__node` `__line` `__body`；右 **横卡文本** `md-card--row`（无左图，正文可 `__photos`）；`is-done` / `is-active` | 用列表硬套竖轨；时间轴右卡加左图；桌面做成左右分栏导航 |
 | 图表 | `md-chart-ph` 占位条 | 手写 canvas / 自造柱 |
 | 页内分页签 | 桌面：`md-tabs md-tabs--page` 下划线（**平铺，无圆角阴影卡片壳**）；触屏：`md-tabs`（自动按钮组，浅底/选中色块） | 触屏用桌面下划线签；自造下划线 `div` / 裸 `<a>` 签；页内签套卡片壳 |

@@ -400,7 +400,7 @@
 | 定位导航 | D1-3 / L0 split | 分类按钮 / 章节大纲：点选定位锚点；滚内容区时大纲当前章高亮联动。桌面大纲两种：左可收成点线轨、右悬浮收起同样变点线轨（`desktop-locator` / `PAGE-AD-013`）。触屏 **MP-013 分类导航** 为左一级分组 + 右分组横卡，亦属本族。**与树分离**（MP-008 为左多级树右图文，不滚动联动） |
 | 设置 | 移动分组列表 / D1-2 分组 | **功能服务 · 设置项**：同 `md-set-group` 通栏；页根 **`md-set-page`**（浅灰底、组间距漏底）；成组有限；左图标可有可无；**在当前行直接操作**（开关 / 无极 / 横向勾选 / 本行下拉改值），不是拿整行当跳转入口。金样 `gold/mobile-settings.html` / `gold/desktop-settings.html` |
 | 我的 / 服务 | 移动分组列表 / D1-2 分组 | **功能服务 · 入口**：通栏、一行两个、或按需金刚（宫格/双卡，**不限首页**）；信息多用金刚双卡。**只跳转或打开半屏/弹窗**。金样入口见 `gold/mobile-menu.html` / `gold/desktop-menu.html`，金刚形态见 `gold/mobile-grid.html`。禁止按钮堆 |
-| 向导 / 状态导览 | 表单 + 步骤条 + 进步条 | 页签/步骤/进步/进度同族（`PT-STATE-FLOW`）。当前步清晰，最后一步才提交；当前步字段疏密与整页表单相同（桌面双列有行距）。**桌面数字步骤可点**。金样 `gold/desktop-wizard.html` / `gold/desktop-state-flow.html` / `gold/mobile-wizard.html` |
+| 向导 / 状态导览 | 表单 + **一种**状态导览（见 `PT-STATE-FLOW`） | 页签/步骤/进步/进度同族。**有序向导三选一**：数字步骤 / 分段进步 / 无极进度，禁止同页叠加。**仅数字步骤可点跳步**；分段/无极**只展示**、靠上一步/下一步切换。当前步清晰，最后一步才提交；当前步字段疏密与整页表单相同。金样 `gold/desktop-wizard.html` / `gold/desktop-state-flow.html` / `gold/mobile-wizard.html` |
 | 展示 / 详情（桌面） | D1-3 | 面包屑；极浅灰底 + 白底通栏；左 16:9 + 右标题；图文四级标题；短段不缩进、大段 `__body` 缩进、多项目 `__list`；单/双图、图注居中。**本页图片默认可点预览**。金样 `gold/desktop-detail.html` 图文签；夹具 `PAGE-AD-008`。禁止卡片圆角阴影、沉浸式、列表卡比例 |
 | 字段列表（桌面） | D1-1 第三型 / **列表族·无分页** | 面包屑；**不分页分组字段** / `md-group-list`。与 MP-012 同页型。金样 `desktop-lists` 第三签 / 夹具 `PAGE-AD-012`。禁止 D1-1 标准表壳、图文详情、可编辑表单 |
 | 时间轴 | 两端都是竖轨右**横卡文本**（无左图，正文可 `__photos`） | **只读物流轴**（`md-timeline--static`）：仅已发生节点、倒序、竖轨主色、起点空心+当前高亮，**禁止**灰色未发生占位与可点切换进度。**可交互章节导航**见 `desktop-locator` / `mobile-locator`。金样 `gold/mobile-timeline.html` / `gold/desktop-timeline.html` |

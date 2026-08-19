@@ -12,7 +12,7 @@
     <div class="md-breadcrumb">
       <span>套件</span><span>/</span><span class="is-current">状态导览</span>
     </div>
-    <p class="md-body2">页签、步骤、进步条、进度条同属「状态导览」：当前状态决定展示哪块。业务列表整区切换按规格；列表六型形态见 desktop-lists。分步提交见 desktop-wizard。<strong>数字步骤、分段进步条、无极进度条互斥，业务页只选其一。</strong></p>
+    <p class="md-body2">页签、步骤、进步条、进度条同属「状态导览」：当前状态决定展示哪块。业务列表整区切换按规格；列表六型形态见 desktop-lists。分步提交见 desktop-wizard。<strong>数字步骤、分段进步条、无极进度条互斥，业务页只选其一；仅数字步骤可点跳步，分段/无极只展示。</strong></p>
 
     <div class="md-section-head"><h2 class="md-section-head__title">页内签（并列视图）</h2></div>
     <nav class="md-tabs md-tabs--page">
@@ -51,7 +51,7 @@
     </form>
 
     <div class="md-section-head"><h2 class="md-section-head__title">分段进步条</h2></div>
-    <p class="md-body2">只用 <code>md-advance</code>，不与数字步骤同屏。</p>
+    <p class="md-body2">只用 <code>md-advance</code>，不与数字步骤同屏；<strong>只展示</strong>，不可点击切换，靠上一步/下一步。</p>
     <div class="md-advance" id="flowAdvance" data-segments="3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33">
       <div class="md-advance__head">
         <span class="md-advance__label">分段进步条</span>
@@ -79,7 +79,7 @@
     </form>
 
     <div class="md-section-head"><h2 class="md-section-head__title">无极进度条</h2></div>
-    <p class="md-body2">只用 <code>md-progress</code>，适合上传/任务类连续进度；不与步骤条同屏。</p>
+    <p class="md-body2">只用 <code>md-progress</code>，适合上传/任务类连续进度；不与步骤条同屏；<strong>只展示</strong>，不可点击切换。</p>
     <div class="md-progress" id="flowProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33">
       <div class="md-progress__head">
         <span class="md-progress__label">无极进度条</span>

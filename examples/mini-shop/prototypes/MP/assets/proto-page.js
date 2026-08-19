@@ -2821,7 +2821,7 @@
     window.addEventListener("resize", hide);
   }
 
-  /** 数字步骤与分段进步/无极进度互斥；有 stepper 时不同步 advance/progress。 */
+  /** 数字步骤与分段进步/无极进度互斥；有 stepper 时不同步 advance/progress。仅 stepper 可点跳步；advance/progress 只展示。 */
   function bindStepperWizard(host, stepper) {
     if (!stepper || stepper.getAttribute("data-wizard") === "off") return;
     if (stepper.getAttribute("data-bound") === "1") return;
