@@ -1982,7 +1982,7 @@
     } else if (act === "collapse") {
       setTreeOpenAll(tree, false);
       syncTreeToggleBtn(tree);
-    else if (act === "add-root") addTreeRoot(tree);
+    } else if (act === "add-root") addTreeRoot(tree);
     else if (act === "add") addTreeChild(tree, btn.closest("li"));
     else if (act === "rename") startTreeRename(tree, treeItemOf(btn.closest("li")));
     else if (act === "delete") deleteTreeLi(tree, btn.closest("li"));

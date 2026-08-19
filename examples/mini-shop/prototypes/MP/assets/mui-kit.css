@@ -2916,7 +2916,7 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
 }
 .md-tree-bar .md-btn--sm { min-height: 28px; padding: 0 8px; }
 .md-tree-bar .md-icon-btn { width: 28px; height: 28px; }
-.md-tree-bar [data-tree-act="add-root"] { margin-left: auto; }
+.md-tree-bar [data-tree-act="toggle-all"] { margin-left: auto; }
 .md-split__side > .md-tree {
   flex: 1;
   min-height: 0;
@@ -3132,6 +3132,15 @@ button.md-tree__item {
   flex: 1;
   min-height: 0;
   overflow: auto;
+  align-content: start;
+}
+.md-split__main > .md-d1__form .md-form-block,
+.md-split__main > .md-split__form .md-form-block {
+  align-content: start;
+}
+.md-split__main > .md-d1__form .md-form-block > .md-field,
+.md-split__main > .md-split__form .md-form-block > .md-field {
+  align-self: start;
 }
 
 /* 页面级分栏（≠ 表单窄双列 md-d1__form） */
