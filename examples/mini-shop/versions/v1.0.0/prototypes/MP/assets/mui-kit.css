@@ -4640,7 +4640,7 @@ button.md-set-row:active { background: var(--md-selected); }
   justify-content: space-between;
   gap: 8px;
   min-height: 36px;
-  padding: 0 12px 9px;
+  padding: 10px 12px;
   font-size: 0.75rem;
   line-height: 1;
   color: var(--md-text-secondary);
@@ -4657,6 +4657,10 @@ button.md-set-row:active { background: var(--md-selected); }
   bottom: 0;
   height: 1px;
   background: var(--md-divider-soft, rgba(0, 0, 0, 0.06));
+  pointer-events: none;
+}
+.md-order-card__promo + .md-order-card__head {
+  padding-top: 10px;
 }
 .md-order-card__promo .md-icon {
   flex-shrink: 0;
