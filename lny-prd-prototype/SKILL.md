@@ -55,8 +55,8 @@ description: >-
 | PAGE-MP-010 我的/服务 | `gold/mobile-menu.html` | `md-set-page` 浅灰底；顶区 **`md-profile--me`**（圆角矩形头像/昵称均 **底半屏** 改）；**`md-svc-strip`**（2/3/4 等分；`__icon`+**`__badge`** / **`__value`+`__help`**）；功能入口通栏/`md-set-pair`；右可为文字或 **方形配图 `--thumb`**；组间距漏底 |
 | PAGE-MP-007 按钮（套件样例） | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、**浅底 `--soft`**、文字、**`--link`**、**通栏 `--block` / `md-btn-row`**、置灰、`md-badge`；贴底仅一钮自动占满。禁止当业务首页。禁止裸 `<button>` |
 | PAGE-MP-011 悬浮胶囊（套件样例） | `gold/mobile-pod.html` | L4 无顶栏 + **`md-pod--tl`**；`PT-FLOAT`；与页内顶栏互斥 |
-| PAGE-MP-008 分类 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左树右内容；浏览用 `data-tree-edit="off"`。桌面维护交互见 `desktop-split` |
-| PAGE-MP-009 时间轴 | `gold/mobile-timeline.html` | `md-timeline` 左 `__rail` 竖轨，右 `md-card--row` **横卡文本**（无左图，正文可 `__photos`）；`is-done` / `is-active`；点节点切高亮 |
+| PAGE-MP-008 商品分类 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左树右内容；浏览用 `data-tree-edit="off"`。桌面维护交互见 `desktop-split` |
+| PAGE-MP-009 物流时间轴 | `gold/mobile-timeline.html` | `md-timeline` 左 `__rail` 竖轨，右 `md-card--row` **横卡文本**（无左图，正文可 `__photos`）；`is-done` / `is-active`；点节点切高亮；夹具示范物流轨迹 |
 
 **桌面端**
 
@@ -69,7 +69,7 @@ description: >-
 | PAGE-AD-012 字段列表 | `gold/desktop-lists.html` 第三签 / 夹具 | **列表族·无分页·多条按组**；`md-d1--list` + `md-group-list`；桌面 `--cols-2` / `--span`。非图文、非表单、非 D1-1 标准表壳 |
 | PAGE-AD-003 向导 | `gold/desktop-wizard.html` + `gold/desktop-state-flow.html` | 状态导览族：`md-stepper` + `md-advance` +（可选）`md-progress`；当前步包在 `md-d1__form`；数字可点跳步 |
 | PAGE-AD-004 工作台 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
-| PAGE-AD-005 树+内容 | `gold/desktop-split.html` | 不分页维护树：`md-d1--split` + `md-tree` + `md-tree-bar`；增子/重命名/删除；拖到上/中/下。只读树与表内嵌套读 `desktop-lists.html`。**不是**分类钮 |
+| PAGE-AD-005 商品分类 | `gold/desktop-split.html` | 不分页维护树：`md-d1--split` + `md-tree` + `md-tree-bar`；增子/重命名/删除；拖到上/中/下。只读树与表内嵌套读 `desktop-lists.html`。**不是**分类钮 |
 | PAGE-AD-013 章节大纲（套件样例） | `gold/desktop-locator.html` | 两种：左可收缩 / 右悬浮可收起；**收起后点线轨**；点选滚锚点；**滚正文时当前点高亮**；与树分离 |
 | PAGE-AD-014 页面分栏（套件样例） | `gold/desktop-layout.html` | `md-layout--full/2col/fix-left/fix-right/3col/pin`；**禁止** `md-d1__form` 冒充分栏。卡片列表见 `desktop-lists.html` |
 | PAGE-AD-006 设置 | `gold/desktop-settings.html` | `md-d1 md-set-page` 浅灰底；**设置项**：开关可点；`md-set-picks` 文字/图标/图片 + 未选空圈；左图标可有可无；无极 / `data-menu` 改值 |

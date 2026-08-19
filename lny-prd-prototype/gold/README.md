@@ -38,7 +38,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 移动设置 / 偏好 | `mobile-settings.html`（**设置项**：当页当行直接操作；沉浸式封面顶栏；左图标可有可无） |
 | 移动我的 / 服务 | `mobile-menu.html`（功能入口；右可为文字或方形配图 `--thumb`） |
 | 移动步骤向导 | `mobile-wizard.html`（`md-form-page`；横向 `md-stepper` + 分段 `md-advance--lg` + 无极 `md-progress` + 当前步表单，贴底上一步/下一步） |
-| 移动时间轴 | `mobile-timeline.html`（`md-timeline` 左竖轨右横卡文本，可内嵌多小图） |
+| 移动物流时间轴 | `mobile-timeline.html`（`md-timeline` 左竖轨右横卡文本，可内嵌多小图；mini-shop 夹具示范物流轨迹） |
 | 桌面时间轴 | `desktop-timeline.html`（通栏竖轨右横卡文本，不要左图、不要左右分开。触屏见 `mobile-timeline`） |
 | 移动按钮样例 | `mobile-buttons.html`（小/中/大三档：线框、色块、浅底 `--soft`、线框/色块/浅底置灰、带角标；页签按钮组） |
 | 触屏悬浮胶囊 | `mobile-pod.html`（钉在页根、不进滚动层；左上横向且与标题栏互斥；左下/右下竖向并避开 TabBar/操作条；单个圆形、多个成组细线分割。规格点名才画，不要右上） |
