@@ -55,7 +55,7 @@ FIXTURE_INTRO = {
     "PAGE-MP-009.html": "夹具：对标 mobile-timeline.html。",
     "PAGE-MP-010.html": "夹具：对标 mobile-menu.html。",
     "PAGE-MP-011.html": "夹具：对标 mobile-pod.html。",
-    "PAGE-MP-012.html": "夹具：对标 mobile-fields.html。一条对象的字段名+字段值；禁止当图文、禁止当表单。",
+    "PAGE-MP-012.html": "夹具：对标 mobile-fields.html。商品·字段列表；md-group-list 多条按组。禁止当图文、禁止当表单。",
 }
 
 

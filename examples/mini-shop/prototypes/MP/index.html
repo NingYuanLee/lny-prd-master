@@ -68,6 +68,22 @@
           brief: "展示类：看清商品图、图文说明与评论，本页不下单。"
         },
         {
+          id: "PAGE-MP-012",
+          name: "字段列表",
+          module: "商品",
+          file: "./PAGE-MP-012.html",
+          tabBarExempt: true,
+          comps: [],
+          spec: {
+            layout: "L0 标准模式；L1 返回+标题；L2 sheet safe + md-group-list：组标题 + 多条记录内字段名+值；无搜索筛选/横卡/分页。",
+            comps: "本页无局部自定义组件。",
+            apis: "API-MP-001 · 查询商品字段列表（按组）\n进页请求。",
+            features: "FEATURE-001 · 浏览商品 · 字段列表",
+            actions: "返回 · 商品列表"
+          },
+          brief: "列表族：多条商品按组只读展示字段名+值，不是图文详情也不是表单。"
+        },
+        {
           id: "PAGE-MP-004",
           name: "表单",
           module: "套件",
@@ -194,22 +210,6 @@
             actions: "点头像 · 微信授权或相册；点昵称 · 底半屏微信授权或手动输入；点复制 · Toast；点编辑 · 设置页\n点服务条 · Toast 或跳转\n点入口行 · 进入对应页或停留本页\n返回 · 首页"
           },
           brief: "套件样例：个人信息 + 服务条 + 功能区通栏/一行两个。"
-        },
-        {
-          id: "PAGE-MP-012",
-          name: "字段详情",
-          module: "套件",
-          file: "./PAGE-MP-012.html",
-          tabBarExempt: true,
-          comps: [],
-          spec: {
-            layout: "L0 标准模式；L1 返回+标题；浅灰底上白底分组；每组字段名+字段值；长文案上下排；右下目录+回顶。",
-            comps: "本页无局部自定义组件。",
-            apis: "套件样例页，演示字段详情。",
-            features: "无",
-            actions: "返回 · 列表\n目录 · 跳转分组"
-          },
-          brief: "只读字段详情：一条对象、可分组左名右值，不是图文也不是表单。"
         }
       ]
     };

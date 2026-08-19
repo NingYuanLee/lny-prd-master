@@ -6695,7 +6695,7 @@ a.md-card {
 }
 .md-article-block > .md-article { margin: 0; }
 
-/* 字段详情：名称 + 值（可分组；只读展示，不是表单） */
+/* 字段列表 / 单组字段排版：名称 + 值（详情内 md-desc；列表页 md-group-list） */
 .md-desc {
   display: flex;
   flex-direction: column;

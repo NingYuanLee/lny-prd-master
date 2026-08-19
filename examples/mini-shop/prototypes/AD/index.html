@@ -39,13 +39,29 @@
           tabBarExempt: true,
           comps: [],
           spec: {
-            layout: "D1-3：顶为面包屑无大标题；对标 desktop-detail 图文签；16:9 图集；图文说明；评论含时间行与附图；收藏 Toast，不下单。字段签见 PAGE-AD-012。",
+            layout: "D1-3：顶为面包屑无大标题；对标 desktop-detail 图文签；16:9 图集；图文说明；评论含时间行与附图；收藏 Toast，不下单。字段列表见 PAGE-AD-012。",
             comps: "无",
             apis: "API-AD-002 · 查询商品详情\n进页加载。",
             features: "FEATURE-001 · 整页详情展示",
             actions: "点击 · 收藏 Toast、返回列表\n输入失焦 · 无"
           },
           brief: "整页核对商品图、说明与评论，只展示不下单。"
+        },
+        {
+          id: "PAGE-AD-012",
+          name: "字段列表",
+          module: "商品",
+          file: "./PAGE-AD-012.html",
+          tabBarExempt: true,
+          comps: [],
+          spec: {
+            layout: "D1-1 第三型：顶为面包屑无大标题；md-group-list 多条记录按组展示字段名+值（可双列）；无分页。对标 desktop-lists 第三签 / mobile-fields。",
+            comps: "无",
+            apis: "API-AD-001 · 查询商品字段列表（按组）\n进页请求。",
+            features: "FEATURE-001 · 浏览商品 · 字段列表",
+            actions: "返回列表 · 商品列表"
+          },
+          brief: "列表族：多条商品按组只读展示字段名+值，不是图文详情也不是表单。"
         },
         {
           id: "PAGE-AD-002",
@@ -190,22 +206,6 @@
             actions: "点时间轴节点 · 切换当前高亮"
           },
           brief: "套件样例：左侧竖状节点连线，右侧图文。"
-        },
-        {
-          id: "PAGE-AD-012",
-          name: "字段详情",
-          module: "套件",
-          file: "./PAGE-AD-012.html",
-          tabBarExempt: true,
-          comps: [],
-          spec: {
-            layout: "D1-3：顶为面包屑无大标题；对标 desktop-detail 字段签；浅灰底上白底分组；一条对象的字段名+字段值可双列；长文案跨列；右下目录+回顶。不要套 lists 分组字段。",
-            comps: "无",
-            apis: "套件样例页，演示字段详情。",
-            features: "无",
-            actions: "复制单号 · Toast\n返回列表 · 列表"
-          },
-          brief: "只读字段详情：一条对象、可分组双列，不是图文、不是表单、不是多条记录的分组字段列表。"
         },
         {
           id: "PAGE-AD-013",
