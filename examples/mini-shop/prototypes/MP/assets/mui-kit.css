@@ -3156,18 +3156,20 @@ button.md-tree__item {
 .md-group-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 4px 0 16px;
+  gap: var(--md-module-gap);
+  /* 上下左右留白，避免 group 卡 box-shadow 被滚动容器裁切 */
+  padding: 8px 6px 16px;
   flex: 1;
   min-height: 0;
   overflow: auto;
   background: transparent;
+  box-sizing: border-box;
 }
 .md-group-list__group {
   background: var(--md-bg-paper);
   box-shadow: var(--md-shadow-surface);
   border-radius: var(--md-radius);
-  overflow: hidden;
+  overflow: visible;
   flex-shrink: 0;
 }
 .md-group-list__head {
@@ -3177,6 +3179,7 @@ button.md-tree__item {
   min-height: 44px;
   padding: 14px 16px 12px;
   background: var(--md-bg-paper);
+  border-radius: var(--md-radius) var(--md-radius) 0 0;
   font-size: 0.9375rem;
   font-weight: 600;
   line-height: 1.4;
@@ -3196,6 +3199,9 @@ button.md-tree__item {
 .md-group-list__item {
   padding: 14px 16px;
   border-top: 0;
+}
+.md-group-list__item:last-child {
+  border-radius: 0 0 var(--md-radius) var(--md-radius);
 }
 .md-group-list__item + .md-group-list__item {
   position: relative;
@@ -3221,6 +3227,13 @@ button.md-tree__item {
 .md-group-list__item .md-desc--cols-3 .md-desc__row {
   border-bottom: 0;
   padding: 4px 0;
+}
+/* 触屏：整页在 body 滚，列表本身不嵌套滚动，避免卡阴影被裁 */
+.md-mobile-page .md-mobile-sheet > .md-group-list {
+  flex: 0 0 auto;
+  min-height: auto;
+  overflow: visible;
+  padding-bottom: 0;
 }
 .md-tree-browse {
   flex: 1;
