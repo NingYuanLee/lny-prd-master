@@ -1032,7 +1032,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 
 ### 字段详情：名称 + 值（可分组）
 
-对照金样 `gold/mobile-fields.html` / `gold/desktop-detail.html` 字段签。页根仍用 **`md-detail-page`**（浅灰底 + 白底分组区块）。适用于订单/工单/档案等 **只读多字段** 核对页。**一条对象**；多条记录的分组字段列表走 `desktop-lists` 的 `md-group-list`，不要互套。
+对照金样 `gold/mobile-fields.html` / `gold/desktop-detail.html` 字段签。**产品定性：列表族 · 无分页 · 单对象**（按字段行只读扫读，不是图文详情，不是横卡列表）。页根仍用 **`md-detail-page`**（浅灰 flush sheet + 白底分组）。适用于订单/工单/档案等 **一条对象** 的只读核对。**多条**记录的无分页字段展示走 `desktop-lists` 的 **不分页分组字段** / `md-group-list`，不要与单对象字段详情互套。
 
 | 层级 | 写法 | 规则 |
 |------|------|------|
