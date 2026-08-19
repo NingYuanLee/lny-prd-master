@@ -2509,6 +2509,10 @@
       if (page.querySelector(".md-pod--detail-nav")) return;
       var wantToc = true;
       var wantTop = true;
+      if (page.querySelector(".md-split--outline-right .md-locator--outline")) {
+        wantToc = false;
+        if (!mode || mode === "on") wantTop = false;
+      }
       if (mode === "toc") wantTop = false;
       else if (mode === "top") wantToc = false;
       else if (mode && mode !== "on") {

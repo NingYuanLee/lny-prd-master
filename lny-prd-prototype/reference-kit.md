@@ -1006,7 +1006,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 图文混排 | `md-article` | **四级标题** `__h1`～`__h4`；短段默认**不**首行缩进；大段多行正文用 `__body` 才缩进；多项目用 `__list`（`--ordered` 有序）；配图 `__figures--1/2`；图注 `__caption` 居中；表格 `__table-wrap` |
 | 评论 | `md-comment-list` > `md-comment` | 评论模块 **透底**；条目仍 **列表卡**（轻阴影 `--md-shadow-surface`、间距露灰） |
 | 点图预览 | 页根 `data-lightbox` | **分区成组**：轮播（`.md-swiper`）一组、图文（`.md-article`）一组、评论（`.md-comment-list`）一组；翻上一张/下一张不跨区。可选 `data-lightbox-group` 自定容器 |
-| 页内导航 | 右下 `md-pod--detail-nav`（脚本默认注入） | **目录** + **返回顶部**；点目录底半屏列出本页 `data-section`（金样：基本信息 / 店铺信息 / 商品介绍 / 商品评论），点选滚动定位。`data-detail-nav="off"` 关闭；`"toc"` / `"top"` 只留其一 |
+| 页内导航 | 触屏：右下 `md-pod--detail-nav`（目录半屏 + 回顶）。**桌面详情**：`md-d1--detail-split` + `md-split--outline-right`，右栏 `md-locator--outline` 常驻目录，点选滚锚点、滚正文 `is-active` 联动；`data-detail-nav="off"` 或右栏目录时脚本不注入悬浮钮 | 桌面用右下悬浮目录；用悬浮大纲冒充详情分栏 |
 
 ```html
 <div class="md-mobile-page md-immersive md-detail-page" data-lightbox>
@@ -1195,7 +1195,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 输入 | `md-field` + `md-field__label` + `md-field__input`；不可编辑一项即可：`md-field--readonly` + `readonly` 或 `disabled`（**视觉相同、灰底淡字**）。日期段 `readonly` 触发器不要加 `--readonly` |
 | 卡片 | `md-card` **`--cover` / `--tile`（可横可竖或 `--ratio-auto` 定宽随图）`--row`（左图仅 1:1 或竖图 `--ratio-3x4/2x3`；字段少因值长再加 `--long`）**；列表单行 `md-set-row`。`md-card__media` `md-card__leading` `--avatar` `md-card__body` `md-card__main` `md-card__title` `md-card__subtitle` `md-card__text` `md-card__chips` `md-card__rail` `md-card__aside` `md-card__dist` `md-card__actions` `--bar` `md-card__time` `md-card__foot` `md-card__meta` `md-card__photos` `md-card__photo` `md-card__tag` `--tl/--tr` `md-price` |
 | 资料卡片 | `md-profile`（店铺/个人/公司；**默认平铺**无圆角/轻阴影）；**最精简**=仅 `__head`（`__media` + `__title` + `__subtitle`）；完整再加 `__side` / `__meta` / `__tags` / `__stats` / `__foot`；**页顶**加 `--top` |
-| 详情页 | 页根 `md-detail-page`（整页浅灰）；内容壳透底；标题/图文 **白底区块**、间隙露灰；`md-detail-head`；`md-article` 四级标题；短段不缩进、大段 `__body` 缩进、多项目 `__list`；`__figures--1/2`+居中 `__caption`+表格可横滑；**评论列表卡**；可嵌平铺 **资料卡片**；右下 **目录+返回顶部** |
+| 详情页 | 页根 `md-detail-page`（整页浅灰）；内容壳透底；标题/图文 **白底区块**、间隙露灰；`md-detail-head`；`md-article` 四级标题；短段不缩进、大段 `__body` 缩进、多项目 `__list`；`__figures--1/2`+居中 `__caption`+表格可横滑；**评论列表卡**；可嵌平铺 **资料卡片**；触屏右下 **目录+回顶**；桌面 **`md-split--outline-right` 右定宽目录** |
 | 字段详情 | 同 `md-detail-page` 壳；分组 `md-module`+`md-section-head`；`md-desc` 左名右值（`--stack` 上下、桌面 `--cols-2/3`、跨列 `--span`）；金样 `mobile-fields` / `desktop-detail` 字段签 |
 | 分区 / 模块 | `md-module`（L3，模块间距 `--md-module-gap`）`md-section-head` `md-section-head__title` |
 | 系统栏 | `md-status-bar`（`proto-page.js` 固定顶注入；页内禁止手写；时间/信号靠顶略放大，左右各收一个图标身位，不为胶囊留空） |
@@ -1207,7 +1207,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 列表六型 | 选型 `desktop-lists`（**金样只对标列表区**）：分页标准 `md-d1--list`；分页树表 `md-table--nest`；分组字段 `md-group-list`；只读树 `data-tree-edit="off"`；**分页无图/有图卡片** `md-d1__list` + `md-card-grid` + 底栏 `md-d1__footer`（同一行等高；无图卡右上角或表列 `md-col-switch` 可放开关；卡右下角 `md-card__foot` 可放按钮）。筛区/功能栏按规格另加 |
 | 工作台 | `md-stat-grid` `md-stat-card`；趋势 `md-chart-ph` |
 | 页面分栏 | `md-layout` `--full` / `--2col` / `--fix-left` / `--fix-right` / `--3col` / `--pin` + `__pane` / `__pane--span`。定宽栏 `--md-layout-aside`。**禁止**用 `md-d1__form` 冒充 |
-| 分栏 / 树 | `md-d1--split`；`md-split` `__side` `__main`；树 `md-tree` `__row` `__ops` `md-tree-bar`（展开/收起图标）；右区维护表单 `md-split__form`；拖到节点上/中/下；只读 `data-tree-edit="off"`；定位导航 `md-locator` `--cats` / `--outline`（`data-target`，滚正文高亮联动）；左大纲 `md-split--outline` + `data-outline-toggle`（收起变点线轨）；右悬浮 `md-locator-float`（收起同样点线轨） |
+| 分栏 / 树 | `md-d1--split`；`md-split` `__side` `__main`；树 `md-tree` `__row` `__ops` `md-tree-bar`（展开/收起图标）；右区维护表单 `md-split__form`；拖到节点上/中/下；只读 `data-tree-edit="off"`；定位导航 `md-locator` `--cats` / `--outline`（`data-target`，滚正文高亮联动）；左大纲 `md-split--outline` + `data-outline-toggle`（收起变点线轨）；桌面详情右栏 `md-split--outline-right`；章节页右悬浮 `md-locator-float`（收起同样点线轨） |
 | 表内嵌套树 | `md-table--nest` + `md-row--child` + `md-nest-toggle`（空按钮，CSS 画 +/−）；`data-row-id` / `data-parent`；子行 `.md-nest-name` 缩进 |
 | 分组字段列表 / 字段列表 | `md-group-list` `__group` `__head` `__item` + `md-desc`；无分页；**多条记录**；组标题加粗坐白底卡；记录间浅线左右内缩、不贴边；字段行不再分割。MP-012 / AD-012 页型；触屏 sheet safe。单组排版见 `desktop-detail` 字段签 |
 | D1-2 表单栅格 | `md-d1__form`（默认双列，通栏 `width:100%`，`row-gap` 保留）；整页 `--cols-1/2/3/4`；块内 `md-form-block--cols-*`；字段 `--md-field-min`。弹窗 `md-dialog__form` 单列 |

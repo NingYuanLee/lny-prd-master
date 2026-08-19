@@ -3572,6 +3572,54 @@ button.md-tree__item {
 .md-locator-float.is-collapsed .md-locator--outline .md-locator__item.is-active:not(:last-child)::after {
   background: linear-gradient(180deg, var(--md-divider-soft) 0%, rgba(25, 118, 210, 0.35) 45%, var(--md-divider-soft) 100%);
 }
+
+/* 桌面详情：左内容滚动 + 右定宽目录（非悬浮） */
+.md-d1.md-detail-page.md-d1--detail-split {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  padding-bottom: 0;
+}
+.md-d1--detail-split > .md-breadcrumb,
+.md-d1--detail-split > .md-body2,
+.md-d1--detail-split > .md-tabs {
+  flex-shrink: 0;
+}
+.md-d1--detail-split > .md-split,
+.md-d1--detail-split > .md-tab-panels {
+  flex: 1;
+  min-height: 0;
+}
+.md-d1--detail-split > .md-tab-panels {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.md-d1--detail-split .md-tab-panel.is-active {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.md-split--outline-right {
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+}
+.md-split--outline-right > .md-split__main {
+  overflow: auto;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+}
+.md-split--outline-right > .md-split__side {
+  width: 220px;
+  overflow: hidden;
+}
 .md-article-host {
   position: relative;
   display: flex;

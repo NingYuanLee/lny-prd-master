@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 夹具：对标 desktop-detail.html。商品·图文详情；字段签仅单组排版参考。 -->
+<!-- LNY-PRD gold: 夹具：对标 desktop-detail.html。商品·图文详情；右定宽目录联动。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="./assets/mui-kit.css">
 </head>
 <body>
-  <div class="md-d1 md-detail-page" data-lightbox>
+  <div class="md-d1 md-detail-page md-d1--detail-split" data-lightbox data-detail-nav="off">
     <div class="md-breadcrumb">
       <span>商品</span>
       <span>/</span>
@@ -16,6 +16,8 @@
       <span>/</span>
       <span class="is-current">商品详情</span>
     </div>
+    <div class="md-split md-split--outline-right">
+      <div class="md-split__main md-doc-scroll">
     <div class="md-detail-content">
     <div class="md-detail-hero" data-section="基本信息">
       <div class="md-swiper md-swiper--wide">
@@ -200,6 +202,19 @@
         </article>
       </div>
     </section>
+    </div>
+      </div>
+      <aside class="md-split__side">
+        <div class="md-locator-head">
+          <span class="md-locator-head__title">目录</span>
+        </div>
+        <nav class="md-locator md-locator--outline" aria-label="页面目录">
+          <button type="button" class="md-locator__item is-active" data-target="基本信息">基本信息</button>
+          <button type="button" class="md-locator__item" data-target="店铺信息">店铺信息</button>
+          <button type="button" class="md-locator__item" data-target="商品说明">商品说明</button>
+          <button type="button" class="md-locator__item" data-target="商品评论">商品评论</button>
+        </nav>
+      </aside>
     </div>
   </div>
   <script src="./assets/md-icons.js"></script>
