@@ -1743,20 +1743,65 @@
     paintIcon(ops);
   }
 
+  function isTreeFullyExpanded(tree) {
+    var lis = tree.querySelectorAll("li");
+    for (var i = 0; i < lis.length; i++) {
+      var li = lis[i];
+      if (li.querySelector(":scope > ul") && !li.classList.contains("is-open")) return false;
+    }
+    return true;
+  }
+
+  function syncTreeToggleBtn(tree) {
+    var bar = tree.previousElementSibling;
+    if (!bar || !bar.classList.contains("md-tree-bar")) return;
+    var btn = bar.querySelector('[data-tree-act="toggle-all"]');
+    if (!btn) return;
+    var open = isTreeFullyExpanded(tree);
+    btn.setAttribute("data-tree-expanded", open ? "true" : "false");
+    btn.setAttribute("title", open ? "全部收起" : "全部展开");
+    btn.setAttribute("aria-label", open ? "全部收起" : "全部展开");
+    var icon = btn.querySelector(".md-icon");
+    if (icon) icon.setAttribute("data-icon", open ? "fold" : "unfold");
+    paintIcon(btn);
+  }
+
+  function migrateTreeBar(bar) {
+    if (bar.querySelector('[data-tree-act="toggle-all"]')) return;
+    bar.querySelectorAll('[data-tree-act="expand"], [data-tree-act="collapse"]').forEach(function (el) {
+      el.remove();
+    });
+    var addRoot = bar.querySelector('[data-tree-act="add-root"]');
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "md-icon-btn";
+    btn.setAttribute("data-tree-act", "toggle-all");
+    btn.setAttribute("title", "全部展开");
+    btn.setAttribute("aria-label", "全部展开");
+    btn.setAttribute("data-tree-expanded", "false");
+    btn.innerHTML = '<span class="md-icon" data-icon="unfold" aria-hidden="true"></span>';
+    bar.appendChild(btn);
+    if (addRoot) bar.insertBefore(addRoot, bar.firstChild);
+    paintIcon(bar);
+  }
+
   function ensureTreeBar(tree) {
     var prev = tree.previousElementSibling;
-    if (prev && prev.classList.contains("md-tree-bar")) return prev;
+    if (prev && prev.classList.contains("md-tree-bar")) {
+      migrateTreeBar(prev);
+      syncTreeToggleBtn(tree);
+      return prev;
+    }
     var bar = document.createElement("div");
     bar.className = "md-tree-bar";
     bar.innerHTML =
-      '<button type="button" class="md-icon-btn" data-tree-act="expand" title="全部展开" aria-label="全部展开">' +
-      '<span class="md-icon" data-icon="unfold" aria-hidden="true"></span></button>' +
-      '<button type="button" class="md-icon-btn" data-tree-act="collapse" title="全部收起" aria-label="全部收起">' +
-      '<span class="md-icon" data-icon="fold" aria-hidden="true"></span></button>' +
       '<button type="button" class="md-btn md-btn--contained md-btn--sm" data-tree-act="add-root">' +
-      '<span class="md-icon" data-icon="add" aria-hidden="true"></span>根节点</button>';
+      '<span class="md-icon" data-icon="add" aria-hidden="true"></span>根节点</button>' +
+      '<button type="button" class="md-icon-btn" data-tree-act="toggle-all" title="全部展开" aria-label="全部展开" data-tree-expanded="false">' +
+      '<span class="md-icon" data-icon="unfold" aria-hidden="true"></span></button>';
     tree.parentNode.insertBefore(bar, tree);
     paintIcon(bar);
+    syncTreeToggleBtn(tree);
     return bar;
   }
 
@@ -1928,8 +1973,15 @@
     ev.preventDefault();
     ev.stopPropagation();
     var act = btn.getAttribute("data-tree-act");
-    if (act === "expand") setTreeOpenAll(tree, true);
-    else if (act === "collapse") setTreeOpenAll(tree, false);
+    if (act === "toggle-all") {
+      setTreeOpenAll(tree, !isTreeFullyExpanded(tree));
+      syncTreeToggleBtn(tree);
+    } else if (act === "expand") {
+      setTreeOpenAll(tree, true);
+      syncTreeToggleBtn(tree);
+    } else if (act === "collapse") {
+      setTreeOpenAll(tree, false);
+      syncTreeToggleBtn(tree);
     else if (act === "add-root") addTreeRoot(tree);
     else if (act === "add") addTreeChild(tree, btn.closest("li"));
     else if (act === "rename") startTreeRename(tree, treeItemOf(btn.closest("li")));

@@ -15,14 +15,11 @@
     <div class="md-split">
       <aside class="md-split__side">
         <div class="md-tree-bar">
-          <button type="button" class="md-icon-btn" data-tree-act="expand" title="全部展开" aria-label="全部展开">
-            <span class="md-icon" data-icon="unfold" aria-hidden="true"></span>
-          </button>
-          <button type="button" class="md-icon-btn" data-tree-act="collapse" title="全部收起" aria-label="全部收起">
-            <span class="md-icon" data-icon="fold" aria-hidden="true"></span>
-          </button>
           <button type="button" class="md-btn md-btn--contained md-btn--sm" data-tree-act="add-root">
             <span class="md-icon" data-icon="add" aria-hidden="true"></span>根节点
+          </button>
+          <button type="button" class="md-icon-btn" data-tree-act="toggle-all" title="全部展开" aria-label="全部展开" data-tree-expanded="false">
+            <span class="md-icon" data-icon="unfold" aria-hidden="true"></span>
           </button>
         </div>
         <ul class="md-tree">
