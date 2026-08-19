@@ -427,6 +427,8 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 **③ 横卡多行** `md-card--row`：内容与操作布局执行共享 `PT-MOBILE-LIST`。左可为封面 / 图标 / 头像 / 无；图片只允许 1:1 或竖图，宽高双锁定（默认 96×96），禁止 `width:100%` / `height:auto`。右轨用 `__rail`，多操作底栏用 `__actions--bar`，溢出菜单用 `data-menu` + `md-menu--fixed`；有按钮时根用 `<article>`。可选 `__photos` 最多五张 1:1 小图；共享规则命中“字段少但值长”分支时再加 `md-card--long`。
 
+**③·订单横卡** `md-card--order`：电商订单列表专用（金样 `mobile-order-list.html` / 夹具 PAGE-MP-014）。可选 `md-order-card__promo` 推广条；`__head` 店头（店名+`chevron-right`+徽标+状态）；`__body` 多行商品价量；`__foot` 实付款；`__actions` 浅底操作条（「更多」靠左，其余 `md-btn--soft` 靠右）。顶栏 **返回+搜索** + **下划线页签+筛选**（`md-list-toolbar` 在 body 外）。
+
 ```html
 <article class="md-card md-card--row">
   <a class="md-card__media md-media-ph md-media-ph--1" href="./…"></a>
