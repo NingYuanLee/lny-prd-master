@@ -77,7 +77,7 @@ description: >-
 | PAGE-AD-014 页面分栏（套件样例） | `gold/desktop-layout.html` | `md-layout--full/2col/fix-left/fix-right/3col/pin`；**禁止** `md-d1__form` 冒充分栏。卡片列表见 `desktop-lists.html` |
 | PAGE-AD-006 设置 | `gold/desktop-settings.html` | `md-d1 md-set-page` 浅灰底；**设置项**：开关可点；`md-set-picks` 文字/图标/图片 + 未选空圈；左图标可有可无；无极 / `data-menu` 改值 |
 | PAGE-AD-010 我的/服务 | `gold/desktop-menu.html` | `md-set-page` 浅灰底；**`md-svc-strip--desk`** 订单待办/经营概览；功能入口通栏/`md-set-pair`；右可为文字或方形配图 `--thumb`。不要 `md-d1--list` |
-| PAGE-AD-007 时间轴 | `gold/desktop-timeline.html` | 通栏 `md-timeline` 左竖轨右 **横卡文本**（无左图，正文可 `__photos`）；点节点切高亮。不要左右分栏。触屏见 `mobile-timeline` |
+| PAGE-AD-007 时间轴 | `gold/desktop-timeline.html` | 通栏 `md-timeline--static` 只读物流轴；**仅已发生节点**、倒序；左竖轨右 **横卡文本**。可交互章节导航见 `desktop-locator`，禁止可点切换进度 |
 | PAGE-AD-011 悬浮按钮（套件样例） | `gold/desktop-pod.html` | 仅规格点名时按共享 `PT-FLOAT` 落到业务页；用 `md-pod md-pod--desk` + `position:fixed`，折叠态用 `md-pod--fold` + `__toggle`，禁止触屏方位类和 `md-fab` |
 | 关系图 | `prototypes/{端}/map.html` | `ProtoMap.boot`；预览区 **375×812**；连线端口错开 + 线中 `label`；底部色线图例；拖动写入 localStorage；「导出图片」 |
 

@@ -75,4 +75,4 @@
 
 ## 7. 备注
 
-业务物流页，非套件样例。桌面对应 PAGE-AD-007（可交互时间轴）。金样 `gold/mobile-timeline.html`。
+业务物流页，非套件样例。桌面对应 PAGE-AD-007（只读物流时间轴，与触屏同语义）。金样 `gold/mobile-timeline.html`。

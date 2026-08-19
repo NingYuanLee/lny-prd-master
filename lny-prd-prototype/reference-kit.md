@@ -944,7 +944,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 </ol>
 ```
 
-**时间轴** `md-timeline`：`__item` + `__rail`（`__node` + `__line`）+ `__body`。`is-done` 已完成、`is-active` 当前（外圈高亮）、`is-origin` 起点（空心圆）、`is-path` 途经小圆点。默认可点节点切高亮；**物流只读页** `md-timeline--static`：**仅展示已发生节点**（禁止占位未发生节点、禁止灰色「待完成」竖轨）；倒序（最新在上、起点在下）；竖线全程主色；当前实心+外圈，途经小圆点，起点底部空心。若带 `data-target` / `data-section` 则滚动对应锚点。
+**时间轴** `md-timeline`：`__item` + `__rail`（`__node` + `__line`）+ `__body`。`is-done` 已完成、`is-active` 当前（外圈高亮）、`is-origin` 起点（空心圆）、`is-path` 途经小圆点。**物流/进度只读页**（触屏与桌面）统一 `md-timeline--static`：**仅展示已发生节点**（禁止占位未发生节点、禁止灰色「待完成」竖轨）；倒序（最新在上、起点在下）；竖线全程主色；当前实心+外圈，途经小圆点，起点底部空心。**可交互章节导航**（点选滚锚点、滚正文高亮）走 `desktop-locator.html` / `mobile-locator.html`，**禁止**在时间轴页演示可点切换进度以免与物流轴混淆。
 
 - **触屏 / 桌面**：右侧 `__body` 用 `md-card--row` **横卡文本**（**禁止左图**）；正文内可选 `md-card__photos` + `md-card__photo` 多张小图。金样 `gold/mobile-timeline.html` / `gold/desktop-timeline.html`。桌面不要左右分栏，章节大纲才走 `desktop-locator.html`。
 

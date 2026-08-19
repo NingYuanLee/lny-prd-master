@@ -88,7 +88,7 @@ AD_FIXTURE_INTRO = {
     "PAGE-AD-004.html": "夹具：对标 desktop-dashboard.html。工作台；指标卡+趋势+短表。",
     "PAGE-AD-005.html": "夹具：对标 desktop-split.html。商品·分类树维护；左树右内容。",
     "PAGE-AD-006.html": "夹具：对标 desktop-settings.html。设置项；当页当行操作。",
-    "PAGE-AD-007.html": "夹具：对标 desktop-timeline.html。时间轴；通栏竖轨右横卡文本。",
+    "PAGE-AD-007.html": "夹具：对标 desktop-timeline.html。只读物流时间轴；禁止可点切换进度（章节导航见 AD-013）。",
     "PAGE-AD-008.html": "夹具：对标 desktop-detail.html。商品·图文详情；字段签仅单组排版参考。",
     "PAGE-AD-009.html": "夹具：对标 desktop-form.html。表单铺齐样例；整页控件演示。",
     "PAGE-AD-010.html": "夹具：对标 desktop-menu.html。常用功能；md-svc-strip--desk + 功能入口。",

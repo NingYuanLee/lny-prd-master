@@ -43,7 +43,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 移动我的 / 服务 | `mobile-menu.html`（功能入口；右可为文字或方形配图 `--thumb`） |
 | 移动步骤向导 | `mobile-wizard.html`（`md-form-page`；横向 `md-stepper` + 分段 `md-advance--lg` + 无极 `md-progress` + 当前步表单，贴底上一步/下一步） |
 | 移动物流时间轴 | `mobile-timeline.html`（`md-timeline--static` 左竖轨右横卡文本；**仅已发生节点**、倒序、竖轨主色；夹具 PAGE-MP-009） |
-| 桌面时间轴 | `desktop-timeline.html`（通栏 `md-timeline--static` 物流只读：仅已发生节点、倒序、竖轨主色；下方示例可点切换的交互轴。触屏见 `mobile-timeline`） |
+| 桌面时间轴 | `desktop-timeline.html`（通栏 `md-timeline--static` 物流只读：仅已发生节点、倒序、竖轨主色。可交互章节导航见 `desktop-locator.html`，勿在本页演示可点切换进度） |
 | 移动按钮样例 | `mobile-buttons.html`（小/中/大三档：线框、色块、浅底 `--soft`、线框/色块/浅底置灰、带角标；页签按钮组） |
 | 触屏悬浮胶囊 | `mobile-pod.html`（钉在页根、不进滚动层；左上横向且与标题栏互斥；左下/右下竖向并避开 TabBar/操作条；单个圆形、多个成组细线分割。规格点名才画，不要右上） |
 | 桌面悬浮按钮 | `desktop-pod.html`（语义按共享 `PT-FLOAT`，实现用 `md-pod--desk` / `md-pod--fold`） |
