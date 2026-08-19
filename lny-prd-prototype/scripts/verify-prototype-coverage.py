@@ -312,7 +312,7 @@ def check_html(path: Path, page_id: str, comps: set[str], jumps: set[str], quote
         errors.append(str(path) + ": mobile page missing md-section-head")
     if parser.is_desktop and not parser.has_breadcrumb:
         errors.append(str(path) + ": desktop page missing md-breadcrumb")
-    errors.extend(check_visual_floor(path, text, parser))
+    errors.extend(check_visual_floor(path, page_id, text, parser))
     return errors
 
 
@@ -340,10 +340,64 @@ def check_density(path: Path, parser: PageParser) -> list[str]:
     return errors
 
 
-def check_visual_floor(path: Path, text: str, parser: PageParser) -> list[str]:
+WIZARD_DEMO_MARKERS = ("data-wizard-panel", "金样对照", "仅用于金样", "下方签仅")
+WIZARD_FIXTURE_PAGES = {"PAGE-MP-005", "PAGE-AD-003"}
+
+
+def is_wizard_demo_page(text: str, page_id: str) -> bool:
+    if page_id in WIZARD_FIXTURE_PAGES:
+        return True
+    return any(marker in text for marker in WIZARD_DEMO_MARKERS)
+
+
+def check_wizard_nav(path: Path, page_id: str, text: str) -> list[str]:
+    """PT-STATE-FLOW: one wizard nav type per business page; no gold tab-demo on business pages."""
+    errors: list[str] = []
+    prefix = str(path) + ": "
+    demo = is_wizard_demo_page(text, page_id)
+
+    if "data-wizard-panel" in text and page_id not in WIZARD_FIXTURE_PAGES:
+        errors.append(
+            prefix
+            + "business page must not copy gold wizard md-tabs demo (data-wizard-panel)"
+        )
+
+    if demo:
+        return errors
+
+    kinds: list[str] = []
+    if re.search(r"\bmd-stepper\b", text):
+        kinds.append("md-stepper")
+    if re.search(r"\bmd-advance\b", text):
+        kinds.append("md-advance")
+    if re.search(r"\bmd-progress--lg\b", text):
+        kinds.append("md-progress--lg")
+
+    if len(kinds) < 2:
+        return errors
+
+    wizardish = (
+        "md-form-page" in text
+        or "md-stepper" in text
+        or "data-wizard-host" in text
+        or ("md-d1__form" in text and "md-stepper" in text)
+    )
+    if not wizardish:
+        return errors
+
+    errors.append(
+        prefix
+        + "wizard nav must pick one of stepper/advance/progress-lg (PT-STATE-FLOW), got: "
+        + "+".join(kinds)
+    )
+    return errors
+
+
+def check_visual_floor(path: Path, page_id: str, text: str, parser: PageParser) -> list[str]:
     """Block wireframe-like HTML that still passes quote/count checks."""
     errors: list[str] = []
     prefix = str(path) + ": "
+    errors.extend(check_wizard_nav(path, page_id, text))
     if BOX_DRAW_RE.search(text):
         errors.append(prefix + "ASCII wireframe leaked into HTML")
     if not parser.is_mobile and not parser.is_desktop:

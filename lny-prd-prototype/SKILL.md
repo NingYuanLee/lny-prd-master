@@ -89,6 +89,12 @@ Read `lny-prd-master/framework-exclusions.md`。不生成已排除项的 `PAGE-*
 
 埋点：仅当规格已写明点位或 AD 字典条目时才在原型展示；**禁止自拟埋点方案**。
 
+**向导 / 引导分步页（`PT-STATE-FLOW`）开笔 checklist**（业务页，非套件样例对照）：
+
+- [ ] `ui/PAGE` **步骤区**已三选一点名 + **共 N 步**（L3 只写一种）
+- [ ] **禁止**搬金样 **`md-tabs` + `data-wizard-panel` / `data-panel="*Wiz*"`** 签切换对照结构（见 `mobile-wizard.html` / `PAGE-MP-005` 夹具说明）
+- [ ] 同页仅一种 `md-stepper` / `md-advance` / `md-progress--lg`（`verify-prototype-coverage.py` 会拦叠加）
+
 ## 一条路径（全端静态 HTML + kit）
 
 所有终端（MP / H5 / APP / PC / AD）均为静态 HTML。观感来自技能包 **`kit/`**。图标：闭集 `md-icons.js`；闭集没有的用 **`scripts/search-icons.py`**（技能自带，不调用 Cursor MCP）。**本地 URL 一律相对路径且带 `./`**：静态资源（如 `./assets/mui-kit.css`）、页面跳转与 `<a href>`（如 `./PAGE-MP-001.html`）、`iframe`/`script`/`link` 的 `src`/`href`、壳层 `PROTO_SHELL.pages[].file`、关系图 `map` 数据里的 `file` 等；禁止绝对路径、站点根路径（`/…`）或省略 `./` 的裸相对名。`#` 锚点与 `https://` 外链除外。
