@@ -21,7 +21,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 |----------|------|
 | 移动宫格 / 推荐 / 双列卡片 | `mobile-grid.html`（**沉浸式**；`md-hero` 钉底层；`md-mobile-sheet`；`md-module`；**封面叠字** `md-card--cover` + **双列瓷砖** `md-card--tile`；金刚 5 列或 `md-king--pair`） |
 | 移动列表 / 动态流 / 横卡 | `mobile-list.html`（语义按共享 `PT-MOBILE-LIST`；多行 `md-card--row`、长值 `md-card--long`、单行 `md-stack`>`md-set-row`；左/右半屏；`data-wheel="daterange"`） |
-| 移动订单列表 | `mobile-order-list.html`（顶栏返回+搜索+右侧入口；下划线可滚动页签+筛选；`md-card--order`：可选推广条/店头徽标/商品行右侧价量与服务标签/实付款/线框或浅底操作，多则「更多」菜单） |
+| 移动订单列表 | `mobile-order-list.html`（顶栏返回+搜索；下划线可滚动页签+筛选遮罩；店名后 `chevron-right`；`md-card--order` 推广条/商品行价量/实付款/浅底操作） |
 | 移动展示 / 详情 | `mobile-detail.html`（含 `md-profile` 店铺资料示例；组件亦用于个人/公司资料） |
 | 移动字段列表 | `mobile-fields.html`（sheet safe + `md-group-list` 白卡浮灰；标准顶栏；非图文、非横卡列表、非表单） |
 | 移动表单 | `mobile-form.html`（**套件样例**；`md-form-page` 浅灰底+白底分组；一页铺齐触屏表单控件：文本/选择/滑动条/单日/日期段/省市区/三类上传 + 贴底提交；进度条见步骤向导） |
