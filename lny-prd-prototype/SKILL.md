@@ -72,7 +72,7 @@ description: >-
 | PAGE-AD-012 字段列表 | `gold/desktop-fields.html`（六型合览见 `desktop-lists.html` 第三签） | **列表族·无分页·多条按组**；`md-d1--list` + `md-group-list`；桌面 `--cols-2` / `--span`。非图文、非表单、非 D1-1 标准表壳 |
 | PAGE-AD-003 向导 | `gold/desktop-wizard.html` + `gold/desktop-state-flow.html` | 状态导览族：`md-stepper` + `md-advance` +（可选）`md-progress`；当前步包在 `md-d1__form`；数字可点跳步 |
 | PAGE-AD-004 工作台 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
-| PAGE-AD-005 商品分类 | `gold/desktop-split.html` | 不分页维护树：`md-d1--split` + `md-tree` + `md-tree-bar`；增子/重命名/删除；拖到上/中/下。只读树与表内嵌套读 `desktop-lists.html`。**不是**分类钮 |
+| PAGE-AD-005 商品分类 | `gold/desktop-split.html` | 不分页维护树：`md-d1--split` + `md-tree` + `md-tree-bar`（展开/收起为图标）；右区 **分类表单**；增子/重命名/删除；拖到上/中/下。只读树与表内嵌套读 `desktop-lists.html`。**不是**分类钮 |
 | PAGE-AD-013 章节大纲（套件样例） | `gold/desktop-locator.html` | 两种：左可收缩 / 右悬浮可收起；**收起后点线轨**；点选滚锚点；**滚正文时当前点高亮**；与树分离 |
 | PAGE-AD-014 页面分栏（套件样例） | `gold/desktop-layout.html` | `md-layout--full/2col/fix-left/fix-right/3col/pin`；**禁止** `md-d1__form` 冒充分栏。卡片列表见 `desktop-lists.html` |
 | PAGE-AD-006 设置 | `gold/desktop-settings.html` | `md-d1 md-set-page` 浅灰底；**设置项**：开关可点；`md-set-picks` 文字/图标/图片 + 未选空圈；左图标可有可无；无极 / `data-menu` 改值 |

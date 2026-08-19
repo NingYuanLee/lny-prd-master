@@ -33,7 +33,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 桌面整页表单 | `desktop-form.html`（**套件样例**；通栏 1～4 列栅格有行距；`md-combo` 七种下拉 + `md-select`；多图上传 80×80。业务表单按规格裁；进度条见状态导览/向导） |
 | 桌面展示 / 详情 | `desktop-detail.html`（图文签 + 字段签；整页浅灰+白底区块；资料卡片；灯箱；右下目录+回顶。字段签=详情内单组 `md-desc` 排版参考。禁止沉浸式、禁止当表单。夹具图文 `PAGE-AD-008`；**字段列表** `PAGE-AD-012` → `desktop-fields.html`） |
 | 工作台 / 仪表盘 | `desktop-dashboard.html`（`md-stat-grid` 指标卡 + `md-chart-ph` + 短表。禁止拿 `desktop-lists` 硬套） |
-| 树 + 内容（不分页） | `desktop-split.html`（`md-d1--split` 左树右内容；总控展开/收起/增根；节点维护与拖到上/中/下。**不是**分类钮。夹具 `PAGE-AD-005`） |
+| 树 + 表单（不分页） | `desktop-split.html`（`md-d1--split` 左树右 **分类表单**；总控展开/收起图标 + 增根；节点维护与拖到上/中/下。**不是**分类钮。夹具 `PAGE-AD-005`） |
 | 定位导航（章节大纲） | `desktop-locator.html`（左侧可收缩 / 右侧悬浮可收起；**收起后点线轨**，滚正文当前点高亮；与树分离。夹具 `PAGE-AD-013`） |
 | 桌面设置 | `desktop-settings.html`（**设置项**：当页当行直接操作；左图标可有可无） |
 | 桌面我的 / 服务 | `desktop-menu.html`（**`md-svc-strip--desk`** 待办/概览条 + 功能入口；右可为文字或方形配图 `--thumb`） |
