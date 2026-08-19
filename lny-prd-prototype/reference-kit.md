@@ -915,7 +915,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 </ol>
 ```
 
-**时间轴** `md-timeline`：`__item` + `__rail`（`__node` + `__line`）+ `__body`。`is-done` 已完成、`is-active` 当前（外圈高亮）、`is-origin` 起点、`is-path` 仅竖线着色。默认可点节点切高亮；**物流等只读页**加 `md-timeline--static` 或 `data-timeline="static"` 禁用点击。若带 `data-target` / `data-section` 则滚动对应锚点。
+**时间轴** `md-timeline`：`__item` + `__rail`（`__node` + `__line`）+ `__body`。`is-done` 已完成、`is-active` 当前（外圈高亮）、`is-origin` 起点（空心圆）、`is-path` 仅竖线着色/途经小圆点。默认可点节点切高亮；**物流等只读页**加 `md-timeline--static`：`is-active` 实心+外圈、`is-origin` 空心、`is-path` 小圆点，起点以下竖线全灰。若带 `data-target` / `data-section` 则滚动对应锚点。
 
 - **触屏 / 桌面**：右侧 `__body` 用 `md-card--row` **横卡文本**（**禁止左图**）；正文内可选 `md-card__photos` + `md-card__photo` 多张小图。金样 `gold/mobile-timeline.html` / `gold/desktop-timeline.html`。桌面不要左右分栏，章节大纲才走 `desktop-locator.html`。
 

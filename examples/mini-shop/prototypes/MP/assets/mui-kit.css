@@ -2752,6 +2752,29 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
 .md-timeline__item.is-active .md-timeline__line {
   background: var(--md-primary);
 }
+/* 只读物流轴：最新实心+外圈、起点空心、途经小圆点；已完成段连线主色，起点以下_future 全灰 */
+.md-timeline--static .md-timeline__item.is-path .md-timeline__node {
+  width: 6px;
+  height: 6px;
+  margin-top: 25px;
+  background: var(--md-primary);
+  border: 0;
+  box-shadow: none;
+  opacity: 0.9;
+}
+.md-timeline--static .md-timeline__item.is-origin .md-timeline__node {
+  background: var(--md-bg-paper, #fff);
+  border: 2px solid var(--md-primary);
+  box-shadow: none;
+}
+.md-timeline--static .md-timeline__item.is-origin .md-timeline__line {
+  background: var(--md-grey-300);
+}
+.md-timeline--static .md-timeline__item:not(.is-active):not(.is-path):not(.is-origin):not(.is-done) .md-timeline__node,
+.md-timeline--static .md-timeline__item:not(.is-active):not(.is-path):not(.is-origin):not(.is-done) .md-timeline__line {
+  background: var(--md-grey-300);
+  border-color: var(--md-grey-300);
+}
 .md-timeline__item:last-child .md-timeline__line {
   visibility: hidden;
   min-height: 0;
