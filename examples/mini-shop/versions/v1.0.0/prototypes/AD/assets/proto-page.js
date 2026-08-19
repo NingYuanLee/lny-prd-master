@@ -2838,43 +2838,93 @@
     paint();
   }
 
-  function measureActionsWidth(pack) {
+  function actionColPadding(cell) {
+    if (!cell) return 8;
+    var cs = window.getComputedStyle(cell);
+    return (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+  }
+
+  function measureActionsWidth(pack, refCell) {
+    if (!pack) return 0;
     var probe = pack.cloneNode(true);
-    probe.querySelectorAll(".md-menu, script").forEach(function (n) {
+    probe.querySelectorAll(".md-menu, script, style").forEach(function (n) {
       n.remove();
     });
     probe.setAttribute("aria-hidden", "true");
     probe.style.cssText =
-      "position:absolute;left:-9999px;top:0;display:flex;align-items:center;width:max-content;max-width:none;margin:0;visibility:hidden;pointer-events:none;";
-    document.body.appendChild(probe);
-    var w = probe.getBoundingClientRect().width;
-    probe.parentNode.removeChild(probe);
-    return Math.ceil(w);
+      "display:flex;align-items:center;justify-content:flex-end;width:max-content;max-width:none;margin:0;visibility:hidden;pointer-events:none;flex-wrap:nowrap;";
+
+    var sandbox = document.createElement("div");
+    sandbox.setAttribute("aria-hidden", "true");
+    sandbox.style.cssText =
+      "position:absolute;left:-9999px;top:0;visibility:hidden;pointer-events:none;width:max-content;";
+
+    var table = refCell && refCell.closest("table");
+    var listRoot = table && table.closest(".md-d1--list");
+    if (listRoot) {
+      var ctx = document.createElement("div");
+      ctx.className = "md-d1 md-d1--list";
+      var list = document.createElement("div");
+      list.className = "md-d1__list";
+      list.appendChild(probe);
+      ctx.appendChild(list);
+      sandbox.appendChild(ctx);
+    } else {
+      sandbox.appendChild(probe);
+    }
+
+    document.body.appendChild(sandbox);
+    var w = Math.ceil(probe.getBoundingClientRect().width);
+    sandbox.parentNode.removeChild(sandbox);
+    return w;
   }
 
   function syncActionColWidths() {
     document.querySelectorAll("table.md-table").forEach(function (table) {
       var cells = table.querySelectorAll("td.md-col-actions");
-      if (!cells.length) return;
+      var head = table.querySelector("th.md-col-actions");
+      if (!cells.length && !head) return;
+
       var max = 0;
       cells.forEach(function (cell) {
         var pack = cell.querySelector(".md-actions");
-        if (!pack) return;
-        var w = measureActionsWidth(pack);
-        if (w > max) max = w;
+        max = Math.max(max, measureActionsWidth(pack, cell));
       });
+
+      if (head) {
+        max = Math.max(max, Math.ceil(head.scrollWidth));
+      }
+
       if (!max) return;
-      var cs = window.getComputedStyle(cells[0]);
-      var pad =
-        (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
-      var col = Math.max(36, max + Math.ceil(pad));
+
+      var pad = Math.max(
+        actionColPadding(cells[0] || head),
+        actionColPadding(head)
+      );
+      var col = Math.max(36, Math.ceil(max + pad));
       table.style.setProperty("--md-col-actions-w", col + "px");
     });
   }
 
   function scheduleActionColWidths() {
     requestAnimationFrame(function () {
-      syncActionColWidths();
+      requestAnimationFrame(function () {
+        syncActionColWidths();
+      });
+    });
+  }
+
+  function bindActionColObservers() {
+    document.querySelectorAll("table.md-table").forEach(function (table) {
+      if (table.__mdActionsObs) return;
+      var tbody = table.querySelector("tbody");
+      if (!tbody) return;
+      table.__mdActionsObs = true;
+      var timer = 0;
+      new MutationObserver(function () {
+        clearTimeout(timer);
+        timer = setTimeout(scheduleActionColWidths, 16);
+      }).observe(tbody, { childList: true, subtree: true });
     });
   }
 
@@ -3183,6 +3233,7 @@
     bindFilterTriggers();
     bindOverlayAppbars();
     document.querySelectorAll(".md-drawer.md-drawer--bottom").forEach(ensureBottomDrawerClose);
+    bindActionColObservers();
     scheduleActionColWidths();
     window.addEventListener("resize", scheduleActionColWidths);
   }
@@ -3199,6 +3250,7 @@
     confirm: confirm,
     alertInfo: alertInfo,
     closeMenus: closeMenus,
+    syncActionColWidths: syncActionColWidths,
   };
 
   window.addEventListener("message", onMessage);

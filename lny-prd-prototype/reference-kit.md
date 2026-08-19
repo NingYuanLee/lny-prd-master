@@ -1201,7 +1201,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 系统栏 | `md-status-bar`（`proto-page.js` 固定顶注入；页内禁止手写；时间/信号靠顶略放大，左右各收一个图标身位，不为胶囊留空） |
 | 触屏顶栏 | L1 无栏+自定义顶区 · L2 `--center` 居中无返回 · L3 `--overlay` 透明滚变实 · L4 无栏+`md-pod--tl` · L5 标准返回+左标题 · L6 `--cover` 双层封面 |
 | 桌面面包屑 | `md-breadcrumb`（D1 内容区顶部，禁止再写 `md-page-head`） |
-| 操作列 | 阈值与收纳执行 `PT-DESKTOP-LIST`。`md-col-actions` 宽按直出按钮形态与数量钉整列（表头与单元格同宽；套件实测 `.md-actions`）；常规动作 `md-icon-btn` + `title`/`aria-label`；删除加 `md-icon--danger`；「更多」用 `data-menu` + `md-menu md-menu--fixed` |
+| 操作列 | 阈值与收纳执行 `PT-DESKTOP-LIST`。`md-col-actions` 宽按直出按钮形态与数量钉整列（表头 th 与 td 同宽；`ProtoPage.syncActionColWidths` 实测各行 `.md-actions` 取 max，tbody 变更自动重算）；常规动作 `md-icon-btn` + `title`/`aria-label`；删除加 `md-icon--danger`；「更多」用 `data-menu` + `md-menu md-menu--fixed`（`md-select-wrap` 不计入子节点档位） |
 | 语义列宽 | `md-col-check` 勾选；`md-col-name` 名称硬锁定宽；`md-col-desc` / `md-col-note` 说明吃剩余；`md-col-date` / 最后数据列规则同前；`md-col-price` / `md-col-status` / `md-col-id` / `md-col-num`。**多字段单元格**用 `md-cell-stack`（`__primary` / `__secondary`）。长值省略不得溢出叠邻列；悬停看全文、点击复制 |
 | D1-1 紧凑 | 根节点 `md-d1 md-d1--list`；**不要**套到 D1-2 表单页 |
 | 列表六型 | 选型 `desktop-lists`（**金样只对标列表区**）：分页标准 `md-d1--list`；分页树表 `md-table--nest`；分组字段 `md-group-list`；只读树 `data-tree-edit="off"`；**分页无图/有图卡片** `md-d1__list` + `md-card-grid` + 底栏 `md-d1__footer`（同一行等高；无图卡右上角或表列 `md-col-switch` 可放开关；卡右下角 `md-card__foot` 可放按钮）。筛区/功能栏按规格另加 |

@@ -1245,7 +1245,7 @@ textarea.md-field__input:disabled:focus,
 }
 .md-table .md-col-actions {
   right: 0;
-  /* 列宽由整表 --md-col-actions-w 钉死（表头与单元格同宽）；JS 按按钮形态+数量实测，下方 :has 为回退档 */
+  /* 列宽由整表 --md-col-actions-w 钉死（表头 th 与 td 同宽）；ProtoPage 按各行 .md-actions 实测取 max */
   width: var(--md-col-actions-w, 64px);
   min-width: var(--md-col-actions-w, 64px);
   max-width: var(--md-col-actions-w, 64px);
@@ -1255,28 +1255,36 @@ textarea.md-field__input:disabled:focus,
   overflow: visible;
   text-overflow: clip;
   box-shadow: var(--md-shadow-left);
+  text-align: right;
 }
-/* 回退：按直出子节点数（图标钮 28px）钉整列，含表头。后写覆盖先写，取最多钮那一档 */
-.md-table:has(td.md-col-actions .md-actions > :only-child) {
-  --md-col-actions-w: 36px;
+.md-table thead .md-col-actions {
+  text-align: right;
 }
-.md-table:has(td.md-col-actions .md-actions > :nth-child(2):last-child) {
-  --md-col-actions-w: 64px;
-}
-.md-table:has(td.md-col-actions .md-actions > :nth-child(3):last-child) {
-  --md-col-actions-w: 92px;
-}
-.md-table:has(td.md-col-actions .md-actions > :nth-child(4)) {
+/* 回退：按表内最多「直出控件」数（.md-icon-btn / 非图标 .md-btn，不含菜单项）钉整列；JS 加载后会实测覆盖 */
+.md-table:has(td.md-col-actions .md-actions .md-icon-btn:nth-of-type(4)),
+.md-table:has(td.md-col-actions .md-actions > .md-btn:not(.md-icon-btn):nth-of-type(3)) {
   --md-col-actions-w: 120px;
 }
-.md-table:has(td.md-col-actions .md-btn:not(.md-icon-btn)):has(td.md-col-actions .md-actions > :only-child) {
+.md-table:has(td.md-col-actions .md-actions .md-icon-btn:nth-of-type(3)) {
+  --md-col-actions-w: 92px;
+}
+.md-table:has(td.md-col-actions .md-actions .md-icon-btn:nth-of-type(2)) {
+  --md-col-actions-w: 64px;
+}
+.md-table:has(td.md-col-actions .md-actions .md-icon-btn:only-of-type):not(:has(td.md-col-actions .md-actions .md-icon-btn:nth-of-type(2))) {
+  --md-col-actions-w: 36px;
+}
+.md-table:has(td.md-col-actions .md-actions > .md-btn:not(.md-icon-btn)):has(td.md-col-actions .md-actions > .md-btn:not(.md-icon-btn):only-of-type):not(:has(td.md-col-actions .md-actions .md-icon-btn)) {
   --md-col-actions-w: 88px;
 }
-.md-table:has(td.md-col-actions .md-btn:not(.md-icon-btn)):has(td.md-col-actions .md-actions > :nth-child(2):last-child) {
+.md-table:has(td.md-col-actions .md-actions > .md-btn:not(.md-icon-btn)):has(td.md-col-actions .md-actions > .md-btn:not(.md-icon-btn):nth-of-type(2)):not(:has(td.md-col-actions .md-actions > .md-btn:not(.md-icon-btn):nth-of-type(3))):not(:has(td.md-col-actions .md-actions .md-icon-btn)) {
   --md-col-actions-w: 132px;
 }
-.md-table:has(td.md-col-actions .md-btn:not(.md-icon-btn)):has(td.md-col-actions .md-actions > :nth-child(3)) {
+.md-table:has(td.md-col-actions .md-actions > .md-btn:not(.md-icon-btn)):has(td.md-col-actions .md-actions > .md-btn:not(.md-icon-btn):nth-of-type(3)) {
   --md-col-actions-w: 176px;
+}
+.md-table:has(td.md-col-actions .md-actions .md-icon-btn):has(td.md-col-actions .md-actions > .md-btn:not(.md-icon-btn)) {
+  --md-col-actions-w: 120px;
 }
 .md-table tbody tr.is-menu-host .md-col-actions,
 .md-table tbody tr:has(.md-menu.is-open) .md-col-actions {
@@ -1501,12 +1509,14 @@ textarea.md-field__input:disabled:focus,
   display: none;
 }
 .md-actions {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: flex-end;
   gap: 0;
   position: relative;
   flex-wrap: nowrap;
+  max-width: 100%;
+  vertical-align: middle;
 }
 .md-actions .md-btn { min-width: 0; padding-left: 8px; padding-right: 8px; }
 /* AD 操作列常规动作默认图标钮：查看/编辑/删除/增删/启停/更多 */
