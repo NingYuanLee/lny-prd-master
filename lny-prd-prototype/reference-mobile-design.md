@@ -67,7 +67,7 @@
 | 栅格 | 双列 `md-grid-2`（配 `--tile`）；金刚 4/5 列 |
 | 树 + 内容 | `md-tree-page` + `md-split`；`md-tree` `__toggle` 展开收起，点节点只换右区 |
 | 时间轴 | `md-timeline`；左竖轨 `__rail`，右 **横卡文本** `md-card--row`（无左图，正文可 `__photos`） |
-| 模块间距 | L3 包 `md-module`；父级 `--md-module-gap`（16px）。**§触屏间距三层联动**：父 gap 定兄弟缝；`md-king--pair` 等 seam 边 `padding:0`，内距在 `__item` |
+| 模块间距 | L3 包 `md-module`；父级 `--md-module-gap`（16px）。**滚动容器**统一基础 padding/背景（见 `reference-kit` §滚动容器底与边）；`md-king--pair` 等 seam 边 `padding:0` |
 
 金样索引：`gold/README.md`。
 

@@ -24,7 +24,7 @@
 | 按钮 | 可点操作用套件类：`md-btn` + `--contained` / `--outlined` / `--soft` / `--text` / `--link`，或 `md-icon-btn` / `md-tab` / `md-menu__item` / `md-page-btn` / `md-tree__item`。禁止裸 `<button>`、禁止 `<input type="submit">` 露出浏览器灰钮/立体边 |
 | 移动端 | 状态栏由 `proto-page.js` 固定顶注入；页根须标 `md-immersive` 或 `md-standard`；`md-section-head`；**列表区** `md-card--cover` / `--tile` / `--row`（多行，可无左图+小图）/ `md-set-row`（单行）；**功能区** `md-king` / `--pair` / `md-set-row` 通栏 / `md-set-pair`；触屏 `md-search` 仅左图标+输入；`viewport-fit=cover`；正文左右下走 `--md-safe-*`；标准顶栏左右 4px |
 | 桌面端 | 必须有 `md-breadcrumb`（内容区顶部，不要 `md-page-head` 大标题）；表格首列可用 `md-row-goods` + `md-thumb md-media-ph--n`。D1-1 的冻结、操作阈值、语义列宽、紧凑密度和底部对齐直接执行共享 `PT-DESKTOP-LIST`：根用 `md-d1--list`，列用对应 `md-col-*`，更多菜单用 `md-actions` + `data-menu`，汇总/分页用 `md-d1__stats` / `md-d1__pager`。触屏弹窗/半屏内边距收紧；底半屏高度随内容、最大 70vh、超出正文滚动、关闭钮在面板右上角（`md-drawer__close`）。规格出现的弹窗/签/下拉/日期/按钮组必须用本节 AD 控件，禁止裸 `alert` / 无样式 `<select>` |
-| 间距 | 触屏走 **§触屏间距三层联动**（间距预算）：父级 `gap` 定兄弟节奏；块 **seam 边**（朝向相邻兄弟的上下边）不重复叠 padding/margin；块内 content padding 写在 `__item`/`__body`。禁止内联 `margin` 当排版 |
+| 间距 | 触屏走 **§触屏间距三层联动** + **§滚动容器底与边**：滚动区基础 padding/背景只在 L2 承担一次；父级 `gap` 定兄弟节奏；块 seam 边不重复叠 padding/margin；块内 content padding 写在 `__item`/`__body` |
 
 ## 触屏间距三层联动（间距预算）
 
@@ -62,6 +62,28 @@
 | ✅ 模块内标题+列表 | `md-module { gap:8px }`；`md-section-head` 无额外上下 margin |
 
 金样：`gold/mobile-grid.html`（专题 `md-king--pair`）、`gold/mobile-list.html`（`md-list-toolbar`）。
+
+## 滚动容器底与边（L2 统一）
+
+**原则**：全页滚动区 **只在一层** 写基础内边距 + 基础背景色；`md-module` 只管块内 content padding，**不要**每个模块各自叠页级 safe 或整页白/灰底。
+
+| 场景 | 承担层 | 背景 | 内边距（套件默认） | 模块 |
+|------|--------|------|-------------------|------|
+| 通用 / 列表 | `md-mobile-body` | `var(--md-bg-paper)` 白 | `8px` 上；`var(--md-safe-l/r)` 左右；`12px + safe-b` 下；`gap: var(--md-module-gap)` | 外层不再叠 safe / 白底 |
+| 下沉滚过 | `md-mobile-sheet` | 白 | **同上**（body 透明、`padding:0`） | 同上 |
+| 浅灰壳（`md-detail-page` / `md-form-page` / `md-set-page`） | body 或 sheet | `#f7f7f7` | 滚动容器 **左右 0**；组间距 `gap` 漏灰 | 白底 `md-module` **块内** `16px + safe-l/r` |
+
+```text
+通用页：  [ md-mobile-body | 白底 + safe padding + gap ]
+            └── md-module（块内 padding  only）
+下沉页：  [ md-mobile-body 透明 ]
+            └── md-mobile-sheet | 白底 + safe padding + gap ]
+                  └── md-module
+浅灰壳：  [ md-mobile-body | 灰底 + gap，左右 0 ]
+            └── md-module | 白底 + 块内 safe ]
+```
+
+**禁止**：下沉页给 `md-mobile-body` 叠白底/内边距；通用页每个 `md-module` 写 `padding-left/right: var(--md-safe-*)`；浅灰壳却在滚动容器叠左右 safe（应落在白 module 内）。
 
 ## 复制
 
