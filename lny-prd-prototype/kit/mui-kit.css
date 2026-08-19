@@ -2752,7 +2752,7 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
 .md-timeline__item.is-active .md-timeline__line {
   background: var(--md-primary);
 }
-/* 只读物流轴：最新实心+外圈、起点空心、途经小圆点；已完成段连线主色，起点以下_future 全灰 */
+/* 只读物流轴：起点空心、途经小圆点、当前实心+外圈、待完成全灰；起点→当前主色竖线，当前以下灰色 */
 .md-timeline--static .md-timeline__item.is-path .md-timeline__node {
   width: 6px;
   height: 6px;

@@ -57,7 +57,7 @@ description: >-
 | PAGE-MP-011 悬浮胶囊（套件样例） | `gold/mobile-pod.html` | L4 无顶栏 + **`md-pod--tl`**；`PT-FLOAT`；与页内顶栏互斥 |
 | PAGE-MP-008 分类树 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左多级树右 **图文介绍**（`md-cat-intro`）；浏览用 `data-tree-edit="off"`；点节点只换右区。桌面维护树见 `desktop-split` |
 | PAGE-MP-013 分类导航 | `gold/mobile-locator.html` | `md-locator-page`；左一级 `md-locator--outline`；右分组 **横卡列表**；点选滚锚点 + 滚正文高亮联动（对标 `desktop-locator` 左栏）。**不是**树 |
-| PAGE-MP-009 物流时间轴 | `gold/mobile-timeline.html` | `md-timeline--static` 只读；`is-active` 最新、`is-origin` 起点、`is-path` 中间竖线；右 **横卡文本**（无左图，正文可 `__photos`）；夹具示范物流轨迹倒序 |
+| PAGE-MP-009 物流时间轴 | `gold/mobile-timeline.html` | `md-timeline--static` 只读；六节点顺序：已下单→已出库→已揽收→运输中→配送中→已签收；`is-origin` 起点、`is-path` 途经、`is-active` 当前、`is-future` 待完成；右 **横卡文本**（无左图，正文可 `__photos`） |
 
 **桌面端**
 
