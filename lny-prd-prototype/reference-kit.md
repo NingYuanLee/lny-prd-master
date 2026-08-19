@@ -81,9 +81,30 @@ sheet：   md-mobile-sheet         浅灰 #f7f7f7 + 统一上下/左右内边距
 模块：    md-module / 卡片        白底内容；块内 safe 写在 module（贴边 sheet 时）
 ```
 
-**禁止**：body 与 sheet 同时叠 safe；sheet 改白底却不在 module 里做白块；贴边页忘记 `--flush-x` 又在 module 外留 safe。
+**禁止**：body 与 sheet 同时叠 safe；贴边页忘记 `--flush-x` 又在 module 外留 safe。
 
-**触屏金样 DOM 纪律**：凡 `md-mobile-body` 内 **必有** `md-mobile-sheet`。树页 sheet **透明全幅**透传 `md-split`；详情/字段详情 sheet 加 `md-detail-content`；浅灰壳 sheet 透明、白底在 module。无 sheet 的旧 DOM 仅 CSS `:not(:has(> .md-mobile-sheet))` 兼容，**新页/金样禁止省略**。
+### 何时有 sheet、何时没有
+
+| 位置 | sheet？ | DOM 位置 |
+|------|---------|----------|
+| **L2 滚动主内容** | **必须有** | `md-mobile-body` 的 **唯一** 直接子节点 → `md-mobile-sheet` → L3 |
+| **L1 固定**（顶栏/搜索筛选/TabBar/贴底条） | **没有** | 页根下与 `md-mobile-body` **并列** |
+| **L2 下沉 Hero** | **没有** | 页根下与 `md-mobile-body` **并列**的 `md-hero` |
+| **L5 浮层** | **没有** | 页根级 drawer/dialog/toast |
+
+**一种页只有一个 sheet**；禁止 body 里嵌套多层 sheet，禁止 sheet 里再套 Hero。
+
+**sheet 修饰**（都有 sheet，只变左右 safe）：
+
+| 类名 | 左右 safe | 用于 |
+|------|-----------|------|
+| `md-mobile-sheet` | 默认 **有** | 列表、按钮、时间轴、下沉首页 |
+| `md-mobile-sheet--flush-x` | **无** | 详情/字段详情/树（或页根 `md-detail-page` 等自动 lr0） |
+| `+ md-detail-content` | **无** | 详情语义壳，等价 flush-x |
+
+**无 sheet 的旧 HTML** 不再推荐；`body` 已无默认 padding/灰底，缺 sheet 会丢滚动区样式。
+
+**触屏金样 DOM 纪律**：12 个 `mobile-*.html` **全部** `body` > `sheet`；⑥ 新页照抄。
 
 ## 复制
 

@@ -136,7 +136,27 @@
 | 子层 | 何时写 | 规格语义 | ⑥ DOM（摘要） |
 |------|--------|----------|----------------|
 | **【下沉首屏】** | 可选 | 背景 / slogan / Banner / Hero **不随滚**；白底内容滚过盖住 | 页根 `md-immersive` 下 **并列** `md-hero` ∥ `md-mobile-body`；body 内 **必须** `md-mobile-sheet`。见 `gold/mobile-grid.html` |
-| **【滚动容器】** | 必有 | 主内容分区顺序；L3 模块都在此内 | `md-mobile-body`（+ 有下沉时内包 `md-mobile-sheet`；无下沉时可直放 `md-module`） |
+| **【滚动容器】** | 必有 | 主内容分区顺序；L3 模块都在此内 | `md-mobile-body` > **`md-mobile-sheet`** > L3 模块（**禁止** body 直放 module） |
+
+**何时有 `md-mobile-sheet`、何时没有**
+
+| 判定 | 有没有 sheet | 说明 |
+|------|-------------|------|
+| **有 `md-mobile-body` 且要滚 L3 内容** | **必须有**（body 下 **唯一** 直接子层） | 列表/表单/详情/首页/树/按钮样例等 **全部**如此；sheet 承担浅灰底 + 统一内边距 |
+| **L1 固定区**（顶栏/搜索筛选/TabBar/贴底操作条） | **没有** | 与 `md-mobile-body` **并列**，在 body **外** |
+| **L2【下沉首屏】**（`md-hero`） | **没有** | 与 `md-mobile-body` **并列**在页根下；Hero **不进** sheet |
+| **L5 浮层**（半屏/弹窗/Toast） | **没有** | 挂在页根或 `body`，不进滚动 sheet |
+| **无滚动主内容**（纯壳/占位，极少见） | 可没有 body | 正常业务页 **不存在**此情形 |
+
+**sheet 不是「可选装饰」**：v2.8.44 起 `md-mobile-body` 默认 **透明、无 padding**；**没有 sheet 就没有**滚动区浅灰底与统一 safe——**新页/金样/⑥ 禁止** `body` 直放 `md-module` / `md-tab-panels`。
+
+**sheet 形态**（都有 sheet，差别在修饰类）：
+
+| 形态 | 类名 | 左右 safe | 典型页 |
+|------|------|-----------|--------|
+| 默认 | `md-mobile-sheet` | ✅ 有 | 列表 002、按钮、时间轴、下沉首页 |
+| 贴边 | `md-mobile-sheet--flush-x` 或页根 `md-detail-page` / `md-form-page` / `md-set-page` | ❌ 无 | 详情/表单/设置/树；白块在 `md-module` 块内 safe |
+| 详情壳 | 上表 + `md-detail-content` | ❌ 无（语义别名） | `mobile-detail` / `mobile-fields` |
 
 **Banner / Hero 放哪**
 
@@ -166,9 +186,9 @@
 | **下沉滚过** | 同上 | 浅灰 sheet | 同上 | Hero 与 body 同级 |
 | **贴边浅灰壳**（详情 / 表单 / 设置 / 树） | sheet 加 **`--flush-x`** 或页根类自动 lr0 | 浅灰 | sheet **左右 0**；白 **`md-module` 块内 safe** | 组间 `gap` 露灰 |
 
-**规格怎么写**：L2【滚动容器】一行点名 **基础背景**（白 / 浅灰壳）即可；默认白底通用页 **不必抄 px**。浅灰壳页须写「滚动区浅灰、白底模块分组、组间露灰」。**禁止**在 L3 写「每个模块左右 16、白底」当通用页的默认——那是浅灰壳专属分工。
+**规格怎么写**：L2【滚动容器】写「`body` > `sheet` > 模块顺序」；贴边页补「sheet 左右贴边（`--flush-x`）」；**不要**写「无 sheet」除非整页无滚动主内容。
 
-**⑥ 禁止**：body 叠 padding/底色；sheet 与 body 同时 safe；贴边页 sheet 未 `--flush-x` 却在 module 外留白；白底内容不包进 module/卡片却指望 sheet 变白。
+**⑥ 禁止**：body 叠 padding/底色；body 直放 module 跳过 sheet；sheet 与 body 同时 safe；贴边页 sheet 未 `--flush-x` 却在 module 外留白；Hero/顶栏/TabBar 塞进 sheet。
 
 ### 1.4 桌面端：布局结构类型与内容区固定结构
 
@@ -485,7 +505,7 @@
 
 #### │ L2 主体内容层
 - **【下沉首屏】**（可选）：{背景 / slogan / Banner / Hero；钉底不滚；须 L0 沉浸式 + 下沉滚过语义。无则写「无下沉首屏」}
-- **【滚动容器】**（必有）：{分区顺序；**基础背景**白/浅灰壳；浅灰壳写组间露灰。默认白底时不必重复 safe px}
+- **【滚动容器】**（必有）：{`body` > **`sheet`** > 分区顺序；贴边写 `--flush-x`；**禁止** body 直放 module}
 
 #### │ L3 模块容器层
 - {每个模块：普通（随滚）或 **吸顶**（写吸顶对象与顶距）。卡片、分区、列表、表单块；随滚 Banner 写在此，勿与 L2 下沉混用}
