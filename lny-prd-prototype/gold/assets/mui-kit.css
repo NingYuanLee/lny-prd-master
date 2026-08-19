@@ -4479,6 +4479,25 @@ button.md-set-row:active { background: var(--md-selected); }
   flex: 1;
   min-width: 0;
   margin-right: 4px;
+  align-self: center;
+  height: 34px;
+  min-height: 34px;
+  padding: 0 12px;
+  font-size: 0.8125rem;
+  line-height: 1;
+}
+.md-appbar--with-search .md-appbar__search .md-icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+}
+.md-appbar--with-search .md-appbar__search .md-search__input,
+.md-appbar--with-search .md-appbar__search input {
+  line-height: 1.25;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
 }
 .md-appbar--with-trail {
   gap: 4px;
@@ -4507,14 +4526,14 @@ button.md-set-row:active { background: var(--md-selected); }
   font-weight: 600;
   pointer-events: none;
 }
-/* 订单列表页签：下划线 + 横向滚动（对标行业订单列表） */
+/* 订单列表页签：横向滚动 + 激活字重（无容器底边线） */
 .md-mobile-page .md-tabs--line {
   gap: 0;
   overflow-x: auto;
   flex-wrap: nowrap;
   scrollbar-width: none;
-  border-bottom: 1px solid var(--md-divider);
-  padding: 0 0 0;
+  border-bottom: 0;
+  padding: 0;
   -webkit-overflow-scrolling: touch;
 }
 .md-mobile-page .md-tabs--line::-webkit-scrollbar {
@@ -4525,11 +4544,12 @@ button.md-set-row:active { background: var(--md-selected); }
   background: transparent;
   color: var(--md-text-secondary);
   border-radius: 0;
-  padding: 0 10px 10px;
+  padding: 0 12px;
   height: auto;
   min-height: 36px;
   white-space: nowrap;
   position: relative;
+  overflow: visible;
 }
 .md-mobile-page .md-tabs--line .md-tab:hover {
   background: transparent;
@@ -4540,31 +4560,28 @@ button.md-set-row:active { background: var(--md-selected); }
   font-weight: 600;
 }
 .md-mobile-page .md-tabs--line .md-tab.is-active::after {
-  content: "";
-  display: block;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 0;
-  width: 20px;
-  height: 2px;
-  background: var(--md-primary);
-  border-radius: 1px;
+  content: none;
+}
+.md-mobile-page .md-tabs--line .md-tab:has(.md-tab__badge) {
+  padding-right: 18px;
 }
 .md-tab__badge {
+  position: absolute;
+  top: 2px;
+  right: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 16px;
-  height: 16px;
-  margin-left: 4px;
-  padding: 0 4px;
-  border-radius: 8px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: 7px;
   background: var(--md-error);
   color: #fff;
-  font-size: 0.625rem;
+  font-size: 0.5625rem;
   font-weight: 600;
-  vertical-align: middle;
+  line-height: 1;
+  pointer-events: none;
 }
 /* 订单横卡：店头 + 多行商品 + 合计 + 浅底操作条 */
 .md-card--order {
@@ -4576,15 +4593,24 @@ button.md-set-row:active { background: var(--md-selected); }
 }
 .md-order-card__promo {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 8px 12px 0;
   font-size: 0.75rem;
   line-height: 1.35;
   color: var(--md-text-secondary);
   text-decoration: none;
-  border-bottom: 1px solid var(--md-divider-soft, rgba(0, 0, 0, 0.06));
+  border-bottom: 0;
+}
+.md-order-card__promo::after {
+  content: "";
+  display: block;
+  flex: 1 0 100%;
+  height: 1px;
+  margin: 8px 0 0;
+  background: var(--md-divider-soft, rgba(0, 0, 0, 0.06));
 }
 .md-order-card__promo .md-icon {
   flex-shrink: 0;
@@ -4597,8 +4623,8 @@ button.md-set-row:active { background: var(--md-selected); }
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 12px 12px 8px;
-  border-bottom: 1px solid var(--md-divider-soft, rgba(0, 0, 0, 0.06));
+  padding: 12px 12px 4px;
+  border-bottom: 0;
 }
 .md-order-card__shop-wrap {
   display: flex;
@@ -4647,12 +4673,13 @@ button.md-set-row:active { background: var(--md-selected); }
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  padding: 10px 12px;
+  padding: 8px 12px;
   text-decoration: none;
   color: inherit;
 }
 .md-order-card__line + .md-order-card__line {
-  border-top: 1px solid var(--md-divider-soft, rgba(0, 0, 0, 0.06));
+  border-top: 0;
+  padding-top: 0;
 }
 .md-order-card__thumb {
   flex: 0 0 64px;
@@ -4728,6 +4755,12 @@ button.md-set-row:active { background: var(--md-selected); }
   color: var(--md-text);
 }
 .md-card--order > .md-order-card__actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
   padding: 4px 12px 12px;
 }
 .md-card--order > .md-order-card__actions .md-select-wrap:first-child {

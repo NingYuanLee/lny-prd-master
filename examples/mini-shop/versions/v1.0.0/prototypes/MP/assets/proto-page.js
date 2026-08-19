@@ -338,12 +338,38 @@
     var host = btn.closest("tr") || btn.closest(".md-select-wrap") || btn.parentElement;
     if (host) host.classList.add("is-menu-host");
     var r = btn.getBoundingClientRect();
+    var pad = 8;
+    var maxW = window.innerWidth - pad * 2;
     menu.style.position = "fixed";
-    menu.style.top = r.bottom + 4 + "px";
-    menu.style.left = "auto";
-    menu.style.right = Math.max(8, window.innerWidth - r.right) + "px";
     menu.style.minWidth = "128px";
+    menu.style.maxWidth = maxW + "px";
     menu.style.zIndex = "1300";
+    menu.style.left = "0";
+    menu.style.top = "0";
+    menu.style.right = "auto";
+    var mw = menu.offsetWidth;
+    var mh = menu.offsetHeight;
+    var left;
+    var top = r.bottom + 4;
+    if (r.left + r.width / 2 < window.innerWidth / 2) {
+      left = r.left;
+    } else {
+      left = r.right - mw;
+    }
+    if (left + mw > window.innerWidth - pad) {
+      left = window.innerWidth - pad - mw;
+    }
+    if (left < pad) {
+      left = pad;
+    }
+    if (top + mh > window.innerHeight - pad) {
+      top = r.top - 4 - mh;
+    }
+    if (top < pad) {
+      top = pad;
+    }
+    menu.style.left = left + "px";
+    menu.style.top = top + "px";
   }
 
   function bindMenus() {
