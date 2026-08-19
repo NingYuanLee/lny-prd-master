@@ -7,8 +7,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 GOLD_DIR = ROOT / "lny-prd-prototype" / "gold"
+KIT_SCRIPT = ROOT / "lny-prd-prototype" / "scripts" / "copy-kit.py"
 MP_DIR = ROOT / "examples" / "mini-shop" / "prototypes" / "MP"
 VER_DIR = ROOT / "examples" / "mini-shop" / "versions" / "v1.0.0" / "prototypes" / "MP"
+AD_DIR = ROOT / "examples" / "mini-shop" / "prototypes" / "AD"
+AD_VER_DIR = ROOT / "examples" / "mini-shop" / "versions" / "v1.0.0" / "prototypes" / "AD"
 
 GOLD_DOM = {
     "mobile-grid.html": "DOM：md-hero 与 body 并列；body > md-mobile-sheet（默认 safe-x）。",
@@ -112,7 +115,24 @@ def mirror_mp_to_version() -> None:
         print("mirror", src.name)
 
 
+def copy_kit_to_fixtures() -> None:
+    import subprocess
+    import sys
+
+    targets = [MP_DIR, VER_DIR, AD_DIR, AD_VER_DIR, GOLD_DIR]
+    for target in targets:
+        if not target.exists():
+            continue
+        subprocess.run(
+            [sys.executable, str(KIT_SCRIPT), str(target)],
+            check=True,
+            cwd=str(ROOT),
+        )
+        print("copy-kit", target.relative_to(ROOT))
+
+
 def main() -> None:
+    copy_kit_to_fixtures()
     patch_gold_headers()
     fix_tree_flush_x(MP_DIR)
     patch_fixture_comments()

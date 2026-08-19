@@ -104,7 +104,7 @@ sheet：   md-mobile-sheet         浅灰 #f7f7f7 + 统一上下/左右内边距
 
 **无 sheet 的旧 HTML** 不再推荐；`body` 已无默认 padding/灰底，缺 sheet 会丢滚动区样式。
 
-**触屏金样 DOM 纪律**：12 个 `mobile-*.html` **全部** `body` > `sheet`；⑥ 新页照抄。
+**触屏金样 DOM 纪律**：12 个 `mobile-*.html` **全部** `body` > `sheet`；⑥ 新页照抄。改 `kit/` 后须对业务 `prototypes/{终端}/` 与 `versions/{v}/prototypes/{终端}/` 执行 `copy-kit.py`（或 `sync-mp-sheet-fixtures.py` 一键同步 HTML + assets）。
 
 ## 复制
 
