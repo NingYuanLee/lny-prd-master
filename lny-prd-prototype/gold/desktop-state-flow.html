@@ -30,10 +30,10 @@
 
     <div class="md-section-head"><h2 class="md-section-head__title">数字步骤</h2></div>
     <p class="md-body2">只用 <code>md-stepper</code>，不与进步条/进度条同屏。</p>
-    <div class="md-stepper" id="flowStepper" role="list">
-      <button type="button" class="md-step is-active" data-goto-step="1" role="listitem"><span class="md-step__index">1</span><span class="md-step__label">第一步</span></button>
-      <button type="button" class="md-step" data-goto-step="2" role="listitem"><span class="md-step__index">2</span><span class="md-step__label">第二步</span></button>
-      <button type="button" class="md-step" data-goto-step="3" role="listitem"><span class="md-step__index">3</span><span class="md-step__label">第三步</span></button>
+    <div class="md-stepper" id="flowStepper">
+      <div class="md-step is-active" data-step="1">第一步</div>
+      <div class="md-step" data-step="2">第二步</div>
+      <div class="md-step" data-step="3">第三步</div>
     </div>
     <form class="md-d1__form" id="flowStepForm">
       <div data-step="1">
@@ -147,7 +147,7 @@
         if (opts.stepperSel) {
           document.querySelectorAll(opts.stepperSel + " .md-step").forEach(function (el) {
             el.addEventListener("click", function () {
-              var n = Number(el.getAttribute("data-goto-step") || 0);
+              var n = Number(el.getAttribute("data-step") || 0);
               if (n >= 1 && n <= max) {
                 step = n;
                 paint();
