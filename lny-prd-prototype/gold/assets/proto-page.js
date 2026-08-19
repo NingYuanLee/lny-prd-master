@@ -1406,6 +1406,9 @@
   function bindTimelines() {
     document.querySelectorAll(".md-timeline").forEach(function (tl) {
       if (tl.getAttribute("data-md-bound") === "1") return;
+      if (tl.classList.contains("md-timeline--static") || tl.getAttribute("data-timeline") === "static") {
+        return;
+      }
       tl.setAttribute("data-md-bound", "1");
       tl.addEventListener("click", function (ev) {
         var item = ev.target.closest(".md-timeline__item");

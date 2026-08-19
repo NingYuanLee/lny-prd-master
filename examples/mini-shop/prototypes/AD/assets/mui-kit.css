@@ -2709,6 +2709,10 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
   min-width: 0;
   cursor: pointer;
 }
+.md-timeline--static,
+.md-timeline--static .md-timeline__item {
+  cursor: default;
+}
 .md-timeline__rail {
   width: 20px;
   flex-shrink: 0;
@@ -2735,14 +2739,17 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
   background: var(--md-grey-300);
 }
 .md-timeline__item.is-done .md-timeline__node,
-.md-timeline__item.is-active .md-timeline__node {
+.md-timeline__item.is-active .md-timeline__node,
+.md-timeline__item.is-origin .md-timeline__node {
   background: var(--md-primary);
   border-color: var(--md-primary);
 }
 .md-timeline__item.is-active .md-timeline__node {
   box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.22);
 }
-.md-timeline__item.is-done .md-timeline__line {
+.md-timeline__item.is-done .md-timeline__line,
+.md-timeline__item.is-path .md-timeline__line,
+.md-timeline__item.is-active .md-timeline__line {
   background: var(--md-primary);
 }
 .md-timeline__item:last-child .md-timeline__line {

@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 夹具：对标 mobile-timeline.html。订单·物流时间轴；节点按时间倒序。 DOM：body > md-mobile-sheet（默认 safe-x）。 -->
+<!-- LNY-PRD gold: 夹具：对标 mobile-timeline.html。订单·物流时间轴；节点按时间倒序；只读，最新与起点高亮。 DOM：body > md-mobile-sheet（默认 safe-x）。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -18,9 +18,9 @@
       <section class="md-module">
         <div class="md-section-head">
           <h2 class="md-section-head__title">物流轨迹</h2>
-          <span class="md-caption">OD-20260312-8821 · 按时间倒序</span>
+          <span class="md-caption">OD-20260312-8821 · 按时间倒序 · 最新与起点高亮</span>
         </div>
-        <ol class="md-timeline">
+        <ol class="md-timeline md-timeline--static" data-timeline="static">
           <li class="md-timeline__item is-active">
             <div class="md-timeline__rail" aria-hidden="true">
               <span class="md-timeline__node"></span>
@@ -45,7 +45,7 @@
               </div>
             </article>
           </li>
-          <li class="md-timeline__item is-done">
+          <li class="md-timeline__item is-path">
             <div class="md-timeline__rail" aria-hidden="true">
               <span class="md-timeline__node"></span>
               <span class="md-timeline__line"></span>
@@ -64,7 +64,7 @@
               </div>
             </article>
           </li>
-          <li class="md-timeline__item is-done">
+          <li class="md-timeline__item is-origin is-path">
             <div class="md-timeline__rail" aria-hidden="true">
               <span class="md-timeline__node"></span>
               <span class="md-timeline__line"></span>
@@ -111,7 +111,7 @@
               <div class="md-card__body">
                 <div class="md-card__main">
                   <h2 class="md-card__title">已签收</h2>
-                  <p class="md-card__text">末节点不再向下连线；点任意节点可切换当前高亮。</p>
+                  <p class="md-card__text">签收后本节点为轨迹终点；未发生前仅展示占位。</p>
                 </div>
                 <div class="md-card__foot">
                   <div class="md-card__meta">
