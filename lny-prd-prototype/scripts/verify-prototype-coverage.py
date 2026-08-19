@@ -381,6 +381,29 @@ def check_dialog_backdrop(path: Path, text: str) -> list[str]:
     return errors
 
 
+DIALOG_TAG_RE = re.compile(
+    r"<div\b[^>]*\bclass=\"[^\"]*\bmd-dialog\b[^\"]*\"[^>]*>",
+    re.I,
+)
+DIALOG_SURFACE_STRIP_RE = re.compile(
+    r"border-radius\s*:\s*0|box-shadow\s*:\s*none",
+    re.I,
+)
+
+
+def check_dialog_surface(path: Path, text: str) -> list[str]:
+    """D5 dialog panel must keep kit rounded surface + unified elevation."""
+    errors: list[str] = []
+    prefix = str(path) + ": "
+    for tag in DIALOG_TAG_RE.findall(text):
+        if "style=" in tag and DIALOG_SURFACE_STRIP_RE.search(tag):
+            errors.append(
+                prefix
+                + "md-dialog must not strip border-radius/box-shadow via inline style; use md-dialog class"
+            )
+    return errors
+
+
 def check_wizard_nav(path: Path, page_id: str, text: str) -> list[str]:
     """PT-STATE-FLOW: one wizard nav type per business page; no gold tab-demo on business pages."""
     errors: list[str] = []
@@ -430,6 +453,7 @@ def check_visual_floor(path: Path, page_id: str, text: str, parser: PageParser) 
     prefix = str(path) + ": "
     errors.extend(check_wizard_nav(path, page_id, text))
     errors.extend(check_dialog_backdrop(path, text))
+    errors.extend(check_dialog_surface(path, text))
     if BOX_DRAW_RE.search(text):
         errors.append(prefix + "ASCII wireframe leaked into HTML")
     if not parser.is_mobile and not parser.is_desktop:

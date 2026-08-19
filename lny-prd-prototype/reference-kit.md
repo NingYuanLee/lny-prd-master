@@ -18,9 +18,11 @@
 | `--md-radius-2xl` | 20px | 搜索条等大圆角输入 |
 | `--md-radius-pill` | 999px | 胶囊、角标 |
 | `--md-radius-circle` | 50% | 头像、圆点 |
+| `--md-radius-dialog` | 8px（=`--md-radius-md`） | **弹窗主体**（`md-dialog`、触屏 ≤6 项中间选项弹窗）统一圆角 |
 
 | 阴影 token | 用途 |
 |------------|------|
+| `--md-shadow-dialog` | **弹窗主体**统一 elevation（=`--md-shadow-24`）；`md-dialog` / 中间选项弹窗同阴影 |
 | `--md-shadow-surface` | **列表卡**统一轻阴影（封面/横卡/双列等） |
 | `--md-shadow-1` … `--md-shadow-24` | MUI elevation（按钮 hover、浮层等） |
 | `--md-shadow-right` / `--md-shadow-left` | 冻结列、侧栏等**方向性**阴影 |
@@ -1003,7 +1005,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | 弹窗 / 确认 | `md-dialog` + `md-backdrop`；确认用 `ProtoPage.confirm` | `alert()` / `confirm()` |
 | Toast / 提示 | `ProtoPage.snackbar` / `md-alert` / `md-tooltip` | 页内红字当提示 |
 
-D5 弹窗用 `md-dialog` + **`md-backdrop`（半透明黑、全屏、`z-index` 低于面板）**，打开后遮罩淡入并 **拦截穿透点击**（`pointer-events` 随 `is-open` 开启）；面板缩放在其上。每个弹窗 id 须配对 **`{id}Backdrop`**；`ProtoPage.openDialog` 缺遮罩时会自动补。禁止无遮罩弹窗、`alert('原型：…')`。**触屏**弹窗内边距收紧；底半屏 `md-drawer--bottom` 高度随内容、最大 70vh、超出 `__body` 滚动，关闭用面板右上角 `md-drawer__close`（`openDrawer` 会自动补）。**表单弹窗** `md-dialog__form`：**一行只放一个输入项**（单列），不要双列并排字段。整页 D1-2 `md-d1__form` 仍可双列。
+D5 弹窗用 `md-dialog` + **`md-backdrop`（半透明黑、全屏、`z-index` 低于面板）**，打开后遮罩淡入并 **拦截穿透点击**（`pointer-events` 随 `is-open` 开启）；**面板主体**白底、**统一圆角 `--md-radius-dialog` + 统一阴影 `--md-shadow-dialog`**（禁止直角无阴影或页内自写 `box-shadow`）；面板缩放在遮罩之上。每个弹窗 id 须配对 **`{id}Backdrop`**；`ProtoPage.openDialog` 缺遮罩时会自动补。触屏下拉 **≤6 项中间弹窗**（`md-select-sheet--center`）与 `md-dialog` **同一圆角/阴影 token**。禁止无遮罩弹窗、`alert('原型：…')`。**触屏**弹窗内边距收紧；底半屏 `md-drawer--bottom` 高度随内容、最大 70vh、超出 `__body` 滚动，关闭用面板右上角 `md-drawer__close`（`openDrawer` 会自动补）。**表单弹窗** `md-dialog__form`：**一行只放一个输入项**（单列），不要双列并排字段。整页 D1-2 `md-d1__form` 仍可双列。
 
 ### 详情页：标题区 + 图文混排
 
@@ -1253,7 +1255,7 @@ D5 弹窗用 `md-dialog` + **`md-backdrop`（半透明黑、全屏、`z-index` �
 | 日期时间 | `md-field--date` `md-field--daterange` `md-field--time` `md-cal` |
 | 开关/单选/多选 | `md-switch` `md-switch-row` `md-radio` `md-check` `md-choice-group`；触屏表单标签角标，列表 `--list` 或行内圆/方 |
 | 页内签 | `md-tabs md-tabs--page` `md-tab` `md-tab-panel` `md-tab-panels` `md-d1__workspace`；**平铺无卡片壳** |
-| 弹窗/确认 | `md-dialog` `md-dialog--sm/--lg`；触屏紧内边距；**表单 `md-dialog__form` 单列一行一项**；底半屏 `md-drawer--bottom` + `__close`；`ProtoPage.openDialog` / `confirm` |
+| 弹窗/确认 | `md-dialog` `md-dialog--sm/--lg`；**统一 `--md-radius-dialog` / `--md-shadow-dialog`**；触屏紧内边距；**表单 `md-dialog__form` 单列一行一项**；底半屏 `md-drawer--bottom` + `__close`；`ProtoPage.openDialog` / `confirm` |
 | 提示 | 触屏：居中 `md-snackbar--toast`（半透明黑底、白图标白字）；桌面：底部 `md-snackbar`；`md-tooltip` `data-tip` |
 
 ```html
