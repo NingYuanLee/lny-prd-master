@@ -75,13 +75,13 @@
           tabBarExempt: true,
           comps: [],
           spec: {
-            layout: "L0 标准模式；L1 返回+标题；L2 sheet safe + md-group-list：组标题 + 多条记录内字段名+值；无搜索筛选/横卡/分页。",
+            layout: "L0 标准模式；L1 返回+标题；L2 sheet safe + md-group-list：维度组标题 + 组内字段名+值（组内可多条，如不同计量基准）；无搜索筛选/横卡/分页。",
             comps: "本页无局部自定义组件。",
-            apis: "API-MP-001 · 查询商品字段列表（按组）\n进页请求。",
+            apis: "API-MP-002 · 查询单商品字段列表（按维度组）\n进页请求。",
             features: "FEATURE-001 · 浏览商品 · 字段列表",
             actions: "返回 · 商品列表"
           },
-          brief: "列表族：多条商品按组只读展示字段名+值，不是图文详情也不是表单。"
+          brief: "列表族：单商品按维度（基础/营养/口感等）分组只读展示字段，不是图文详情也不是表单。"
         },
         {
           id: "PAGE-MP-004",
