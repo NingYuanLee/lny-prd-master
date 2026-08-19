@@ -4642,8 +4642,8 @@ button.md-set-row:active { background: var(--md-selected); }
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  justify-content: flex-start;
+  gap: 2px;
   min-height: 36px;
   padding: 10px 12px;
   font-size: 0.75rem;
@@ -4688,9 +4688,16 @@ button.md-set-row:active { background: var(--md-selected); }
   flex: 1;
   min-width: 0;
 }
+.md-order-card__promo .md-icon {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  opacity: 0.45;
+}
 .md-order-card__shop {
   flex: 0 1 auto;
   min-width: 0;
+  max-width: 100%;
   display: inline-flex;
   align-items: center;
   gap: 2px;
@@ -4698,9 +4705,12 @@ button.md-set-row:active { background: var(--md-selected); }
   font-weight: 500;
   color: var(--md-text);
   text-decoration: none;
-  white-space: nowrap;
+}
+.md-order-card__shop-name {
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 .md-order-card__shop-tag {
   flex-shrink: 0;
