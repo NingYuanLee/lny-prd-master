@@ -2775,7 +2775,7 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
 .md-timeline__item.is-active .md-timeline__line {
   background: var(--md-primary);
 }
-/* 只读物流轴（展示倒序：当前→待完成→历史）：当前实心+外圈；待完成全灰；历史途经小圆点+主色竖线；起点空心在底部 */
+/* 只读物流轴：仅展示已发生节点；竖线全程主色；途经小圆点；当前实心+外圈；起点底部空心 */
 .md-timeline--static .md-timeline__item.is-path .md-timeline__node {
   width: 6px;
   height: 6px;
@@ -2790,21 +2790,13 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
   border: 2px solid var(--md-primary);
   box-shadow: none;
 }
-.md-timeline--static .md-timeline__item.is-active .md-timeline__line {
-  background: var(--md-grey-300);
-}
+.md-timeline--static .md-timeline__item.is-active .md-timeline__line,
 .md-timeline--static .md-timeline__item.is-path .md-timeline__line {
   background: var(--md-primary);
 }
-.md-timeline--static .md-timeline__item.is-future .md-timeline__node,
-.md-timeline--static .md-timeline__item.is-future .md-timeline__line {
-  background: var(--md-grey-300);
-  border-color: var(--md-grey-300);
-}
-.md-timeline--static .md-timeline__item:not(.is-active):not(.is-path):not(.is-origin):not(.is-done):not(.is-future) .md-timeline__node,
-.md-timeline--static .md-timeline__item:not(.is-active):not(.is-path):not(.is-origin):not(.is-done):not(.is-future) .md-timeline__line {
-  background: var(--md-grey-300);
-  border-color: var(--md-grey-300);
+.md-timeline--static .md-timeline__item.is-active .md-timeline__node,
+.md-timeline--static .md-timeline__item.is-path .md-timeline__node {
+  border-color: var(--md-primary);
 }
 .md-timeline__item:last-child .md-timeline__line {
   visibility: hidden;
