@@ -4480,6 +4480,92 @@ button.md-set-row:active { background: var(--md-selected); }
   min-width: 0;
   margin-right: 4px;
 }
+.md-appbar--with-trail {
+  gap: 4px;
+}
+.md-appbar--with-trail .md-appbar__search {
+  margin-right: 0;
+}
+.md-appbar__trail {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0;
+}
+.md-icon-btn--dot {
+  position: relative;
+  overflow: visible;
+}
+.md-icon-btn--dot > .md-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  font-size: 0.625rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+/* 订单列表页签：下划线 + 横向滚动（对标行业订单列表） */
+.md-mobile-page .md-tabs--line {
+  gap: 0;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--md-divider);
+  padding: 0 0 0;
+  -webkit-overflow-scrolling: touch;
+}
+.md-mobile-page .md-tabs--line::-webkit-scrollbar {
+  display: none;
+}
+.md-mobile-page .md-tabs--line .md-tab {
+  flex: 0 0 auto;
+  background: transparent;
+  color: var(--md-text-secondary);
+  border-radius: 0;
+  padding: 0 10px 10px;
+  height: auto;
+  min-height: 36px;
+  white-space: nowrap;
+  position: relative;
+}
+.md-mobile-page .md-tabs--line .md-tab:hover {
+  background: transparent;
+}
+.md-mobile-page .md-tabs--line .md-tab.is-active {
+  background: transparent;
+  color: var(--md-text);
+  font-weight: 600;
+}
+.md-mobile-page .md-tabs--line .md-tab.is-active::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 20px;
+  height: 2px;
+  background: var(--md-primary);
+  border-radius: 1px;
+}
+.md-tab__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--md-error);
+  color: #fff;
+  font-size: 0.625rem;
+  font-weight: 600;
+  vertical-align: middle;
+}
 /* 订单横卡：店头 + 多行商品 + 合计 + 浅底操作条 */
 .md-card--order {
   flex-direction: column;
@@ -4487,6 +4573,24 @@ button.md-set-row:active { background: var(--md-selected); }
   align-items: stretch;
   padding: 0;
   overflow: hidden;
+}
+.md-order-card__promo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: var(--md-text-secondary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--md-divider-soft, rgba(0, 0, 0, 0.06));
+}
+.md-order-card__promo .md-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  opacity: 0.45;
 }
 .md-order-card__head {
   display: flex;
@@ -4496,8 +4600,15 @@ button.md-set-row:active { background: var(--md-selected); }
   padding: 12px 12px 8px;
   border-bottom: 1px solid var(--md-divider-soft, rgba(0, 0, 0, 0.06));
 }
-.md-order-card__shop {
+.md-order-card__shop-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   flex: 1;
+  min-width: 0;
+}
+.md-order-card__shop {
+  flex: 0 1 auto;
   min-width: 0;
   font-size: 0.875rem;
   font-weight: 500;
@@ -4506,6 +4617,14 @@ button.md-set-row:active { background: var(--md-selected); }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.md-order-card__shop-tag {
+  flex-shrink: 0;
+  font-size: 0.625rem;
+  padding: 0 5px;
+  height: 18px;
+  line-height: 18px;
+  border-radius: 3px;
 }
 .md-order-card__shop-go {
   color: var(--md-text-secondary);
@@ -4557,6 +4676,44 @@ button.md-set-row:active { background: var(--md-selected); }
   font-size: 0.75rem;
   line-height: 1.35;
   color: var(--md-text-secondary);
+}
+.md-order-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+.md-order-card__tags .md-chip {
+  font-size: 0.625rem;
+  padding: 0 5px;
+  height: 18px;
+  line-height: 18px;
+  border-radius: 3px;
+}
+.md-order-card__price-col {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  margin-left: 8px;
+  text-align: right;
+}
+.md-order-card__price {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--md-text);
+  white-space: nowrap;
+}
+.md-order-card__qty {
+  font-size: 0.75rem;
+  color: var(--md-text-secondary);
+}
+.md-order-card__line-status {
+  font-size: 0.6875rem;
+  line-height: 1.25;
+  color: var(--md-error);
+  max-width: 5em;
 }
 .md-order-card__total {
   margin: 0;
@@ -6461,7 +6618,7 @@ a.md-card {
   padding-top: 4px;
   padding-bottom: 4px;
 }
-.md-search-row--tabs .md-tabs--stretch {
+.md-search-row--tabs .md-tabs--line {
   flex: 1;
   min-width: 0;
 }
