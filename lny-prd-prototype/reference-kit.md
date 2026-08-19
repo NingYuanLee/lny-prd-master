@@ -83,6 +83,8 @@
 
 **禁止**：下沉页给 `md-mobile-body` 叠白底/内边距；通用页每个 `md-module` 写 `padding-left/right: var(--md-safe-*)`；浅灰壳却在滚动容器叠左右 safe（应落在白 module 内）。
 
+**触屏金样 DOM 纪律**：凡 `md-mobile-body` 内 **必有** `md-mobile-sheet`。树页 sheet **透明全幅**透传 `md-split`；详情/字段详情 sheet 加 `md-detail-content`；浅灰壳 sheet 透明、白底在 module。无 sheet 的旧 DOM 仅 CSS `:not(:has(> .md-mobile-sheet))` 兼容，**新页/金样禁止省略**。
+
 ## 复制
 
 每个终端目录执行一次（可多端并列）：
