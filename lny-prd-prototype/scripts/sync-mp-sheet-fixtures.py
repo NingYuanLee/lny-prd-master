@@ -56,7 +56,7 @@ FIXTURE_INTRO = {
     "PAGE-MP-006.html": "夹具：对标 mobile-settings.html。",
     "PAGE-MP-007.html": "夹具：对标 mobile-buttons.html。",
     "PAGE-MP-008.html": "夹具：对标 mobile-tree.html。商品·分类树；左多级树右图文介绍。禁止当横卡列表、禁止当定位导航。",
-    "PAGE-MP-009.html": "夹具：对标 mobile-timeline.html。订单·物流时间轴；六节点顺序：已下单→已出库→已揽收→运输中→配送中→已签收。",
+    "PAGE-MP-009.html": "夹具：对标 mobile-timeline.html。订单·物流时间轴；展示倒序：当前→待完成→历史。",
     "PAGE-MP-010.html": "夹具：对标 mobile-menu.html。",
     "PAGE-MP-011.html": "夹具：对标 mobile-pod.html。",
     "PAGE-MP-012.html": "夹具：对标 mobile-fields.html。商品·字段列表；单商品多维度按组。禁止当图文、禁止当表单。",

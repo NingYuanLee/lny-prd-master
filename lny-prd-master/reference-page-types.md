@@ -41,7 +41,7 @@ PAGE 编号按终端独立分配，MP 与 AD 的相同序号不代表相同页�
 | 分类导航（左一级右分组横卡联动） | MP-013 | — | `mobile-locator.html` | — |
 | 订单列表（搜索+页签+筛选+订单横卡） | MP-014 | — | `mobile-order-list.html` | — |
 | 定位导航（分类/大纲） | — | AD-013 | — | `desktop-locator.html`（左可收缩 / 右悬浮可收起；点选与滚动双向联动；**不是**树） |
-| 时间轴 | MP-009 | AD-007 | `mobile-timeline.html`（竖轨右**横卡文本**，无左图；物流六节点顺序展示） | `desktop-timeline.html`（通栏竖轨右**横卡文本**，不要左右分开） |
+| 时间轴 | MP-009 | AD-007 | `mobile-timeline.html`（竖轨右**横卡文本**，无左图；物流展示倒序） | `desktop-timeline.html`（通栏竖轨右**横卡文本**，不要左右分开） |
 | 我的/服务 | MP-010 | AD-010 | `mobile-menu.html` | `desktop-menu.html` |
 | 悬浮控件样例 | MP-011 | AD-011 | `mobile-pod.html` | `desktop-pod.html` |
 | 工作台 | — | AD-004 | — | `desktop-dashboard.html` |

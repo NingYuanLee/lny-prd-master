@@ -2752,7 +2752,7 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
 .md-timeline__item.is-active .md-timeline__line {
   background: var(--md-primary);
 }
-/* 只读物流轴：起点空心、途经小圆点、当前实心+外圈、待完成全灰；起点→当前主色竖线，当前以下灰色 */
+/* 只读物流轴（展示倒序：当前→待完成→历史）：当前实心+外圈；待完成全灰；历史途经小圆点+主色竖线；起点空心在底部 */
 .md-timeline--static .md-timeline__item.is-path .md-timeline__node {
   width: 6px;
   height: 6px;
@@ -2769,6 +2769,9 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
 }
 .md-timeline--static .md-timeline__item.is-active .md-timeline__line {
   background: var(--md-grey-300);
+}
+.md-timeline--static .md-timeline__item.is-path .md-timeline__line {
+  background: var(--md-primary);
 }
 .md-timeline--static .md-timeline__item.is-future .md-timeline__node,
 .md-timeline--static .md-timeline__item.is-future .md-timeline__line {
