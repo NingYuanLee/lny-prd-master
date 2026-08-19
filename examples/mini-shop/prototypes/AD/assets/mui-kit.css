@@ -1227,6 +1227,12 @@ textarea.md-field__input:disabled:focus,
 }
 .md-table tbody tr:hover td { background: #f5f5f5; }
 .md-table tbody tr.is-selected td { background: #e3f2fd; }
+.md-table col.md-col-check {
+  width: 56px;
+}
+.md-table col.md-col-actions {
+  width: var(--md-col-actions-w, 64px);
+}
 .md-table .md-col-check,
 .md-table .md-col-actions {
   position: sticky;
@@ -1245,10 +1251,10 @@ textarea.md-field__input:disabled:focus,
 }
 .md-table .md-col-actions {
   right: 0;
-  /* 列宽由整表 --md-col-actions-w 钉死（表头 th 与 td 同宽）；ProtoPage 按各行 .md-actions 实测取 max */
-  width: var(--md-col-actions-w, 64px);
-  min-width: var(--md-col-actions-w, 64px);
-  max-width: var(--md-col-actions-w, 64px);
+  /* 列宽由 colgroup + --md-col-actions-w 钉死 px，不随视口缩放；ProtoPage 按各行直出按钮计数/文案测算 */
+  width: var(--md-col-actions-w, 64px) !important;
+  min-width: var(--md-col-actions-w, 64px) !important;
+  max-width: var(--md-col-actions-w, 64px) !important;
   padding-left: 4px;
   padding-right: 4px;
   white-space: nowrap;
@@ -1256,6 +1262,7 @@ textarea.md-field__input:disabled:focus,
   text-overflow: clip;
   box-shadow: var(--md-shadow-left);
   text-align: right;
+  box-sizing: border-box;
 }
 .md-table thead .md-col-actions {
   text-align: right;
@@ -2268,6 +2275,9 @@ body.md-lightbox-open { overflow: hidden; }
 .md-d1--list .md-d1__list .md-col-actions {
   padding-left: 4px;
   padding-right: 4px;
+  width: var(--md-col-actions-w, 64px) !important;
+  min-width: var(--md-col-actions-w, 64px) !important;
+  max-width: var(--md-col-actions-w, 64px) !important;
 }
 .md-d1--list .md-d1__list .md-thumb {
   width: 28px;
