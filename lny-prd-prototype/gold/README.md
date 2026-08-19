@@ -43,7 +43,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 移动按钮样例 | `mobile-buttons.html`（小/中/大三档：线框、色块、浅底 `--soft`、线框/色块/浅底置灰、带角标；页签按钮组） |
 | 触屏悬浮胶囊 | `mobile-pod.html`（钉在页根、不进滚动层；左上横向且与标题栏互斥；左下/右下竖向并避开 TabBar/操作条；单个圆形、多个成组细线分割。规格点名才画，不要右上） |
 | 桌面悬浮按钮 | `desktop-pod.html`（语义按共享 `PT-FLOAT`，实现用 `md-pod--desk` / `md-pod--fold`） |
-| 移动树 + 内容 | `mobile-tree.html`（`md-tree-page` 左树右内容；箭头展开收起，点节点只换右区） |
+| 移动树 + 内容 | `mobile-tree.html`（`md-tree-page`；`body` > **`md-mobile-sheet`（透明全幅）** > `md-split` 左树右内容） |
 | 其它桌面页 | 先按上表选最接近的金样；对不上再读 `desktop-lists.html` **只借控件**，禁止整页套成商品表 |
 | 其它移动页 | 先按上表选最接近的金样（设置/我的/向导/时间轴/树/详情/字段详情各有专页）；对不上再读 `mobile-list.html` **只借列表卡**，禁止整页套成商品列表 |
 

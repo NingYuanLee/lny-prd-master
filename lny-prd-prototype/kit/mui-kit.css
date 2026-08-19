@@ -3527,7 +3527,16 @@ button.md-tree__item {
   display: flex;
   flex-direction: column;
 }
-.md-mobile-page.md-tree-page .md-split {
+.md-mobile-page.md-tree-page > .md-mobile-body > .md-mobile-sheet {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  background: transparent;
+}
+.md-mobile-page.md-tree-page > .md-mobile-body > .md-mobile-sheet > .md-split {
   flex: 1;
   min-height: 0;
   width: 100%;
