@@ -7125,8 +7125,8 @@ a.md-card {
   padding-left: 0;
   padding-right: 0;
 }
-/* 非分组表单页仍与列表共用左右安全距；输入右侧余量由字段本身承担 */
-.md-mobile-page:has(form):not(.md-form-page) .md-mobile-body {
+/* Legacy：body 直放 form 且无 sheet 时 body 承担 safe；有 sheet 时 safe 只在 sheet（列表搜索 form 在 toolbar 不算） */
+.md-mobile-page:has(> .md-mobile-body > form):not(.md-form-page) > .md-mobile-body:not(:has(> .md-mobile-sheet)) {
   padding-left: var(--md-safe-l);
   padding-right: var(--md-safe-r);
 }
