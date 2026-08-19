@@ -36,14 +36,14 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 树 + 内容（不分页） | `desktop-split.html`（`md-d1--split` 左树右内容；总控展开/收起/增根；节点维护与拖到上/中/下。**不是**分类钮。夹具 `PAGE-AD-005`） |
 | 定位导航（章节大纲） | `desktop-locator.html`（左侧可收缩 / 右侧悬浮可收起；**收起后点线轨**，滚正文当前点高亮；与树分离。夹具 `PAGE-AD-013`） |
 | 桌面设置 | `desktop-settings.html`（**设置项**：当页当行直接操作；左图标可有可无） |
-| 桌面我的 / 服务 | `desktop-menu.html`（功能入口；右可为文字或方形配图 `--thumb`） |
+| 桌面我的 / 服务 | `desktop-menu.html`（**`md-svc-strip--desk`** 待办/概览条 + 功能入口；右可为文字或方形配图 `--thumb`） |
 | 桌面向导 | `desktop-wizard.html`（`md-stepper` + 分段 `md-advance`；数字步骤可点跳步；当前步吃表单双列间距） |
 | 桌面状态导览合览 | `desktop-state-flow.html`（页签 + 步骤 + 进步/进度同族说明） |
 | 移动设置 / 偏好 | `mobile-settings.html`（**设置项**：当页当行直接操作；沉浸式封面顶栏；左图标可有可无） |
 | 移动我的 / 服务 | `mobile-menu.html`（功能入口；右可为文字或方形配图 `--thumb`） |
 | 移动步骤向导 | `mobile-wizard.html`（`md-form-page`；横向 `md-stepper` + 分段 `md-advance--lg` + 无极 `md-progress` + 当前步表单，贴底上一步/下一步） |
 | 移动物流时间轴 | `mobile-timeline.html`（`md-timeline--static` 左竖轨右横卡文本；**仅已发生节点**、倒序、竖轨主色；夹具 PAGE-MP-009） |
-| 桌面时间轴 | `desktop-timeline.html`（通栏竖轨右横卡文本，不要左图、不要左右分开。触屏见 `mobile-timeline`） |
+| 桌面时间轴 | `desktop-timeline.html`（通栏 `md-timeline--static` 物流只读：仅已发生节点、倒序、竖轨主色；下方示例可点切换的交互轴。触屏见 `mobile-timeline`） |
 | 移动按钮样例 | `mobile-buttons.html`（小/中/大三档：线框、色块、浅底 `--soft`、线框/色块/浅底置灰、带角标；页签按钮组） |
 | 触屏悬浮胶囊 | `mobile-pod.html`（钉在页根、不进滚动层；左上横向且与标题栏互斥；左下/右下竖向并避开 TabBar/操作条；单个圆形、多个成组细线分割。规格点名才画，不要右上） |
 | 桌面悬浮按钮 | `desktop-pod.html`（语义按共享 `PT-FLOAT`，实现用 `md-pod--desk` / `md-pod--fold`） |

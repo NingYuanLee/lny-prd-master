@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 夹具：对标 desktop-timeline.html。时间轴；通栏竖轨右横卡文本。 -->
+<!-- LNY-PRD gold: 夹具：对标 desktop-timeline.html。时间轴；只读物流轴 + 交互进度示例。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -10,7 +10,98 @@
 <body>
   <div class="md-d1">
     <div class="md-breadcrumb">
-      <span>套件</span><span>/</span><span class="is-current">时间轴</span>
+      <span>订单</span><span>/</span><span class="is-current">物流轨迹</span>
+    </div>
+    <div class="md-section-head">
+      <h2 class="md-section-head__title">物流轨迹</h2>
+      <span class="md-caption">OD-20260312-8821 · 仅已发生节点</span>
+    </div>
+    <ol class="md-timeline md-timeline--static" data-timeline="static">
+      <li class="md-timeline__item is-active">
+        <div class="md-timeline__rail" aria-hidden="true">
+          <span class="md-timeline__node"></span>
+          <span class="md-timeline__line"></span>
+        </div>
+        <article class="md-timeline__body md-card md-card--row">
+          <div class="md-card__body">
+            <div class="md-card__main">
+              <h2 class="md-card__title">运输中</h2>
+              <p class="md-card__text">途经杭州转运中心，预计明日送达；桌面通栏展示，正文下可挂多张缩略图。</p>
+            </div>
+            <div class="md-card__photos">
+              <div class="md-card__photo md-media-ph md-media-ph--2"></div>
+              <div class="md-card__photo md-media-ph md-media-ph--3"></div>
+            </div>
+            <div class="md-card__foot">
+              <div class="md-card__meta">
+                <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>03-13 08:40</span>
+                <span class="md-card__meta-item">杭州转运中心</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="md-timeline__item is-path">
+        <div class="md-timeline__rail" aria-hidden="true">
+          <span class="md-timeline__node"></span>
+          <span class="md-timeline__line"></span>
+        </div>
+        <article class="md-timeline__body md-card md-card--row">
+          <div class="md-card__body">
+            <div class="md-card__main">
+              <h2 class="md-card__title">已揽收</h2>
+              <p class="md-card__text">顺丰 SF1234567890 已揽收；冷链鲜果已入保温箱。</p>
+            </div>
+            <div class="md-card__foot">
+              <div class="md-card__meta">
+                <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>03-12 14:06</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="md-timeline__item is-path">
+        <div class="md-timeline__rail" aria-hidden="true">
+          <span class="md-timeline__node"></span>
+          <span class="md-timeline__line"></span>
+        </div>
+        <article class="md-timeline__body md-card md-card--row">
+          <div class="md-card__body">
+            <div class="md-card__main">
+              <h2 class="md-card__title">已出库</h2>
+              <p class="md-card__text">华东仓拣货完成，包裹等待揽收。</p>
+            </div>
+            <div class="md-card__foot">
+              <div class="md-card__meta">
+                <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>03-12 11:30</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="md-timeline__item is-origin">
+        <div class="md-timeline__rail" aria-hidden="true">
+          <span class="md-timeline__node"></span>
+        </div>
+        <article class="md-timeline__body md-card md-card--row">
+          <div class="md-card__body">
+            <div class="md-card__main">
+              <h2 class="md-card__title">已下单</h2>
+              <p class="md-card__text">订单 OD-20260312-8821 已提交，等待仓库拣货打包。</p>
+            </div>
+            <div class="md-card__foot">
+              <div class="md-card__meta">
+                <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>03-12 09:20</span>
+                <span class="md-card__meta-item">华东仓</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </li>
+    </ol>
+    <div class="md-section-head">
+      <h2 class="md-section-head__title">上架进度（可点切换高亮）</h2>
+      <span class="md-caption">无 md-timeline--static 时默认可交互</span>
     </div>
     <ol class="md-timeline">
       <li class="md-timeline__item is-done">
@@ -22,7 +113,7 @@
           <div class="md-card__body">
             <div class="md-card__main">
               <h2 class="md-card__title">已提交</h2>
-              <p class="md-card__text">申请已进入审核队列，本节点仅展示文本摘要，无需左侧大图。</p>
+              <p class="md-card__text">商品资料已进入审核队列。</p>
             </div>
             <div class="md-card__foot">
               <div class="md-card__meta">
@@ -41,12 +132,7 @@
           <div class="md-card__body">
             <div class="md-card__main">
               <h2 class="md-card__title">审核中</h2>
-              <p class="md-card__text">左侧竖轨标记当前节点；正文下方可附带多张缩略图。</p>
-            </div>
-            <div class="md-card__photos">
-              <div class="md-card__photo md-media-ph md-media-ph--2"></div>
-              <div class="md-card__photo md-media-ph md-media-ph--3"></div>
-              <div class="md-card__photo md-media-ph md-media-ph--4"></div>
+              <p class="md-card__text">点任意节点可切换当前高亮；未发生节点可占位展示。</p>
             </div>
             <div class="md-card__foot">
               <div class="md-card__meta">
@@ -66,29 +152,6 @@
             <div class="md-card__main">
               <h2 class="md-card__title">待发布</h2>
               <p class="md-card__subtitle">审核通过，等待对外展示</p>
-            </div>
-            <div class="md-card__foot">
-              <div class="md-card__meta">
-                <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>08-13 10:00</span>
-              </div>
-            </div>
-          </div>
-        </article>
-      </li>
-      <li class="md-timeline__item">
-        <div class="md-timeline__rail" aria-hidden="true">
-          <span class="md-timeline__node"></span>
-          <span class="md-timeline__line"></span>
-        </div>
-        <article class="md-timeline__body md-card md-card--row">
-          <div class="md-card__body">
-            <div class="md-card__main">
-              <h2 class="md-card__title">已完成</h2>
-              <p class="md-card__text">末节点不再向下连线；点任意节点可切换当前高亮。</p>
-            </div>
-            <div class="md-card__photos">
-              <div class="md-card__photo md-media-ph md-media-ph--5"></div>
-              <div class="md-card__photo md-media-ph md-media-ph--6"></div>
             </div>
             <div class="md-card__foot">
               <div class="md-card__meta">

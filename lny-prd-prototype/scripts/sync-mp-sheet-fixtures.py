@@ -91,7 +91,7 @@ AD_FIXTURE_INTRO = {
     "PAGE-AD-007.html": "夹具：对标 desktop-timeline.html。时间轴；通栏竖轨右横卡文本。",
     "PAGE-AD-008.html": "夹具：对标 desktop-detail.html。商品·图文详情；字段签仅单组排版参考。",
     "PAGE-AD-009.html": "夹具：对标 desktop-form.html。表单铺齐样例；整页控件演示。",
-    "PAGE-AD-010.html": "夹具：对标 desktop-menu.html。我的/服务；功能入口。",
+    "PAGE-AD-010.html": "夹具：对标 desktop-menu.html。常用功能；md-svc-strip--desk + 功能入口。",
     "PAGE-AD-011.html": "夹具：对标 desktop-pod.html。悬浮按钮样例；规格点名才用。",
     "PAGE-AD-012.html": "夹具：对标 desktop-fields.html。商品·字段列表；单商品多维度按组。禁止沉浸式、禁止当表单、禁止 D1-1 标准表壳。",
     "PAGE-AD-013.html": "夹具：对标 desktop-locator.html。章节大纲/定位导航；左可收缩或右悬浮。",

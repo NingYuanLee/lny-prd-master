@@ -2849,6 +2849,9 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
   max-width: 720px;
   width: 100%;
 }
+.md-d1 > .md-timeline + .md-section-head {
+  margin-top: 32px;
+}
 .md-doc-scroll {
   display: flex;
   flex-direction: column;
@@ -6309,6 +6312,41 @@ button.md-set-row:active { background: var(--md-selected); }
 }
 .md-svc-strip--cols-4 .md-svc-strip__item {
   flex-basis: 25%;
+}
+.md-svc-strip--cols-5 .md-svc-strip__item {
+  flex-basis: 20%;
+}
+.md-svc-strip--cols-6 .md-svc-strip__item {
+  flex-basis: 16.6667%;
+}
+/* 桌面常用功能：服务条白底块，与 md-set-group 同壳 */
+.md-d1.md-set-page > .md-svc-strip,
+.md-d1.md-set-page .md-set-group > .md-svc-strip {
+  border-radius: var(--md-radius-md);
+  overflow: hidden;
+}
+.md-svc-strip--desk .md-svc-strip__item {
+  min-height: 84px;
+  padding: 14px 10px;
+  gap: 8px;
+}
+.md-svc-strip--desk .md-svc-strip__item:active {
+  transform: none;
+}
+.md-svc-strip--desk .md-svc-strip__icon {
+  width: 32px;
+  height: 32px;
+}
+.md-svc-strip--desk .md-svc-strip__icon .md-icon {
+  width: 26px;
+  height: 26px;
+}
+.md-svc-strip--desk .md-svc-strip__value {
+  font-size: 1.25rem;
+  min-height: 32px;
+}
+.md-svc-strip--desk .md-svc-strip__label {
+  font-size: 0.8125rem;
 }
 
 .md-btn--stack {
