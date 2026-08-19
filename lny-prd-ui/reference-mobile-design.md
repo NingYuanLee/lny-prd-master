@@ -69,7 +69,7 @@
 | 结构 | L0/L1 无 sheet；L2 必有 `body` > `sheet` > L3 | 固定区与 body 并列；Hero 与 body 并列；详见 `reference.md` §1.3.4「何时有 sheet」 |
 | L2 下沉 vs 随滚 Banner | 下沉 → L2【下沉首屏】+ 沉浸式；随滚 → L3 普通模块内 Banner，不写 Hero 钉底 | 下沉：页级 `md-hero` ∥ `md-mobile-body`；随滚：sheet 内 `md-module` + `md-swiper` |
 | 固定 vs 吸顶 | L1：滚动容器**外**（搜索/筛选/返回/TabBar/贴底条）；L3 吸顶：容器**内** sticky（写顶距） | 列表 `md-list-toolbar` 在 body 外；吸顶模块 sticky 顶距避开 L1 |
-| 安全区 | 正文左右 16；标准顶栏左右 4；状态栏 28；底栏 48；overlay/cover 避让胶囊 | `--md-safe-l/r` 16；标准顶栏 inset 4 |
+| 安全区 | 正文左右 **12**；标准顶栏左右 4；状态栏 28；底栏 48；overlay/cover 避让胶囊 | `--md-safe-edge` / `--md-safe-l/r` **12**；标准顶栏 inset 4 |
 | 弹性布局 | 「左图右文可伸缩；主文与底栏分开；树页左树右内容；时间轴左竖轨右**横卡文本**（无左图，正文可 `__photos`）」 | `__main` + `__foot` flex；树 `md-tree-page`；时间轴 `md-timeline` |
 | 适配基准 | 不写死唯一稿宽 | 预览逻辑宽 **375**；`viewport-fit=cover` |
 

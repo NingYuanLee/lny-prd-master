@@ -36,7 +36,7 @@
   --md-space: 8px;
   --md-module-gap: 16px;
   --md-scroll-bg: #f7f7f7;
-  --md-scroll-pad-top: 8px;
+  --md-scroll-pad-top: 12px;
   --md-scroll-pad-bottom: calc(12px + var(--md-safe-b, 0px));
   --md-font: Roboto, "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
   --md-ease: cubic-bezier(0.4, 0, 0.2, 1);
@@ -46,7 +46,7 @@
   --md-tabbar-h: 48px;
   --md-status-h: 28px;
   --md-drawer-w: 240px;
-  --md-safe-edge: 16px;
+  --md-safe-edge: 12px;
   --md-safe-edge-y: 0px;
   --md-safe-t: max(var(--md-safe-edge-y), env(safe-area-inset-top, 0px));
   --md-safe-r: max(var(--md-safe-edge), env(safe-area-inset-right, 0px));
@@ -3632,7 +3632,7 @@ button.md-tree__item {
 }
 .md-mobile-page.md-form-page .md-module {
   margin: 0;
-  padding: 16px var(--md-safe-r, 16px) 16px var(--md-safe-l, 16px);
+  padding: 16px var(--md-safe-r, 12px) 16px var(--md-safe-l, 12px);
   background: var(--md-bg-paper);
   border: 0;
   border-radius: 0;
@@ -6453,7 +6453,7 @@ a.md-card {
 }
 .md-detail-page .md-module {
   margin: 0;
-  padding: 16px var(--md-safe-r, 16px) 16px var(--md-safe-l, 16px);
+  padding: 16px var(--md-safe-r, 12px) 16px var(--md-safe-l, 12px);
   background: var(--md-bg-paper);
   border: 0;
   border-radius: 0;

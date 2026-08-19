@@ -63,7 +63,7 @@
 | 随滚 Banner | L3 普通模块内 `md-swiper` | **禁止**页级 `md-hero`；见 `reference-kit` 移动页 **B** |
 | L1 固定 vs L3 吸顶 | L1 在 body **外**（搜索/筛选/顶栏）；吸顶在 body **内** sticky | 列表 `md-list-toolbar`；吸顶 `md-module--sticky` + `top` |
 | 弹性列表卡 | `--cover` / `--tile` 可横可竖或 `--ratio-auto`；`--row` 左图仅 1:1 或竖图 / `md-stack`>`md-set-row` 单行独立有缝 |
-| 安全区 | 正文 `--md-safe-l/r` 左右 16；标准顶栏左右 4（不预留 96 胶囊空）；状态栏 28 贴上边框；底栏 48 贴下边框；overlay/cover 仍避让胶囊 |
+| 安全区 | 正文 `--md-safe-l/r` 左右 **12**；标准顶栏左右 4（不预留 96 胶囊空）；状态栏 28 贴上边框；底栏 48 贴下边框；overlay/cover 仍避让胶囊 |
 | 栅格 | 双列 `md-grid-2`（配 `--tile`）；金刚 4/5 列 |
 | 树 + 内容 | `md-tree-page` + `md-split`；`md-tree` `__toggle` 展开收起，点节点只换右区 |
 | 时间轴 | `md-timeline`；左竖轨 `__rail`，右 **横卡文本** `md-card--row`（无左图，正文可 `__photos`） |
