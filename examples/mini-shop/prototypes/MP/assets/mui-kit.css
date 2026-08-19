@@ -2767,11 +2767,16 @@ body:has(.md-mobile-page) .md-drawer__actions > a.md-btn:only-child {
   border: 2px solid var(--md-primary);
   box-shadow: none;
 }
-.md-timeline--static .md-timeline__item.is-origin .md-timeline__line {
+.md-timeline--static .md-timeline__item.is-active .md-timeline__line {
   background: var(--md-grey-300);
 }
-.md-timeline--static .md-timeline__item:not(.is-active):not(.is-path):not(.is-origin):not(.is-done) .md-timeline__node,
-.md-timeline--static .md-timeline__item:not(.is-active):not(.is-path):not(.is-origin):not(.is-done) .md-timeline__line {
+.md-timeline--static .md-timeline__item.is-future .md-timeline__node,
+.md-timeline--static .md-timeline__item.is-future .md-timeline__line {
+  background: var(--md-grey-300);
+  border-color: var(--md-grey-300);
+}
+.md-timeline--static .md-timeline__item:not(.is-active):not(.is-path):not(.is-origin):not(.is-done):not(.is-future) .md-timeline__node,
+.md-timeline--static .md-timeline__item:not(.is-active):not(.is-path):not(.is-origin):not(.is-done):not(.is-future) .md-timeline__line {
   background: var(--md-grey-300);
   border-color: var(--md-grey-300);
 }

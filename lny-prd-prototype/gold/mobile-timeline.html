@@ -1,4 +1,4 @@
-<!-- LNY-PRD gold: 金样：触屏时间轴（mini-shop 夹具示范物流时间轴；节点按时间倒序）。左竖轨右横卡文本（可内嵌多小图）。写触屏时间轴页前必 Read。 DOM：body > md-mobile-sheet（默认 safe-x）。 -->
+<!-- LNY-PRD gold: 金样：触屏时间轴（mini-shop 夹具示范物流时间轴；节点按时间倒序：当前→待完成→历史）。左竖轨右横卡文本（可内嵌多小图）。写触屏时间轴页前必 Read。 DOM：body > md-mobile-sheet（默认 safe-x）。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -18,7 +18,7 @@
       <section class="md-module">
         <div class="md-section-head">
           <h2 class="md-section-head__title">物流轨迹</h2>
-          <span class="md-caption">OD-20260312-8821 · 按时间倒序 · 最新与起点高亮</span>
+          <span class="md-caption">OD-20260312-8821 · 倒序：当前→待完成→历史</span>
         </div>
         <ol class="md-timeline md-timeline--static" data-timeline="static">
           <li class="md-timeline__item is-active">
@@ -40,6 +40,44 @@
                   <div class="md-card__meta">
                     <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>03-13 08:40</span>
                     <span class="md-card__meta-item">杭州转运中心</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </li>
+          <li class="md-timeline__item is-future">
+            <div class="md-timeline__rail" aria-hidden="true">
+              <span class="md-timeline__node"></span>
+              <span class="md-timeline__line"></span>
+            </div>
+            <article class="md-timeline__body md-card md-card--row">
+              <div class="md-card__body">
+                <div class="md-card__main">
+                  <h2 class="md-card__title">派送中</h2>
+                  <p class="md-card__subtitle">快递员张师傅正在派送，请保持电话畅通</p>
+                </div>
+                <div class="md-card__foot">
+                  <div class="md-card__meta">
+                    <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>—</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </li>
+          <li class="md-timeline__item is-future">
+            <div class="md-timeline__rail" aria-hidden="true">
+              <span class="md-timeline__node"></span>
+              <span class="md-timeline__line"></span>
+            </div>
+            <article class="md-timeline__body md-card md-card--row">
+              <div class="md-card__body">
+                <div class="md-card__main">
+                  <h2 class="md-card__title">已签收</h2>
+                  <p class="md-card__text">签收后本节点为轨迹终点；未发生前仅展示占位。</p>
+                </div>
+                <div class="md-card__foot">
+                  <div class="md-card__meta">
+                    <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>—</span>
                   </div>
                 </div>
               </div>
@@ -67,7 +105,6 @@
           <li class="md-timeline__item is-origin">
             <div class="md-timeline__rail" aria-hidden="true">
               <span class="md-timeline__node"></span>
-              <span class="md-timeline__line"></span>
             </div>
             <article class="md-timeline__body md-card md-card--row">
               <div class="md-card__body">
@@ -79,43 +116,6 @@
                   <div class="md-card__meta">
                     <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>03-12 09:20</span>
                     <span class="md-card__meta-item">华东仓</span>
-                  </div>
-                </div>
-              </div>
-            </article>
-          </li>
-          <li class="md-timeline__item">
-            <div class="md-timeline__rail" aria-hidden="true">
-              <span class="md-timeline__node"></span>
-              <span class="md-timeline__line"></span>
-            </div>
-            <article class="md-timeline__body md-card md-card--row">
-              <div class="md-card__body">
-                <div class="md-card__main">
-                  <h2 class="md-card__title">派送中</h2>
-                  <p class="md-card__subtitle">快递员张师傅正在派送，请保持电话畅通</p>
-                </div>
-                <div class="md-card__foot">
-                  <div class="md-card__meta">
-                    <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>—</span>
-                  </div>
-                </div>
-              </div>
-            </article>
-          </li>
-          <li class="md-timeline__item">
-            <div class="md-timeline__rail" aria-hidden="true">
-              <span class="md-timeline__node"></span>
-            </div>
-            <article class="md-timeline__body md-card md-card--row">
-              <div class="md-card__body">
-                <div class="md-card__main">
-                  <h2 class="md-card__title">已签收</h2>
-                  <p class="md-card__text">签收后本节点为轨迹终点；未发生前仅展示占位。</p>
-                </div>
-                <div class="md-card__foot">
-                  <div class="md-card__meta">
-                    <span class="md-card__meta-item"><span class="md-icon" data-icon="schedule" aria-hidden="true"></span>—</span>
                   </div>
                 </div>
               </div>
