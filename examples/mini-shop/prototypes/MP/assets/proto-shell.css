@@ -1,5 +1,11 @@
 /* Prototype navigation shell — uses mui-kit tokens. Do not restyle per page. */
 
+:root {
+  --proto-phone-radius-outer: 40px;
+  --proto-phone-radius-inner: 30px;
+  --proto-shadow-phone: 0 12px 32px rgba(0, 0, 0, 0.14);
+}
+
 .proto-shell {
   display: flex;
   height: 100vh;
@@ -232,8 +238,8 @@
   height: calc((var(--phone-h) + 2 * var(--phone-bezel)) * var(--phone-scale, 1));
   overflow: hidden;
   flex-shrink: 0;
-  border-radius: calc(40px * var(--phone-scale, 1));
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+  border-radius: calc(var(--proto-phone-radius-outer) * var(--phone-scale, 1));
+  box-shadow: var(--proto-shadow-phone);
 }
 .phone-frame {
   box-sizing: content-box;
@@ -241,7 +247,7 @@
   height: var(--phone-h);
   transform: scale(var(--phone-scale, 1));
   transform-origin: top left;
-  border-radius: 40px;
+  border-radius: var(--proto-phone-radius-outer);
   overflow: hidden;
   background: #1c1c1e;
   border: var(--phone-bezel) solid #1c1c1e;
@@ -254,7 +260,7 @@
   height: 100%;
   border: 0;
   background: #fff;
-  border-radius: 30px; /* 圆角屏；页内 --md-safe-edge 避免控件贴角 */
+  border-radius: var(--proto-phone-radius-inner); /* 圆角屏；页内 --md-safe-edge 避免控件贴角 */
 }
 .phone-home-bar {
   position: absolute;
@@ -263,7 +269,7 @@
   width: 126px;
   height: 5px;
   margin-left: -63px;
-  border-radius: 3px;
+  border-radius: var(--md-radius-xs);
   background: rgba(255, 255, 255, 0.45);
   pointer-events: none;
   z-index: 3;
@@ -428,7 +434,7 @@ html:has(#map-shell) body {
   top: 50%;
   transform: translate(-50%, -50%) scale(0.96);
   padding: 12px 20px;
-  border-radius: 8px;
+  border-radius: var(--md-radius-md);
   background: rgba(0, 0, 0, 0.72);
   color: #fff;
   font-size: 0.875rem;

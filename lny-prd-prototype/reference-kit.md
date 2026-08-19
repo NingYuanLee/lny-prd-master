@@ -2,7 +2,34 @@
 
 生成/更新原型时 Read。套件在技能包 `lny-prd-prototype/kit/`，**禁止**另起主题、禁止 `prototypes-mui-app/`、禁止 Ant Design / Bootstrap / 页内自造皮肤。
 
-观感对齐 **Material UI v5 默认 light theme**（primary `#1976d2`、圆角 4px、Roboto、elevation 阴影）。不是 React 运行时；类名以 `md-` / `proto-` 为准。
+观感对齐 **Material UI v5 默认 light theme**（primary `#1976d2`、圆角/阴影见下节 token、Roboto、elevation 阴影）。不是 React 运行时；类名以 `md-` / `proto-` 为准。
+
+## 圆角与阴影 token（套件 / 金样 / 夹具统一）
+
+**禁止**在业务页 HTML 内联 `border-radius` / `box-shadow` 硬编码 px；一律用 `mui-kit.css` 变量。
+
+| 圆角 token | 值 | 典型用途 |
+|------------|-----|----------|
+| `--md-radius-xs` | 2px | 勾选框、进度条轨道、细条 |
+| `--md-radius-sm` / `--md-radius` | 4px | **默认**：卡片、按钮、字段、模块 |
+| `--md-radius-md` | 8px | 缩略图、媒体、角标折角（`--md-radius-tag-br/bl`） |
+| `--md-radius-lg` | 12px | 标签容器、资料头像圆角矩形 |
+| `--md-radius-xl` | 16px | 半屏抽屉顶角（`--md-radius-sheet-top`） |
+| `--md-radius-2xl` | 20px | 搜索条等大圆角输入 |
+| `--md-radius-pill` | 999px | 胶囊、角标 |
+| `--md-radius-circle` | 50% | 头像、圆点 |
+
+| 阴影 token | 用途 |
+|------------|------|
+| `--md-shadow-surface` | **列表卡**统一轻阴影（封面/横卡/双列等） |
+| `--md-shadow-1` … `--md-shadow-24` | MUI elevation（按钮 hover、浮层等） |
+| `--md-shadow-right` / `--md-shadow-left` | 冻结列、侧栏等**方向性**阴影 |
+| `--md-shadow-edge-top` / `--md-shadow-edge-bottom` | 顶/底 1px 分隔阴影 |
+| `--md-shadow-focus*` | 焦点环（按钮、时间轴节点等） |
+| `--md-shadow-tab-active` | 页内签选中轻阴影 |
+| `--proto-shadow-phone` | 汇总壳手机框（`proto-shell.css`） |
+
+功能区（通栏 / 一行两个 / 页内签 / 金刚）与资料卡默认：**无圆角、无卡片阴影**（平铺）。列表卡与评论条目：**`--md-shadow-surface` + `--md-radius-sm`**。
 
 **原型默认高保真**：与 `ui/PAGE`「视觉细节」估点档位无关。⑥ 必须按本节「高保真落地」出图，禁止线框式两张灰卡、禁止「示例商品 A」。
 
