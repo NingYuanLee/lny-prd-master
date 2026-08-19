@@ -3146,7 +3146,7 @@ button.md-tree__item {
   overflow: auto;
 }
 
-/* 不分页分组字段展示（列表六型之一：多条记录；区别于详情页单对象 md-desc） */
+/* 不分页分组字段展示（列表六型之一 / 触屏 MP-012：多条记录按组，sheet safe + md-group-list 白卡浮灰） */
 .md-group-list {
   display: flex;
   flex-direction: column;
@@ -7125,8 +7125,8 @@ a.md-card {
   padding-left: 0;
   padding-right: 0;
 }
-/* 非分组表单页仍与列表共用左右安全距；输入右侧余量由字段本身承担 */
-.md-mobile-page:has(form):not(.md-form-page) .md-mobile-body {
+/* Legacy：body 直放 form 且无 sheet 时 body 承担 safe；有 sheet 时 safe 只在 sheet（列表搜索 form 在 toolbar 不算） */
+.md-mobile-page:has(> .md-mobile-body > form):not(.md-form-page) > .md-mobile-body:not(:has(> .md-mobile-sheet)) {
   padding-left: var(--md-safe-l);
   padding-right: var(--md-safe-r);
 }

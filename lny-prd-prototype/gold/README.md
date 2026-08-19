@@ -67,4 +67,4 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 - 重画已有页时删掉 Chip、面包屑、横卡、图标、弹窗套件、金样脚本
 - 从零手写一套比金样更瘦的布局
 - 用 `desktop-lists.html` 硬套工作台 / 树 / 设置 / 我的服务 / 向导 / 详情；用 `mobile-list.html` 硬套触屏树；用金刚或一排按钮冒充列表卡单行
-- 用 `md-group-list` 画单对象字段详情，或把详情字段签整页套成列表六型
+- 把 `desktop-detail` 字段签整页套成 MP-012；或把 MP-012 做成 flush 浅灰壳单对象 `md-module`

@@ -1,135 +1,110 @@
-<!-- LNY-PRD gold: 夹具：对标 mobile-fields.html。一条对象的字段名+字段值；禁止当图文、禁止当表单。 DOM：body > md-mobile-sheet--flush-x + md-detail-content。 -->
+﻿<!-- LNY-PRD gold: 夹具：对标 mobile-fields.html。一条对象的字段名+字段值；禁止当图文、禁止当表单。 DOM：body > md-mobile-sheet（默认 safe-x）+ md-group-list。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-<title>PAGE-MP-012 字段详情</title>
+<title>PAGE-MP-012 分组字段</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <link rel="stylesheet" href="./assets/mui-kit.css">
 </head>
 <body>
-  <div class="md-mobile-page md-mp md-standard md-detail-page">
+  <div class="md-mobile-page md-mp md-standard">
     <header class="md-appbar md-appbar--mobile">
       <a class="md-icon-btn" href="./PAGE-MP-002.html" aria-label="返回">
         <span class="md-icon" data-icon="chevron-left" aria-hidden="true"></span>
       </a>
-      <h1 class="md-appbar__title">订单详情</h1>
+      <h1 class="md-appbar__title">商品字段</h1>
     </header>
     <main class="md-mobile-body">
-      <div class="md-mobile-sheet md-mobile-sheet--flush-x md-detail-content">
-        <section class="md-module" data-section="概览">
-          <div class="md-detail-head">
-            <h1 class="md-detail-head__title">订单 OD-20240815-8821</h1>
-            <div class="md-detail-head__bar">
-              <span class="md-chip md-chip--success">已发货</span>
-            </div>
-            <p class="md-detail-head__lead">只读字段展示；多字段按组排列，不是图文详情，也不是可编辑表单。</p>
-          </div>
-        </section>
-
-        <section class="md-module" data-section="基本信息">
-          <div class="md-section-head">
-            <h2 class="md-section-head__title">基本信息</h2>
-          </div>
-          <dl class="md-desc">
-            <div class="md-desc__row">
-              <dt class="md-desc__label">订单编号</dt>
-              <dd class="md-desc__value">OD-20240815-8821</dd>
-            </div>
-            <div class="md-desc__row">
-              <dt class="md-desc__label">下单时间</dt>
-              <dd class="md-desc__value">2024-08-15 14:32</dd>
-            </div>
-            <div class="md-desc__row">
-              <dt class="md-desc__label">支付方式</dt>
-              <dd class="md-desc__value">微信支付</dd>
-            </div>
-            <div class="md-desc__row">
-              <dt class="md-desc__label">订单状态</dt>
-              <dd class="md-desc__value"><span class="md-chip md-chip--success">已发货</span></dd>
-            </div>
-            <div class="md-desc__row">
-              <dt class="md-desc__label">应付金额</dt>
-              <dd class="md-desc__value">¥58.70</dd>
-            </div>
-          </dl>
-        </section>
-
-        <section class="md-module" data-section="收货信息">
-          <div class="md-section-head">
-            <h2 class="md-section-head__title">收货信息</h2>
-          </div>
-          <dl class="md-desc">
-            <div class="md-desc__row">
-              <dt class="md-desc__label">收货人</dt>
-              <dd class="md-desc__value">李宁远</dd>
-            </div>
-            <div class="md-desc__row">
-              <dt class="md-desc__label">联系电话</dt>
-              <dd class="md-desc__value">138****8821</dd>
-            </div>
-            <div class="md-desc__row md-desc__row--stack">
-              <dt class="md-desc__label">收货地址</dt>
-              <dd class="md-desc__value">广东省深圳市南山区科技园南路 88 号鲜果直达仓 B1</dd>
-            </div>
-            <div class="md-desc__row">
-              <dt class="md-desc__label">期望送达</dt>
-              <dd class="md-desc__value">2024-08-16 上午</dd>
-            </div>
-          </dl>
-        </section>
-
-        <section class="md-module" data-section="商品明细">
-          <div class="md-section-head">
-            <h2 class="md-section-head__title">商品明细</h2>
-          </div>
-          <dl class="md-desc">
-            <div class="md-desc__row">
-              <dt class="md-desc__label">商品名称</dt>
-              <dd class="md-desc__value">有机草莓 250g</dd>
-            </div>
-            <div class="md-desc__row">
-              <dt class="md-desc__label">规格</dt>
-              <dd class="md-desc__value">250g / 盒</dd>
-            </div>
-            <div class="md-desc__row">
-              <dt class="md-desc__label">数量</dt>
-              <dd class="md-desc__value">2</dd>
-            </div>
-            <div class="md-desc__row">
-              <dt class="md-desc__label">单价</dt>
-              <dd class="md-desc__value">¥19.90</dd>
-            </div>
-            <div class="md-desc__row md-desc__row--stack">
-              <dt class="md-desc__label">备注</dt>
-              <dd class="md-desc__value">请放门口，勿按门铃。冷链优先，破损可拒收。</dd>
-            </div>
-          </dl>
-        </section>
-
-        <section class="md-module" data-section="物流信息">
-          <div class="md-section-head">
-            <h2 class="md-section-head__title">物流信息</h2>
-          </div>
-          <dl class="md-desc">
-            <div class="md-desc__row">
-              <dt class="md-desc__label">物流公司</dt>
-              <dd class="md-desc__value">顺丰冷运</dd>
-            </div>
-            <div class="md-desc__row">
-              <dt class="md-desc__label">运单号</dt>
-              <dd class="md-desc__value">SF1234567890</dd>
-            </div>
-            <div class="md-desc__row">
-              <dt class="md-desc__label">发货时间</dt>
-              <dd class="md-desc__value">2024-08-15 18:20</dd>
-            </div>
-            <div class="md-desc__row">
-              <dt class="md-desc__label">承运网点</dt>
-              <dd class="md-desc__value"></dd>
-            </div>
-          </dl>
-        </section>
+      <div class="md-mobile-sheet">
+        <div class="md-group-list" data-section="分组字段列表">
+          <section class="md-group-list__group">
+            <div class="md-group-list__head">水果</div>
+            <article class="md-group-list__item">
+              <dl class="md-desc">
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">商品名称</dt>
+                  <dd class="md-desc__value">有机草莓 250g</dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">售价</dt>
+                  <dd class="md-desc__value">¥19.90</dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">库存状态</dt>
+                  <dd class="md-desc__value"><span class="md-chip md-chip--success">有货</span></dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">上架日期</dt>
+                  <dd class="md-desc__value">2026-03-12</dd>
+                </div>
+              </dl>
+            </article>
+            <article class="md-group-list__item">
+              <dl class="md-desc">
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">商品名称</dt>
+                  <dd class="md-desc__value">赣南脐橙 5斤</dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">售价</dt>
+                  <dd class="md-desc__value">¥32.80</dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">库存状态</dt>
+                  <dd class="md-desc__value"><span class="md-chip">缺货</span></dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">上架日期</dt>
+                  <dd class="md-desc__value">2026-04-18</dd>
+                </div>
+              </dl>
+            </article>
+          </section>
+          <section class="md-group-list__group">
+            <div class="md-group-list__head">饮品</div>
+            <article class="md-group-list__item">
+              <dl class="md-desc">
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">商品名称</dt>
+                  <dd class="md-desc__value">云南小粒咖啡 227g</dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">售价</dt>
+                  <dd class="md-desc__value">¥29.90</dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">库存状态</dt>
+                  <dd class="md-desc__value"><span class="md-chip md-chip--success">有货</span></dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">上架日期</dt>
+                  <dd class="md-desc__value">2026-02-08</dd>
+                </div>
+              </dl>
+            </article>
+            <article class="md-group-list__item">
+              <dl class="md-desc">
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">商品名称</dt>
+                  <dd class="md-desc__value">青柠蜂蜜茶 500ml</dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">售价</dt>
+                  <dd class="md-desc__value">¥12.50</dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">库存状态</dt>
+                  <dd class="md-desc__value"><span class="md-chip md-chip--success">有货</span></dd>
+                </div>
+                <div class="md-desc__row">
+                  <dt class="md-desc__label">上架日期</dt>
+                  <dd class="md-desc__value">2026-01-20</dd>
+                </div>
+              </dl>
+            </article>
+          </section>
+        </div>
       </div>
     </main>
   </div>

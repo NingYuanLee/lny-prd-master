@@ -3146,7 +3146,7 @@ button.md-tree__item {
   overflow: auto;
 }
 
-/* 不分页分组字段展示（列表六型之一：多条记录；区别于详情页单对象 md-desc） */
+/* 不分页分组字段展示（列表六型之一 / 触屏 MP-012：多条记录按组，sheet safe + md-group-list 白卡浮灰） */
 .md-group-list {
   display: flex;
   flex-direction: column;

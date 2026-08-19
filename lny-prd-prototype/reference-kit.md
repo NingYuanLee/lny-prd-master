@@ -1030,38 +1030,42 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 
 禁止：内容区/模块再套 `md-card` 式圆角阴影；说明配图用列表 1:1/竖图；短句硬套首行缩进；大段正文漏写 `__body`；多项目硬塞成一段不缩进正文；图注左对齐当正文；详情规格表用 D1-1 冻结列表壳。
 
-### 字段详情：名称 + 值（可分组）
+### 不分页分组字段（MP-012 / AD-012）
 
-对照金样 `gold/mobile-fields.html` / `gold/desktop-detail.html` 字段签。**产品定性：列表族 · 无分页 · 单对象**（按字段行只读扫读，不是图文详情，不是横卡列表）。页根仍用 **`md-detail-page`**（浅灰 flush sheet + 白底分组）。适用于订单/工单/档案等 **一条对象** 的只读核对。**多条**记录的无分页字段展示走 `desktop-lists` 的 **不分页分组字段** / `md-group-list`，不要与单对象字段详情互套。
+对照金样 `gold/mobile-fields.html` / `gold/desktop-lists.html` 第三签 / 夹具 `PAGE-AD-012`。**产品定性：列表族 · 无分页 · 多条记录按组**（按组扫读字段名+值，不是图文详情，不是横卡列表）。触屏用 **默认 sheet（safe-x）** + **`md-group-list`**（白底组卡浮浅灰，与横卡列表同滚动壳）。桌面用 **`md-d1 md-d1--list`** + 同结构 `md-group-list`。`desktop-detail` 字段签仅作 **单组 `md-desc` 排版参考**，不是 MP-012 页型。
 
 | 层级 | 写法 | 规则 |
 |------|------|------|
-| 页壳 | 同详情页：`md-detail-page` + `md-detail-content` + `md-module` | 触屏用 **标准顶栏**（返回+标题），一般 **不要** 沉浸式 16:9；桌面面包屑 |
-| 概览（可选） | `md-detail-head` | 主标题 / 状态 Chip / 短说明；有次要操作放 `__actions` |
-| 分组 | 每组一个 `md-module` + `md-section-head` + `data-section` | 字段多才分组；组名进目录 |
-| 字段表 | `dl.md-desc` > `__row` > `__label` + `__value` | **左名右值**；空值显示「—」；状态可用 Chip |
-| 长文案 | `__row--stack` | 名在上、值在下（地址、备注等） |
-| 桌面多列 | `md-desc--cols-2` / `--cols-3` | 仅桌面；触屏强制单列。跨列长行加 `__row--span` |
+| 页壳 | 触屏：`md-standard` + `body` > `md-mobile-sheet`（默认 safe）；桌面：`md-d1 md-d1--list` + 面包屑 | **不要** `md-detail-page` / flush sheet；**不要** 搜索筛选工具栏 |
+| 列表 | `div.md-group-list` > `__group` > `__head` + 多条 `__item` | 组标题加粗；组间露灰；记录间浅线左右内缩 |
+| 字段表 | 每条 `__item` 内 `dl.md-desc` > `__row` > `__label` + `__value` | **左名右值**；空值「—」；状态可用 Chip |
+| 长文案 | `__row--stack` / `__row--span` | 名在上、值在下；桌面组内可加 `md-desc--cols-2` |
 
 ```html
-<section class="md-module" data-section="基本信息">
-  <div class="md-section-head">
-    <h2 class="md-section-head__title">基本信息</h2>
+<main class="md-mobile-body">
+  <div class="md-mobile-sheet">
+    <div class="md-group-list" data-section="分组字段列表">
+      <section class="md-group-list__group">
+        <div class="md-group-list__head">水果</div>
+        <article class="md-group-list__item">
+          <dl class="md-desc">
+            <div class="md-desc__row">
+              <dt class="md-desc__label">商品名称</dt>
+              <dd class="md-desc__value">有机草莓 250g</dd>
+            </div>
+          </dl>
+        </article>
+      </section>
+    </div>
   </div>
-  <dl class="md-desc"><!-- 桌面可加 md-desc--cols-2 -->
-    <div class="md-desc__row">
-      <dt class="md-desc__label">订单编号</dt>
-      <dd class="md-desc__value">OD-20240815-8821</dd>
-    </div>
-    <div class="md-desc__row md-desc__row--stack md-desc__row--span">
-      <dt class="md-desc__label">收货地址</dt>
-      <dd class="md-desc__value">……</dd>
-    </div>
-  </dl>
-</section>
+</main>
 ```
 
-禁止：把字段详情做成可编辑 `md-field` 表单；用 D1-1 表格壳硬套字段表；无分组却堆成一篇图文；桌面沉浸式叠层；用 `md-group-list` 冒充单对象字段详情。
+禁止：把分组字段做成可编辑 `md-field` 表单；用 D1-1 标准表壳硬套；无分组堆成一篇图文；触屏 flush 浅灰壳或 `md-detail-page`；用单对象 `md-module` 冒充 MP-012。
+
+### 单组字段排版（详情页内模块，非 MP-012）
+
+详情页 **模块内** 只读字段表（单组、可双列）见 `gold/desktop-detail.html` 字段签：`md-module` + `md-section-head` + `dl.md-desc`。适用于图文详情里的「基本信息」等分组，**不是**不分页分组字段列表页。
 
 ### 资料卡片 `md-profile`
 
@@ -1176,7 +1180,7 @@ D5 弹窗用 `md-dialog` + `md-backdrop`，打开后有遮罩淡入和面板缩�
 | 页面分栏 | `md-layout` `--full` / `--2col` / `--fix-left` / `--fix-right` / `--3col` / `--pin` + `__pane` / `__pane--span`。定宽栏 `--md-layout-aside`。**禁止**用 `md-d1__form` 冒充 |
 | 分栏 / 树 | `md-d1--split`；`md-split` `__side` `__main`；树 `md-tree` `__row` `__ops` `md-tree-bar`；拖到节点上/中/下；只读 `data-tree-edit="off"`；定位导航 `md-locator` `--cats` / `--outline`（`data-target`，滚正文高亮联动）；左大纲 `md-split--outline` + `data-outline-toggle`（收起变点线轨）；右悬浮 `md-locator-float`（收起同样点线轨） |
 | 表内嵌套树 | `md-table--nest` + `md-row--child` + `md-nest-toggle`（空按钮，CSS 画 +/−）；`data-row-id` / `data-parent`；子行 `.md-nest-name` 缩进 |
-| 分组字段列表 | `md-group-list` `__group` `__head` `__item` + `md-desc`；无分页；**多条记录**；组标题加粗坐白底卡；记录间浅线左右内缩、不贴边；字段行不再分割。单对象字段详情用 `md-module`+`md-desc`，见 `desktop-detail` 字段签 |
+| 分组字段列表 | `md-group-list` `__group` `__head` `__item` + `md-desc`；无分页；**多条记录**；组标题加粗坐白底卡；记录间浅线左右内缩、不贴边；字段行不再分割。MP-012 / AD-012 页型；触屏 sheet safe。单组排版见 `desktop-detail` 字段签 |
 | D1-2 表单栅格 | `md-d1__form`（默认双列，通栏 `width:100%`，`row-gap` 保留）；整页 `--cols-1/2/3/4`；块内 `md-form-block--cols-*`；字段 `--md-field-min`。弹窗 `md-dialog__form` 单列 |
 | 下拉组合框 | `md-combo` + `md-combo__trigger` / `__panel` / `__value`（hidden）；`data-search="1"` 模糊搜；`data-mode="multi"` 多选；`data-tree="leaf"` 叶节点单选；`data-tree="1"` 树多选。`ProtoPage.bindCombos` 自动绑 |
 | 设置分组 | `md-set-group` `__title` `md-set-row`（**设置项**：当页当行直接操作；左 `md-icon` 可有可无 + `__label`；右开关/值/本行菜单）；开关 `md-switch`（热区铺满，可点）；无极 `md-set-block` + `md-slider--fluid`；横向多选 `md-set-picks` / `md-set-pick`（`__face` 可为 `__label` 文字 / 图标 / `__media` 图片；图片竖版大图用 **`md-set-picks--media-9x16` + `__media--9x16`**；`__mark` 含 `__off`+`__on`，未选也显示空圈）；下拉 `md-set-row` + `data-menu` |

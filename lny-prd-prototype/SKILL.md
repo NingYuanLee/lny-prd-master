@@ -48,7 +48,7 @@ description: >-
 | PAGE-MP-001 首页 | `gold/mobile-grid.html` | L2【下沉首屏】页级 `md-hero`（与 body 同级）+ sheet；L3 `md-module`；`md-card--cover` + `md-card--tile`；`md-king`；TabBar |
 | PAGE-MP-002 商品列表 | `gold/mobile-list.html` | L1 固定 `md-appbar--center` + `md-list-toolbar`（body 外）；L2 只滚列表；`PT-MOBILE-LIST`；TabBar |
 | PAGE-MP-003 详情 | `gold/mobile-detail.html` | L3 **`md-appbar--overlay`** 滚变实底；`md-profile`；目录四项；右下目录+回顶 |
-| PAGE-MP-012 字段详情 | `gold/mobile-fields.html` | **列表族·无分页·单对象**；`md-detail-page` + flush sheet；标准顶栏；分组 `md-desc` 字段行；非图文、非横卡列表、非表单 |
+| PAGE-MP-012 分组字段 | `gold/mobile-fields.html` | **列表族·无分页·多条按组**；默认 sheet（safe）+ `md-group-list` 白卡浮灰；标准顶栏；= 桌面 lists 第三签；非图文、非横卡列表、非表单 |
 | PAGE-MP-004 表单（套件样例） | `gold/mobile-form.html` | **样例才整页铺齐**。`md-form-page` 浅灰底+白底 `md-module` 分组；返回顶栏；全部触屏表单控件；`md-action-bar` 贴底。业务表单按规格裁字段并同样分组。进度条见步骤向导 |
 | PAGE-MP-005 步骤向导 | `gold/mobile-wizard.html` | `md-form-page`；横向 `md-stepper`；分段 `md-advance md-advance--lg`；无极 `md-progress md-progress--lg`；当前步表单；`md-action-bar` 贴底，最后一步才提交 |
 | PAGE-MP-006 设置 | `gold/mobile-settings.html` | L6 **`md-appbar--cover`**；`md-set-page`；设置项/多选/图片单选等 |
@@ -66,7 +66,7 @@ description: >-
 | PAGE-AD-002 商品表单 | `gold/desktop-form.html` | `md-breadcrumb`；`md-field--sm`；栅格有行距。**按规格裁字段**；分栏布局勿用本表单；状态导览见 wizard / state-flow |
 | PAGE-AD-009 表单（套件样例） | `gold/desktop-form.html` | **样例才整页铺齐**。`--cols-1/2/3/4` + `md-combo` 七种下拉。**不要**加 `md-d1--list`，不要触屏 `data-wheel`，不要当页面左右分栏 |
 | PAGE-AD-008 详情 | `gold/desktop-detail.html` | 整页浅灰；白底区块；`md-profile`；灯箱分区；右下目录+回顶。图文签。不要沉浸式 |
-| PAGE-AD-012 字段详情 | `gold/desktop-detail.html` 字段签 | **列表族·无分页·单对象**；`md-desc` 字段行；桌面 `--cols-2` / `--span`。多条无分页 → `md-group-list`。非图文、非表单、非 D1-1 表壳 |
+| PAGE-AD-012 分组字段 | `gold/desktop-lists.html` 第三签 / 夹具 | **列表族·无分页·多条按组**；`md-d1--list` + `md-group-list`；桌面 `--cols-2` / `--span`。非图文、非表单、非 D1-1 标准表壳 |
 | PAGE-AD-003 向导 | `gold/desktop-wizard.html` + `gold/desktop-state-flow.html` | 状态导览族：`md-stepper` + `md-advance` +（可选）`md-progress`；当前步包在 `md-d1__form`；数字可点跳步 |
 | PAGE-AD-004 工作台 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
 | PAGE-AD-005 树+内容 | `gold/desktop-split.html` | 不分页维护树：`md-d1--split` + `md-tree` + `md-tree-bar`；增子/重命名/删除；拖到上/中/下。只读树与表内嵌套读 `desktop-lists.html`。**不是**分类钮 |

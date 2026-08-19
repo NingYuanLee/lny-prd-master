@@ -17,7 +17,7 @@ GOLD_DOM = {
     "mobile-grid.html": "DOM：md-hero 与 body 并列；body > md-mobile-sheet（默认 safe-x）。",
     "mobile-list.html": "DOM：md-list-toolbar 在 body 外；body > md-mobile-sheet（默认 safe-x）。",
     "mobile-detail.html": "DOM：body > md-mobile-sheet--flush-x + md-detail-content。",
-    "mobile-fields.html": "DOM：body > md-mobile-sheet--flush-x + md-detail-content。",
+    "mobile-fields.html": "DOM：body > md-mobile-sheet（默认 safe-x）+ md-group-list。",
     "mobile-form.html": "DOM：body > md-mobile-sheet（md-form-page 自动 lr0）。",
     "mobile-wizard.html": "DOM：body > md-mobile-sheet（md-form-page 自动 lr0）。",
     "mobile-settings.html": "DOM：body > md-mobile-sheet（md-set-page 自动 lr0）。",
