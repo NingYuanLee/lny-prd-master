@@ -2147,6 +2147,28 @@ body.md-lightbox-open { overflow: hidden; }
 .md-d1__page-size .md-field__label {
   --md-field-label-scale: 0.75;
   color: var(--md-text-secondary);
+  line-height: 1;
+  top: -7px;
+}
+/* 分页条「每页」下拉：与 md-page-btn 同高 28px；清零上下 padding，用 line-height 垂直居中 */
+.md-d1__pager .md-field--sm.md-field--select .md-select,
+.md-d1__pager .md-field--sm.md-field--select select {
+  box-sizing: border-box;
+  height: 28px;
+  min-height: 28px;
+  padding: 0 28px 0 8px;
+  line-height: 26px;
+  font-size: 0.8125rem;
+}
+.md-d1__pager .md-field--sm.md-field--select:focus-within .md-select,
+.md-d1__pager .md-field--sm.md-field--select:focus-within select {
+  padding: 0 27px 0 7px;
+  line-height: 24px;
+}
+.md-d1__pager .md-field--sm.md-field--select::after {
+  top: 50%;
+  right: 10px;
+  margin-top: -5px;
 }
 .md-d1__workspace {
   flex: 1;
@@ -2303,10 +2325,6 @@ body.md-lightbox-open { overflow: hidden; }
   padding-right: 2px;
 }
 .md-d1--list .md-d1__list .md-btn--sm { height: 26px; padding: 2px 6px; }
-.md-d1--list .md-d1__pager .md-field--sm .md-select,
-.md-d1--list .md-d1__pager .md-field--sm .md-field__input:not(textarea) {
-  height: 28px;
-}
 
 .md-mobile-page {
   position: relative;
