@@ -478,11 +478,13 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 **⑤ 父子章节列表** `md-chapter-list`（`PT-LOCATOR` 触屏专形；金样 `gold/mobile-chapter-list.html`；夹具 `PAGE-MP-015`）：每组 `__group` 含 `__head`（**toggle 展开/收起** + 父章 `__parent`）与 `__body`（子章 `__child`）。父章加粗，子章缩进+圆点。**不是**维护树、**不是**横卡、**不是** MP-013 split。可整页目录或模块内列表。
 
+**与 `md-tree` 何时用**：见 [`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md) **「树 vs 章节列表选型」**。一句话：**章/节/大纲导航** → `md-chapter-list`；**分类/组织/权限层级数据**（点节点换右区或维护）→ `md-tree`；**左分组右横卡滚联动** → `md-locator`。
+
 ```html
 <div class="md-chapter-list__group is-open">
   <div class="md-chapter-list__head">
     <button type="button" class="md-chapter-list__toggle md-icon-btn" aria-expanded="true" aria-label="收起子章节">
-      <span class="md-icon" data-icon="chevron-down"></span>
+      <span class="md-icon" data-icon="chevron-right"></span>
     </button>
     <a class="md-chapter-list__parent" href="#ch1">第一章 概述</a>
   </div>

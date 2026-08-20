@@ -65,7 +65,9 @@
 | 弹性列表卡 | `--cover` / `--tile` 可横可竖或 `--ratio-auto`；`--row` 左图仅 1:1 或竖图 / `md-stack`>`md-set-row` 单行独立有缝 |
 | 安全区 | 正文 `--md-safe-l/r` 左右 **12**；标准顶栏左右 4（不预留 96 胶囊空）；状态栏 28 贴上边框；底栏 48 贴下边框；overlay/cover 仍避让胶囊 |
 | 栅格 | 双列 `md-grid-2`（配 `--tile`）；金刚 4/5 列（见 **`PT-MOBILE-FUNC`**，4 个+说明→双卡勿机械 4 列） |
-| 树 + 内容 | `md-tree-page` + `md-split`；`md-tree` `__toggle` 展开收起，点节点只换右区 |
+| 树 + 内容 | `md-tree-page` + `md-split`；`md-tree` `__toggle` 展开收起，点节点只换右区 | 分类/组织/权限；**不是**章节目录 |
+| 章节目录 | 整页 `md-chapter-list`；父章 toggle 收起子章；可跳转/滚锚点 | `md-chapter-list`；金样 `mobile-chapter-list`；**不是** `md-tree` |
+| 分类导航 | `md-locator-page` + split；左一级分组右横卡；滚联动 | PAGE-MP-013；**不是**树、**不是** chapter-list |
 | 时间轴 | `md-timeline`；左竖轨 `__rail`，右 **横卡文本** `md-card--row`（无左图，正文可 `__photos`） |
 | 模块间距 | L3 包 `md-module`；父级 `--md-module-gap`（16px）。**滚动容器**统一基础 padding/背景（见 `reference-kit` §滚动容器底与边）；`md-king--pair` 等 seam 边 `padding:0` |
 

@@ -38,6 +38,8 @@ description: >-
 
 先 Read [`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)。本步只维护金样类名、视觉密度和 HTML 行为；下方速查表只保留 ⑥ 的专属落地规则。
 
+**树 vs 章节列表**：写 HTML 前若页含可展开层级列表，先读 master **「树 vs 章节列表选型」**——分类/组织 → `md-tree`（MP-008）；章节目录 → `md-chapter-list`（MP-015）；左分组右横卡滚联动 → `md-locator`（MP-013）。三者禁止混用。
+
 ## 金样速查（写 HTML 前扫一眼）
 
 金样用来**快速对标视觉下限**（密度、比例、类名），不是业务功能清单。按**页类型**对照金样，不要按 PAGE 序号左右对齐；再按本页规格换文案、跳转和控件，并落地舒适默认与 [`reference-mobile-design.md`](reference-mobile-design.md) **审美必做**。类名细则见 [`reference-kit.md`](reference-kit.md)，本步不依赖仓库示例。

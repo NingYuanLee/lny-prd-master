@@ -120,6 +120,8 @@
 
 ② 点名用哪一种大纲，并写清：点选后是 **定位滚动** 还是 **替换右区数据**。定位滚动时滚正文，大纲当前章高亮跟着走。详情页右下「目录」同属定位族（`data-section`），不是常驻悬浮大纲。桌面时间轴 **不是** 本族分栏，见 `desktop-timeline.html`（通栏竖轨右**横卡文本**，无左图，正文可内嵌多小图）。
 
+触屏 **章节目录整页** 用 `md-chapter-list`（`mobile-chapter-list` / PAGE-MP-015），**不是** `md-tree`；与分类树、分类导航的选型对照见 [`reference-page-types.md`](../lny-prd-master/reference-page-types.md) **「树 vs 章节列表选型」**。
+
 ### 5.2 树（维护 / 只读列表 / 表内嵌套）
 
 | 型 | 说明 | ⑥ |

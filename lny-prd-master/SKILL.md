@@ -232,7 +232,7 @@ description: >-
 
 - 立项 YAML 与 `main_spec.md` 模板：[`reference-init.md`](reference-init.md)
 - 框架排除：[`framework-exclusions.md`](framework-exclusions.md)
-- ②⑤⑥ 共用页型职责与金样映射：[`reference-page-types.md`](reference-page-types.md)
+- ②⑤⑥ 共用页型职责与金样映射：[`reference-page-types.md`](reference-page-types.md)（含 **「树 vs 章节列表选型」**）
 - `api_spec.md` → `lny-prd-api/reference.md`
 - `ui_manifest.md` → `lny-prd-ui/reference.md`
 - `feature_spec.md` → `lny-prd-feature/reference.md`

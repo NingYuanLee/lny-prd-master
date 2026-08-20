@@ -451,7 +451,7 @@ PM 明确要求「用户可见区块标题 = XXX」时，② 须在 L4 或 §2.3
 | 工作台 / 仪表盘 | D1-3 | 指标卡 3～4 张一排；趋势用 `md-chart-ph`；下面短表或待办。金样 `gold/desktop-dashboard.html` |
 | 页面分栏 | D1-3 | 通栏/均分双列/左定右填/左填右定/三列/品字；金样 `gold/desktop-layout.html`；夹具 `PAGE-AD-014`。**禁止**用 `md-d1__form` 窄双列冒充 |
 | 树 + 内容 | 触屏左树右内容 / D1-3 | **不分页维护树**；桌面含总控与节点维护、拖到上/中/下。金样 `gold/mobile-tree.html` / `gold/desktop-split.html`；桌面夹具 `PAGE-AD-005`。只读树与表内嵌套见 `desktop-lists.html` |
-| 定位导航 | D1-3 / L0 split | 分类按钮 / 章节大纲：点选定位锚点；滚内容区时大纲当前章高亮联动。桌面大纲两种：左可收成点线轨、右悬浮收起同样变点线轨（`desktop-locator` / `PAGE-AD-013`）。触屏 **MP-013 分类导航** 为左一级分组 + 右分组横卡，亦属本族。**触屏父子章节列表** 用 `md-chapter-list`（父章 **toggle 可收起**子章，金样 `mobile-chapter-list.html`、夹具 `PAGE-MP-015`）。**与树分离**（MP-008 为左多级树右图文，不滚动联动） |
+| 定位导航 | D1-3 / L0 split | 分类按钮 / 章节大纲：点选定位锚点；滚内容区时大纲当前章高亮联动。桌面大纲两种：左可收成点线轨、右悬浮收起同样变点线轨（`desktop-locator` / `PAGE-AD-013`）。触屏 **MP-013 分类导航** 为左一级分组 + 右分组横卡，亦属本族。**触屏父子章节列表** 用 `md-chapter-list`（父章 **toggle 可收起**子章，金样 `mobile-chapter-list.html`、夹具 `PAGE-MP-015`）。**与树分离**（MP-008 为左多级树右图文，不滚动联动）。**选型对照**见 [`reference-page-types.md`](../lny-prd-master/reference-page-types.md) **「树 vs 章节列表选型」** |
 | 设置 | 移动分组列表 / D1-2 分组 | **功能服务 · 设置项**：同 `md-set-group` 通栏；页根 **`md-set-page`**（浅灰底、组间距漏底）；成组有限；左图标可有可无；**在当前行直接操作**（开关 / 无极 / 横向勾选 / 本行下拉改值），不是拿整行当跳转入口。金样 `gold/mobile-settings.html` / `gold/desktop-settings.html` |
 | 我的 / 服务 | 移动分组列表 / D1-2 分组 | **功能服务 · 入口**：按 **`PT-MOBILE-FUNC`** 选型（通栏、一行两个、宫格、双卡、宫格+双卡；**不限首页**）。**只跳转或打开半屏/弹窗**。金样 `gold/mobile-menu.html` / `gold/desktop-menu.html`；宫格合览 `gold/mobile-grid.html`。禁止按钮堆 |
 | 向导 / 状态导览 | 表单 + **一种**状态导览（见 `PT-STATE-FLOW`） | **步骤区必填**三选一点名 + 共 N 步。**仅数字步骤可点跳步**；分段/无极**只展示**、靠上一步/下一步。当前步清晰，最后一步才提交。金样 `gold/mobile-wizard.html` / `gold/desktop-wizard.html`（**勿**搬 `desktop-state-flow` / 金样签切换合览） |

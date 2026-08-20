@@ -21,6 +21,8 @@ description: >-
 
 先 Read [`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)。本步只维护 ASCII 分区顺序和单页 PRD 表达；下方速查表只保留 ⑤ 的专属措辞。
 
+**树 vs 章节列表**：ASCII 与「结构与控件」须跟 master 选型一致——章节目录写 `md-chapter-list`（PAGE-MP-015）；分类树写左树右内容（PAGE-MP-008）；左分组右横卡写 `md-locator`（PAGE-MP-013）。禁止三者混名。
+
 ## 页型速查（写单页前扫一眼）
 
 线框 **只定分区顺序**；顺序以 `ui/PAGE` §2.3 与下表为准，⑥ 视觉以 `gold/` 为准（对标下限，禁止照搬演示功能，也禁止忽略金样）。体验细则见 `lny-prd-ui` **§1.3.3 / §1.4.3**。本步不依赖仓库示例。

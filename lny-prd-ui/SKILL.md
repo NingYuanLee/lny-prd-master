@@ -33,6 +33,8 @@ description: >-
 
 先 Read [`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)。本步只维护体验与结构决策；下方速查表只补充 ② 的专属写法，不再复制通用页型和金样边界。
 
+**树 vs 章节列表**：规格写「目录/大纲/章节」→ **`md-chapter-list`**（触屏整页，PAGE-MP-015）；写「分类/组织/权限树」→ **`md-tree`**（MP-008 / AD-005）；左分组右横卡滚联动 → **`md-locator`**（MP-013）。详见 master **「树 vs 章节列表选型」**。
+
 ## 页型速查（写 PAGE 前扫一眼）
 
 用户**不必**自备设计规范：未另给时一律采用 [`reference.md`](reference.md) **§1.7.0 默认体验规范**。同类页按表落盘，然后 **§2.3 必须再写舒适默认**，禁止只抄控件名交差。细则 **§1.3.3 / §1.3.4 / §1.4.3 / §1.7**；**移动端滚动区选型**（列表型 vs 浅灰壳、何时改页型）见 [`reference.md` §1.3.4「滚动区页型选型」](reference.md)；视觉边界以共享页型映射与 `lny-prd-prototype/gold/` 为准，不依赖仓库示例。
