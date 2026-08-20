@@ -3378,6 +3378,12 @@ button.md-tree__item {
   margin-left: 4px;
   color: var(--md-text-secondary);
 }
+.md-chapter-list__toggle .md-icon {
+  transition: transform 150ms var(--md-ease);
+}
+.md-chapter-list__group.is-open > .md-chapter-list__head > .md-chapter-list__toggle .md-icon {
+  transform: rotate(90deg);
+}
 .md-chapter-list__parent,
 .md-chapter-list__child {
   display: flex;

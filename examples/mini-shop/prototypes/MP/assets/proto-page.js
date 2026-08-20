@@ -1631,19 +1631,12 @@
         var open = group.classList.contains("is-open");
         toggle.setAttribute("aria-expanded", open ? "true" : "false");
         toggle.setAttribute("aria-label", open ? "收起子章节" : "展开子章节");
-        var icon = toggle.querySelector(".md-icon");
-        if (icon) icon.setAttribute("data-icon", open ? "chevron-down" : "chevron-right");
         toggle.addEventListener("click", function (ev) {
           ev.preventDefault();
           ev.stopPropagation();
           open = group.classList.toggle("is-open");
           toggle.setAttribute("aria-expanded", open ? "true" : "false");
           toggle.setAttribute("aria-label", open ? "收起子章节" : "展开子章节");
-          icon = toggle.querySelector(".md-icon");
-          if (icon) {
-            icon.setAttribute("data-icon", open ? "chevron-down" : "chevron-right");
-            if (global.ProtoIcons && global.ProtoIcons.mount) global.ProtoIcons.mount(toggle);
-          }
         });
       });
     });
