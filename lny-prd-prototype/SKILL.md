@@ -57,7 +57,8 @@ description: >-
 | PAGE-MP-007 按钮（套件样例） | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、**浅底 `--soft`**、文字、**`--link`**、**通栏 `--block` / `md-btn-row`**、置灰、`md-badge`；贴底仅一钮自动占满。禁止当业务首页。禁止裸 `<button>` |
 | PAGE-MP-011 悬浮胶囊（套件样例） | `gold/mobile-pod.html` | L4 无顶栏 + **`md-pod--tl`**；`PT-FLOAT`；与页内顶栏互斥 |
 | PAGE-MP-008 分类树 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左多级树右 **图文介绍**（`md-cat-intro`）；浏览用 `data-tree-edit="off"`；点节点只换右区。桌面维护树见 `desktop-split` |
-| PAGE-MP-013 分类导航 | `gold/mobile-locator.html` | `md-locator-page`；左一级 `md-locator--outline`；右分组 **横卡列表**；点选滚锚点 + 滚正文高亮联动（对标 `desktop-locator` 左栏）。**不是**树 |
+| PAGE-MP-013 分类导航 | `gold/mobile-locator.html` | `md-locator-page`；左一级 `md-locator--outline`（子章 `__item--l2`）；右分组 **横卡列表**；点选滚锚点 + 滚正文高亮联动（对标 `desktop-locator` 左栏）。**不是**树 |
+| 触屏父子章节列表 | `gold/mobile-chapter-list.html` | `md-chapter-list` + `__group` + `__parent`/`__child`；父章加粗、子章缩进；**不是**树、**不是**横卡 |
 | PAGE-MP-014 订单列表 | `gold/mobile-order-list.html` | L1 **返回+搜索**顶栏 + **下划线页签+筛选**（toolbar 在 body 外）；`md-card--order` 推广条/店头/商品行价量/实付款/浅底操作；查看物流 → PAGE-MP-009 |
 | PAGE-MP-009 物流时间轴 | `gold/mobile-timeline.html` | `md-timeline--static` 只读；**仅已发生节点**；倒序；`is-active` 当前高亮、`is-path` 途经、`is-origin` 起点空心；竖轨全程主色；右 **横卡文本**（无左图，正文可 `__photos`） |
 

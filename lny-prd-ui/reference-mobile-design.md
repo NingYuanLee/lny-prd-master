@@ -37,7 +37,7 @@
 | 颜色 | 「主操作强调；错误价/危险红；次要灰字」 | `--md-primary` / `--md-error` / `--md-text-secondary` 等 |
 | 字体 | 「标题强于副文；元信息最小可读」 | `.md-h*` / `__title` / `__subtitle` / `__meta` |
 | 图标 | 「与文案同组；元信息用小图标」 | `data-icon`；闭集见 `reference-icons` |
-| 间距圆角 | 「区块有呼吸；卡片勿厚重浮块」 | `--md-space: 8px` 倍数；触屏卡 12px 圆角 |
+| 列表卡高度 | 「横卡/封面/双列/订单卡随内容增高，不定 min-height」 | 套件已去掉触屏卡片 min-height；左图仍 96×96 双锁 |
 | 图片 | 「列表区点名形态；叠字/瓷砖可横可竖或定宽随图；横卡左图 1:1 或竖图；详情主图 16:9；详情图、横卡多行图、上传缩略默认可点预览」 | `--cover` / `--tile`（`--ratio-*` / `--ratio-auto`）/ `--row`（左图 `--ratio-1x1` / `--ratio-3x4` / `--ratio-2x3`）/ `md-set-row`；`md-swiper--wide`；详情页根 `data-lightbox`；上传 `md-upload` / `md-upload-grid` |
 
 列表区的横卡多行/单行选择、字段层级和操作位置直接遵守共享页型规则 `PT-MOBILE-LIST`；本文件只补封面叠字、双列和轻阴影等移动视觉原则。功能区形态选型遵守共享 **`PT-MOBILE-FUNC`**（详表 `lny-prd-ui` **§1.3.6**）：成组、每组入口有限；宫格/双卡/通栏/一行两个/**宫格+双卡**；**不限首页**；**无列表时倾向双卡填实**。**设置项**＝当页当行直接操作；**功能入口**＝只跳转或开半屏/弹窗（同壳不同行为）。详见 prototype `reference-kit`。
@@ -50,6 +50,7 @@
 |------|----------|----------------|
 | 基础 | 按钮主/次/线框/浅底/文字/纯链接、通栏整行、输入、列表区 | `md-btn` + `--contained`/`--outlined`/`--soft`/`--text`/`--link`（纯文字字色须区别紧邻正文）；**一行一主钮**用 `--block` 或 `md-btn-row`；贴底/半屏仅一钮自动占满；`md-field`；`md-card--cover` / `--tile` / `--row`；列表单行 `md-stack`>`md-set-row`（独立有缝）。禁止裸 `<button>` 带浏览器皮肤 |
 | 表单 | 开关、单选多选、下拉、轮盘；页根 `md-form-page`（浅灰底+白底分组） | `md-form-page` + `md-module` 分组；`md-switch` `md-check` `md-radio` `md-select` `data-wheel` |
+| 章节列表 / 父子章节 | 触屏 `md-chapter-list`；桌面大纲 `md-locator--outline` | `md-chapter-list` `md-locator`；金样 `mobile-chapter-list` / `desktop-locator` |
 | 反馈 | 对话框、Toast、骨架、空态 | `md-dialog` `snackbar` `md-skeleton` `md-empty` |
 | 展示 | 标签（含卡片角标）、头像/缩略、轮播、进步/进度、时间轴 | `md-chip` `md-card__tag`；`md-swiper` `md-advance` `md-progress` `md-timeline` |
 | 功能区 | 宫格、双卡、通栏、一行两个、宫格+双卡 | 按 **`PT-MOBILE-FUNC`** / `md-king` / `md-king--pair` / `md-set-group`>`md-set-row` / `md-set-pair`；**平铺、无圆角阴影卡片壳**；触屏跟正文同左右安全距。金样 `mobile-grid`（合览）、`mobile-menu`（通栏） |

@@ -6,7 +6,7 @@
 
 **按页类型打开金样，不要按 PAGE 序号左右对齐**：`PAGE-MP-003` 是详情（`mobile-detail`），`PAGE-AD-003` 是向导（`desktop-wizard`）。完整编号、金样文件与夹具 PAGE 对照见 [`lny-prd-master/reference-page-types.md`](../../lny-prd-master/reference-page-types.md)「mini-shop 夹具 · 金样 · 套件对照」。套件样例夹具可整页对标金样；业务夹具按规格裁（桌面列表夹具含筛+功能栏，金样六型只对标列表区）。
 
-**库存**：触屏金样 **14** 个 `mobile-*.html`；桌面金样 **14** 个 `desktop-*.html`（含 `desktop-state-flow.html` 合览，无独立夹具）；mini-shop 各端夹具各 **14** 页；套件源 `kit/mui-kit.css` 等经 `copy-kit.py` 同步到 `gold/assets/` 与各端 `prototypes/*/assets/`。
+**库存**：触屏金样 **15** 个 `mobile-*.html`；桌面金样 **14** 个 `desktop-*.html`（含 `desktop-state-flow.html` 合览，无独立夹具）；mini-shop 各端夹具各 **14** 页；套件源 `kit/mui-kit.css` 等经 `copy-kit.py` 同步到 `gold/assets/` 与各端 `prototypes/*/assets/`。
 
 禁止两个极端：
 
@@ -49,6 +49,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 桌面悬浮按钮 | `desktop-pod.html`（语义按共享 `PT-FLOAT`，实现用 `md-pod--desk` / `md-pod--fold`） |
 | 移动分类树 | `mobile-tree.html`（`md-tree-page`；左多级树右 **图文介绍** `md-cat-intro`；点节点换右区） |
 | 移动分类导航 | `mobile-locator.html`（`md-locator-page`；左一级分组右 **分组横卡**；滚动联动；对标 desktop-locator 左栏） |
+| 移动父子章节列表 | `mobile-chapter-list.html`（`md-chapter-list`；父章+缩进子章；不是树、不是横卡） |
 | 移动树 + 内容（历史名） | 已拆为 `mobile-tree`（图文）与 `mobile-locator`（横卡导航）；勿混写 |
 | 其它桌面页 | 先按上表选最接近的金样；对不上再读 `desktop-lists.html` **只借控件**，禁止整页套成商品表 |
 | 其它移动页 | 先按上表选最接近的金样（设置/我的/向导/时间轴/树/详情/字段列表各有专页）；对不上再读 `mobile-list.html` **只借列表卡**，禁止整页套成商品列表 |

@@ -396,7 +396,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 ### 触屏列表区
 
-同一模块只选一种（分区可各自点名）。规格有字段才写对应节点，禁止为好看编造业务字段。单行/多行选择直接执行共享 `PT-MOBILE-LIST`；该规则命中“字段少但值长”的多行分支时加 `md-card--long`，标题/摘要字号略大且高度随内容，不定 `min-height`。
+同一模块只选一种（分区可各自点名）。规格有字段才写对应节点，禁止为好看编造业务字段。单行/多行选择直接执行共享 `PT-MOBILE-LIST`；该规则命中“字段少但值长”的多行分支时加 `md-card--long`，标题/摘要字号略大。**触屏列表卡高度随内容**，禁止给卡片或 `__body` 设 `min-height`（左图/图标位仍固定尺寸）。
 
 **① 封面叠字** `md-card--cover`：一行一列大图，单行标题悬图片底部。图 **可横可竖**，或 **定宽、高度随图**（`--ratio-auto`，须内嵌 `<img>`）。套件默认 **16:9**；点名 `--ratio-16x9` / `--ratio-2x1` / `--ratio-4x3` / `--ratio-3x4` / `--ratio-2x3` / `--ratio-1x1`；`--h-sm/md/lg` 固定高度。
 
@@ -474,7 +474,19 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 </article>
 ```
 
-**④ 横卡单行**（列表区内容行）`md-set-row`：定高、不换行；左图标→标题；右说明/计数/小标签。最多 3 个**短**字段；**任一字段值很长（单行放不下）改走横卡多行 + `md-card--long`**。**每行独立纸面，上下有缝**（放进 `md-stack`，**不要**包进 `md-set-group`）。列表区与功能区的差别：**列表非分组**，条目可无限（即便分页加载，叠在一起也看不出页边界）；**功能成组**，每组入口有限。视觉上：通栏挤在一组纸面里、行间只有分割线；列表单行各自独立有缝。列表卡（封面/双列/横卡多行/单行）统一用 **轻阴影** `--md-shadow-surface`。**功能区**（通栏 / 一行两个 / 金刚）与 **页内签**：**不要**圆角阴影卡片壳（平铺即可）。**不要**用 `md-set-pair` 冒充列表。
+**④ 横卡单行**（列表区内容行）`md-set-row`：定高、不换行；左图标→标题；右说明/计数/小标签。最多 3 个**短**字段；**任一字段值很长（单行放不下）改走横卡多行 + `md-card--long`**。**每行独立纸面，上下有缝**（放进 `md-stack`，**不要**包进 `md-set-group`）。列表区与功能区的差别：**列表非分组**，条目可无限（即便分页加载，叠在一起也看不出页边界）；**功能成组**，每组入口有限。视觉上：通栏挤在一组纸面里、行间只有分割线；列表单行各自独立有缝。列表卡（封面/双列/横卡多行/单行/订单）统一用 **轻阴影** `--md-shadow-surface`；**高度随内容**，禁止 `min-height`。**功能区**（通栏 / 一行两个 / 金刚）与 **页内签**：**不要**圆角阴影卡片壳（平铺即可）。**不要**用 `md-set-pair` 冒充列表。
+
+**⑤ 父子章节列表** `md-chapter-list`（`PT-LOCATOR` 触屏专形；金样 `gold/mobile-chapter-list.html`）：父章 `__parent` 加粗、子章 `__child` 左缩进+圆点；按 `__group` 分组成片白卡。**不是**树展开收起、**不是**横卡、**不是** MP-013 左栏 split。可整页目录，也可模块内列表；点条目跳转或滚锚点。split 左栏大纲子项仍用 `md-locator__item--l2`（对标桌面 outline）。
+
+```html
+<nav class="md-chapter-list" aria-label="章节目录">
+  <div class="md-chapter-list__group">
+    <a class="md-chapter-list__parent" href="#ch1">第一章 概述</a>
+    <a class="md-chapter-list__child" href="#ch1-1">1.1 背景</a>
+    <a class="md-chapter-list__child" href="#ch1-2">1.2 目标</a>
+  </div>
+</nav>
+```
 
 ```html
 <div class="md-stack">
@@ -985,7 +997,7 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | 页面分栏 | `md-layout--full/2col/fix-left/fix-right/3col/pin`；定宽栏 `--md-layout-aside` | 用 `md-d1__form` 当页面布局 |
 | 进步条 / 进度条 / 页签 | 同属状态导览：`md-tabs` / `md-stepper` / `md-advance` / `md-progress` | 用无极冒充分段；把签与进步条写成互不相关两套 |
 | 步骤向导 | 数字 `md-stepper` **或** 分段 `md-advance` **或** 无极 `md-progress`（三选一，禁止同页叠加）；**仅 stepper 可点跳步** | 同页叠 stepper + advance；advance/progress 可点切换 |
-| 定位导航 | `md-locator` `--cats` / `--outline`；左栏 `md-split--outline` 可收缩为点线轨；右悬浮 `md-locator-float` 收起同样变点线轨；滚正文时当前章 `is-active` 联动 | 用 `md-tree` 冒充分类钮；用分类冒充可展开树；把时间轴做成大纲分栏 |
+| 定位导航 | `md-locator` `--cats` / `--outline`；`md-locator__item--l2` 子章缩进；触屏整页 **`md-chapter-list`**（`__parent`/`__child`/`__group`）；左栏 `md-split--outline` 可收缩为点线轨；右悬浮 `md-locator-float` 收起同样变点线轨；滚正文时当前章 `is-active` 联动 | 用 `md-tree` 冒充分类钮；用分类冒充可展开树；章节列表画成横卡或树 |
 | 树 | 不分页 `md-tree` + `__item` `__toggle` `__label`；总控 `md-tree-bar`（左 **根节点**、右 **展开/收起切换** `data-tree-act="toggle-all"`，`unfold`/`fold` 随态）；节点 `__ops`（增子/重命名/删除）；拖放 `上/中/下`；表内 `md-table--nest`。只读 `data-tree-edit="off"`；末级禁增 `data-leaf` / `data-leaf-add="off"` | 无类名嵌套 `ul`；用分类定位冒充树；触屏用列表硬套分类树 |
 | 步骤条 | `md-stepper` + `md-step`；已完成 `is-done`；当前 `is-active`。**唯一可点跳步**的向导导航（`proto-page.js` 自动绑）；自管步进写 `data-wizard="off"`。**不与 `md-advance` 同页** | 纯数字列表；与分段进步条同屏叠加 |
 | 进步条 | `md-advance` + `__head` + `__track` + `__seg` + `__bar`；`data-segments`；触屏可 `--lg`；向导时 **只展示**（`data-wizard-host`）。**不与 `md-stepper` 同页** | 用无极 `md-progress` 冒充分步；段可点跳步 |
@@ -1244,7 +1256,7 @@ D5 弹窗用 `md-dialog` + **`md-backdrop`（半透明黑、全屏、`z-index` �
 | 底半屏三级 | `data-wheel="date"` / `data-wheel="region"` / `data-wheel="daterange"` |
 | 空态 | `md-empty md-empty--illus` + `__art` `__title` `__text` |
 | 骨架 | `md-skeleton` `--text/--title/--media/--row`；`md-skel-host` |
-| 步骤/树/图 | `md-stepper` `md-step` `md-tree` `md-chart-ph` `md-stat-grid` `md-stat-card` |
+| 步骤/树/图/章节 | `md-stepper` `md-step` `md-tree` `md-chapter-list` `md-chart-ph` `md-stat-grid` `md-stat-card` |
 | 时间轴 | `md-timeline` `__item` `__rail` `__node` `__line` `__body`；右 **横卡文本** `md-card--row`（无左图，正文可 `__photos`）；`is-done` / `is-active` |
 | 进步条 | `md-advance` `__label` `__value` `__track` `__seg` `__bar`；`data-segments`；`--lg`；`ProtoPage.setAdvance` |
 | 进度条 | `md-progress` `__label` `__value` `__track` `__bar`；`--lg`；`--indeterminate`；`ProtoPage.setProgress` |
