@@ -1,32 +1,34 @@
-<!-- LNY-PRD gold: 金样：触屏父子章节列表。父章可展开/收起子章；可跳转或滚锚点；不是维护树、不是横卡。写章节目录/大纲列表前必 Read。 DOM：sheet safe-x + md-chapter-list。 -->
+<!-- LNY-PRD gold: 夹具：对标 mobile-chapter-list.html。套件·章节目录；父章可展开/收起子章。禁止当树维护、禁止当横卡。 DOM：body > md-mobile-sheet（默认 safe-x）+ md-chapter-list。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <title>触屏父子章节列表</title>
+<title>PAGE-MP-015 章节目录</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <link rel="stylesheet" href="./assets/mui-kit.css">
 </head>
 <body>
   <div class="md-mobile-page md-mp md-standard">
     <header class="md-appbar md-appbar--mobile">
-      <a class="md-icon-btn" href="#" aria-label="返回"><span class="md-icon" data-icon="chevron-left"></span></a>
-      <h1 class="md-appbar__title">课程目录</h1>
+      <a class="md-icon-btn" href="./PAGE-MP-010.html" aria-label="返回">
+        <span class="md-icon" data-icon="chevron-left" aria-hidden="true"></span>
+      </a>
+      <h1 class="md-appbar__title">章节目录</h1>
     </header>
     <main class="md-mobile-body">
       <div class="md-mobile-sheet">
         <section class="md-module">
-          <nav class="md-chapter-list" aria-label="章节目录">
+          <nav class="md-chapter-list" aria-label="章节目录" data-section="章节目录">
             <div class="md-chapter-list__group is-open">
               <div class="md-chapter-list__head">
                 <button type="button" class="md-chapter-list__toggle md-icon-btn" aria-expanded="true" aria-label="收起子章节">
                   <span class="md-icon" data-icon="chevron-down"></span>
                 </button>
-                <a class="md-chapter-list__parent is-active" href="#ch1">第一章 产品概览</a>
+                <a class="md-chapter-list__parent is-active" href="#ch1">第一章 选购指南</a>
               </div>
               <div class="md-chapter-list__body">
-                <a class="md-chapter-list__child is-active" href="#ch1-1">1.1 背景与目标</a>
-                <a class="md-chapter-list__child" href="#ch1-2">1.2 适用人群</a>
+                <a class="md-chapter-list__child is-active" href="#ch1-1">1.1 如何挑选新鲜水果</a>
+                <a class="md-chapter-list__child" href="#ch1-2">1.2 冷链与保存</a>
               </div>
             </div>
             <div class="md-chapter-list__group is-open">
@@ -34,12 +36,11 @@
                 <button type="button" class="md-chapter-list__toggle md-icon-btn" aria-expanded="true" aria-label="收起子章节">
                   <span class="md-icon" data-icon="chevron-down"></span>
                 </button>
-                <a class="md-chapter-list__parent" href="#ch2">第二章 功能说明</a>
+                <a class="md-chapter-list__parent" href="#ch2">第二章 下单与售后</a>
               </div>
               <div class="md-chapter-list__body">
-                <a class="md-chapter-list__child" href="#ch2-1">2.1 列表与筛选</a>
-                <a class="md-chapter-list__child" href="#ch2-2">2.2 表单与提交</a>
-                <a class="md-chapter-list__child" href="#ch2-3">2.3 半屏与弹窗</a>
+                <a class="md-chapter-list__child" href="#ch2-1">2.1 下单流程</a>
+                <a class="md-chapter-list__child" href="#ch2-2">2.2 退换货规则</a>
               </div>
             </div>
             <div class="md-chapter-list__group">
@@ -47,10 +48,10 @@
                 <button type="button" class="md-chapter-list__toggle md-icon-btn" aria-expanded="false" aria-label="展开子章节">
                   <span class="md-icon" data-icon="chevron-right"></span>
                 </button>
-                <a class="md-chapter-list__parent" href="#ch3">第三章 常见问题</a>
+                <a class="md-chapter-list__parent" href="#ch3">第三章 会员权益</a>
               </div>
               <div class="md-chapter-list__body">
-                <a class="md-chapter-list__child" href="#ch3-1">3.1 账号与权限</a>
+                <a class="md-chapter-list__child" href="#ch3-1">3.1 积分与等级</a>
               </div>
             </div>
           </nav>

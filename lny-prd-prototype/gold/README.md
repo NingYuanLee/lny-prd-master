@@ -49,7 +49,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 桌面悬浮按钮 | `desktop-pod.html`（语义按共享 `PT-FLOAT`，实现用 `md-pod--desk` / `md-pod--fold`） |
 | 移动分类树 | `mobile-tree.html`（`md-tree-page`；左多级树右 **图文介绍** `md-cat-intro`；点节点换右区） |
 | 移动分类导航 | `mobile-locator.html`（`md-locator-page`；左一级分组右 **分组横卡**；滚动联动；对标 desktop-locator 左栏） |
-| 移动父子章节列表 | `mobile-chapter-list.html`（`md-chapter-list`；父章+缩进子章；不是树、不是横卡） |
+| 移动父子章节列表 | `mobile-chapter-list.html`（`md-chapter-list`；父章 toggle **可收起**子章；夹具 `PAGE-MP-015`；整页可无 `md-section-head`） |
 | 移动树 + 内容（历史名） | 已拆为 `mobile-tree`（图文）与 `mobile-locator`（横卡导航）；勿混写 |
 | 其它桌面页 | 先按上表选最接近的金样；对不上再读 `desktop-lists.html` **只借控件**，禁止整页套成商品表 |
 | 其它移动页 | 先按上表选最接近的金样（设置/我的/向导/时间轴/树/详情/字段列表各有专页）；对不上再读 `mobile-list.html` **只借列表卡**，禁止整页套成商品列表 |

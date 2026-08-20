@@ -307,6 +307,7 @@ def check_html(path: Path, page_id: str, comps: set[str], jumps: set[str], quote
         parser.is_mobile
         and not parser.has_section_head
         and "md-set-page" not in text
+        and "md-chapter-list" not in text
         and not (parser.has_func_area and not parser.has_list_module)
     ):
         errors.append(str(path) + ": mobile page missing md-section-head")

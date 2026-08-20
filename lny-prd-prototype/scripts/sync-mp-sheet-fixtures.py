@@ -27,6 +27,7 @@ GOLD_DOM = {
     "mobile-tree.html": "DOM：body > md-mobile-sheet--flush-x（全幅 split）。",
     "mobile-locator.html": "DOM：body > md-mobile-sheet--flush-x（全幅 split）。",
     "mobile-order-list.html": "DOM：md-list-toolbar 在 body 外；body > md-mobile-sheet（默认 safe-x）。",
+    "mobile-chapter-list.html": "DOM：body > md-mobile-sheet（默认 safe-x）+ md-chapter-list。",
     "mobile-pod.html": "DOM：md-hero 与 body 并列；body > md-mobile-sheet（默认 safe-x）；md-pod 在页根。",
 }
 
@@ -45,6 +46,7 @@ PAGE_TO_GOLD = {
     "PAGE-MP-012.html": "mobile-fields.html",
     "PAGE-MP-013.html": "mobile-locator.html",
     "PAGE-MP-014.html": "mobile-order-list.html",
+    "PAGE-MP-015.html": "mobile-chapter-list.html",
 }
 
 FIXTURE_INTRO = {
@@ -62,6 +64,7 @@ FIXTURE_INTRO = {
     "PAGE-MP-012.html": "夹具：对标 mobile-fields.html。商品·字段列表；单商品多维度按组。禁止当图文、禁止当表单。",
     "PAGE-MP-013.html": "夹具：对标 mobile-locator.html。商品·分类导航；左一级分组右分组横卡，滚动联动。禁止当树。",
     "PAGE-MP-014.html": "夹具：对标 mobile-order-list.html。订单·订单列表。",
+    "PAGE-MP-015.html": "夹具：对标 mobile-chapter-list.html。套件·章节目录；父章可展开/收起子章。禁止当树、禁止当横卡。",
 }
 
 AD_PAGE_TO_GOLD = {

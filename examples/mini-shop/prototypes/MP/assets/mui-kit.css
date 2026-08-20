@@ -3348,7 +3348,7 @@ button.md-tree__item {
   overflow: visible;
   padding-bottom: 0;
 }
-/* 触屏父子章节列表：父章 + 缩进子章；不是树展开收起，不是横卡 */
+/* 触屏父子章节列表：父章可展开/收起子章；不是维护树，不是横卡 */
 .md-chapter-list {
   display: flex;
   flex-direction: column;
@@ -3364,15 +3364,30 @@ button.md-tree__item {
   border-radius: var(--md-radius-lg);
   overflow: hidden;
 }
+.md-chapter-list__head {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  min-width: 0;
+}
+.md-chapter-list__toggle {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  margin-left: 4px;
+  color: var(--md-text-secondary);
+}
 .md-chapter-list__parent,
 .md-chapter-list__child {
   display: flex;
   align-items: center;
   gap: 8px;
-  width: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
   box-sizing: border-box;
   min-height: 0;
-  padding: 12px 16px;
+  padding: 12px 16px 12px 0;
   border: 0;
   background: transparent;
   color: var(--md-text);
@@ -3386,13 +3401,23 @@ button.md-tree__item {
   font-weight: 600;
   line-height: 1.4;
 }
+.md-chapter-list__body {
+  display: none;
+  padding-bottom: 4px;
+}
+.md-chapter-list__group.is-open > .md-chapter-list__body {
+  display: block;
+  border-top: 1px solid var(--md-divider-soft);
+  margin: 0 12px;
+}
 .md-chapter-list__child {
   position: relative;
-  padding-left: 28px;
+  padding: 12px 16px 12px 28px;
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.45;
   color: var(--md-text-secondary);
+  width: 100%;
 }
 .md-chapter-list__child::before {
   content: "";
@@ -3413,12 +3438,7 @@ button.md-tree__item {
 .md-chapter-list__child.is-active::before {
   background: var(--md-primary);
 }
-.md-chapter-list__parent + .md-chapter-list__child,
-.md-chapter-list__child + .md-chapter-list__child {
-  border-top: 0;
-}
-.md-chapter-list__child + .md-chapter-list__child::after,
-.md-chapter-list__parent + .md-chapter-list__child::after {
+.md-chapter-list__child + .md-chapter-list__child::after {
   content: "";
   position: absolute;
   left: var(--md-set-divider-inset-x);

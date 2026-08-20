@@ -476,16 +476,20 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 
 **④ 横卡单行**（列表区内容行）`md-set-row`：定高、不换行；左图标→标题；右说明/计数/小标签。最多 3 个**短**字段；**任一字段值很长（单行放不下）改走横卡多行 + `md-card--long`**。**每行独立纸面，上下有缝**（放进 `md-stack`，**不要**包进 `md-set-group`）。列表区与功能区的差别：**列表非分组**，条目可无限（即便分页加载，叠在一起也看不出页边界）；**功能成组**，每组入口有限。视觉上：通栏挤在一组纸面里、行间只有分割线；列表单行各自独立有缝。列表卡（封面/双列/横卡多行/单行/订单）统一用 **轻阴影** `--md-shadow-surface`；**高度随内容**，禁止 `min-height`。**功能区**（通栏 / 一行两个 / 金刚）与 **页内签**：**不要**圆角阴影卡片壳（平铺即可）。**不要**用 `md-set-pair` 冒充列表。
 
-**⑤ 父子章节列表** `md-chapter-list`（`PT-LOCATOR` 触屏专形；金样 `gold/mobile-chapter-list.html`）：父章 `__parent` 加粗、子章 `__child` 左缩进+圆点；按 `__group` 分组成片白卡。**不是**树展开收起、**不是**横卡、**不是** MP-013 左栏 split。可整页目录，也可模块内列表；点条目跳转或滚锚点。split 左栏大纲子项仍用 `md-locator__item--l2`（对标桌面 outline）。
+**⑤ 父子章节列表** `md-chapter-list`（`PT-LOCATOR` 触屏专形；金样 `gold/mobile-chapter-list.html`；夹具 `PAGE-MP-015`）：每组 `__group` 含 `__head`（**toggle 展开/收起** + 父章 `__parent`）与 `__body`（子章 `__child`）。父章加粗，子章缩进+圆点。**不是**维护树、**不是**横卡、**不是** MP-013 split。可整页目录或模块内列表。
 
 ```html
-<nav class="md-chapter-list" aria-label="章节目录">
-  <div class="md-chapter-list__group">
+<div class="md-chapter-list__group is-open">
+  <div class="md-chapter-list__head">
+    <button type="button" class="md-chapter-list__toggle md-icon-btn" aria-expanded="true" aria-label="收起子章节">
+      <span class="md-icon" data-icon="chevron-down"></span>
+    </button>
     <a class="md-chapter-list__parent" href="#ch1">第一章 概述</a>
-    <a class="md-chapter-list__child" href="#ch1-1">1.1 背景</a>
-    <a class="md-chapter-list__child" href="#ch1-2">1.2 目标</a>
   </div>
-</nav>
+  <div class="md-chapter-list__body">
+    <a class="md-chapter-list__child" href="#ch1-1">1.1 背景</a>
+  </div>
+</div>
 ```
 
 ```html

@@ -1620,6 +1620,35 @@
     });
   }
 
+  function bindChapterLists() {
+    document.querySelectorAll(".md-chapter-list").forEach(function (list) {
+      if (list.getAttribute("data-md-bound") === "1") return;
+      list.setAttribute("data-md-bound", "1");
+      list.querySelectorAll(".md-chapter-list__group").forEach(function (group) {
+        var toggle = group.querySelector(".md-chapter-list__toggle");
+        var body = group.querySelector(".md-chapter-list__body");
+        if (!toggle || !body) return;
+        var open = group.classList.contains("is-open");
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        toggle.setAttribute("aria-label", open ? "收起子章节" : "展开子章节");
+        var icon = toggle.querySelector(".md-icon");
+        if (icon) icon.setAttribute("data-icon", open ? "chevron-down" : "chevron-right");
+        toggle.addEventListener("click", function (ev) {
+          ev.preventDefault();
+          ev.stopPropagation();
+          open = group.classList.toggle("is-open");
+          toggle.setAttribute("aria-expanded", open ? "true" : "false");
+          toggle.setAttribute("aria-label", open ? "收起子章节" : "展开子章节");
+          icon = toggle.querySelector(".md-icon");
+          if (icon) {
+            icon.setAttribute("data-icon", open ? "chevron-down" : "chevron-right");
+            if (global.ProtoIcons && global.ProtoIcons.mount) global.ProtoIcons.mount(toggle);
+          }
+        });
+      });
+    });
+  }
+
   function bindOutlineCollapse() {
     document.querySelectorAll(".md-split--outline, .md-locator-float").forEach(function (host) {
       if (host.getAttribute("data-md-bound") === "1") return;
@@ -3400,6 +3429,7 @@
     bindTrees();
     bindTimelines();
     bindLocators();
+    bindChapterLists();
     bindOutlineCollapse();
     bindNestTables();
     bindUploads();
