@@ -382,6 +382,35 @@ def check_dialog_backdrop(path: Path, text: str) -> list[str]:
     return errors
 
 
+DRAWER_ID_RE = re.compile(
+    r'<(?:aside|div)\b[^>]*\bid="([^"]+)"[^>]*\bclass="[^"]*\bmd-drawer\b',
+    re.I,
+)
+
+
+def check_drawer_backdrop(path: Path, text: str) -> list[str]:
+    """Drawer/sheet must pair md-backdrop to block click-through."""
+    errors: list[str] = []
+    prefix = str(path) + ": "
+    for m in DRAWER_ID_RE.finditer(text):
+        drawer_id = m.group(1)
+        backdrop_id = drawer_id + "Backdrop"
+        if not re.search(
+            r'<div\b[^>]*\bid="' + re.escape(backdrop_id) + r'"[^>]*\bclass="[^"]*\bmd-backdrop\b',
+            text,
+            re.I,
+        ):
+            errors.append(
+                prefix
+                + "md-drawer #"
+                + drawer_id
+                + " missing md-backdrop #"
+                + backdrop_id
+                + " (semi-transparent mask blocks click-through)"
+            )
+    return errors
+
+
 DIALOG_TAG_RE = re.compile(
     r"<div\b[^>]*\bclass=\"[^\"]*\bmd-dialog\b[^\"]*\"[^>]*>",
     re.I,
@@ -454,6 +483,7 @@ def check_visual_floor(path: Path, page_id: str, text: str, parser: PageParser) 
     prefix = str(path) + ": "
     errors.extend(check_wizard_nav(path, page_id, text))
     errors.extend(check_dialog_backdrop(path, text))
+    errors.extend(check_drawer_backdrop(path, text))
     errors.extend(check_dialog_surface(path, text))
     if BOX_DRAW_RE.search(text):
         errors.append(prefix + "ASCII wireframe leaked into HTML")

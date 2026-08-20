@@ -52,7 +52,7 @@
 | 表单 | 开关、单选多选、下拉、轮盘；页根 `md-form-page`（浅灰底+白底分组） | `md-form-page` + `md-module` 分组；`md-switch` `md-check` `md-radio` `md-select` `data-wheel` |
 | 章节列表 / 父子章节 | 触屏 **`md-chapter-list`**（章/节导航）；桌面大纲 **`md-locator--outline`** | `md-chapter-list` / `md-locator`；金样 `mobile-chapter-list` / `desktop-locator`。**不是** `md-tree`（分类/组织见 MP-008） |
 | 分类树 | 左多级 **`md-tree`** 右图文；点节点换右区 | `md-tree-page`；金样 `mobile-tree`。**不是** chapter-list、不是 MP-013 定位导航 |
-| 反馈 | 对话框、Toast、骨架、空态 | `md-dialog` `snackbar` `md-skeleton` `md-empty` |
+| 反馈 | 对话框、Toast、骨架、空态 | `md-dialog` + **`{id}Backdrop` 遮罩**；`snackbar` `md-skeleton` `md-empty` |
 | 展示 | 标签（含卡片角标）、头像/缩略、轮播、进步/进度、时间轴 | `md-chip` `md-card__tag`；`md-swiper` `md-advance` `md-progress` `md-timeline` |
 | 功能区 | 宫格、双卡、通栏、一行两个、宫格+双卡 | 按 **`PT-MOBILE-FUNC`** / `md-king` / `md-king--pair` / `md-set-group`>`md-set-row` / `md-set-pair`；**平铺、无圆角阴影卡片壳**；触屏跟正文同左右安全距。金样 `mobile-grid`（合览）、`mobile-menu`（通栏） |
 | 导航 | TabBar、返回顶栏、页内签 | `md-tabbar` `md-appbar`；触屏页内签 `md-tabs` 按钮组（禁止下划线） |

@@ -44,7 +44,7 @@
 | Input / Cell | `md-field`；列表区 `--cover` / `--tile` / `--row`（多行，可小图）/ `md-stack`>`md-set-row`（单行独立有缝）；非分组、可无限流；卡统一轻阴影 |
 | Checkbox / Radio / Switch | `md-check` `md-radio` `md-switch` |
 | Picker | `data-wheel="date|region|daterange"`；下拉 `md-select` |
-| Dialog / Toast / Loading | `md-dialog`；触屏 Toast；`md-skeleton` |
+| Dialog / Toast / Loading | `md-dialog` + `{id}Backdrop`；触屏 Toast；`md-skeleton` |
 | Tag / Avatar / Swipe / Progress | `md-chip`；**`md-card__tag` `--tl/--tr`**（封面角）；`md-card__thumb`；`md-swiper`；`md-progress`/`md-advance`；时间轴 `md-timeline` |
 | TabBar / NavBar / 页内签 | `md-tabbar`；`md-appbar--*`；触屏页内签 `md-tabs` 按钮组（禁止下划线） |
 | 悬浮胶囊 | `md-pod` 钉在页根、不进滚动层；`--tl` 横向且与标题栏互斥 / `--bl` `--br` 竖向并避开底栏。规格点名才画，不要右上 |
@@ -78,7 +78,7 @@
 | 场景 | API / 类 |
 |------|----------|
 | 按下 | 套件默认 `transform`/`filter` |
-| 半屏/弹窗 | `ProtoPage.openDrawer` / `openDialog`（有过渡） |
+| 半屏/弹窗 | `ProtoPage.openDrawer` / `openDialog`（有过渡）；**HTML 须先 `{id}Backdrop` 再面板** |
 | 点图放大阅览 | 默认给详情页图（页根 `data-lightbox`；**轮播 / 图文 / 评论各一组**）、横卡多行卡内图（每卡一组）、**单图/多图/视频上传缩略**。封面叠字 / 双列 / Banner / 文件上传不可预览 |
 | 轻成功 | `ProtoPage.snackbar`（触屏居中） |
 | 确认 | `ProtoPage.confirm` |

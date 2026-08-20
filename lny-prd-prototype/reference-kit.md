@@ -1023,7 +1023,11 @@ ProtoPage.setAdvance("#wizProg", 40, "1 / 3");   // 分段进步条，自定义�
 | 弹窗 / 确认 | `md-dialog` + `md-backdrop`；确认用 `ProtoPage.confirm` | `alert()` / `confirm()` |
 | Toast / 提示 | `ProtoPage.snackbar` / `md-alert` / `md-tooltip` | 页内红字当提示 |
 
-D5 弹窗用 `md-dialog` + **`md-backdrop`（半透明黑、全屏、`z-index` 低于面板）**，打开后遮罩淡入并 **拦截穿透点击**（`pointer-events` 随 `is-open` 开启）；**面板主体**白底、**统一圆角 `--md-radius-dialog` + 统一阴影 `--md-shadow-dialog`**（禁止直角无阴影或页内自写 `box-shadow`）；面板缩放在遮罩之上。每个弹窗 id 须配对 **`{id}Backdrop`**；`ProtoPage.openDialog` 缺遮罩时会自动补。触屏下拉 **≤6 项中间弹窗**（`md-select-sheet--center`）与 `md-dialog` **同一圆角/阴影 token**。禁止无遮罩弹窗、`alert('原型：…')`。**触屏**弹窗内边距收紧；底半屏 `md-drawer--bottom` 高度随内容、最大 70vh、超出 `__body` 滚动，关闭用面板右上角 `md-drawer__close`（`openDrawer` 会自动补）。**表单弹窗** `md-dialog__form`：**一行只放一个输入项**（单列），不要双列并排字段。整页 D1-2 `md-d1__form` 仍可双列。
+D5 弹窗用 `md-dialog` + **`md-backdrop`（半透明黑、全屏、`z-index` 低于面板）**，打开后遮罩淡入并 **拦截穿透点击**（`pointer-events` 随 `is-open` 开启）；**面板主体**白底、**统一圆角 `--md-radius-dialog` + 统一阴影 `--md-shadow-dialog`**（禁止直角无阴影或页内自写 `box-shadow`）；面板缩放在遮罩之上。
+
+**写 HTML 时的固定顺序（⑥ 必遵守）**：每个弹窗/抽屉 id 须 **先写遮罩、再写面板**——`<div id="editBackdrop" class="md-backdrop"></div>` → `<div id="edit" class="md-dialog">…</div>`；抽屉同理 `{drawerId}Backdrop` + `md-drawer`。打开 **必须** `ProtoPage.openDialog('edit')` / `openDrawer('filterSheet')`；缺遮罩时脚本会运行时补，但 **coverage 与技能验收仍要求 HTML 显式配对**。点遮罩关闭由脚本绑定。
+
+触屏下拉 **≤6 项中间弹窗**（`md-select-sheet--center`）与 `md-dialog` **同一圆角/阴影 token**。禁止无遮罩弹窗、`alert('原型：…')`。**触屏**弹窗内边距收紧；底半屏 `md-drawer--bottom` 高度随内容、最大 70vh、超出 `__body` 滚动，关闭用面板右上角 `md-drawer__close`（`openDrawer` 会自动补）。**表单弹窗** `md-dialog__form`：**一行只放一个输入项**（单列），不要双列并排字段。整页 D1-2 `md-d1__form` 仍可双列。
 
 ### 详情页：标题区 + 图文混排
 

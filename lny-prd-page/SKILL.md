@@ -23,6 +23,8 @@ description: >-
 
 **树 vs 章节列表**：ASCII 与「结构与控件」须跟 master 选型一致——章节目录写 `md-chapter-list`（PAGE-MP-015）；分类树写左树右内容（PAGE-MP-008）；左分组右横卡写 `md-locator`（PAGE-MP-013）。禁止三者混名。
 
+**浮层遮罩**：规格或 ASCII 出现弹窗/半屏/抽屉时，「结构与控件」须写 **`{id}Backdrop` + `md-backdrop`** 与 **`ProtoPage.openDialog` / `openDrawer`**，禁止只写 `md-dialog` 白面板。
+
 ## 页型速查（写单页前扫一眼）
 
 线框 **只定分区顺序**；顺序以 `ui/PAGE` §2.3 与下表为准，⑥ 视觉以 `gold/` 为准（对标下限，禁止照搬演示功能，也禁止忽略金样）。体验细则见 `lny-prd-ui` **§1.3.3 / §1.4.3**。本步不依赖仓库示例。

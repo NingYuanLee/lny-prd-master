@@ -100,5 +100,6 @@ exit 0 才可继续；exit 1 不得交付，按 F.1 整文件重写（coverage �
 | G5.11 | SKILL 标注 | 总入口 `prototypes/index.html` 页底右下有技能包地址小字（见 `reference-scope.md`）；各端 `index.html` 由 `proto-shell.js` 注入，禁止手写或删 |
 | G5.12 | 控件皮肤 | 可点操作用 `md-btn`（含 `--contained` / `--outlined` / `--soft` / `--text` / `--link`）或 `md-icon-btn` / `md-tab` / `md-menu__item` / `md-page-btn` / `md-tree__item`；无 `md-*` 的 `<button>` / `<input type="submit">` 不得交付（浏览器灰钮） |
 | G5.13 | 触屏间距预算 | 按 `reference-kit.md` §触屏间距三层联动 + **§滚动容器底与边**：L2 统一基础 padding/背景，L3 不重复页级 safe/底色；父 gap + seam 边不叠双倍 |
+| G5.14 | 浮层遮罩 | 每个 `md-dialog[id]` / `md-drawer[id]` **须**配对 **`{id}Backdrop`**（`md-backdrop` 半透明黑）；打开用 `ProtoPage.openDialog` / `openDrawer`；禁止只有白面板无遮罩、`alert()` |
 
 禁止：对照未过就汇报「已更新」；把 G.3（UTF-8/控制台）当成功能齐套；按 ASCII 线框从零手写一页更瘦的布局。

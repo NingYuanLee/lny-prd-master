@@ -185,6 +185,24 @@
     return mask;
   }
 
+  function ensureDrawerBackdrop(id, drawer) {
+    var maskId = id + "Backdrop";
+    var mask = document.getElementById(maskId);
+    if (mask) return mask;
+    mask = document.createElement("div");
+    mask.id = maskId;
+    mask.className = "md-backdrop";
+    mask.addEventListener("click", function () {
+      closeDrawer(id);
+    });
+    if (drawer && drawer.parentNode) {
+      drawer.parentNode.insertBefore(mask, drawer);
+    } else {
+      document.body.appendChild(mask);
+    }
+    return mask;
+  }
+
   function closeDialog(id) {
     var dlg = document.getElementById(id);
     var mask = document.getElementById(id + "Backdrop");
@@ -232,7 +250,7 @@
 
   function openDrawer(id) {
     var el = document.getElementById(id);
-    var mask = document.getElementById(id + "Backdrop");
+    var mask = ensureDrawerBackdrop(id, el);
     if (mask) mask.classList.add("is-open");
     if (el) {
       ensureBottomDrawerClose(el);
@@ -1617,6 +1635,25 @@
     host.querySelectorAll("[data-outline-toggle]").forEach(function (btn) {
       btn.setAttribute("aria-expanded", open ? "true" : "false");
       btn.setAttribute("aria-label", open ? "收起大纲" : "展开大纲");
+    });
+  }
+
+  function bindDialogs() {
+    document.querySelectorAll(".md-dialog[id]").forEach(function (dlg) {
+      var id = dlg.id;
+      if (!id || id === "mdConfirmDlg") return;
+      var mask = ensureDialogBackdrop(id, dlg);
+      if (mask && dlg.classList.contains("is-open")) mask.classList.add("is-open");
+    });
+    syncDialogLock();
+  }
+
+  function bindDrawers() {
+    document.querySelectorAll(".md-drawer[id]").forEach(function (drawer) {
+      var id = drawer.id;
+      if (!id) return;
+      var mask = ensureDrawerBackdrop(id, drawer);
+      if (mask && drawer.classList.contains("is-open")) mask.classList.add("is-open");
     });
   }
 
@@ -3423,6 +3460,8 @@
     bindTimelines();
     bindLocators();
     bindChapterLists();
+    bindDialogs();
+    bindDrawers();
     bindOutlineCollapse();
     bindNestTables();
     bindUploads();
