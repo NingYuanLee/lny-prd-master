@@ -18,7 +18,7 @@
 | 根规范文件存在 | 项目根存在 `main_spec.md`、`ui_manifest.md`、`api_spec.md`、`feature_spec.md`（缺哪份报哪份） | 缺则走 `/lny-prd-master` 或对应子技能补建 | 高 |
 | 明细目录存在 | 存在 `ui/`、`api/`、`feature/`（可空） | 创建空目录或走对应步初始化 | 高 |
 | 版本目录存在 | 工作版本对应 `versions/{v}/` 存在；有台账/单页时对应子路径目录存在即可（不读文件内容） | `/lny-prd-iter` / `/lny-prd-page` 补目录 | 中 |
-| 版本目录产物白名单 | `versions/{v}/` 只承载流水/台账/`eval_signals.md`/`sp_report.md`、`pages_prd/`、`prototypes/`；不得有根四规范副本、`ui/`/`api/`/`feature/` 镜像树、散落明细或 `index.html`。先跑 `verify-artifact-paths.py` | 报告事实源与副本；用户授权后交责任技能迁移/删除，不在 ⑦ 修改 | 高 |
+| 版本目录产物白名单 | `versions/{v}/` 只承载流水/台账/`eval_signals.md`/`sp_report.md` 与 `pages_prd/`；不得有根四规范副本、`ui/`/`api/`/`feature/`/`prototypes/` 镜像树、散落明细或 `index.html`。先跑 `verify-artifact-paths.py` | 报告事实源与副本；用户授权后交责任技能迁移/删除，不在 ⑦ 修改 | 高 |
 | `ui/` 落点归属 | 凡 UI `PAGE-*.md`/`COMP-*.md` 须唯一位于 PRD 根的直接子目录 `ui/`，不得散落根目录、版本目录或其它目录（只看路径，不读文件） | `/lny-prd-ui` 迁移 | 高 |
 | `api/` 落点归属 | 凡 `API-*.md`/`EXT-*.md` 须唯一位于 PRD 根的直接子目录 `api/`（只看路径） | `/lny-prd-api` 迁移 | 高 |
 | `feature/` 落点归属 | 凡 `FEATURE-*.md` 须唯一位于 PRD 根的直接子目录 `feature/`（只看路径） | `/lny-prd-feature` 迁移 | 高 |
@@ -95,9 +95,9 @@
 |--------|------|------------|--------|
 | 原型图文件存在性（建议） | 每个页面可有 `prototypes/{终端}/PAGE-{终端}-{序号}.html`；不作为规格阻塞项 | 运行 `/lny-prd-prototype`（⑥） | 低 |
 | 原型总入口 | 若已有任一端 `prototypes/{终端}/`：须有 `prototypes/index.html`（含简介正文 + 各端入口）；**不**再写 `scope.html` | 运行 `/lny-prd-prototype`（⑥）补总入口 | 中 |
-| 错位总入口 | 项目根 `index.html` 与 `versions/{v}/index.html` 均禁止；正式入口只在 `prototypes/index.html` 及其 `versions/{v}/prototypes/index.html` 镜像 | `/lny-prd-prototype` 迁移；删除须用户授权 | 高 |
+| 错位总入口 | 正式入口只在根 `prototypes/index.html`；项目根 `index.html`、`versions/{v}/index.html` 和 `versions/{v}/prototypes/index.html` 均禁止 | `/lny-prd-prototype` 迁移；删除须用户授权 | 高 |
 | 原型须有单页 PRD 来源 | 每个业务页原型 `prototypes/{终端}/PAGE-*.html`（不含各端 `index.html`/`map.html`、也不含 `prototypes/index.html`）须能对应到 `versions/{v}/pages_prd/**` 下同源单页 PRD；**例外**仅当台账或产物明确标注 **`ui直出`**（须可核对） | 缺来源则先跑 `/lny-prd-page`（⑤）补单页 PRD，再 `/lny-prd-prototype`；或补标 `ui直出` | 中 |
-| 页面 ID 与镜像 | 每个 `PAGE-*.html` 的 `<title>` 以文件名 PAGE ID 开头；若存在 `versions/{v}/prototypes/`，根原型与该工作版本镜像的文件集合及同名内容必须一致（含入口与 assets），不得只同名不同页型 | `/lny-prd-prototype` 以当前规格重新同步完整镜像 | 高 |
+| 页面 ID | 每个根 `prototypes/{终端}/PAGE-*.html` 的 `<title>` 以文件名 PAGE ID 开头；终端目录与 PAGE ID 终端码一致 | `/lny-prd-prototype` 按当前规格修正根原型 | 高 |
 
 ---
 

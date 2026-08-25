@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Sync mini-shop MP/AD fixtures, gold mobile DOM headers, kit assets, and version mirrors."""
+"""Sync mini-shop MP/AD fixtures, gold mobile DOM headers, and kit assets."""
 from __future__ import annotations
 
 import re
@@ -9,9 +9,7 @@ ROOT = Path(__file__).resolve().parents[2]
 GOLD_DIR = ROOT / "lny-prd-prototype" / "gold"
 KIT_SCRIPT = ROOT / "lny-prd-prototype" / "scripts" / "copy-kit.py"
 MP_DIR = ROOT / "examples" / "mini-shop" / "prototypes" / "MP"
-VER_DIR = ROOT / "examples" / "mini-shop" / "versions" / "v1.0.0" / "prototypes" / "MP"
 AD_DIR = ROOT / "examples" / "mini-shop" / "prototypes" / "AD"
-AD_VER_DIR = ROOT / "examples" / "mini-shop" / "versions" / "v1.0.0" / "prototypes" / "AD"
 
 GOLD_DOM = {
     "mobile-grid.html": "DOM：md-hero 与 body 并列；body > md-mobile-sheet（默认 safe-x）。",
@@ -169,27 +167,11 @@ def patch_fixture_comments() -> None:
         print("fixture", page)
 
 
-def mirror_mp_to_version() -> None:
-    VER_DIR.mkdir(parents=True, exist_ok=True)
-    for src in sorted(MP_DIR.glob("PAGE-MP-*.html")):
-        dst = VER_DIR / src.name
-        dst.write_bytes(src.read_bytes())
-        print("mirror-mp", src.name)
-
-
-def mirror_ad_to_version() -> None:
-    AD_VER_DIR.mkdir(parents=True, exist_ok=True)
-    for src in sorted(AD_DIR.glob("PAGE-AD-*.html")):
-        dst = AD_VER_DIR / src.name
-        dst.write_bytes(src.read_bytes())
-        print("mirror-ad", src.name)
-
-
 def copy_kit_to_fixtures() -> None:
     import subprocess
     import sys
 
-    targets = [MP_DIR, VER_DIR, AD_DIR, AD_VER_DIR, GOLD_DIR]
+    targets = [MP_DIR, AD_DIR, GOLD_DIR]
     for target in targets:
         if not target.exists():
             continue
@@ -207,9 +189,6 @@ def main() -> None:
     fix_split_flush_x(MP_DIR)
     patch_fixture_comments()
     patch_ad_fixture_comments()
-    mirror_mp_to_version()
-    mirror_ad_to_version()
-    fix_split_flush_x(VER_DIR)
 
 
 if __name__ == "__main__":

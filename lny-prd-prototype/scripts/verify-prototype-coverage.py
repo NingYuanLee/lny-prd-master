@@ -71,13 +71,9 @@ def find_pages_prd(prd_root: Path, version: str, page_id: str) -> Path | None:
     return matches[0] if matches else None
 
 
-def html_paths(prd_root: Path, version: str, page_id: str) -> list[Path]:
+def html_path(prd_root: Path, page_id: str) -> Path:
     term = terminal_of(page_id)
-    paths = [prd_root / "prototypes" / term / (page_id + ".html")]
-    mirror_root = prd_root / "versions" / version / "prototypes"
-    if mirror_root.is_dir():
-        paths.append(mirror_root / term / (page_id + ".html"))
-    return paths
+    return prd_root / "prototypes" / term / (page_id + ".html")
 
 
 def parse_prd(text: str) -> tuple[set[str], set[str], list[str]]:
@@ -642,17 +638,16 @@ def main(argv: list[str]) -> int:
             text = prd.read_text(encoding="utf-8")
             comps, jumps, quotes = parse_prd(text)
             jumps.discard("无")
-        for html in html_paths(prd_root, version, page_id):
-            all_errors.extend(
-                check_html(
-                    html,
-                    page_id,
-                    comps,
-                    jumps,
-                    quotes,
-                    fixture=page_id in fixture_pages,
-                )
+        all_errors.extend(
+            check_html(
+                html_path(prd_root, page_id),
+                page_id,
+                comps,
+                jumps,
+                quotes,
+                fixture=page_id in fixture_pages,
             )
+        )
 
     if all_errors:
         for line in all_errors:

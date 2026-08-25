@@ -135,7 +135,7 @@ sheet：   md-mobile-sheet         浅灰 #f7f7f7 + 统一上下/左右内边距
 
 **② 页型选型**（列表型 vs 浅灰壳、何时改页型、详情评论 hybrid）：见 [`lny-prd-ui/reference.md`](../lny-prd-ui/reference.md) §1.3.4「滚动区页型选型」；② 写 L2 时引用，⑥ 按选型落 sheet 修饰类。
 
-**触屏金样 DOM 纪律**：14 个 `mobile-*.html` **全部** `body` > `sheet`；⑥ 新页照抄。改 `kit/` 后须对业务 `prototypes/{终端}/` 与 `versions/{v}/prototypes/{终端}/` 执行 `copy-kit.py`（或 **`sync-mp-sheet-fixtures.py`** 一键同步 MP+AD 夹具注释、kit、版本镜像）。对照 **`verify-fixture-gold-parity.py`** 确认 14×MP + 14×AD 夹具与金样文件齐套。
+**触屏金样 DOM 纪律**：14 个 `mobile-*.html` **全部** `body` > `sheet`；⑥ 新页照抄。改 `kit/` 后须对业务根 `prototypes/{终端}/` 执行 `copy-kit.py`（或 **`sync-mp-sheet-fixtures.py`** 一键同步 MP+AD 夹具注释与 kit）。对照 **`verify-fixture-gold-parity.py`** 确认 14×MP + 14×AD 夹具与金样文件齐套。
 
 ## 复制
 
@@ -145,7 +145,7 @@ sheet：   md-mobile-sheet         浅灰 #f7f7f7 + 统一上下/左右内边距
 python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 ```
 
-写入 `prototypes/{终端}/assets/`：`mui-kit.css`、`proto-shell.css`、`proto-shell.js`、`proto-page.js`、`proto-map.js`、`md-icons.js`；若尚无 `icons-extra.js` 则补空文件（已有 extras 不覆盖）。镜像 `versions/{v}/prototypes/{终端}/` 时 **须连同 `assets/`**（含 extras 与 `icons/`）。禁止改 kit 源文件来迁就某一页。禁止生成 `serve.json`。本地预览：在 `prototypes/` 目录执行 `python -m http.server`。
+写入 `prototypes/{终端}/assets/`：`mui-kit.css`、`proto-shell.css`、`proto-shell.js`、`proto-page.js`、`proto-map.js`、`md-icons.js`；若尚无 `icons-extra.js` 则补空文件（已有 extras 不覆盖）。禁止改 kit 源文件来迁就某一页，也禁止将套件副本写到 `versions/{v}/prototypes/`。禁止生成 `serve.json`。本地预览：在 `prototypes/` 目录执行 `python -m http.server`。
 
 ## 引用（硬性）
 

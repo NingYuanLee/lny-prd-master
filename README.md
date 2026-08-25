@@ -1,6 +1,6 @@
 # LNY-PRD — 李宁远产品工作流
 
-**工具包版本：2.8.90**
+**工具包版本：2.8.91**
 
 ## 背景
 
@@ -238,7 +238,6 @@ my-project/                         # PRD 项目根目录
     │   ├── sp_report.md            #     版本标准工时点（⑨ 负责；夹具已给出）
     │   ├── pages_prd/              #     单页 PRD（⑤ 负责）
     │   │   └── PAGE-MP-001.md
-    │   └── prototypes/             #     原型静态镜像
     └── v1.1.0/                     #   次版（⑧ 创建）
         ├── iteration_notes.md
         ├── eval_signals.md         #     迭代估点信号汇总（不计点）
@@ -247,6 +246,8 @@ my-project/                         # PRD 项目根目录
         ├── api_changes.md
         └── feature_changes.md
 ```
+
+根 `prototypes/` 是唯一当前原型；`versions/{v}/` 不复制原型树。历史原型通过项目 Git commit/tag 回看，需要独立历史交付包时再按需导出。
 
 ## 七、产物示例
 
@@ -424,7 +425,7 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 ├── lny-prd-master/
 │   ├── SKILL.md                    # ① 总控与立项
 │   ├── reference-init.md           # main_spec 模板
-│   ├── reference-artifact-paths.md # 根规格、版本产物与唯一镜像范围
+│   ├── reference-artifact-paths.md # 根规格、版本产物与原型落点
 │   ├── reference-page-types.md     # ②⑤⑥ 共用页型职责与金样映射
 │   └── framework-exclusions.md     # lny-default / none
 ├── lny-prd-ui/
@@ -488,7 +489,7 @@ python3 -m venv .venv
 
 `.venv/` 仅保留在本机并由 Git 忽略；除非 `requirements-dev.txt` 发生变化，无需重复安装。GitHub Actions 使用全新环境，仍会在每次任务中安装依赖。
 
-门禁使用真实 YAML 解析并逐一 quick-validate 9 个技能，同时检查 `skill-bundle.json` 与 README 版本一致、技能运行时不依赖 `examples/`、`agents/openai.yaml`、Markdown 链接、全量文本 UTF-8、Python/JavaScript 语法、安装事务与回滚、产物路径正反例、迁移冲突保护、kit 与副本、全部金样、页面 ID、根原型与版本镜像完全一致，以及带正反例的 12 页 coverage。GitHub Actions 在 push 和 pull request 时运行同一脚本；任一项失败均不得发布。元数据路由固定为：总控 `allow_implicit_invocation: true`，其余子技能为 `false`，子技能仍可通过 `$lny-prd-*` 显式调用。
+门禁使用真实 YAML 解析并逐一 quick-validate 9 个技能，同时检查 `skill-bundle.json` 与 README 版本一致、技能运行时不依赖 `examples/`、`agents/openai.yaml`、Markdown 链接、全量文本 UTF-8、Python/JavaScript 语法、安装事务与回滚、产物路径正反例、迁移冲突保护、kit 与副本、全部金样、根原型页面 ID 与带正反例的 12 页 coverage；同时禁止 `versions/{v}/prototypes/` 副本。GitHub Actions 在 push 和 pull request 时运行同一脚本；任一项失败均不得发布。元数据路由固定为：总控 `allow_implicit_invocation: true`，其余子技能为 `false`，子技能仍可通过 `$lny-prd-*` 显式调用。
 
 ## 十一、许可证
 

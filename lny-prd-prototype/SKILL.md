@@ -9,7 +9,7 @@ description: >-
 
 ## 与总控的关系
 
-本步为 **⑥ `/lny-prd-prototype`**。只写 `prototypes/` 与 `versions/.../prototypes/`（含总入口 `index.html`、各端目录）。禁止改根规格与 `iteration_notes`。缺规格时 **本步内** Read ②③④⑤ 对应 SKILL 并落盘，再写 HTML；**禁止**空中楼阁 HTML，**禁止**停下来只说「交总控」。⑨ 交来时只走「只刷总入口」，禁止升级成全量出原型。⑦ 须用户明确要求检查。全流程见 `lny-prd-master/SKILL.md`。
+本步为 **⑥ `/lny-prd-prototype`**。只写根 `prototypes/`（含总入口 `index.html`、各端目录），禁止生成 `versions/{v}/prototypes/`。禁止改根规格与 `iteration_notes`。缺规格时 **本步内** Read ②③④⑤ 对应 SKILL 并落盘，再写 HTML；**禁止**空中楼阁 HTML，**禁止**停下来只说「交总控」。⑨ 交来时只走「只刷总入口」，禁止升级成全量出原型。⑦ 须用户明确要求检查。全流程见 `lny-prd-master/SKILL.md`。
 
 **分批硬顶**：本轮最多生成/重画 **3** 个业务 `PAGE-*.html`（不含各端 `index.html` / `map.html` / 总入口）。未完成的 PAGE 列出编号，下一轮「继续」只续 ⑥（总控 **G-partial**），禁止借机重做 ②③④⑤，禁止同一轮把全部页画完。
 
@@ -25,14 +25,14 @@ description: >-
 - 视觉金样（写页前必读）：[`gold/README.md`](gold/README.md)
 - 桌面端设计词典（② 同源）：[`../lny-prd-ui/reference-desktop-design.md`](../lny-prd-ui/reference-desktop-design.md)
 - 三步职责、页型编号与金样映射：[`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)
-- 正式落点与唯一镜像范围：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
+- 正式落点与禁止副本范围：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
 - UTF-8 与 BUG / 逐页对照：[`reference-quality.md`](reference-quality.md)
 - 复制套件：`<skillDir>/scripts/copy-kit.py`
 - 关系图画布：`kit/proto-map.js`（`map.html` 只 boot 数据）
 - 搜图标：`<skillDir>/scripts/search-icons.py`
 - UTF-8 校验：`<skillDir>/scripts/verify-prototype-utf8.py`
 - 规格对照校验：`<skillDir>/scripts/verify-prototype-coverage.py`
-- 夹具·金样对照：`scripts/verify-fixture-gold-parity.py`；一键同步 kit+夹具注释+版本镜像：`scripts/sync-mp-sheet-fixtures.py`
+- 夹具·金样对照：`scripts/verify-fixture-gold-parity.py`；一键同步 kit+夹具注释：`scripts/sync-mp-sheet-fixtures.py`
 - 框架排除：`lny-prd-master/framework-exclusions.md`
 
 ## 三步对照（防错用）
@@ -135,7 +135,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 ## 职责与禁止
 
-- **负责**：按端分批生成/更新 **高保真** 原型与静态镜像；镜像范围仅为 `prototypes/**` → `versions/{v}/prototypes/**`；逐页对照 `pages_prd`；UTF-8 与 coverage 验收；BUG 自检。
+- **负责**：按端分批生成/更新根 `prototypes/` 下的 **高保真** 当前原型；逐页对照 `pages_prd`；UTF-8 与 coverage 验收；BUG 自检。
 - **禁止**：用 HTML 编造规格；改根规范或流水；交付已知 BUG；页内保留演示专用按钮（须归位状态演示）；同一轮画完超过 3 个业务页；未 Read 该页 `pages_prd` 或未 Read `gold/` 就写 HTML；按 ASCII 线框降质；把金样演示功能（如凡图即灯箱、全套表单样例）搬进规格没写的业务页；给封面叠字 / 双列 / Banner / 文件上传加预览；裸 `<button>` / `<input type="submit">` 露出浏览器原生皮肤（必须 `md-btn` 等套件类）；把本轮临时文件留在业务项目里交付。
 
 ## 写产物纪律
@@ -144,7 +144,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 **工具路径**：copy-kit / 搜图标 / UTF-8 / coverage 一律执行 **技能包** `<skillDir>/scripts/…`，不要把技能脚本永久拷进 `prdRoot`。
 
-**临时文件清理（交付前必做）**：过程中若在 `prdRoot` 建了辅助脚本（如 `prdRoot/scripts/`）、草稿、备份、一次性生成器等，**用完后必须删干净**再交付（含空目录）。正式产物只保留协议约定目录与文件（`prototypes/`、`versions/…/prototypes/`、规格等）。系统临时目录优先于业务根目录。
+**临时文件清理（交付前必做）**：过程中若在 `prdRoot` 建了辅助脚本（如 `prdRoot/scripts/`）、草稿、备份、一次性生成器等，**用完后必须删干净**再交付（含空目录）。正式原型只保留根 `prototypes/`；禁止将其复制到 `versions/`。系统临时目录优先于业务根目录。
 
 ```text
 python <skillDir>/scripts/verify-prototype-utf8.py <prdRoot>/prototypes/...
@@ -168,8 +168,8 @@ python <skillDir>/scripts/verify-prototype-coverage.py <prdRoot> --version vX.Y.
 
 1. Read [`reference-scope.md`](reference-scope.md)。
 2. 若尚无任何 `prototypes/{终端}/`：不新建空总入口，回报「无原型可挂」并结束。
-3. 覆盖写入 `prototypes/index.html`，并镜像到 `versions/{v}/prototypes/index.html`（`{v}` 取估点版本，未指定则当前工作版本）。版本清单按 **全部** `versions/` 填写。页底右下须保留 SKILL 标注（见 [`reference-scope.md`](reference-scope.md)）。
-4. UTF-8 验收这两个 `index.html`。
+3. 覆盖写入唯一总入口 `prototypes/index.html`。版本清单按 **全部** `versions/` 填写。页底右下须保留 SKILL 标注（见 [`reference-scope.md`](reference-scope.md)）。
+4. UTF-8 验收该 `index.html`。
 5. **禁止**：copy-kit；改各端 `PAGE-*.html` / 端 `index.html` / `map.html`；补 ②③④⑤；把本节当成全量出原型。
 
 ## 执行步骤
@@ -180,7 +180,7 @@ python <skillDir>/scripts/verify-prototype-coverage.py <prdRoot> --version vX.Y.
 2. 列出本轮目标页：`ui_manifest` 中 **active** 且 `prototypes/{终端}/PAGE-*.html` 尚不存在的页（用户给了 `页面编号列表` 则从其截取）。**截取最多 3 个**。其余记入「本轮不做」。
 3. 复制 kit 到本批每个 `prototypes/{终端}/assets/`（续批若 assets 已齐可跳过 copy-kit）。
 4. **逐页**：对该页完整 Read `pages_prd`（无则须 `ui直出`）+ `ui/PAGE-*` **§2.3** + COMP。按页类型 Read 金样全文，**对标视觉骨架**（密度/类名不得低于金样），再按本页规格换文案并落地 §2.3 与舒适默认。写完立刻过 [`reference-quality.md`](reference-quality.md) **§G.4 / G.5**。禁止凭记忆、禁止按 ASCII 降质、禁止忽略金样、禁止把金样演示功能搬进规格没写的页。
-5. 按 [`reference-shell.md`](reference-shell.md) 写/刷新各端 `index.html`（及移动端 `map.html`）：**只挂已落盘**的 `PAGE-*.html`。按 [`reference-scope.md`](reference-scope.md) 写 `prototypes/index.html`。仅以 `prototypes/` 为源根、保留相对路径镜像到 `versions/{v}/prototypes/`（各端含 `assets/`，总入口放在该目录根下）；写前确认每个目标仍在该目录内。禁止写项目根或 `versions/{v}/index.html`，不写 `scope.html`。
+5. 按 [`reference-shell.md`](reference-shell.md) 写/刷新各端 `index.html`（及移动端 `map.html`）：**只挂已落盘**的 `PAGE-*.html`。按 [`reference-scope.md`](reference-scope.md) 写 `prototypes/index.html`。禁止写项目根 `index.html`、`versions/{v}/index.html` 或 `versions/{v}/prototypes/`，不写 `scope.html`。
 6. 对本批页跑 UTF-8 脚本 + `verify-prototype-coverage.py` + `<checkSkillDir>/scripts/verify-artifact-paths.py` + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）。任一步失败则重写，不得交付。
 7. **清理临时文件**：删除本轮在 `prdRoot` 留下的辅助脚本/草稿/备份及空的 `scripts/` 等（见写产物纪律）；未建临时文件可跳过。
 8. 输出：本批路径列表、验收通过说明、**剩余未生成 PAGE 编号**（无则写「全部已齐」）。有剩余时明确下一步：「继续」只续 ⑥。

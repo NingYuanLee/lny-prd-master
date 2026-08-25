@@ -5,7 +5,7 @@
 ## 目录
 
 - 单页、`index.html`、`assets/` 均在 `prototypes/{终端}/`（`MP` / `H5` / `APP` / `PC` / `AD`）。框架通用页（如 AD 登录）不生成 `PAGE-*.html`。
-- 镜像到 `versions/{版本号}/prototypes/{终端}/`（含 `assets/`）。禁止 `node_modules` / npm / `prototypes-mui-app/`。
+- 根 `prototypes/` 是唯一原型树；禁止写 `versions/{版本号}/prototypes/`、`node_modules` / npm / `prototypes-mui-app/`。
 - 生成前 `copy-kit.py`；各端 `index.html` 只填 `PROTO_SHELL`。总入口见 [`reference-scope.md`](reference-scope.md)。
 - 各端 `index.html` 右下角 SKILL 小字由 `proto-shell.js` 注入（GitHub / Gitee 技能包地址）。禁止手写、禁止删。总入口标注见 [`reference-scope.md`](reference-scope.md)。
 
@@ -81,7 +81,7 @@
 - [ ] 3. 创建或更新 map.html（PAGES + LINKS + 布局）
 - [ ] 4. index ↔ map 顶栏互链
 - [ ] 5. 跳转变更时同步 LINKS 与 spec.actions
-- [ ] 6. 镜像至 versions/{版本号}/prototypes/{终端}/map.html
+- [ ] 6. 验收 index / map / 单页的路径和互链均在根 prototypes/{终端}/ 内
 ```
 
 #### E.3 `PAGES`
@@ -152,4 +152,4 @@ localStorage（debounce 300ms，键 `{project}-{终端}-map-layout-v1`，含 `pa
 
 #### E.7 同步与验收
 
-增删页：同步单页、index 侧栏、PAGES/LINKS、镜像。改跳转：先 ② → 单页 → LINKS + `spec.actions`。验收：可本地打开；manifest 页无遗漏；跳转有对应线型；TabBar 双向 `tab`；全屏/持久化/导出/互链可用；已镜像。
+增删页：同步单页、index 侧栏与 PAGES/LINKS。改跳转：先 ② → 单页 → LINKS + `spec.actions`。验收：可本地打开；manifest 页无遗漏；跳转有对应线型；TabBar 双向 `tab`；全屏/持久化/导出/互链可用；无 `versions/{v}/prototypes/` 副本。

@@ -10,6 +10,7 @@ from pathlib import Path
 
 ROOT_SPECS = {"main_spec.md", "ui_manifest.md", "api_spec.md", "feature_spec.md"}
 FORBIDDEN_VERSION_DIRS = {"api", "feature", "ui"}
+VERSION_PROTOTYPE_DIR = "prototypes"
 LOOSE_DETAIL_RE = re.compile(r"^(?:API-[A-Z]+-\d{3}|EXT-\d{3}|FEATURE-\d{3}|PAGE-[A-Z]+-\d{3}|COMP-\d{3})\.md$")
 
 
@@ -34,6 +35,9 @@ def scan(root: Path) -> list[str]:
             path = version / name
             if path.exists():
                 errors.append(issue("VERSION_SPEC_TREE", path, root))
+        prototype_tree = version / VERSION_PROTOTYPE_DIR
+        if prototype_tree.exists():
+            errors.append(issue("VERSION_PROTOTYPE_TREE", prototype_tree, root))
         index = version / "index.html"
         if index.exists():
             errors.append(issue("VERSION_ROOT_INDEX", index, root))

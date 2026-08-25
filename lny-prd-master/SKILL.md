@@ -29,12 +29,12 @@ description: >-
 | ③ | `lny-prd-api/SKILL.md` | `api_spec` 索引 + `api/API-*`/`EXT-*`（禁路由/JSON/code） | 不写 UI 线框；不改 `prototypes/` |
 | ④ | `lny-prd-feature/SKILL.md` | `feature_spec` + `feature/`；FEATURE↔PAGE/API 闭环 | 不写接口字段、UI 线框 |
 | ⑤ | `lny-prd-page/SKILL.md` | `pages_prd/`；PC/AD 必产 `_shell` | 不替代 ②③④；不依赖原型 |
-| ⑥ | `lny-prd-prototype/SKILL.md` | `prototypes/`（总入口 `index.html` + `{终端}/`）+ 版本镜像（含 `assets/`）；**每轮最多 3 个业务页**，逐页对照 `pages_prd` 与 `gold/` 金样（视觉下限） | 用 HTML 代替规格；改根规格或 `iteration_notes`；npm / `prototypes-mui-app/`；同轮画完全部页；按 ASCII 线框降质；忽略金样或把金样演示功能整页搬进业务页 |
+| ⑥ | `lny-prd-prototype/SKILL.md` | 唯一当前原型 `prototypes/`（总入口 `index.html` + `{终端}/`）；**每轮最多 3 个业务页**，逐页对照 `pages_prd` 与 `gold/` 金样（视觉下限） | 用 HTML 代替规格；改根规格或 `iteration_notes`；写 `versions/{v}/prototypes/`；npm / `prototypes-mui-app/`；同轮画完全部页；按 ASCII 线框降质；忽略金样或把金样演示功能整页搬进业务页 |
 | ⑦ | `lny-prd-check/SKILL.md` | 只读报告 | 改任何 PRD 正文 |
 | ⑧ | `lny-prd-iter/SKILL.md` | 新版本目录、台账、`eval_signals`、变更记录新行 | 写规格正文、生成 `pages_prd` |
 | ⑨ | `lny-prd-sp/SKILL.md` | `sp_report.md`；落盘后同轮交 ⑥ **只刷总入口**（§3.3） | 改规格/台账/各端原型页；不可估则停算（仍刷总入口） |
 
-子技能「写产物纪律」一并遵守。改根四规范正文 → 当前版本 `iteration_notes.md` 文末追加流水（§1.1），不得靠变更记录表记账。协议唯一成树镜像是 `prototypes/**` → `versions/{v}/prototypes/**`；禁止镜像根四规范与 `ui/`、`api/`、`feature/`。
+子技能「写产物纪律」一并遵守。改根四规范正文 → 当前版本 `iteration_notes.md` 文末追加流水（§1.1），不得靠变更记录表记账。协议不生成任何成树镜像：根规格、`ui/`、`api/`、`feature/` 与 `prototypes/` 均只保留正式落点。
 
 ### 1.1 版本号与变更记录
 
@@ -140,7 +140,7 @@ description: >-
 
 ### 3.3 估点后刷总入口（⑨→⑥ 只刷，禁止重画页面）
 
-⑨ 覆盖写入 `sp_report.md` 之后（含不可估 / `—`），**同一轮** Read `lny-prd-prototype/SKILL.md` 的「只刷总入口」：只覆盖 `prototypes/index.html` 与 `versions/{v}/prototypes/index.html`。
+⑨ 覆盖写入 `sp_report.md` 之后（含不可估 / `—`），**同一轮** Read `lny-prd-prototype/SKILL.md` 的「只刷总入口」：只覆盖 `prototypes/index.html`。
 
 - **禁止**：copy-kit；改各端 `PAGE-*.html`、端 `index.html`、`map.html`；把估点目标升级成 §3.2 全量出原型。
 - **跳过**：尚无任何 `prototypes/{终端}/` 时不新建空总入口，对话说明「无原型可挂」。
@@ -232,7 +232,7 @@ description: >-
 ## Additional resources
 
 - 立项 YAML 与 `main_spec.md` 模板：[`reference-init.md`](reference-init.md)
-- 根规格、版本产物与唯一镜像范围：[`reference-artifact-paths.md`](reference-artifact-paths.md)
+- 根规格、版本产物与原型落点：[`reference-artifact-paths.md`](reference-artifact-paths.md)
 - 框架排除：[`framework-exclusions.md`](framework-exclusions.md)
 - ②⑤⑥ 共用页型职责与金样映射：[`reference-page-types.md`](reference-page-types.md)（含 **「树 vs 章节列表选型」**）
 - `api_spec.md` → `lny-prd-api/reference.md`

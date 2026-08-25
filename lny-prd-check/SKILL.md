@@ -15,7 +15,7 @@ description: >-
 
 - 检查表全文：[`reference-checks.md`](reference-checks.md)
 - 跨步骤页型不变量：[`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)
-- 正式落点与唯一镜像范围：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
+- 正式落点与禁止副本范围：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
 - 路径扫描器：`scripts/verify-artifact-paths.py`
 - 框架排除：`lny-prd-master/framework-exclusions.md`
 

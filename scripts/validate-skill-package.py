@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Validate skill metadata, scripts, examples, mirrors, and regression contracts."""
+"""Validate skill metadata, scripts, examples, and regression contracts."""
 from __future__ import annotations
 
 import importlib.util
@@ -286,45 +286,25 @@ def validate_script_syntax(errors: list[str]) -> None:
         require_run([node or "node", "--check", str(path)], errors, f"JS syntax {path}")
 
 
-def file_map(root: Path) -> dict[str, Path]:
-    return {
-        path.relative_to(root).as_posix(): path
-        for path in root.rglob("*")
-        if path.is_file()
-    }
-
-
-def validate_example_identity_and_mirror(errors: list[str]) -> None:
-    example = ROOT / "examples" / "mini-shop"
-    current = example / "prototypes"
-    mirror = example / "versions" / "v1.0.0" / "prototypes"
-    current_files = file_map(current)
-    mirror_files = file_map(mirror)
-    if set(current_files) != set(mirror_files):
-        missing = sorted(set(current_files) - set(mirror_files))
-        extra = sorted(set(mirror_files) - set(current_files))
-        fail(errors, f"prototype mirror file set mismatch: missing={missing}, extra={extra}")
-    for relative in sorted(set(current_files) & set(mirror_files)):
-        if current_files[relative].read_bytes() != mirror_files[relative].read_bytes():
-            fail(errors, f"prototype mirror content mismatch: {relative}")
-
-    for root in (current, mirror):
-        for path in sorted(root.rglob("PAGE-*.html")):
-            text = path.read_text(encoding="utf-8")
-            title = re.search(r"<title>\s*([^<]+)</title>", text, flags=re.I)
-            if not title or not re.match(rf"^{re.escape(path.stem)}(?:\s|$)", title.group(1)):
-                fail(errors, f"{path}: <title> must start with {path.stem}")
+def validate_example_prototype_identity(errors: list[str]) -> None:
+    current = ROOT / "examples" / "mini-shop" / "prototypes"
+    for path in sorted(current.rglob("PAGE-*.html")):
+        text = path.read_text(encoding="utf-8")
+        title = re.search(r"<title>\s*([^<]+)</title>", text, flags=re.I)
+        if not title or not re.match(rf"^{re.escape(path.stem)}(?:\s|$)", title.group(1)):
+            fail(errors, f"{path}: <title> must start with {path.stem}")
+        parts = path.stem.split("-")
+        terminal = parts[1] if len(parts) >= 3 else ""
+        if path.parent.name != terminal:
+            fail(errors, f"{path}: terminal directory must be {terminal}")
 
 
 def validate_kit_copies(errors: list[str]) -> None:
     kit = ROOT / "lny-prd-prototype" / "kit"
     example = ROOT / "examples" / "mini-shop"
     targets = [ROOT / "lny-prd-prototype" / "gold" / "assets"]
-    for prototype_root in (
-        example / "prototypes",
-        example / "versions" / "v1.0.0" / "prototypes",
-    ):
-        targets.extend(path for path in prototype_root.glob("*/assets") if path.is_dir())
+    prototype_root = example / "prototypes"
+    targets.extend(path for path in prototype_root.glob("*/assets") if path.is_dir())
     for source in sorted(path for path in kit.iterdir() if path.is_file()):
         for target_dir in targets:
             target = target_dir / source.name
@@ -519,14 +499,12 @@ def validate_artifact_path_checker(errors: list[str]) -> None:
         (root / "feature").mkdir()
         (root / "prototypes" / "MP").mkdir(parents=True)
         (version / "pages_prd" / "pages" / "index").mkdir(parents=True)
-        (version / "prototypes" / "MP").mkdir(parents=True)
         for name in ("main_spec.md", "ui_manifest.md", "api_spec.md", "feature_spec.md"):
             (root / name).write_text("# spec\n", encoding="utf-8")
         (root / "api" / "API-MP-001.md").write_text("# API\n", encoding="utf-8")
         (root / "ui" / "PAGE-MP-001.md").write_text("# PAGE\n", encoding="utf-8")
         (root / "feature" / "FEATURE-001.md").write_text("# Feature\n", encoding="utf-8")
         (root / "prototypes" / "index.html").write_text("ok\n", encoding="utf-8")
-        (version / "prototypes" / "index.html").write_text("ok\n", encoding="utf-8")
         clean = run([sys.executable, str(ARTIFACT_PATH_CHECKER), str(root)])
         if clean.returncode:
             fail(errors, "artifact path checker rejected a canonical project:\n" + clean.stderr.strip())
@@ -536,6 +514,8 @@ def validate_artifact_path_checker(errors: list[str]) -> None:
         (version / "main_spec.md").write_text("copy\n", encoding="utf-8")
         (version / "api").mkdir()
         (version / "api" / "API-MP-001.md").write_text("copy\n", encoding="utf-8")
+        (version / "prototypes" / "MP").mkdir(parents=True)
+        (version / "prototypes" / "index.html").write_text("copy\n", encoding="utf-8")
         (version / "FEATURE-001.md").write_text("copy\n", encoding="utf-8")
         invalid = run([sys.executable, str(ARTIFACT_PATH_CHECKER), str(root)])
         output = invalid.stdout + invalid.stderr
@@ -544,6 +524,7 @@ def validate_artifact_path_checker(errors: list[str]) -> None:
             "VERSION_ROOT_INDEX",
             "VERSION_SPEC_COPY",
             "VERSION_SPEC_TREE",
+            "VERSION_PROTOTYPE_TREE",
             "VERSION_LOOSE_DETAIL",
         }
         missing = sorted(code for code in expected_codes if code not in output)
@@ -573,7 +554,6 @@ def validate_prototypes(errors: list[str]) -> None:
         "offline icon lookup",
     )
     html = sorted((example / "prototypes").rglob("*.html"))
-    html += sorted((example / "versions" / "v1.0.0" / "prototypes").rglob("*.html"))
     require_run(
         [sys.executable, str(utf8), *(str(path) for path in html)],
         errors,
@@ -632,7 +612,7 @@ def main() -> int:
     validate_markdown_links(errors)
     validate_text_and_yaml(errors)
     validate_script_syntax(errors)
-    validate_example_identity_and_mirror(errors)
+    validate_example_prototype_identity(errors)
     validate_kit_copies(errors)
     validate_migration(errors)
     validate_artifact_path_checker(errors)
@@ -650,7 +630,7 @@ def main() -> int:
     print(
         f"skill package validation ok: {len(SKILL_DIRS)} skills; bundle/version contract; "
         "runtime examples isolation; real YAML + quick validation; links; UTF-8; Python/JS; "
-        "installer transactions; migration; artifact paths; kit/gold; exact mirror; fixture + negative coverage"
+        "installer transactions; migration; artifact paths; kit/gold; prototype identity; fixture + negative coverage"
     )
     return 0
 

@@ -36,7 +36,7 @@ python <skillDir>/scripts/search-icons.py 客服 --pick 0 --name kefu --out <prd
 
 `--pick 0` 装第一条；或 `--id {iconfont数字id}`。`--name` 须 ASCII（`kefu`）。`--local-only` 只查套件。
 
-装入后 HTML 用 `data-icon="kefu"`（或中文名若已作 alias）。镜像 `versions/` 时带上 `icons-extra.js` 与 `assets/icons/`。
+装入后 HTML 用 `data-icon="kefu"`（或中文名若已作 alias）。`icons-extra.js` 与 `assets/icons/` 只保留在根 `prototypes/{终端}/assets/`，禁止复制到 `versions/`。
 
 ## 套件闭集（优先用这些，不必上网）
 

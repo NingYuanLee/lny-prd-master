@@ -11,12 +11,12 @@
 | 页面出现 `?`/半拉中文 | StrReplace 破坏 UTF-8 多字节中文 | 整文件 UTF-8 写入；仅改 ASCII 可用 StrReplace | StrReplace 含 CJK / >3 行区块 |
 | `UnicodeDecodeError: invalid continuation byte` | 文件已是无效 UTF-8 | 从同端已验收页复制再改 | `read_text(errors='replace')` 后写回 |
 | PowerShell `python -c` 失败 | Windows GBK 与 UTF-8 混用 | 中文写在 `.py` 源码内（`# -*- coding: utf-8 -*-`） | `python -c "…中文…"` / Shell heredoc |
-| 原型镜像不一致 | 对主路径和镜像分次 StrReplace | 先写 `prototypes/`，再以该目录为源根按相对路径复制到 `versions/{v}/prototypes/` | 对两路径分别 StrReplace；把多来源文件批量复制到版本根 |
+| 出现版本原型副本 | 旧流程或 Agent 自创镜像 | 只写根 `prototypes/`；历史回看用 Git commit/tag | 写 `versions/{v}/prototypes/`；根与版本目录双写 |
 
 #### F.2 写后验收（必做）
 
 ```bash
-python <skillDir>/scripts/verify-prototype-utf8.py <prdRoot>/prototypes/MP/PAGE-MP-010.html <prdRoot>/versions/v1.0.0/prototypes/MP/PAGE-MP-010.html
+python <skillDir>/scripts/verify-prototype-utf8.py <prdRoot>/prototypes/MP/PAGE-MP-010.html
 python <skillDir>/scripts/verify-prototype-coverage.py <prdRoot> --version v1.0.0 --page PAGE-MP-010
 ```
 
@@ -79,7 +79,7 @@ exit 0 才可继续；exit 1 不得交付，按 F.1 整文件重写（coverage �
 | G4.3 | 各分区「结构与控件」 | 每个按钮/输入/Tab/卡片/列均用 `md-*` 落地；套件无类名 → [`reference-kit.md`](reference-kit.md)「无类名组合」 |
 | G4.4 | §4 跳转清单 | 每个目标 `PAGE-*` 有可点 `href`（本页自身与「无」除外） |
 | G4.5 | `ui/COMP-*` 状态矩阵 | `data-comp` + `data-state`；`empty`/`error` 有 `.md-empty`；`loading` 有骨架（卡片态或 `md-skel-host`） |
-| G4.6 | 脚本 | `verify-prototype-coverage.py` 对本页（及镜像）exit 0 |
+| G4.6 | 脚本 | `verify-prototype-coverage.py` 对根 `prototypes/` 本页 exit 0 |
 
 #### G.5 高保真（必做，未过不得交付）
 
