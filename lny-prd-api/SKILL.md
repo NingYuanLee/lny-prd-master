@@ -14,18 +14,19 @@ description: >-
 ## Additional resources
 
 - 索引与单接口/EXT 模板：[`reference.md`](reference.md)
+- 正式落点与镜像禁区：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
 - 框架排除：`lny-prd-master/framework-exclusions.md`
 
 ## 开笔前
 
-Read `lny-prd-master/framework-exclusions.md`。不为框架通用已排除项建 `API-*`/`EXT-*`；业务 API/EXT 仍须建档且只写差异。Read `main_spec` §1.5「明确不做」（若有）：**禁止**为清单中的能力建 `API-*`/`EXT-*`。
+Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-artifact-paths.md`。不为框架通用已排除项建 `API-*`/`EXT-*`；业务 API/EXT 仍须建档且只写差异。Read `main_spec` §1.5「明确不做」（若有）：**禁止**为清单中的能力建 `API-*`/`EXT-*`。
 
 本层是 **接口需求**（要什么能力、连哪些页、业务字段与规则），不是 OpenAPI。不写域名、path、HTTP 方法、JSON、响应 code。禁止落盘 `待补充` 等 meta 占位。
 
 ## 职责与禁止
 
 - **负责**：`api_spec.md` §1～§4 索引与规则；`api/API-*.md` / `api/EXT-*.md`；`main_spec` §6 统计；成功自检后推进本次 `api_changes.md` 对应行状态。
-- **禁止**：写 UI 线框；改 `prototypes/`；实现向内容；根规范「变更记录」表新增行。仅当 PM 已说出点位或 AD 字典条目才写埋点；**禁止自拟埋点方案**。
+- **禁止**：写 UI 线框；改 `prototypes/`；实现向内容；根规范「变更记录」表新增行；把 `api_spec.md` 或 `api/` 复制到 `versions/{v}/`（含 `versions/{v}/api/` 与版本根散落文件）。仅当 PM 已说出点位或 AD 字典条目才写埋点；**禁止自拟埋点方案**。
 
 **新立项只走目录化**。旧 `api_spec` §5 单体大段只提示迁移，禁止双轨扩写。
 

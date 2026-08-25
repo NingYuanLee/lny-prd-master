@@ -18,9 +18,10 @@
 | 根规范文件存在 | 项目根存在 `main_spec.md`、`ui_manifest.md`、`api_spec.md`、`feature_spec.md`（缺哪份报哪份） | 缺则走 `/lny-prd-master` 或对应子技能补建 | 高 |
 | 明细目录存在 | 存在 `ui/`、`api/`、`feature/`（可空） | 创建空目录或走对应步初始化 | 高 |
 | 版本目录存在 | 工作版本对应 `versions/{v}/` 存在；有台账/单页时对应子路径目录存在即可（不读文件内容） | `/lny-prd-iter` / `/lny-prd-page` 补目录 | 中 |
-| `ui/` 落点归属 | 凡 `PAGE-*.md`/`COMP-*.md` 须在 `ui/` 下，不得散落根目录或其它目录（只看路径，不读文件） | `/lny-prd-ui` 迁移 | 高 |
-| `api/` 落点归属 | 凡 `API-*.md`/`EXT-*.md` 须在 `api/` 下（只看路径） | `/lny-prd-api` 迁移 | 高 |
-| `feature/` 落点归属 | 凡 `FEATURE-*.md` 须在 `feature/` 下（只看路径） | `/lny-prd-feature` 迁移 | 高 |
+| 版本目录产物白名单 | `versions/{v}/` 只承载流水/台账/`eval_signals.md`/`sp_report.md`、`pages_prd/`、`prototypes/`；不得有根四规范副本、`ui/`/`api/`/`feature/` 镜像树、散落明细或 `index.html`。先跑 `verify-artifact-paths.py` | 报告事实源与副本；用户授权后交责任技能迁移/删除，不在 ⑦ 修改 | 高 |
+| `ui/` 落点归属 | 凡 UI `PAGE-*.md`/`COMP-*.md` 须唯一位于 PRD 根的直接子目录 `ui/`，不得散落根目录、版本目录或其它目录（只看路径，不读文件） | `/lny-prd-ui` 迁移 | 高 |
+| `api/` 落点归属 | 凡 `API-*.md`/`EXT-*.md` 须唯一位于 PRD 根的直接子目录 `api/`（只看路径） | `/lny-prd-api` 迁移 | 高 |
+| `feature/` 落点归属 | 凡 `FEATURE-*.md` 须唯一位于 PRD 根的直接子目录 `feature/`（只看路径） | `/lny-prd-feature` 迁移 | 高 |
 | `pages_prd` 落点归属 | 单页 PRD 文件须在 `versions/{v}/pages_prd/` 树下（允许嵌套子目录；只看路径） | `/lny-prd-page` 迁移 | 中 |
 | `prototypes` 落点归属 | 页原型 `PAGE-*.html` 须在 `prototypes/{终端}/` 下且 `{终端}` 与文件名终端编码一致（只看路径；有无文件见 1.6） | `/lny-prd-prototype` 迁移 | 中 |
 
@@ -76,7 +77,7 @@
 | AD 页 D5弹窗数可采 | 桌面/AD 的 `ui/PAGE-*` 基本信息含 **`D5弹窗数`**（非负整数）；§2.2 D5 **弹窗清单**有效行数（「无」计 0）与该数字 **一致** | `/lny-prd-ui` 补字段或对齐清单 | 中 |
 | 本页 API 条数可采 | 有 `pages_prd` 的业务页：§5 可去重计数；§7 **`本页API条数（去重）`** 存在且与 §5 一致（AD 估点依赖） | `/lny-prd-page` 补 §5/§7 | 中 |
 | 请求编排与条数一致 | 有 `pages_prd` 的业务页：§7 **`API 请求编排类型`** 须满足条数门槛——`本页API条数`≤1 → 只能 `单请求或并行`；=2 → 禁止 `串并行混合`；`串并行混合` 仅当条数≥3。口径见 `lny-prd-page` §7 | `/lny-prd-page` 按门槛改编排 | 中 |
-| 流程角色可采 | 有 `pages_prd` 的 **非 AD** 业务页（不含 `_shell`）：§7 **`流程角色`** ∈ `主流程` / `支线` / `辅助` / `设置`（FE ① 页面定位·角色基线） | `/lny-prd-page` 补 §7 | 中 |
+| 流程角色可采 | 有 `pages_prd` 的 **非 AD** 业务页（不含 `_shell`）：§7 **`流程角色`** ∈ `主流程` / `支线` / `辅助` / `设置`（用于业务主次与压缩候选，hour-v1 不计分） | `/lny-prd-page` 补 §7 | 中 |
 
 ### 1.5 版本与台账类
 
@@ -94,6 +95,7 @@
 |--------|------|------------|--------|
 | 原型图文件存在性（建议） | 每个页面可有 `prototypes/{终端}/PAGE-{终端}-{序号}.html`；不作为规格阻塞项 | 运行 `/lny-prd-prototype`（⑥） | 低 |
 | 原型总入口 | 若已有任一端 `prototypes/{终端}/`：须有 `prototypes/index.html`（含简介正文 + 各端入口）；**不**再写 `scope.html` | 运行 `/lny-prd-prototype`（⑥）补总入口 | 中 |
+| 错位总入口 | 项目根 `index.html` 与 `versions/{v}/index.html` 均禁止；正式入口只在 `prototypes/index.html` 及其 `versions/{v}/prototypes/index.html` 镜像 | `/lny-prd-prototype` 迁移；删除须用户授权 | 高 |
 | 原型须有单页 PRD 来源 | 每个业务页原型 `prototypes/{终端}/PAGE-*.html`（不含各端 `index.html`/`map.html`、也不含 `prototypes/index.html`）须能对应到 `versions/{v}/pages_prd/**` 下同源单页 PRD；**例外**仅当台账或产物明确标注 **`ui直出`**（须可核对） | 缺来源则先跑 `/lny-prd-page`（⑤）补单页 PRD，再 `/lny-prd-prototype`；或补标 `ui直出` | 中 |
 | 页面 ID 与镜像 | 每个 `PAGE-*.html` 的 `<title>` 以文件名 PAGE ID 开头；若存在 `versions/{v}/prototypes/`，根原型与该工作版本镜像的文件集合及同名内容必须一致（含入口与 assets），不得只同名不同页型 | `/lny-prd-prototype` 以当前规格重新同步完整镜像 | 高 |
 
@@ -147,12 +149,11 @@
 |--------|------|------------|--------|
 | 状态演示面板 | 汇总页：状态演示固定宽 200px（收起后 0）；顶栏可收起；选项与 `ui/COMP-*` 矩阵逐字一致 | `/lny-prd-prototype` 补状态演示 | 中 |
 | 规格说明宽度 | 右侧规格说明固定 375px | `/lny-prd-prototype` 按套件调整 | 中 |
-| 范围说明 | 顶栏「范围说明」为当前页人话短说明（`brief`）；不链 `prototypes/index.html` | `/lny-prd-prototype` 补 `brief` | 中 |
 | 移动端预览缩放 | MP/H5/APP：`preview-area` 无外围滚动条；含 `phone-scale-host` + `fitPhoneFrame()`；页单/状态演示收起、切页显隐、resize 时重算 | `/lny-prd-prototype` 按 §D 补缩放 | 高 |
 | 原型套件引用 | 各端 `PAGE-*.html` 引用同端 `assets/mui-kit.css`、`md-icons.js`、`icons-extra.js`；`index.html` 另引 `proto-shell.css` + `proto-shell.js`；不得存在 `prototypes-mui-app/`；缺闭集图标须由 `search-icons.py` 写入 extras | `/lny-prd-prototype` 按 kit 补齐 | 中 |
 | 演示按钮归位 | `PAGE-*.html` 内不得含 `demo-*`/`setDemo*`/`mock-*`（后端状态切换须归位状态演示） | `/lny-prd-prototype` 移至状态演示 | 中 |
 | 原型 JS 引用 | 静态无残留调用；可选 Console 无 ReferenceError | `/lny-prd-prototype` 按 G.1 修 | 高 |
-| 交互体验设计 §2.3 | 每个 `ui/PAGE-*` 含观感与舒适、动效与过渡、微反馈、收纳与浮层；不得只列控件 | `/lny-prd-ui` 补 §2.3 | 高 |
+| 交互体验设计 §2.3 | 每个 `ui/PAGE-*` 含观感与舒适、动效与过渡、微反馈、收纳与浮层；不得只列控件。除一次直接点击的简单交互外，复杂交互须在 PAGE §2.3 或所引 COMP 写清触发、可见过程/过渡、结果状态及适用的取消/失败/禁用反馈 | `/lny-prd-ui` 补 §2.3 / COMP 状态矩阵 | 高 |
 | 布局与 COMP 态 | 布局与 `ui/PAGE-*` 一致；COMP 态与矩阵可演示 | ② 或 ⑥ | 中 |
 | 逐页对照 G.4 | 每个业务 `PAGE-*.html` 对照 `pages_prd`：ASCII 只定分区；视觉须达 `gold/` 金样下限且不照搬演示功能；须能过 `verify-prototype-coverage.py`。密度按共享 `PT-DENSITY`，移动列表、D1-1 与悬浮控件分别按 `PT-MOBILE-LIST`、`PT-DESKTOP-LIST`、`PT-FLOAT`；另查无低保真占位、封面变体、状态栏、ASCII 残留及桌面表 Chip/缩略图 | `/lny-prd-prototype` 按共享页型规则与 G.4/G.5 补页（每轮最多 3 页） | 高 |
 | 接口与 Feature | 展示字段能在 `api/API-*` 找到；主操作有 API；流程与 FEATURE/AC 可对照 | ③④ 或 ⑥ | 中 |
@@ -163,7 +164,7 @@
 
 ## 三、产品就绪度检查（不计 SP）
 
-> 第三大类，与文档性、功能性并列。**不算故事点**。  
+> 第三大类，与文档性、功能性并列。**不算标准工时点**。
 > **3.1** 断链 → 产品链「不可估」（断点举证在 **§1.4**，本节虚引用）；**3.2～3.4** 缺口 → 仅标「角色估点信号不全」或「迭代估点信号不全」，**不**单独把产品链打成不可估。
 
 ### 3.1 产品可评估链（阻塞「不可估」·虚引用）
@@ -193,7 +194,7 @@
 
 | 因子 | 须能从何处读出 | 缺失/矛盾时 |
 |------|----------------|-------------|
-| 角色基线 | `pages_prd` §7 流程角色（`主流程`/`支线`/`辅助`/`设置`） | 信号不全 |
+| 页面实现基线 | 每个纳入的非 AD 业务 PAGE 固定 0.5；`_shell` 不计 | 对象缺失 |
 | 功能数量 | 单页关联 FEATURE 个数（优先 §6→§7→反查；多源不一致 → 矛盾） | 信号不全 / 矛盾 |
 | 交互体验 | `ui/PAGE` + manifest：`简单`/`标准`/`较复杂`/`极复杂` | 信号不全 |
 | 视觉细节 | `ui/PAGE` + manifest：`粗糙`/`标准`/`精致`/`极精致` | 信号不全 |
@@ -207,7 +208,7 @@
 | ① AD页面规模 | AD 页骨架码、`D5弹窗数`（=清单行数）、§7 本页API条数（=§5） | 信号不全 |
 | ② 自有API | 每条含服务对象、数据操作形态、第三方联动、特殊通道；联动「是」须挂 EXT | 信号不全 |
 | ③ EXT对接 | 三因子可核；**联调门槛须人工给定**（缺则委派索取，禁止 AI 自编） | 信号不全 |
-| ④ FEATURE规则 | 纳入 FEATURE 的分支数 + AC 表行数 | 信号不全 |
+| ④ FEATURE规则 | 纳入 FEATURE 的分支数；AC 表仍须存在但只作产品链审计、不计分 | 信号不全 |
 
 ### 3.4 迭代估点信号（有 `*_changes.md` 时；不计点）
 

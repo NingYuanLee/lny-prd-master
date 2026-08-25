@@ -11,6 +11,10 @@ from pathlib import Path
 PAGE_RE = re.compile(r"PAGE-[A-Z]+-\d+")
 COMP_RE = re.compile(r"COMP-\d+")
 QUOTE_RE = re.compile(r"「([^」]+)」")
+FENCED_BLOCK_RE = re.compile(
+    r"^[ \t]*(```|~~~).*?^[ \t]*\1[ \t]*$",
+    re.M | re.S,
+)
 STYLE_THEME_RE = re.compile(
     r"\b(background|color|font|border(-color|-radius)?)\s*:",
     re.I,
@@ -43,6 +47,15 @@ LIST_MODULE_CLASSES = {
     "md-group-list",
 }
 FUNC_AREA_CLASSES = {"md-king", "md-svc-strip", "md-set-pair", "md-set-group"}
+MOBILE_SECTION_HEAD_OPTIONAL_CLASSES = {
+    "md-card--order",
+    "md-chapter-list",
+    "md-form-page",
+    "md-group-list",
+    "md-set-page",
+    "md-tree-page",
+}
+MOBILE_LIST_CARD_CLASSES = {"md-card--order", "md-card--row"}
 
 
 def terminal_of(page_id: str) -> str:
@@ -88,7 +101,10 @@ def parse_prd(text: str) -> tuple[set[str], set[str], list[str]]:
         if pid:
             jumps.add(pid)
     quotes: list[str] = []
-    for q in QUOTE_RE.findall(sec3):
+    # ASCII wireframes describe layout and may use illustrative copy. Only prose/table
+    # requirements are label contracts for the prototype coverage check.
+    label_contract = FENCED_BLOCK_RE.sub("", sec3)
+    for q in QUOTE_RE.findall(label_contract):
         q = q.strip()
         if q and q not in SKIP_QUOTES and q not in quotes:
             quotes.append(q)
@@ -118,7 +134,7 @@ class PageParser(HTMLParser):
         self.has_mobile_appbar = False
         self.has_center_appbar = False
         self.card_count = 0
-        self.non_row_card_count = 0
+        self.unsupported_list_card_count = 0
         self.table_rows = 0
         self.bare_media = 0
         self.has_card_density_context = False
@@ -126,10 +142,12 @@ class PageParser(HTMLParser):
         self.has_list_toolbar = False
         self.has_list_module = False
         self.has_func_area = False
+        self.classes_seen: set[str] = set()
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         ad = {k: (v or "") for k, v in attrs}
         classes = set((ad.get("class") or "").split())
+        self.classes_seen.update(classes)
         ancestors = [item_classes for _, item_classes in self.stack]
         if tag not in VOID_ELEMENTS:
             self.stack.append((tag, classes))
@@ -163,8 +181,8 @@ class PageParser(HTMLParser):
             self.has_mobile_appbar = True
         if "md-card" in classes:
             self.card_count += 1
-            if "md-card--row" not in classes:
-                self.non_row_card_count += 1
+            if not classes & MOBILE_LIST_CARD_CLASSES:
+                self.unsupported_list_card_count += 1
         if "md-media-ph" in classes:
             if not any(re.match(r"md-media-ph--\d+", c) for c in classes):
                 self.bare_media += 1
@@ -251,7 +269,15 @@ class PageParser(HTMLParser):
             self.text_parts.append(data)
 
 
-def check_html(path: Path, page_id: str, comps: set[str], jumps: set[str], quotes: list[str]) -> list[str]:
+def check_html(
+    path: Path,
+    page_id: str,
+    comps: set[str],
+    jumps: set[str],
+    quotes: list[str],
+    *,
+    fixture: bool = False,
+) -> list[str]:
     errors: list[str] = []
     if not path.is_file():
         return [str(path) + ": file not found"]
@@ -303,17 +329,11 @@ def check_html(path: Path, page_id: str, comps: set[str], jumps: set[str], quote
     errors.extend(check_density(path, parser))
     if parser.is_mobile and "proto-page.js" not in parser.scripts:
         errors.append(str(path) + ": mobile page missing proto-page.js (injects fixed status bar)")
-    if (
-        parser.is_mobile
-        and not parser.has_section_head
-        and "md-set-page" not in text
-        and "md-chapter-list" not in text
-        and not (parser.has_func_area and not parser.has_list_module)
-    ):
+    if mobile_section_head_required(parser) and not parser.has_section_head:
         errors.append(str(path) + ": mobile page missing md-section-head")
     if parser.is_desktop and not parser.has_breadcrumb:
         errors.append(str(path) + ": desktop page missing md-breadcrumb")
-    errors.extend(check_visual_floor(path, page_id, text, parser))
+    errors.extend(check_visual_floor(path, page_id, text, parser, fixture=fixture))
     return errors
 
 
@@ -341,14 +361,15 @@ def check_density(path: Path, parser: PageParser) -> list[str]:
     return errors
 
 
-WIZARD_DEMO_MARKERS = ("data-wizard-panel", "金样对照", "仅用于金样", "下方签仅")
-WIZARD_FIXTURE_PAGES = {"PAGE-MP-005", "PAGE-AD-003"}
-
-
-def is_wizard_demo_page(text: str, page_id: str) -> bool:
-    if page_id in WIZARD_FIXTURE_PAGES:
-        return True
-    return any(marker in text for marker in WIZARD_DEMO_MARKERS)
+def mobile_section_head_required(parser: PageParser) -> bool:
+    """Require section headings only on page types where they carry structure."""
+    if not parser.is_mobile:
+        return False
+    if parser.classes_seen & MOBILE_SECTION_HEAD_OPTIONAL_CLASSES:
+        return False
+    if parser.has_func_area and not parser.has_list_module:
+        return False
+    return True
 
 
 DIALOG_ID_RE = re.compile(
@@ -434,13 +455,15 @@ def check_dialog_surface(path: Path, text: str) -> list[str]:
     return errors
 
 
-def check_wizard_nav(path: Path, page_id: str, text: str) -> list[str]:
+def check_wizard_nav(
+    path: Path, page_id: str, text: str, *, fixture: bool = False
+) -> list[str]:
     """PT-STATE-FLOW: one wizard nav type per business page; no gold tab-demo on business pages."""
     errors: list[str] = []
     prefix = str(path) + ": "
-    demo = is_wizard_demo_page(text, page_id)
+    demo = fixture
 
-    if "data-wizard-panel" in text and page_id not in WIZARD_FIXTURE_PAGES:
+    if "data-wizard-panel" in text and not demo:
         errors.append(
             prefix
             + "business page must not copy gold wizard md-tabs demo (data-wizard-panel)"
@@ -477,11 +500,18 @@ def check_wizard_nav(path: Path, page_id: str, text: str) -> list[str]:
     return errors
 
 
-def check_visual_floor(path: Path, page_id: str, text: str, parser: PageParser) -> list[str]:
+def check_visual_floor(
+    path: Path,
+    page_id: str,
+    text: str,
+    parser: PageParser,
+    *,
+    fixture: bool = False,
+) -> list[str]:
     """Block wireframe-like HTML that still passes quote/count checks."""
     errors: list[str] = []
     prefix = str(path) + ": "
-    errors.extend(check_wizard_nav(path, page_id, text))
+    errors.extend(check_wizard_nav(path, page_id, text, fixture=fixture))
     errors.extend(check_dialog_backdrop(path, text))
     errors.extend(check_drawer_backdrop(path, text))
     errors.extend(check_dialog_surface(path, text))
@@ -496,8 +526,11 @@ def check_visual_floor(path: Path, page_id: str, text: str, parser: PageParser) 
             errors.append(prefix + "desktop table missing md-chip/md-thumb/md-row-goods")
     if parser.is_desktop and "md-d1__form" in text and "md-field--sm" not in text:
         errors.append(prefix + "form fields must use md-field--sm")
-    if parser.is_mobile and parser.has_list_toolbar and parser.non_row_card_count:
-        errors.append(prefix + "mobile list cards must use md-card--row")
+    if parser.is_mobile and parser.has_list_toolbar and parser.unsupported_list_card_count:
+        errors.append(
+            prefix
+            + "mobile list cards must use md-card--row or md-card--order"
+        )
     if parser.is_mobile and "md-tabbar" in text and "data-icon" not in text:
         errors.append(prefix + "tabbar missing data-icon")
     if parser.has_tabbar and parser.has_mobile_appbar and not parser.has_center_appbar:
@@ -571,10 +604,17 @@ def main(argv: list[str]) -> int:
     parser.add_argument("prd_root")
     parser.add_argument("--version", default=None)
     parser.add_argument("--page", action="append", default=[])
+    parser.add_argument(
+        "--fixture",
+        action="append",
+        default=[],
+        help="PAGE id intentionally containing a gold/demo comparison",
+    )
     args = parser.parse_args(argv[1:])
     prd_root = Path(args.prd_root).resolve()
     version = resolve_version(prd_root, args.version)
     pages = args.page or list_pages(prd_root)
+    fixture_pages = set(args.fixture)
     if not pages:
         print("no PAGE-*.html under prototypes/", file=sys.stderr)
         return 1
@@ -603,7 +643,16 @@ def main(argv: list[str]) -> int:
             comps, jumps, quotes = parse_prd(text)
             jumps.discard("无")
         for html in html_paths(prd_root, version, page_id):
-            all_errors.extend(check_html(html, page_id, comps, jumps, quotes))
+            all_errors.extend(
+                check_html(
+                    html,
+                    page_id,
+                    comps,
+                    jumps,
+                    quotes,
+                    fixture=page_id in fixture_pages,
+                )
+            )
 
     if all_errors:
         for line in all_errors:

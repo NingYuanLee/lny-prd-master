@@ -16,7 +16,7 @@ description: >-
 
 ## LNY-PRD 总控协议（master 编排）
 
-**适用范围**：PRD 项目根（存在或将生成 `main_spec.md`）。路径以本技能包目录为准。
+**适用范围**：PRD 项目根（存在或将生成 `main_spec.md`）。路径以本技能包目录为准。任何写入或子任务委派前 Read [`reference-artifact-paths.md`](reference-artifact-paths.md)；当前工作版本不是根规格镜像目录。
 
 ### 1. 技能边界
 
@@ -34,7 +34,7 @@ description: >-
 | ⑧ | `lny-prd-iter/SKILL.md` | 新版本目录、台账、`eval_signals`、变更记录新行 | 写规格正文、生成 `pages_prd` |
 | ⑨ | `lny-prd-sp/SKILL.md` | `sp_report.md`；落盘后同轮交 ⑥ **只刷总入口**（§3.3） | 改规格/台账/各端原型页；不可估则停算（仍刷总入口） |
 
-子技能「写产物纪律」一并遵守。改根四规范正文 → 当前版本 `iteration_notes.md` 文末追加流水（§1.1），不得靠变更记录表记账。
+子技能「写产物纪律」一并遵守。改根四规范正文 → 当前版本 `iteration_notes.md` 文末追加流水（§1.1），不得靠变更记录表记账。协议唯一成树镜像是 `prototypes/**` → `versions/{v}/prototypes/**`；禁止镜像根四规范与 `ui/`、`api/`、`feature/`。
 
 ### 1.1 版本号与变更记录
 
@@ -150,6 +150,7 @@ description: >-
 ### 4. 防碎片化（总控层要求）
 
 - 进入子步后，遵守该步 `SKILL.md` 中的 **写产物纪律**（先读全篇或全章、变更清单、整块落盘）。
+- 父 Agent 委派时只列 [`reference-artifact-paths.md`](reference-artifact-paths.md) 的正式目标；禁止自加 `mirror to versions/...`、版本根双写或备用副本。冲突委派不下传。
 - 同一轮对话：默认完成 **一个** 判定步骤；**例外**为 **§3.1 规格三件套批**、**§3.2 目标驱动补链（可 ②→⑥，其中 ⑥ 每轮最多 3 个业务页）**、**§3.3 估点后只刷总入口**、**G-partial 续批 ⑥**。结束时报：**已执行步（可多项）**、**下一步建议**、**将 Read 的 SKILL 路径**。
 
 ---
@@ -231,6 +232,7 @@ description: >-
 ## Additional resources
 
 - 立项 YAML 与 `main_spec.md` 模板：[`reference-init.md`](reference-init.md)
+- 根规格、版本产物与唯一镜像范围：[`reference-artifact-paths.md`](reference-artifact-paths.md)
 - 框架排除：[`framework-exclusions.md`](framework-exclusions.md)
 - ②⑤⑥ 共用页型职责与金样映射：[`reference-page-types.md`](reference-page-types.md)（含 **「树 vs 章节列表选型」**）
 - `api_spec.md` → `lny-prd-api/reference.md`

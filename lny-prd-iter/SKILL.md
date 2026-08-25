@@ -14,6 +14,7 @@ description: >-
 ## Additional resources
 
 - 输入 YAML、台账/eval_signals/`iteration_notes` 模板：[`reference.md`](reference.md)
+- 正式落点与版本目录白名单：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
 
 ## 角色边界
 
@@ -37,7 +38,7 @@ description: >-
 
 ## 执行步骤
 
-落盘前 Read [`reference.md`](reference.md)。
+落盘前 Read [`reference.md`](reference.md) 与 `lny-prd-master/reference-artifact-paths.md`。新版本目录只写本步白名单文件，禁止复制根规范或 `ui/`、`api/`、`feature/`。
 
 1. 以 `versions/` 为准核对当前最新；新版本号须更大，否则失败。
 2. 解析输入为九类台账行。

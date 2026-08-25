@@ -15,12 +15,14 @@ description: >-
 
 - 检查表全文：[`reference-checks.md`](reference-checks.md)
 - 跨步骤页型不变量：[`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)
+- 正式落点与唯一镜像范围：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
+- 路径扫描器：`scripts/verify-artifact-paths.py`
 - 框架排除：`lny-prd-master/framework-exclusions.md`
 
 ## 职责与禁止
 
 - **负责**：三大块全检（文档性 | 功能性 | 产品就绪度）；判定产品链可估与 FE/BE/迭代信号是否齐（**不计 SP**）。
-- **禁止**：改规格/台账/原型/流水；本步计算或写入故事点（属 ⑨）。
+- **禁止**：改规格/台账/原型/流水；本步计算或写入标准工时点（属 ⑨）。
 
 开笔前 Read `lny-prd-master/framework-exclusions.md`。规格重复展开框架能力 → 🔴 阻塞。
 
@@ -31,7 +33,7 @@ description: >-
 ## 执行步骤
 
 1. 解析工作版本；目录须已存在。
-2. **文档性**：Read 共享页型不变量，再按 [`reference-checks.md`](reference-checks.md) §1.1→1.6。
+2. **文档性**：Read 产物路径契约与共享页型不变量；先运行 `python <skillDir>/scripts/verify-artifact-paths.py <prdRoot>`，再按 [`reference-checks.md`](reference-checks.md) §1.1→1.6。扫描命中逐项列为高优先级，不删除文件。
 3. **功能性**：先过「无原型」门禁；有原型则按规格外 / 文案 / 主路径 / 实现符合规格。
 4. **产品就绪度**：§3.1 虚引用 + FE 三维 + BE 四维 +（有台账时）迭代信号。
 5. 输出报告（通篇连续序号）+ 委派建议（`#序号`）。可估且信号较齐时建议总控跑 `/lny-prd-sp`。

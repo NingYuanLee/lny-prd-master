@@ -298,10 +298,6 @@
   transition: right var(--md-duration) var(--md-ease);
 }
 .proto-drawer.is-open { right: 0; }
-.proto-drawer--brief {
-  width: 320px;
-  right: -320px;
-}
 .proto-drawer__head {
   display: flex;
   align-items: center;

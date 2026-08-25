@@ -15,6 +15,7 @@ description: >-
 
 - 产出具约束、单页模板、桌面壳模板：[`reference.md`](reference.md)
 - 三步职责、页型编号与金样映射：[`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)
+- 正式落点与唯一镜像范围：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
 - 框架排除：`lny-prd-master/framework-exclusions.md`
 
 ## 三步对照（防错用）
@@ -74,7 +75,7 @@ description: >-
 
 ## 开笔前
 
-Read `lny-prd-master/framework-exclusions.md`。不为已排除项生成单页 PRD。Read `main_spec` §1.5「明确不做」（若有）：**禁止**为清单中的能力写单页 PRD。落盘前 **完整 Read [`reference.md`](reference.md)**。
+Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-artifact-paths.md`。不为已排除项生成单页 PRD。Read `main_spec` §1.5「明确不做」（若有）：**禁止**为清单中的能力写单页 PRD。落盘前 **完整 Read [`reference.md`](reference.md)**。
 
 ## 职责与禁止
 

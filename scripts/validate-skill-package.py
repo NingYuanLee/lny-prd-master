@@ -46,6 +46,7 @@ TEXT_NAMES = {".gitignore", "LICENSE"}
 EXCLUDED_PARTS = {".cursor", ".git", "__pycache__", "node_modules"}
 QUICK_VALIDATE = ROOT / "scripts" / "quick_validate.py"
 INSTALLER_TESTS = ROOT / "scripts" / "test_install_skills.py"
+ARTIFACT_PATH_CHECKER = ROOT / "lny-prd-check" / "scripts" / "verify-artifact-paths.py"
 
 
 def fail(errors: list[str], message: str) -> None:
@@ -343,6 +344,15 @@ def import_module(path: Path, name: str):
 
 
 def validate_coverage_regressions(module, errors: list[str]) -> None:
+    _, _, labels = module.parse_prd(
+        "## 3. 页面模块详述\n"
+        "```\n节点「仅示意」\n```\n"
+        "- **结构与控件**：按钮「提交」\n"
+        "## 4. 交互\n"
+    )
+    if labels != ["提交"]:
+        fail(errors, "coverage label parser treated fenced wireframe copy as a label contract")
+
     naked = module.PageParser()
     naked.feed("<label class=md-field><input></label><input>")
     if not any("naked <input>" in error for error in naked.errors) or naked.stack:
@@ -382,9 +392,60 @@ def validate_coverage_regressions(module, errors: list[str]) -> None:
         '<header class="md-list-toolbar"></header><article class="md-card"></article></div>'
     )
     wrong_card.feed(wrong_text)
-    visual_errors = module.check_visual_floor(Path("mobile-list.html"), wrong_text, wrong_card)
-    if not any("mobile list cards must use md-card--row" in error for error in visual_errors):
+    visual_errors = module.check_visual_floor(
+        Path("mobile-list.html"), "PAGE-MP-002", wrong_text, wrong_card
+    )
+    if not any("mobile list cards must use md-card--row or md-card--order" in error for error in visual_errors):
         fail(errors, "coverage accepted a non-row card inside a mobile list")
+
+    order_list = module.PageParser()
+    order_text = (
+        '<div class="md-mobile-page md-standard">'
+        '<header class="md-list-toolbar"></header>'
+        '<article class="md-card md-card--order"></article></div>'
+    )
+    order_list.feed(order_text)
+    order_errors = module.check_visual_floor(
+        Path("mobile-order-list.html"), "PAGE-MP-014", order_text, order_list
+    )
+    if any("mobile list cards must use" in error for error in order_errors):
+        fail(errors, "coverage rejected md-card--order as a supported mobile list card")
+
+    generic_mobile = module.PageParser()
+    generic_mobile.feed('<div class="md-mobile-page md-standard"></div>')
+    if not module.mobile_section_head_required(generic_mobile):
+        fail(errors, "coverage stopped requiring section heads on generic mobile pages")
+    for page_class in ("md-tree-page", "md-form-page"):
+        typed_mobile = module.PageParser()
+        typed_mobile.feed(
+            f'<div class="md-mobile-page md-standard {page_class}"></div>'
+        )
+        if module.mobile_section_head_required(typed_mobile):
+            fail(errors, f"coverage required a section head on {page_class}")
+    for content_class in ("md-group-list", "md-card md-card--order"):
+        typed_mobile = module.PageParser()
+        typed_mobile.feed(
+            '<div class="md-mobile-page md-standard">'
+            f'<div class="{content_class}"></div></div>'
+        )
+        if module.mobile_section_head_required(typed_mobile):
+            fail(errors, f"coverage required a section head on {content_class}")
+
+    wizard_demo = (
+        '<div class="md-form-page"><div data-wizard-panel="stepper">'
+        '<div class="md-stepper"></div><div class="md-advance"></div>'
+        '</div></div>'
+    )
+    fixture_errors = module.check_wizard_nav(
+        Path("gold/mobile-wizard.html"), "mobile-wizard", wizard_demo, fixture=True
+    )
+    if fixture_errors:
+        fail(errors, "coverage rejected a declared gold wizard fixture")
+    business_errors = module.check_wizard_nav(
+        Path("business.html"), "PAGE-MP-099", wizard_demo
+    )
+    if not any("business page must not copy" in error for error in business_errors):
+        fail(errors, "coverage accepted gold wizard demo markup on a business page")
 
 
 def validate_migration(errors: list[str]) -> None:
@@ -449,6 +510,51 @@ must not migrate
             fail(errors, f"migration left transaction files behind: {leftovers}")
 
 
+def validate_artifact_path_checker(errors: list[str]) -> None:
+    with tempfile.TemporaryDirectory(prefix="lny-prd-artifact-paths-") as temp:
+        root = Path(temp)
+        version = root / "versions" / "v1.0.0"
+        (root / "api").mkdir()
+        (root / "ui").mkdir()
+        (root / "feature").mkdir()
+        (root / "prototypes" / "MP").mkdir(parents=True)
+        (version / "pages_prd" / "pages" / "index").mkdir(parents=True)
+        (version / "prototypes" / "MP").mkdir(parents=True)
+        for name in ("main_spec.md", "ui_manifest.md", "api_spec.md", "feature_spec.md"):
+            (root / name).write_text("# spec\n", encoding="utf-8")
+        (root / "api" / "API-MP-001.md").write_text("# API\n", encoding="utf-8")
+        (root / "ui" / "PAGE-MP-001.md").write_text("# PAGE\n", encoding="utf-8")
+        (root / "feature" / "FEATURE-001.md").write_text("# Feature\n", encoding="utf-8")
+        (root / "prototypes" / "index.html").write_text("ok\n", encoding="utf-8")
+        (version / "prototypes" / "index.html").write_text("ok\n", encoding="utf-8")
+        clean = run([sys.executable, str(ARTIFACT_PATH_CHECKER), str(root)])
+        if clean.returncode:
+            fail(errors, "artifact path checker rejected a canonical project:\n" + clean.stderr.strip())
+
+        (root / "index.html").write_text("wrong\n", encoding="utf-8")
+        (version / "index.html").write_text("wrong\n", encoding="utf-8")
+        (version / "main_spec.md").write_text("copy\n", encoding="utf-8")
+        (version / "api").mkdir()
+        (version / "api" / "API-MP-001.md").write_text("copy\n", encoding="utf-8")
+        (version / "FEATURE-001.md").write_text("copy\n", encoding="utf-8")
+        invalid = run([sys.executable, str(ARTIFACT_PATH_CHECKER), str(root)])
+        output = invalid.stdout + invalid.stderr
+        expected_codes = {
+            "ROOT_INDEX",
+            "VERSION_ROOT_INDEX",
+            "VERSION_SPEC_COPY",
+            "VERSION_SPEC_TREE",
+            "VERSION_LOOSE_DETAIL",
+        }
+        missing = sorted(code for code in expected_codes if code not in output)
+        if invalid.returncode != 1 or missing:
+            fail(
+                errors,
+                "artifact path checker missed forbidden project artifacts: "
+                f"returncode={invalid.returncode}, missing={missing}\n{output.strip()}",
+            )
+
+
 def validate_prototypes(errors: list[str]) -> None:
     scripts = ROOT / "lny-prd-prototype" / "scripts"
     utf8 = scripts / "verify-prototype-utf8.py"
@@ -481,6 +587,8 @@ def validate_prototypes(errors: list[str]) -> None:
     command = [sys.executable, str(coverage), str(example), "--version", "v1.0.0"]
     for page in pages:
         command.extend(("--page", page))
+    for fixture in ("PAGE-AD-003", "PAGE-MP-005"):
+        command.extend(("--fixture", fixture))
     require_run(command, errors, "prototype coverage")
 
     with tempfile.TemporaryDirectory(prefix="lny-prd-kit-") as temp:
@@ -510,7 +618,9 @@ def validate_prototypes(errors: list[str]) -> None:
         return
     validate_coverage_regressions(module, errors)
     for gold in sorted((ROOT / "lny-prd-prototype" / "gold").glob("*.html")):
-        gold_errors = module.check_html(gold, gold.stem, set(), set(), [])
+        gold_errors = module.check_html(
+            gold, gold.stem, set(), set(), [], fixture=True
+        )
         for error in gold_errors:
             fail(errors, "gold validation: " + error)
 
@@ -525,6 +635,7 @@ def main() -> int:
     validate_example_identity_and_mirror(errors)
     validate_kit_copies(errors)
     validate_migration(errors)
+    validate_artifact_path_checker(errors)
     validate_prototypes(errors)
     require_run(
         [sys.executable, str(INSTALLER_TESTS), "-v"],
@@ -539,7 +650,7 @@ def main() -> int:
     print(
         f"skill package validation ok: {len(SKILL_DIRS)} skills; bundle/version contract; "
         "runtime examples isolation; real YAML + quick validation; links; UTF-8; Python/JS; "
-        "installer transactions; migration; kit/gold; exact mirror; fixture + negative coverage"
+        "installer transactions; migration; artifact paths; kit/gold; exact mirror; fixture + negative coverage"
     )
     return 0
 

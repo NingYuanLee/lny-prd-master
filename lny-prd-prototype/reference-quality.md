@@ -11,7 +11,7 @@
 | 页面出现 `?`/半拉中文 | StrReplace 破坏 UTF-8 多字节中文 | 整文件 UTF-8 写入；仅改 ASCII 可用 StrReplace | StrReplace 含 CJK / >3 行区块 |
 | `UnicodeDecodeError: invalid continuation byte` | 文件已是无效 UTF-8 | 从同端已验收页复制再改 | `read_text(errors='replace')` 后写回 |
 | PowerShell `python -c` 失败 | Windows GBK 与 UTF-8 混用 | 中文写在 `.py` 源码内（`# -*- coding: utf-8 -*-`） | `python -c "…中文…"` / Shell heredoc |
-| 原型镜像不一致 | 对主路径和镜像分次 StrReplace | 同时写 `prototypes/` + `versions/.../prototypes/`，或 `shutil.copy2` | 对两路径分别 StrReplace |
+| 原型镜像不一致 | 对主路径和镜像分次 StrReplace | 先写 `prototypes/`，再以该目录为源根按相对路径复制到 `versions/{v}/prototypes/` | 对两路径分别 StrReplace；把多来源文件批量复制到版本根 |
 
 #### F.2 写后验收（必做）
 

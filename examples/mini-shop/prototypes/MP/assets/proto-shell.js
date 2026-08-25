@@ -1,4 +1,4 @@
-/* Prototype shell: sidebar, AppBar, 状态演示, 规格说明, 范围说明, phone scale. */
+/* Prototype shell: sidebar, AppBar, 状态演示, 规格说明, phone scale. */
 (function () {
   "use strict";
 
@@ -9,7 +9,6 @@
   var sidebarOpen = cfg.sidebarOpen !== false;
   var statePanelOpen = true;
   var drawerOpen = false;
-  var briefOpen = false;
   var collapsedGroups = {};
 
   /** Directory URL of current page (always ends with /). Fixes serve cleanUrls → /MP without slash. */
@@ -184,14 +183,6 @@
     });
   }
 
-  function fillBrief(page) {
-    var body = document.getElementById("briefDrawerBody");
-    if (!body) return;
-    var text = (page && page.brief) ? String(page.brief).trim() : "";
-    body.innerHTML = "";
-    body.appendChild(el("p", { text: text || "未填写" }));
-  }
-
   function loadPage(id) {
     var page = pageById(id);
     if (!page) return;
@@ -216,7 +207,6 @@
     if (frame) frame.src = relUrl(page.file);
     renderStatePanel(page);
     fillDrawer(page);
-    fillBrief(page);
     if (mode === "mobile") setTimeout(window.fitPhoneFrame, 0);
   }
 
@@ -238,23 +228,14 @@
 
   function setDrawer(open) {
     drawerOpen = !!open;
-    if (drawerOpen) briefOpen = false;
-    syncSidePanels();
-  }
-
-  function setBrief(open) {
-    briefOpen = !!open;
-    if (briefOpen) drawerOpen = false;
     syncSidePanels();
   }
 
   function syncSidePanels() {
     var spec = document.getElementById("specDrawer");
-    var brief = document.getElementById("briefDrawer");
     var b = document.getElementById("specBackdrop");
     if (spec) spec.classList.toggle("is-open", drawerOpen);
-    if (brief) brief.classList.toggle("is-open", briefOpen);
-    if (b) b.classList.toggle("is-open", drawerOpen || briefOpen);
+    if (b) b.classList.toggle("is-open", drawerOpen);
   }
 
   function mountSkillCredit() {
@@ -379,16 +360,6 @@
       el("button", {
         type: "button",
         className: "md-btn md-btn--text",
-        text: "范围说明",
-        on: {
-          click: function () {
-            setBrief(!briefOpen);
-          },
-        },
-      }),
-      el("button", {
-        type: "button",
-        className: "md-btn md-btn--text",
         text: "规格说明",
         on: {
           click: function () {
@@ -426,7 +397,6 @@
       on: {
         click: function () {
           setDrawer(false);
-          setBrief(false);
         },
       },
     });
@@ -447,29 +417,11 @@
       el("div", { id: "specDrawerBody", className: "proto-drawer__body" }),
     ]);
 
-    var briefDrawer = el("aside", { id: "briefDrawer", className: "proto-drawer proto-drawer--brief" }, [
-      el("div", { className: "proto-drawer__head" }, [
-        el("h2", { text: "范围说明" }),
-        el("button", {
-          type: "button",
-          className: "md-icon-btn",
-          "aria-label": "关闭",
-          on: {
-            click: function () {
-              setBrief(false);
-            },
-          },
-        }, [icon("close")]),
-      ]),
-      el("div", { id: "briefDrawerBody", className: "proto-drawer__body" }),
-    ]);
-
     root.innerHTML = "";
     root.appendChild(sidebar);
     root.appendChild(main);
     root.appendChild(backdrop);
     root.appendChild(drawer);
-    root.appendChild(briefDrawer);
     mountSkillCredit();
 
     loadPage(currentId);

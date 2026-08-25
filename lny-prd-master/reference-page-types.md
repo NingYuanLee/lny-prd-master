@@ -54,9 +54,9 @@ PAGE 编号按终端独立分配，MP 与 AD 的相同序号不代表相同页�
 
 MP-004、MP-007、MP-011、AD-003～AD-007、AD-009～AD-014 是套件/形态样例，不是每个业务项目的必有页面。业务表单按规格裁字段；悬浮胶囊或按钮仅在规格点名时加入业务页。列表页顶部是搜索与筛选工具条，不是返回标题栏。夹具 `PAGE-AD-001` 是**分页标准列表**且含筛+功能栏；六型总览与树表/卡片只在金样 `desktop-lists.html`（只对标列表区）。商品**字段列表**夹具 `PAGE-MP-012` / `PAGE-AD-012` 对标 `mobile-fields` / **`desktop-fields`**（不是 `desktop-detail` 字段签）。表内嵌套无独立夹具 PAGE，见 `desktop-lists.html` 第二签（分页树形列表）。状态导览合览无独立夹具 PAGE，见 `PAGE-AD-003` 与 `desktop-state-flow.html`。
 
-## mini-shop 夹具 · 金样 · 套件对照（回归）
+## 页型标识 · 金样 · 套件对照
 
-`examples/mini-shop/prototypes/{MP|AD}/PAGE-*.html` 为各端 **15 / 14 页回归夹具**（MP 含 `PAGE-MP-015` 章节目录）；金样在 `lny-prd-prototype/gold/`（触屏 15 + 桌面 14 个 `*.html`，其中 `desktop-state-flow.html` 为 AD-003 合览、无独立夹具）；套件经 `copy-kit.py` 写入各端 `assets/`。一键同步夹具注释、kit、版本镜像：`python lny-prd-prototype/scripts/sync-mp-sheet-fixtures.py`；对照校验：`verify-fixture-gold-parity.py`。
+下表 PAGE 仅作页型回归标识，运行时无需读取仓库示例。金样在 `lny-prd-prototype/gold/`（触屏 15 + 桌面 14 个 `*.html`，其中 `desktop-state-flow.html` 为 AD-003 合览）；套件由 `copy-kit.py` 写入各端 `assets/`。
 
 | 夹具 | 金样 | 说明 |
 |------|------|------|

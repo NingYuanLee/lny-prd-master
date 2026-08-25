@@ -192,8 +192,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
             apis: "API-MP-001 · 查询推荐\n进页请求；失败 Toast。",
             features: "FEATURE-001 · … · 本页关联点",
             actions: "点击 · 卡片无出页（当前演示）"
-          },
-          brief: "首页展示推荐商品，可从底栏进入商品列表。"
+          }
         }
       ]
     };
@@ -209,7 +208,6 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 |------|------|
 | `mode` | MP/H5/APP → `mobile`（手机框 + `fitPhoneFrame`）；PC/AD → `desktop`（iframe 铺满，无手机框） |
 | `tabBarExempt` | 页内已有 TabBar/Tabs 承担 COMP 切态时 `true`，壳层隐藏状态演示 |
-| `brief` | 当前页范围说明（人话，无 API 编号） |
 | `comps[].states` | 与 `ui/COMP-*.md` 状态矩阵 **逐字一致** |
 | `spec` 五项 | 顺序固定；接口首行 `API-* · 描述`，交互另起一行 |
 
