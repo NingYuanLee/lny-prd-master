@@ -32,6 +32,7 @@ description: >-
 - 搜图标：`<skillDir>/scripts/search-icons.py`
 - UTF-8 校验：`<skillDir>/scripts/verify-prototype-utf8.py`
 - 规格对照校验：`<skillDir>/scripts/verify-prototype-coverage.py`
+- 浏览器冒烟验收：`<skillDir>/scripts/verify-prototype-browser.mjs`
 - 夹具·金样对照：`scripts/verify-fixture-gold-parity.py`；一键同步 kit+夹具注释：`scripts/sync-mp-sheet-fixtures.py`
 - 框架排除：`lny-prd-master/framework-exclusions.md`
 
@@ -142,14 +143,17 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 先清单后落盘。含 CJK 的文件整文件 UTF-8 写入，禁止用 StrReplace 改中文块。每页写后执行 UTF-8 验收；本批全部页写完再跑 coverage。失败则重写，不得交付。细则见 [`reference-quality.md`](reference-quality.md)。
 
-**工具路径**：copy-kit / 搜图标 / UTF-8 / coverage 一律执行 **技能包** `<skillDir>/scripts/…`，不要把技能脚本永久拷进 `prdRoot`。
+**工具路径**：copy-kit / 搜图标 / UTF-8 / coverage / 浏览器冒烟一律执行 **技能包** `<skillDir>/scripts/…`，不要把技能脚本永久拷进 `prdRoot`。浏览器冒烟依赖宿主可解析 `playwright` 与 `pngjs`；依赖只装在宿主或技能仓库，**禁止**为验收在业务 `prdRoot` 初始化 npm 或生成 `node_modules/`。
 
 **临时文件清理（交付前必做）**：过程中若在 `prdRoot` 建了辅助脚本（如 `prdRoot/scripts/`）、草稿、备份、一次性生成器等，**用完后必须删干净**再交付（含空目录）。正式原型只保留根 `prototypes/`；禁止将其复制到 `versions/`。系统临时目录优先于业务根目录。
 
 ```text
 python <skillDir>/scripts/verify-prototype-utf8.py <prdRoot>/prototypes/...
 python <skillDir>/scripts/verify-prototype-coverage.py <prdRoot> --version vX.Y.Z --page PAGE-… --page PAGE-…
+node <skillDir>/scripts/verify-prototype-browser.mjs <prdRoot> --page PAGE-… --page PAGE-…
 ```
+
+浏览器脚本 exit 1 表示页面或交互失败，必须修复；exit 2 表示宿主缺 Node 依赖，须明确回报“浏览器冒烟未执行”并继续人工预览，不得伪报通过。截图仅在排障时用 `--artifacts <系统临时目录>` 输出，禁止写入业务项目。
 ## 前置条件
 
 已有 `main_spec.md`。若尚无 `ui_manifest` / 目标页 / `pages_prd`（且非 `ui直出`），或台账仍有 `待②`～`待⑤`：先按开笔前补链，再写原型。不要因此拒绝。
@@ -181,6 +185,6 @@ python <skillDir>/scripts/verify-prototype-coverage.py <prdRoot> --version vX.Y.
 3. 复制 kit 到本批每个 `prototypes/{终端}/assets/`（续批若 assets 已齐可跳过 copy-kit）。
 4. **逐页**：对该页完整 Read `pages_prd`（无则须 `ui直出`）+ `ui/PAGE-*` **§2.3** + COMP。按页类型 Read 金样全文，**对标视觉骨架**（密度/类名不得低于金样），再按本页规格换文案并落地 §2.3 与舒适默认。写完立刻过 [`reference-quality.md`](reference-quality.md) **§G.4 / G.5**。禁止凭记忆、禁止按 ASCII 降质、禁止忽略金样、禁止把金样演示功能搬进规格没写的页。
 5. 按 [`reference-shell.md`](reference-shell.md) 写/刷新各端 `index.html`（及移动端 `map.html`）：**只挂已落盘**的 `PAGE-*.html`。按 [`reference-scope.md`](reference-scope.md) 写 `prototypes/index.html`。禁止写项目根 `index.html`、`versions/{v}/index.html` 或 `versions/{v}/prototypes/`，不写 `scope.html`。
-6. 对本批页跑 UTF-8 脚本 + `verify-prototype-coverage.py` + `<checkSkillDir>/scripts/verify-artifact-paths.py` + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）。任一步失败则重写，不得交付。
+6. 对本批页跑 UTF-8 脚本 + `verify-prototype-coverage.py` + `<checkSkillDir>/scripts/verify-artifact-paths.py` + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）；宿主依赖可用时，再对本批 PAGE 跑 `verify-prototype-browser.mjs`。任一步失败则重写，不得交付；浏览器依赖缺失须按上文披露。
 7. **清理临时文件**：删除本轮在 `prdRoot` 留下的辅助脚本/草稿/备份及空的 `scripts/` 等（见写产物纪律）；未建临时文件可跳过。
 8. 输出：本批路径列表、验收通过说明、**剩余未生成 PAGE 编号**（无则写「全部已齐」）。有剩余时明确下一步：「继续」只续 ⑥。

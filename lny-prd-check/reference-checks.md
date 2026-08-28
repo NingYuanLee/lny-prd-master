@@ -30,6 +30,9 @@
 > **只查清单登记册**：编号规则（§2.1）+ 编号数量（清单行数 = 对应明细文件数）+ 清单内无重复 + 清单 ↔ 文件夹双向一致且唯一。  
 > **不查**文档正文里的交叉引用——归 **§1.4**。  
 > **索引类优先级统一为高**（FEATURE / PAGE / COMP / API / EXT 同类断裂同等阻塞）。
+> 每个明细须满足「索引 ID = 文件名 ID = 基本信息表 ID」；Feature 的索引状态还须与明细状态一致，且状态只能是 `draft` / `active` / `deprecated`。
+>
+> 先运行 `scripts/validate-prd-project.py`。其命中的索引/明细身份漂移、状态漂移、根统计漂移、Feature 引用漂移与 SP 输入漂移直接纳入本节或 §1.4，不再人工重复计数；脚本未覆盖的项目继续按表检查。
 
 | 检查项 | 规则 | 不通过建议 | 优先级 |
 |--------|------|------------|--------|
@@ -39,7 +42,7 @@
 | COMP 编号与索引 | `COMP-{三位序号}`；`ui_manifest` 清单：格式正确、无重复、条数 = `ui/COMP-*.md` 数；双向一致且唯一 | `/lny-prd-ui` 修正/去重/补文件或索引行 | 高 |
 | API 编号与索引 | `API-{终端}-{三位序号}`；`api_spec` §4 清单：格式正确、无重复、条数 = `api/API-*.md` 数；双向一致且唯一 | `/lny-prd-api` 修正/去重/补文件或索引行 | 高 |
 | EXT 编号与索引 | `EXT-{三位序号}`；`api_spec` §2 清单：格式正确、无重复、条数 = `api/EXT-*.md` 数（清单为「无」时文件夹应无 EXT 明细）；双向一致且唯一 | `/lny-prd-api` 修正/去重/补文件或索引行 | 高 |
-| `main_spec` §5 统计对账 | `main_spec` §5 有效页面数 / 有效跨页面组件数（若项目维护）与 `ui_manifest` §3 / §4（及 `ui/` 实文件）一致 | `/lny-prd-ui` 更新 §5 统计 | 中 |
+| `main_spec` §5 统计对账 | 有效页面数 = `ui_manifest` §3.2 中 `active` 页面数，且 active 页面集合 = active Feature 关联页面并集；`deprecated` 不计。`fixture` 仅允许技能包仓库回归样例使用，用户项目出现即报。旧文档无状态列按 active。跨页面组件数与 §4 / `ui/` 实文件一致 | `/lny-prd-ui` 更新状态、Feature 关联或 §5 统计 | 中 |
 | 页面模块编号（条件启用） | **仅当** `ui_manifest` 或 `ui/PAGE-*` 出现「模块编号 / 区域编号」列，或正文使用 `{PAGE-*}-{区域缩写}` 形式时才检查：格式为 `{页面编号}-{区域缩写}`、同清单无重复。**未出现则跳过、不报** | 修改区域缩写或对齐页面编号；建议统一在 PAGE §2 分区标题旁标注 | 低 |
 
 ### 1.3 内容格式规范类
@@ -64,7 +67,9 @@
 | 检查项 | 规则 | 不通过建议 | 优先级 |
 |--------|------|------------|--------|
 | 故事↔功能 | `main_spec` §1.2 每条 `STORY-*` 关联列为有效 `FEATURE-*` 或显式「框架承接」；被引用 FEATURE 须在 `feature_spec` 存在 | `/lny-prd-master` / `/lny-prd-feature` 补关联或改编号 | 高 |
-| FEATURE↔AC | 每个 **active** FEATURE（见「状态口径」）有可验证 AC 表；有数据依赖的 AC 挂 `API-*` / `EXT-*` 或显式「无」 | `/lny-prd-feature` 补 AC / 关联接口 | 高 |
+| FEATURE↔AC↔PAGE | 每个 **active** FEATURE（见「状态口径」）至少一条 AC；同一 Feature 内 AC ID 唯一，验收描述与验证方式非空。新建/修改 AC 涉及页面行为时挂 `PAGE-*`，有数据依赖时挂 `API-*` / `EXT-*`，否则显式「无」；单页 PRD §6 以 `关联AC` 反向登记本页承接的 AC ID，并与 Feature 完全一致。`验证方式`只写证据类型，禁止混入 `FE/BE/MP/AD/PC/APP/H5/TEST` 等终端或交付角色。旧 AC 缺页面列、旧 PAGE 缺 `关联AC` 列可读，修改时补齐 | `/lny-prd-feature` 补 AC 页面/接口引用，或 `/lny-prd-page` 补 PAGE 反向 AC | 高 |
+| 模块来源稳定性 | 使用新交付契约的项目：`main_spec` 有唯一 `MODULE-*` 注册表；Feature 索引/明细的模块编号与显示名一致。旧项目缺字段不阻塞普通 PRD 验收，但不得判定外部台账导出就绪 | `/lny-prd-master` 注册模块，`/lny-prd-feature` 对齐引用 | 高 |
+| Feature 评审语义 | `状态` 只表达 `draft/active/deprecated` 生命周期；独立 `评审状态` 只用 `pending/reviewing/approved/blocked`。缺失按 `pending`，禁止把 active 解释为已批准 | `/lny-prd-feature` 补产品评审事实 | 高 |
 | Feature↔页面/接口 | 每个 FEATURE 关联页面、关联接口非空或显式「无」；页面 ∈ `ui_manifest`；接口 ∈ `api_spec` **§4（API）** 或 **§2（EXT）**，无孤儿引用 | `/lny-prd-feature` 修复引用或补齐页面/接口 | 高 |
 | 非静态 PAGE↔API | 非静态页须关联至少一 `API-*` 或正文标明静态/无数据；静态页须标明 | `/lny-prd-ui` / `/lny-prd-api` 补关联或标静态 | 中 |
 | API 元数据完备 | 纳入口径的 API 明细含 **服务对象**、**数据操作形态**、**API是否涉及第三方联动**、**API是否涉及特殊通道**、**响应形态**；联动为「是」须挂 `EXT-*`。形态六类：`单对象查询`/`简单写入`/`多对象关联查询（普通|复杂）`/`多对象写入（普通|复杂）`；旧无后缀多对象 → 按普通识别 | `/lny-prd-api` 补字段或 EXT | 中 |
@@ -84,6 +89,7 @@
 | 检查项 | 规则 | 不通过建议 | 优先级 |
 |--------|------|------------|--------|
 | 版本一致性 | 变更记录表版本集合与 `versions/` 一一对应；同版本号在单表不得多行；最新版本与目录一致 | 在 `/lny-prd-iter` 统一修订；本步不改文件 | 高 |
+| 交付范围可导出性 | 若要进入外部研发台账：`versions/{v}/delivery_scope.md` 须明确本期 Feature；范围及 Feature 行均 approved，确认/阻塞数为 0，未决决策全 closed。当前最高版本中，`本期开发` 须对应 active，`本期下线` 须对应 deprecated；历史版本保留当时范围，不用当前生命周期反判。缺文件不阻塞普通 PRD 验收，但结论必须写“未具备外部导出条件” | `/lny-prd-iter` 建范围壳，由产品确认后更新；再调用 `/lny-prd-yunxiao` | 高 |
 | 过程性留痕（建议） | 对根目录四规范的修订，宜在 `versions/{对应版本}/iteration_notes.md` 文末有按时间顺序的简短摘要 | 提醒遵守 `lny-prd-master` §1.1；本步不改文件 | 低 |
 | 台账状态单值 | 三类 `*_changes.md` 每行状态只能是 `待②` / `待③` / `待④` / `待⑤` / `已完成` 之一；禁止斜杠、逗号或多个状态并存 | 由对应 ②③④⑤ 子技能按状态机修正；本步不改文件 | 高 |
 | 待办状态 ↔ 缺口 | `待②` 表示本行 UI 尚未完整落规格；`待③` 表示 API 尚未完整落规格；`待④` 表示 Feature 尚未完整落规格；`待⑤` 仅用于新增/修改页面，且 UI 已完成但目标单页 PRD 尚未完成。状态与实际缺口不一致即报 | 按当前真实缺口委派 `/lny-prd-ui`、`/lny-prd-api`、`/lny-prd-feature` 或 `/lny-prd-page` | 高 |
@@ -119,7 +125,7 @@
 1. **先做「无原型」门禁**；不通过则结束本节。
 2. 读取 `main_spec` 成功怎么算 / 明确不做（未填则不拿「该不该做」压人）、`ui/`、`api/`、`feature/`、`pages_prd`、`prototypes/`。
 3. 先走 **规格外 / 文案 / 主路径**，再走 **实现符合规格**（原 2.1～2.8 收成一块）。
-4. JS 问题以静态检索为底线；有浏览器再辅以 Console。
+4. JS 问题以静态检索为底线；宿主依赖可用时运行 `node <prototypeSkillDir>/scripts/verify-prototype-browser.mjs <prdRoot>`，用真实浏览器补充渲染、Console、资源加载、溢出、非空截图与常见交互检查。exit 2 只表示验收环境缺依赖，披露后继续静态检查；禁止在业务项目安装 npm 依赖。
 
 ### 2.1 规格外
 
@@ -153,6 +159,7 @@
 | 原型套件引用 | 各端 `PAGE-*.html` 引用同端 `assets/mui-kit.css`、`md-icons.js`、`icons-extra.js`；`index.html` 另引 `proto-shell.css` + `proto-shell.js`；不得存在 `prototypes-mui-app/`；缺闭集图标须由 `search-icons.py` 写入 extras | `/lny-prd-prototype` 按 kit 补齐 | 中 |
 | 演示按钮归位 | `PAGE-*.html` 内不得含 `demo-*`/`setDemo*`/`mock-*`（后端状态切换须归位状态演示） | `/lny-prd-prototype` 移至状态演示 | 中 |
 | 原型 JS 引用 | 静态无残留调用；可选 Console 无 ReferenceError | `/lny-prd-prototype` 按 G.1 修 | 高 |
+| 浏览器冒烟 | 宿主可解析 `playwright` / `pngjs` 时脚本 exit 0；exit 1 的页面级渲染、离线资源、Console、横向溢出或交互失败须逐项报告 | `/lny-prd-prototype` 修复对应 PAGE 或 kit | 高 |
 | 交互体验设计 §2.3 | 每个 `ui/PAGE-*` 含观感与舒适、动效与过渡、微反馈、收纳与浮层；不得只列控件。除一次直接点击的简单交互外，复杂交互须在 PAGE §2.3 或所引 COMP 写清触发、可见过程/过渡、结果状态及适用的取消/失败/禁用反馈 | `/lny-prd-ui` 补 §2.3 / COMP 状态矩阵 | 高 |
 | 布局与 COMP 态 | 布局与 `ui/PAGE-*` 一致；COMP 态与矩阵可演示 | ② 或 ⑥ | 中 |
 | 逐页对照 G.4 | 每个业务 `PAGE-*.html` 对照 `pages_prd`：ASCII 只定分区；视觉须达 `gold/` 金样下限且不照搬演示功能；须能过 `verify-prototype-coverage.py`。密度按共享 `PT-DENSITY`，移动列表、D1-1 与悬浮控件分别按 `PT-MOBILE-LIST`、`PT-DESKTOP-LIST`、`PT-FLOAT`；另查无低保真占位、封面变体、状态栏、ASCII 残留及桌面表 Chip/缩略图 | `/lny-prd-prototype` 按共享页型规则与 G.4/G.5 补页（每轮最多 3 页） | 高 |

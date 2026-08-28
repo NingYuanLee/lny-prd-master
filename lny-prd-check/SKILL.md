@@ -17,6 +17,8 @@ description: >-
 - 跨步骤页型不变量：[`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)
 - 正式落点与禁止副本范围：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
 - 路径扫描器：`scripts/verify-artifact-paths.py`
+- 跨文档语义扫描器：`scripts/validate-prd-project.py`
+- 原型浏览器冒烟：`../lny-prd-prototype/scripts/verify-prototype-browser.mjs`
 - 框架排除：`lny-prd-master/framework-exclusions.md`
 
 ## 职责与禁止
@@ -33,9 +35,9 @@ description: >-
 ## 执行步骤
 
 1. 解析工作版本；目录须已存在。
-2. **文档性**：Read 产物路径契约与共享页型不变量；先运行 `python <skillDir>/scripts/verify-artifact-paths.py <prdRoot>`，再按 [`reference-checks.md`](reference-checks.md) §1.1→1.6。扫描命中逐项列为高优先级，不删除文件。
-3. **功能性**：先过「无原型」门禁；有原型则按规格外 / 文案 / 主路径 / 实现符合规格。
-4. **产品就绪度**：§3.1 虚引用 + FE 三维 + BE 四维 +（有台账时）迭代信号。
+2. **文档性**：Read 产物路径契约与共享页型不变量；依次运行 `python <skillDir>/scripts/verify-artifact-paths.py <prdRoot>` 与 `python <skillDir>/scripts/validate-prd-project.py <prdRoot>`，再按 [`reference-checks.md`](reference-checks.md) §1.1→1.6。扫描命中逐项列为高优先级，不删除文件。语义扫描器负责索引/明细、根统计、Feature 引用及已有 SP 输入快照；人工检查继续覆盖其余语义。
+3. **功能性**：先过「无原型」门禁；有原型则按规格外 / 文案 / 主路径 / 实现符合规格。宿主可解析 `playwright` 与 `pngjs` 时，运行 `node <prototypeSkillDir>/scripts/verify-prototype-browser.mjs <prdRoot>`；exit 1 逐页列问题，exit 2 只披露环境未满足并继续静态检查，不把它算作产品缺陷。不得在业务项目安装 npm 依赖。
+4. **产品就绪度**：§3.1 虚引用 + FE 三维 + BE 四维 +（有台账时）迭代信号；若用户目标涉及外部研发台账，另按 `delivery_scope.md`、模块来源与独立评审状态判断“可导出”，不得用 PRD 基础验收通过替代导出门禁。
 5. 输出报告（通篇连续序号）+ 委派建议（`#序号`）。可估且信号较齐时建议总控跑 `/lny-prd-sp`。
 
 须关注项用 🔴/🟠/🟢。齐/可估/无缺口不占序号。

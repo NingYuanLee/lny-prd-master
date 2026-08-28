@@ -79,7 +79,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 ## 职责与禁止
 
-- **负责**：按页生成 `pages_prd`；**项目含 PC 或 AD 时必须**落盘 `pages_prd/_shell/{终端编码}-shell.md`；成功自检后推进本次 `ui_changes.md` 对应行状态。
+- **负责**：按页生成 `pages_prd`；§6 用 `关联AC` 反向登记本页承接的 Feature AC（只写 AC ID，不复制正文）；**项目含 PC 或 AD 时必须**落盘 `pages_prd/_shell/{终端编码}-shell.md`；成功自检后推进本次 `ui_changes.md` 对应行状态。
 - **禁止**：抄 `api/` 字段表；编造未立项 PAGE；把约束说明写入产物；单页罗列壳层换页。仅当 PM 已说出点位才写埋点；**禁止自拟埋点方案**。
 
 ## 前置条件
@@ -101,7 +101,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 1. 校验版本目录与页面编号；有台账则核对目标路径。
 2. Read `ui/PAGE-*` + 引用 COMP、`api/API-*`、`feature/`、`main_spec` §1.2（仅作背景）。
-3. 按 [`reference.md`](reference.md) 模板落盘；§1 表后写根规格依赖引用块；§3 顶 ASCII 线框默认必填（页型顺序见上方页型速查）。交互、动效、收纳从 `ui/PAGE-*` **§2.3** 带入，禁止降级成「有个按钮」。桌面 D1-1 须写列宽语义与紧凑密度。
+3. 按 [`reference.md`](reference.md) 模板落盘；§1 表后写根规格依赖引用块；§3 顶 ASCII 线框默认必填（页型顺序见上方页型速查）；§6 反查 Feature AC 的 `关联页面`，写入本页对应的 AC ID 集合并核对双向一致。交互、动效、收纳从 `ui/PAGE-*` **§2.3** 带入，禁止降级成「有个按钮」。桌面 D1-1 须写列宽语义与紧凑密度。
 4. 路径：`pages/{m}` → `pages_prd/pages/{m}/`；`subpackages/{m}` → `pages_prd/subpackages/{m}/`；`views/{m}` → `pages_prd/views/{m}/`。
 5. 若终端含 PC/AD：按壳模板写 `_shell/{编码}-shell.md`（尚无则创建）。
 6. 单页 PRD 与桌面壳自检通过后，将本次 `ui_changes.md` 条目由 `待⑤` 改为 `已完成`；有缺口或失败则保留 `待⑤`。

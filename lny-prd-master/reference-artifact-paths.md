@@ -11,11 +11,12 @@
 | API 明细 | `api/API-*.md`、`api/EXT-*.md` |
 | Feature 明细 | `feature/FEATURE-*.md` |
 | 当前原型 | `prototypes/index.html`、`prototypes/{终端}/**` |
-| 版本过程 | `versions/{v}/iteration_notes.md`；迭代版可有三类 `*_changes.md` 与 `eval_signals.md` |
+| 版本过程 | `versions/{v}/iteration_notes.md`、`versions/{v}/delivery_scope.md`；迭代版可有三类 `*_changes.md` 与 `eval_signals.md` |
 | 单页 PRD | `versions/{v}/pages_prd/**` |
 | 标准工时点 | `versions/{v}/sp_report.md` |
+| 可选集成产物 | `versions/{v}/yunxiao-plan.json`（仅用户明确要求保存云效计划时生成） |
 
-`当前工作版本`只决定流水、台账、单页 PRD 和标准工时点落在哪个 `versions/{v}/`；原型始终以根 `prototypes/` 表示当前状态。
+`当前工作版本`只决定流水、交付范围、台账、单页 PRD、标准工时点和可选集成产物落在哪个 `versions/{v}/`；原型始终以根 `prototypes/` 表示当前状态。`delivery_scope.md` 只维护本期 Feature 选择、产品评审与未决决策，不保存云效实际 ID 或研发实时状态；旧版本范围是历史事实，不因根 Feature 后续变为 `deprecated` 而改写。`yunxiao-plan.json` 是由当前 PRD 确定性生成的审阅快照，不是产品事实源，也不得包含云效实际 ID、负责人或实时状态。
 
 ## 不生成版本原型镜像
 

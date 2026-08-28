@@ -1,7 +1,5 @@
 /* LNY-PRD prototype kit — Material UI v5 default theme (MD2) visual equivalent.
    Tokens match @mui/material createTheme() light mode. No npm. */
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap");
-
 :root {
   --md-primary: #1976d2;
   --md-primary-light: #42a5f5;

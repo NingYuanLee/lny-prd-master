@@ -1,0 +1,697 @@
+{
+  "schemaVersion": 1,
+  "adapter": "lny-prd-yunxiao",
+  "sourceVersion": "v1.0.0",
+  "project": "Mini Shop",
+  "items": [
+    {
+      "sourceId": "MODULE-001",
+      "parentSourceId": null,
+      "workItemType": "product",
+      "title": "商品"
+    },
+    {
+      "sourceId": "FEATURE-001",
+      "parentSourceId": "MODULE-001",
+      "workItemType": "business",
+      "title": "浏览在售商品"
+    },
+    {
+      "sourceId": "FEATURE-001:BE",
+      "parentSourceId": "FEATURE-001",
+      "workItemType": "task",
+      "title": "[BE] 浏览在售商品",
+      "deliverySurface": "BE",
+      "sourceRefs": [
+        "API-AD-001",
+        "API-AD-002",
+        "API-MP-001",
+        "API-MP-002",
+        "PAGE-AD-001",
+        "PAGE-AD-008"
+      ],
+      "dependencyRefs": [],
+      "pageApiBindings": [
+        {
+          "pageRef": "PAGE-AD-001",
+          "interfaceRef": "API-AD-001",
+          "purpose": "分页查询商品",
+          "trigger": "进页；查询；翻页；页内签；列表弹窗"
+        },
+        {
+          "pageRef": "PAGE-AD-001",
+          "interfaceRef": "API-AD-002",
+          "purpose": "查询商品详情",
+          "trigger": "打开查看 / 快捷编辑"
+        },
+        {
+          "pageRef": "PAGE-AD-008",
+          "interfaceRef": "API-AD-002",
+          "purpose": "查询商品详情（含介绍与评论）",
+          "trigger": "进页加载"
+        }
+      ],
+      "acceptanceCriteria": [
+        {
+          "id": "AC-1",
+          "description": "首页初始化后展示不超过 4 条推荐商品",
+          "verification": "UI + API 联调",
+          "pageRefs": [
+            "PAGE-MP-001"
+          ],
+          "apiRefs": [
+            "API-MP-001"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-2",
+          "description": "商品列表可搜索、筛选、翻页且仅含在售商品",
+          "verification": "UI + API 联调",
+          "pageRefs": [
+            "PAGE-MP-002"
+          ],
+          "apiRefs": [
+            "API-MP-001"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-3",
+          "description": "后台列表可按名称筛选并分页",
+          "verification": "UI + API 联调",
+          "pageRefs": [
+            "PAGE-AD-001"
+          ],
+          "apiRefs": [
+            "API-AD-001"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-4",
+          "description": "小程序请求失败出现重试入口",
+          "verification": "异常流测试",
+          "pageRefs": [
+            "PAGE-MP-001",
+            "PAGE-MP-002"
+          ],
+          "apiRefs": [
+            "API-MP-001"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-5",
+          "description": "从列表进入详情可见名称、售价、库存、图文介绍与评论",
+          "verification": "UI + API 联调",
+          "pageRefs": [
+            "PAGE-MP-003"
+          ],
+          "apiRefs": [
+            "API-MP-002"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-6",
+          "description": "后台整页详情可见名称、售价、库存、图文介绍与评论",
+          "verification": "UI + API 联调",
+          "pageRefs": [
+            "PAGE-AD-008"
+          ],
+          "apiRefs": [
+            "API-AD-002"
+          ],
+          "extRefs": []
+        }
+      ]
+    },
+    {
+      "sourceId": "FEATURE-001:MP",
+      "parentSourceId": "FEATURE-001",
+      "workItemType": "task",
+      "title": "[MP] 浏览在售商品",
+      "deliverySurface": "MP",
+      "sourceRefs": [
+        "PAGE-MP-001",
+        "PAGE-MP-002",
+        "PAGE-MP-003"
+      ],
+      "dependencyRefs": [
+        "API-MP-001",
+        "API-MP-002"
+      ],
+      "pageApiBindings": [
+        {
+          "pageRef": "PAGE-MP-001",
+          "interfaceRef": "API-MP-001",
+          "purpose": "拉取推荐商品",
+          "trigger": "页面初始化"
+        },
+        {
+          "pageRef": "PAGE-MP-002",
+          "interfaceRef": "API-MP-001",
+          "purpose": "分页查询在售商品",
+          "trigger": "进页加载；上拉下一页；提交搜索；应用筛选"
+        },
+        {
+          "pageRef": "PAGE-MP-003",
+          "interfaceRef": "API-MP-002",
+          "purpose": "查询商品详情（含介绍与评论）",
+          "trigger": "进页加载"
+        }
+      ],
+      "acceptanceCriteria": [
+        {
+          "id": "AC-1",
+          "description": "首页初始化后展示不超过 4 条推荐商品",
+          "verification": "UI + API 联调",
+          "pageRefs": [
+            "PAGE-MP-001"
+          ],
+          "apiRefs": [
+            "API-MP-001"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-2",
+          "description": "商品列表可搜索、筛选、翻页且仅含在售商品",
+          "verification": "UI + API 联调",
+          "pageRefs": [
+            "PAGE-MP-002"
+          ],
+          "apiRefs": [
+            "API-MP-001"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-4",
+          "description": "小程序请求失败出现重试入口",
+          "verification": "异常流测试",
+          "pageRefs": [
+            "PAGE-MP-001",
+            "PAGE-MP-002"
+          ],
+          "apiRefs": [
+            "API-MP-001"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-5",
+          "description": "从列表进入详情可见名称、售价、库存、图文介绍与评论",
+          "verification": "UI + API 联调",
+          "pageRefs": [
+            "PAGE-MP-003"
+          ],
+          "apiRefs": [
+            "API-MP-002"
+          ],
+          "extRefs": []
+        }
+      ]
+    },
+    {
+      "sourceId": "FEATURE-001:TEST",
+      "parentSourceId": "FEATURE-001",
+      "workItemType": "task",
+      "title": "[TEST] 浏览在售商品",
+      "deliverySurface": "TEST",
+      "sourceRefs": [
+        "API-AD-001",
+        "API-AD-002",
+        "API-MP-001",
+        "API-MP-002",
+        "PAGE-AD-001",
+        "PAGE-AD-008",
+        "PAGE-MP-001",
+        "PAGE-MP-002",
+        "PAGE-MP-003"
+      ],
+      "dependencyRefs": [],
+      "pageApiBindings": [
+        {
+          "pageRef": "PAGE-AD-001",
+          "interfaceRef": "API-AD-001",
+          "purpose": "分页查询商品",
+          "trigger": "进页；查询；翻页；页内签；列表弹窗"
+        },
+        {
+          "pageRef": "PAGE-AD-001",
+          "interfaceRef": "API-AD-002",
+          "purpose": "查询商品详情",
+          "trigger": "打开查看 / 快捷编辑"
+        },
+        {
+          "pageRef": "PAGE-AD-008",
+          "interfaceRef": "API-AD-002",
+          "purpose": "查询商品详情（含介绍与评论）",
+          "trigger": "进页加载"
+        },
+        {
+          "pageRef": "PAGE-MP-001",
+          "interfaceRef": "API-MP-001",
+          "purpose": "拉取推荐商品",
+          "trigger": "页面初始化"
+        },
+        {
+          "pageRef": "PAGE-MP-002",
+          "interfaceRef": "API-MP-001",
+          "purpose": "分页查询在售商品",
+          "trigger": "进页加载；上拉下一页；提交搜索；应用筛选"
+        },
+        {
+          "pageRef": "PAGE-MP-003",
+          "interfaceRef": "API-MP-002",
+          "purpose": "查询商品详情（含介绍与评论）",
+          "trigger": "进页加载"
+        }
+      ],
+      "acceptanceCriteria": [
+        {
+          "id": "AC-1",
+          "description": "首页初始化后展示不超过 4 条推荐商品",
+          "verification": "UI + API 联调",
+          "pageRefs": [
+            "PAGE-MP-001"
+          ],
+          "apiRefs": [
+            "API-MP-001"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-2",
+          "description": "商品列表可搜索、筛选、翻页且仅含在售商品",
+          "verification": "UI + API 联调",
+          "pageRefs": [
+            "PAGE-MP-002"
+          ],
+          "apiRefs": [
+            "API-MP-001"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-3",
+          "description": "后台列表可按名称筛选并分页",
+          "verification": "UI + API 联调",
+          "pageRefs": [
+            "PAGE-AD-001"
+          ],
+          "apiRefs": [
+            "API-AD-001"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-4",
+          "description": "小程序请求失败出现重试入口",
+          "verification": "异常流测试",
+          "pageRefs": [
+            "PAGE-MP-001",
+            "PAGE-MP-002"
+          ],
+          "apiRefs": [
+            "API-MP-001"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-5",
+          "description": "从列表进入详情可见名称、售价、库存、图文介绍与评论",
+          "verification": "UI + API 联调",
+          "pageRefs": [
+            "PAGE-MP-003"
+          ],
+          "apiRefs": [
+            "API-MP-002"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-6",
+          "description": "后台整页详情可见名称、售价、库存、图文介绍与评论",
+          "verification": "UI + API 联调",
+          "pageRefs": [
+            "PAGE-AD-008"
+          ],
+          "apiRefs": [
+            "API-AD-002"
+          ],
+          "extRefs": []
+        }
+      ]
+    },
+    {
+      "sourceId": "FEATURE-002",
+      "parentSourceId": "MODULE-001",
+      "workItemType": "business",
+      "title": "维护后台商品"
+    },
+    {
+      "sourceId": "FEATURE-002:BE",
+      "parentSourceId": "FEATURE-002",
+      "workItemType": "task",
+      "title": "[BE] 维护后台商品",
+      "deliverySurface": "BE",
+      "sourceRefs": [
+        "API-AD-001",
+        "API-AD-002",
+        "API-AD-003",
+        "PAGE-AD-001",
+        "PAGE-AD-002"
+      ],
+      "dependencyRefs": [],
+      "pageApiBindings": [
+        {
+          "pageRef": "PAGE-AD-001",
+          "interfaceRef": "API-AD-001",
+          "purpose": "分页查询商品",
+          "trigger": "进页；查询；翻页；页内签；列表弹窗"
+        },
+        {
+          "pageRef": "PAGE-AD-001",
+          "interfaceRef": "API-AD-002",
+          "purpose": "查询商品详情",
+          "trigger": "打开查看 / 快捷编辑"
+        },
+        {
+          "pageRef": "PAGE-AD-001",
+          "interfaceRef": "API-AD-003",
+          "purpose": "保存商品",
+          "trigger": "快捷编辑确定"
+        },
+        {
+          "pageRef": "PAGE-AD-002",
+          "interfaceRef": "API-AD-003",
+          "purpose": "保存商品",
+          "trigger": "点击保存"
+        }
+      ],
+      "acceptanceCriteria": [
+        {
+          "id": "AC-1",
+          "description": "「查看」打开只读详情弹窗",
+          "verification": "UI + API 联调",
+          "pageRefs": [
+            "PAGE-AD-001"
+          ],
+          "apiRefs": [
+            "API-AD-002"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-2",
+          "description": "「快捷编辑」可改库存状态与上架日期并保存",
+          "verification": "UI + API + 数据校验",
+          "pageRefs": [
+            "PAGE-AD-001"
+          ],
+          "apiRefs": [
+            "API-AD-002",
+            "API-AD-003"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-3",
+          "description": "「新增」进入整页表单，保存后回列表",
+          "verification": "UI + API + 数据校验",
+          "pageRefs": [
+            "PAGE-AD-002"
+          ],
+          "apiRefs": [
+            "API-AD-003"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-4",
+          "description": "「选择关联」打开列表弹窗并确认一条",
+          "verification": "UI 交互测试",
+          "pageRefs": [
+            "PAGE-AD-001"
+          ],
+          "apiRefs": [
+            "API-AD-001"
+          ],
+          "extRefs": []
+        }
+      ]
+    },
+    {
+      "sourceId": "FEATURE-002:TEST",
+      "parentSourceId": "FEATURE-002",
+      "workItemType": "task",
+      "title": "[TEST] 维护后台商品",
+      "deliverySurface": "TEST",
+      "sourceRefs": [
+        "API-AD-001",
+        "API-AD-002",
+        "API-AD-003",
+        "PAGE-AD-001",
+        "PAGE-AD-002"
+      ],
+      "dependencyRefs": [],
+      "pageApiBindings": [
+        {
+          "pageRef": "PAGE-AD-001",
+          "interfaceRef": "API-AD-001",
+          "purpose": "分页查询商品",
+          "trigger": "进页；查询；翻页；页内签；列表弹窗"
+        },
+        {
+          "pageRef": "PAGE-AD-001",
+          "interfaceRef": "API-AD-002",
+          "purpose": "查询商品详情",
+          "trigger": "打开查看 / 快捷编辑"
+        },
+        {
+          "pageRef": "PAGE-AD-001",
+          "interfaceRef": "API-AD-003",
+          "purpose": "保存商品",
+          "trigger": "快捷编辑确定"
+        },
+        {
+          "pageRef": "PAGE-AD-002",
+          "interfaceRef": "API-AD-003",
+          "purpose": "保存商品",
+          "trigger": "点击保存"
+        }
+      ],
+      "acceptanceCriteria": [
+        {
+          "id": "AC-1",
+          "description": "「查看」打开只读详情弹窗",
+          "verification": "UI + API 联调",
+          "pageRefs": [
+            "PAGE-AD-001"
+          ],
+          "apiRefs": [
+            "API-AD-002"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-2",
+          "description": "「快捷编辑」可改库存状态与上架日期并保存",
+          "verification": "UI + API + 数据校验",
+          "pageRefs": [
+            "PAGE-AD-001"
+          ],
+          "apiRefs": [
+            "API-AD-002",
+            "API-AD-003"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-3",
+          "description": "「新增」进入整页表单，保存后回列表",
+          "verification": "UI + API + 数据校验",
+          "pageRefs": [
+            "PAGE-AD-002"
+          ],
+          "apiRefs": [
+            "API-AD-003"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-4",
+          "description": "「选择关联」打开列表弹窗并确认一条",
+          "verification": "UI 交互测试",
+          "pageRefs": [
+            "PAGE-AD-001"
+          ],
+          "apiRefs": [
+            "API-AD-001"
+          ],
+          "extRefs": []
+        }
+      ]
+    },
+    {
+      "sourceId": "FEATURE-003",
+      "parentSourceId": "MODULE-001",
+      "workItemType": "business",
+      "title": "登记到货提醒"
+    },
+    {
+      "sourceId": "FEATURE-003:BE",
+      "parentSourceId": "FEATURE-003",
+      "workItemType": "task",
+      "title": "[BE] 登记到货提醒",
+      "deliverySurface": "BE",
+      "sourceRefs": [
+        "API-MP-003"
+      ],
+      "dependencyRefs": [],
+      "pageApiBindings": [],
+      "acceptanceCriteria": [
+        {
+          "id": "AC-2",
+          "description": "填写完整后提交出现已登记反馈",
+          "verification": "UI + API + 数据校验",
+          "pageRefs": [
+            "PAGE-MP-004"
+          ],
+          "apiRefs": [
+            "API-MP-003"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-3",
+          "description": "提交失败可再次提交",
+          "verification": "异常流测试",
+          "pageRefs": [
+            "PAGE-MP-004"
+          ],
+          "apiRefs": [
+            "API-MP-003"
+          ],
+          "extRefs": []
+        }
+      ]
+    },
+    {
+      "sourceId": "FEATURE-003:MP",
+      "parentSourceId": "FEATURE-003",
+      "workItemType": "task",
+      "title": "[MP] 登记到货提醒",
+      "deliverySurface": "MP",
+      "sourceRefs": [
+        "PAGE-MP-004"
+      ],
+      "dependencyRefs": [
+        "API-MP-003"
+      ],
+      "pageApiBindings": [
+        {
+          "pageRef": "PAGE-MP-004",
+          "interfaceRef": "API-MP-003",
+          "purpose": "提交到货提醒",
+          "trigger": "点击提交且表单校验通过"
+        }
+      ],
+      "acceptanceCriteria": [
+        {
+          "id": "AC-1",
+          "description": "未填联系人或电话时不可成功提交",
+          "verification": "UI 表单校验",
+          "pageRefs": [
+            "PAGE-MP-004"
+          ],
+          "apiRefs": [],
+          "extRefs": []
+        },
+        {
+          "id": "AC-2",
+          "description": "填写完整后提交出现已登记反馈",
+          "verification": "UI + API + 数据校验",
+          "pageRefs": [
+            "PAGE-MP-004"
+          ],
+          "apiRefs": [
+            "API-MP-003"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-3",
+          "description": "提交失败可再次提交",
+          "verification": "异常流测试",
+          "pageRefs": [
+            "PAGE-MP-004"
+          ],
+          "apiRefs": [
+            "API-MP-003"
+          ],
+          "extRefs": []
+        }
+      ]
+    },
+    {
+      "sourceId": "FEATURE-003:TEST",
+      "parentSourceId": "FEATURE-003",
+      "workItemType": "task",
+      "title": "[TEST] 登记到货提醒",
+      "deliverySurface": "TEST",
+      "sourceRefs": [
+        "API-MP-003",
+        "PAGE-MP-004"
+      ],
+      "dependencyRefs": [],
+      "pageApiBindings": [
+        {
+          "pageRef": "PAGE-MP-004",
+          "interfaceRef": "API-MP-003",
+          "purpose": "提交到货提醒",
+          "trigger": "点击提交且表单校验通过"
+        }
+      ],
+      "acceptanceCriteria": [
+        {
+          "id": "AC-1",
+          "description": "未填联系人或电话时不可成功提交",
+          "verification": "UI 表单校验",
+          "pageRefs": [
+            "PAGE-MP-004"
+          ],
+          "apiRefs": [],
+          "extRefs": []
+        },
+        {
+          "id": "AC-2",
+          "description": "填写完整后提交出现已登记反馈",
+          "verification": "UI + API + 数据校验",
+          "pageRefs": [
+            "PAGE-MP-004"
+          ],
+          "apiRefs": [
+            "API-MP-003"
+          ],
+          "extRefs": []
+        },
+        {
+          "id": "AC-3",
+          "description": "提交失败可再次提交",
+          "verification": "异常流测试",
+          "pageRefs": [
+            "PAGE-MP-004"
+          ],
+          "apiRefs": [
+            "API-MP-003"
+          ],
+          "extRefs": []
+        }
+      ]
+    }
+  ]
+}

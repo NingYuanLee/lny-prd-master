@@ -30,6 +30,7 @@ EXPECTED_SKILLS = {
     "lny-prd-prototype",
     "lny-prd-sp",
     "lny-prd-ui",
+    "lny-prd-yunxiao",
 }
 IGNORED_NAMES = {".DS_Store", ".git", "__pycache__"}
 IGNORED_SUFFIXES = {".pyc", ".pyo"}
@@ -179,7 +180,7 @@ def load_bundle() -> Bundle:
         or len(skills) != len(set(skills))
         or set(skills) != EXPECTED_SKILLS
     ):
-        raise InstallError("skill-bundle.json must list the exact nine LNY-PRD skills")
+        raise InstallError("skill-bundle.json must list the nine core LNY-PRD skills and optional Yunxiao adapter")
     resources = raw.get("optional_resources")
     examples_config = resources.get("examples") if isinstance(resources, dict) else None
     if not isinstance(examples_config, dict) or examples_config.get("audience") != "human":
@@ -310,9 +311,11 @@ def state_drift(bundle: Bundle, target: Target, state: dict) -> list[str]:
     if not isinstance(recorded, dict):
         return ["install state has no valid skill digests"]
     current, missing = current_digests(bundle, target)
-    drift = [f"{skill}: missing" for skill in missing]
+    drift = [f"{skill}: missing" for skill in missing if skill in recorded]
     for skill, digest in current.items():
-        if recorded.get(skill) != digest:
+        if skill not in recorded:
+            drift.append(f"{skill}: unmanaged collision")
+        elif recorded.get(skill) != digest:
             drift.append(f"{skill}: locally modified")
     return drift
 
@@ -556,7 +559,7 @@ def command_status(args: argparse.Namespace, bundle: Bundle, target: Target) -> 
     if state is None:
         existing = [skill for skill in bundle.skills if (target.skills_root / skill).exists()]
         if existing:
-            print(f"{target.host.display_name}: unmanaged ({len(existing)}/9 skill directories found)")
+            print(f"{target.host.display_name}: unmanaged ({len(existing)}/{len(bundle.skills)} skill directories found)")
             return 1
         print(f"{target.host.display_name}: not installed")
         return 0
@@ -672,7 +675,7 @@ def add_target_arguments(parser: argparse.ArgumentParser) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Install the atomic nine-skill LNY-PRD bundle for user-level hosts."
+        description="Install the atomic LNY-PRD bundle: nine core skills plus the Yunxiao adapter."
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 

@@ -24,15 +24,16 @@
 
 - 编号：`FEATURE-{三位序号}`
 - 状态：`draft` / `active` / `deprecated`
+- 评审状态：`pending` / `reviewing` / `approved` / `blocked`
 - 优先级：`P0` / `P1` / `P2`
 
 ## 3. Feature 索引表
 
-| 功能编号 | 功能名称 | 所属模块 | 优先级 | 状态 | 分支数 | 关联页面 | 关联接口 | 明细路径 |
-|----------|----------|----------|--------|------|--------|----------|----------|----------|
-| FEATURE-001 | 浏览在售商品 | 商品 | P0 | active | 3 | PAGE-MP-001, PAGE-MP-002, PAGE-MP-003, PAGE-AD-001, PAGE-AD-008 | API-MP-001, API-MP-002, API-AD-001, API-AD-002 | feature/FEATURE-001.md |
-| FEATURE-002 | 维护后台商品 | 商品 | P0 | active | 3 | PAGE-AD-001, PAGE-AD-002 | API-AD-001, API-AD-002, API-AD-003 | feature/FEATURE-002.md |
-| FEATURE-003 | 登记到货提醒 | 商品 | P1 | active | 1 | PAGE-MP-004 | API-MP-003 | feature/FEATURE-003.md |
+| 功能编号 | 功能名称 | 模块编号 | 所属模块 | 优先级 | 状态 | 评审状态 | 分支数 | 关联页面 | 关联接口 | 明细路径 |
+|----------|----------|----------|----------|--------|------|----------|--------|----------|----------|----------|
+| FEATURE-001 | 浏览在售商品 | MODULE-001 | 商品 | P0 | active | approved | 3 | PAGE-MP-001, PAGE-MP-002, PAGE-MP-003, PAGE-AD-001, PAGE-AD-008 | API-MP-001, API-MP-002, API-AD-001, API-AD-002 | feature/FEATURE-001.md |
+| FEATURE-002 | 维护后台商品 | MODULE-001 | 商品 | P0 | active | approved | 3 | PAGE-AD-001, PAGE-AD-002 | API-AD-001, API-AD-002, API-AD-003 | feature/FEATURE-002.md |
+| FEATURE-003 | 登记到货提醒 | MODULE-001 | 商品 | P1 | active | approved | 1 | PAGE-MP-004 | API-MP-003 | feature/FEATURE-003.md |
 
 | 统计项 | 数值 |
 |--------|------|

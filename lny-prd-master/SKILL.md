@@ -1,7 +1,7 @@
 ---
 name: lny-prd-master
 description: >-
-  LNY-PRD（李宁远产品工作流）总控入口与立项。Use when the user mentions lny-prd, 李宁远,
+  LNY-PRD（李宁远产品工作流）总控入口与立项。Use when the user mentions lny-prd, 李宁远, 云效导出,
   @lny-prd-master, /lny-prd-master, /lny-prd-ui, /lny-prd-api, /lny-prd-feature, /lny-prd-prototype,
   /lny-prd-page, /lny-prd-check, /lny-prd-iter, /lny-prd-sp, product spec, or PRD workflows.
   空目录走立项脚手架；已有 main_spec.md 时按 §3 判定下一步并 Read 对应 lny-prd-*/SKILL.md。
@@ -11,6 +11,8 @@ description: >-
 ## 李宁远产品工作流
 
 🔷 **LNY-PRD** 共九步：**①** `/lny-prd-master` 立项 · **②** `/lny-prd-ui` · **③** `/lny-prd-api` · **④** `/lny-prd-feature` · **⑤** `/lny-prd-page` · **⑥** `/lny-prd-prototype` · **⑦** `/lny-prd-check` · **⑧** `/lny-prd-iter` · **⑨** `/lny-prd-sp`。**②③④ 规格三件套同轮批处理**；**⑥ 默认依赖 ⑤**（`pages_prd`；例外 `ui直出`）。入口 `@lny-prd-master` / `/lny-prd-master` /「继续」等价；按本协议判定后 **Read** 对应 `lny-prd-*/SKILL.md` 执行。
+
+兼容演进不重排九步编号：② UI 保持横向展示聚合，④ Feature 作为 `FEATURE → AC → 验证证据` 的纵向验收主线并反查 ②③，⑤ 汇合两条线。②③④ 仍按现有编号同轮完成，不把逻辑主线误解为新的串行步骤或要求旧项目一次性迁移；新增模块、评审、范围字段在迭代或外部台账导出前渐进补齐。
 
 ---
 
@@ -24,7 +26,7 @@ description: >-
 
 | 步 | Read | 产物 | 禁止 |
 |----|------|------|------|
-| ① | 本文 | `versions/v1.0.0/`、根规范初稿、变更记录首行、第4章终端 | 续跑不得重建 v1.0.0；② 不得改第4章 |
+| ① | 本文 | `versions/v1.0.0/`、根规范初稿、模块注册表、`delivery_scope.md` 阻塞壳、变更记录首行、第4章终端 | 续跑不得重建 v1.0.0；② 不得改第4章 |
 | ② | `lny-prd-ui/SKILL.md` | `ui_manifest` + `ui/`（含 PAGE **§2.3 交互体验设计**）；`main_spec` §5 | 不改第4章、api 字段、`prototypes/`；只列控件不设计体验 |
 | ③ | `lny-prd-api/SKILL.md` | `api_spec` 索引 + `api/API-*`/`EXT-*`（禁路由/JSON/code） | 不写 UI 线框；不改 `prototypes/` |
 | ④ | `lny-prd-feature/SKILL.md` | `feature_spec` + `feature/`；FEATURE↔PAGE/API 闭环 | 不写接口字段、UI 线框 |
@@ -87,8 +89,10 @@ description: >-
 | --- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | A   | 尚无 `main_spec.md` 且目录无非隐藏文件、正走 **§2** 立项                                                                                          | 仅执行本文 **立项**；完成后生成 `main_spec.md` 等                                         |
 | B2  | 用户明确要求**新增/变更/删减终端**，或 `ui_manifest`/`api_spec` 所需终端不在 `main_spec` 第4章表中 | **① master**：Read 本文，更新 `main_spec` **第4章终端说明**（**无** `###` 小节）；再交 **②** 补 `ui_manifest` |
+| Y   | 用户明确要求云效导出、云效需求映射或 `/lny-prd-yunxiao` | Read `lny-prd-yunxiao/SKILL.md`；只执行 `validate/plan`，不改 PRD、不调用云效写接口 |
 | I2-spec | `versions/{latest}/` 存在且 `ui_changes.md` / `api_changes.md` / `feature_changes.md` 中仍有 `待②` / `待③` / `待④`（**⑧ 已建版、规格委派未清**） | 见 **§3.1** 清完 ②③④。若本轮**同时**是演示/原型目标，清完后**同一轮**继续 §3.2 的 ⑤⑥ |
 | I2-page | 无 `待②`/`待③`/`待④`，但台账仍有 `待⑤`                                                                                                    | **⑤ page**。若本轮**同时**是演示/原型目标，⑤ 完成后**同一轮**继续 ⑥ |
+| I-scope | 用户明确更新既有版本的本期开发范围、范围评审或未决决策 | **⑧ iter 范围维护模式**：只更新 `delivery_scope.md`，不新建版本、不改台账 |
 | H   | 用户明确要求检查（含「检查能不能演示」等：**检查**优先于演示措辞）                                                                                                                          | **⑦ check**：Read `lny-prd-check/SKILL.md`（只读报告）                              |
 | H2  | 用户明确要求估点 / 故事点 / SP / `/lny-prd-sp`（**估点**优先于演示措辞）；**或**上一轮因规格不齐询问是否补规格再估、本轮给出回执 | **⑨**：B、C、D 已齐则 Read `lny-prd-sp/SKILL.md`。未齐且尚未问 → **先问**，禁止默认 §3.1。**肯定**（是 / 好 / 补 / 补完再估 / 仅当上一轮是本问时的「继续」）→ 先 §3.1 再 ⑨。**否定**（否 / 不补 / 只估现有）→ 只跑 ⑨（不可估则按门禁写 `—`，**不**补规格）。⑨ 落盘后同一轮 **§3.3** 只刷总入口，禁止拆成两次「继续」，禁止因此重画各端页面 |
 | I   | 用户明确要求新迭代 / 新版本 / `/lny-prd-iter`                                                                                              | **⑧ iter**：Read `lny-prd-iter/SKILL.md`；**禁止**被演示措辞改成静默 ⑧ |
@@ -214,7 +218,7 @@ description: >-
    - `ui_manifest.md` ← `lny-prd-ui/reference.md`
    - `feature_spec.md` ← `lny-prd-feature/reference.md`
 3. 四份文档统一文档信息 / 变更记录首行 v1.0.0；`main_spec` 第4章终端表直接放在二级标题下，**禁止** `###` 小节
-4. 创建 `versions/v1.0.0/` 与 `iteration_notes.md`（含「版本名称」，无则写「首版」）
+4. 创建 `versions/v1.0.0/`、`iteration_notes.md`（含「版本名称」，无则写「首版」）与 `delivery_scope.md`；`delivery_scope.md` 保留 `reference-init.md` 模板中的产品经理填写说明；范围初始 `评审状态=pending`、`产品确认项`按实际填写，未明确本期 Feature 时范围表写「无」，禁止预填 `approved`
 5. 输出结构；下一步总控进规格三件套同轮批处理（②→③→④）
 
 ## 续跑：新增/变更/删减终端

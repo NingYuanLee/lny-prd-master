@@ -18,9 +18,10 @@
 ```bash
 python <skillDir>/scripts/verify-prototype-utf8.py <prdRoot>/prototypes/MP/PAGE-MP-010.html
 python <skillDir>/scripts/verify-prototype-coverage.py <prdRoot> --version v1.0.0 --page PAGE-MP-010
+node <skillDir>/scripts/verify-prototype-browser.mjs <prdRoot> --page PAGE-MP-010
 ```
 
-exit 0 才可继续；exit 1 不得交付，按 F.1 整文件重写（coverage 失败则按 G.4 补控件/跳转/COMP）。禁止未跑验收就汇报「已更新」；禁止把 `repair-*` 当常规步骤。
+前两项 exit 0 才可继续；exit 1 不得交付，按 F.1 整文件重写（coverage 失败则按 G.4 补控件/跳转/COMP）。浏览器脚本检查真实渲染、离线资源、控制台、横向溢出、截图非空及常见交互；exit 1 必须修复，exit 2 仅表示宿主缺 `playwright` / `pngjs`，须披露未执行并人工预览。依赖只装在宿主或技能仓库，禁止在业务 `prdRoot` 初始化 npm。禁止未跑验收就汇报「已更新」；禁止把 `repair-*` 当常规步骤。
 
 #### F.3 临时文件清理（交付前）
 
@@ -66,6 +67,7 @@ exit 0 才可继续；exit 1 不得交付，按 F.1 整文件重写（coverage �
 | G3.14 | 业务图标 | `data-icon` 属闭集或 extras 已 register；无手绘 path；未调 Cursor iconfont MCP |
 | G3.15 | 无裸控件 | 每个 `button`/`input`/`table` 使用 `md-*`（或「无类名组合」）；无页内 `<style>`；无主题向内联 `background`/`color` |
 | G3.16 | 规格对照脚本 | `verify-prototype-coverage.py --page …` exit 0 |
+| G3.17 | 浏览器冒烟 | 宿主依赖可用时，`verify-prototype-browser.mjs --page …` exit 0；失败截图写系统临时目录，不污染业务项目 |
 
 #### G.4 逐页对照清单（必做，未过不得交付、不得写下页）
 
@@ -80,6 +82,7 @@ exit 0 才可继续；exit 1 不得交付，按 F.1 整文件重写（coverage �
 | G4.4 | §4 跳转清单 | 每个目标 `PAGE-*` 有可点 `href`（本页自身与「无」除外） |
 | G4.5 | `ui/COMP-*` 状态矩阵 | `data-comp` + `data-state`；`empty`/`error` 有 `.md-empty`；`loading` 有骨架（卡片态或 `md-skel-host`） |
 | G4.6 | 脚本 | `verify-prototype-coverage.py` 对根 `prototypes/` 本页 exit 0 |
+| G4.7 | 浏览器行为 | 宿主依赖可用时，本页浏览器冒烟 exit 0；菜单、页签、抽屉、轮盘等已有交互至少完成首个控件的真实点击验收 |
 
 #### G.5 高保真（必做，未过不得交付）
 

@@ -42,23 +42,23 @@
 
 ### 3.2 页面索引表
 
-| 页面编号 | 页面名称 | 所属终端 | 所属模块 | 小程序路由 | 主包/分包 | 操控形态 | 交互体验 | 视觉细节 | MasterGo | 明细路径 |
-|----------|----------|----------|----------|------------|-----------|----------|----------|----------|----------|----------|
-| PAGE-MP-001 | 首页 | 微信小程序 | 首页 | pages/index/index | 主包 | 移动端 | 简单 | 粗糙 | 无 | ui/PAGE-MP-001.md |
-| PAGE-MP-002 | 商品列表 | 微信小程序 | 商品 | pages/goods/index | 主包 | 移动端 | 标准 | 标准 | 无 | ui/PAGE-MP-002.md |
-| PAGE-MP-003 | 商品详情 | 微信小程序 | 商品 | pages/goods/detail | 主包 | 移动端 | 标准 | 标准 | 无 | ui/PAGE-MP-003.md |
-| PAGE-MP-004 | 表单 | 微信小程序 | 套件 | pages/kit/form | 主包 | 移动端 | 标准 | 标准 | 无 | ui/PAGE-MP-004.md |
-| PAGE-MP-005 | 步骤向导 | 微信小程序 | 商品 | pages/goods/wizard | 主包 | 移动端 | 标准 | 标准 | 无 | ui/PAGE-MP-005.md |
-| PAGE-MP-008 | 分类树 | 微信小程序 | 商品 | pages/goods/category-tree | 主包 | 移动端 | 标准 | 标准 | 无 | ui/PAGE-MP-008.md |
-| PAGE-MP-013 | 分类导航 | 微信小程序 | 商品 | pages/goods/category-nav | 主包 | 移动端 | 标准 | 标准 | 无 | ui/PAGE-MP-013.md |
-| PAGE-MP-014 | 订单列表 | 微信小程序 | 订单 | pages/order/list | 主包 | 移动端 | 标准 | 标准 | 无 | ui/PAGE-MP-014.md |
-| PAGE-MP-015 | 章节目录 | 微信小程序 | 套件 | pages/kit/chapter-list | 主包 | 移动端 | 标准 | 标准 | 无 | ui/PAGE-MP-015.md |
-| PAGE-MP-009 | 物流时间轴 | 微信小程序 | 订单 | pages/order/logistics | 主包 | 移动端 | 标准 | 标准 | 无 | ui/PAGE-MP-009.md |
-| PAGE-AD-001 | 商品列表 | 管理后台 | 商品 | 无 | 无 | 桌面端 | 较复杂 | 精致 | 无 | ui/PAGE-AD-001.md |
-| PAGE-AD-002 | 商品表单 | 管理后台 | 商品 | 无 | 无 | 桌面端 | 标准 | 精致 | 无 | ui/PAGE-AD-002.md |
-| PAGE-AD-007 | 时间轴 | 管理后台 | 套件 | 无 | 无 | 桌面端 | 标准 | 精致 | 无 | ui/PAGE-AD-007.md |
-| PAGE-AD-008 | 商品详情 | 管理后台 | 商品 | 无 | 无 | 桌面端 | 标准 | 精致 | 无 | ui/PAGE-AD-008.md |
-| PAGE-AD-009 | 表单 | 管理后台 | 套件 | 无 | 无 | 桌面端 | 标准 | 精致 | 无 | ui/PAGE-AD-009.md |
+| 页面编号 | 页面名称 | 所属终端 | 所属模块 | 小程序路由 | 主包/分包 | 操控形态 | 交互体验 | 视觉细节 | MasterGo | 状态 | 明细路径 |
+|----------|----------|----------|----------|------------|-----------|----------|----------|----------|----------|------|----------|
+| PAGE-MP-001 | 首页 | 微信小程序 | 首页 | pages/index/index | 主包 | 移动端 | 简单 | 粗糙 | 无 | active | ui/PAGE-MP-001.md |
+| PAGE-MP-002 | 商品列表 | 微信小程序 | 商品 | pages/goods/index | 主包 | 移动端 | 标准 | 标准 | 无 | active | ui/PAGE-MP-002.md |
+| PAGE-MP-003 | 商品详情 | 微信小程序 | 商品 | pages/goods/detail | 主包 | 移动端 | 标准 | 标准 | 无 | active | ui/PAGE-MP-003.md |
+| PAGE-MP-004 | 表单 | 微信小程序 | 套件 | pages/kit/form | 主包 | 移动端 | 标准 | 标准 | 无 | active | ui/PAGE-MP-004.md |
+| PAGE-MP-005 | 步骤向导 | 微信小程序 | 商品 | pages/goods/wizard | 主包 | 移动端 | 标准 | 标准 | 无 | fixture | ui/PAGE-MP-005.md |
+| PAGE-MP-008 | 分类树 | 微信小程序 | 商品 | pages/goods/category-tree | 主包 | 移动端 | 标准 | 标准 | 无 | fixture | ui/PAGE-MP-008.md |
+| PAGE-MP-013 | 分类导航 | 微信小程序 | 商品 | pages/goods/category-nav | 主包 | 移动端 | 标准 | 标准 | 无 | fixture | ui/PAGE-MP-013.md |
+| PAGE-MP-014 | 订单列表 | 微信小程序 | 订单 | pages/order/list | 主包 | 移动端 | 标准 | 标准 | 无 | fixture | ui/PAGE-MP-014.md |
+| PAGE-MP-015 | 章节目录 | 微信小程序 | 套件 | pages/kit/chapter-list | 主包 | 移动端 | 标准 | 标准 | 无 | fixture | ui/PAGE-MP-015.md |
+| PAGE-MP-009 | 物流时间轴 | 微信小程序 | 订单 | pages/order/logistics | 主包 | 移动端 | 标准 | 标准 | 无 | fixture | ui/PAGE-MP-009.md |
+| PAGE-AD-001 | 商品列表 | 管理后台 | 商品 | 无 | 无 | 桌面端 | 较复杂 | 精致 | 无 | active | ui/PAGE-AD-001.md |
+| PAGE-AD-002 | 商品表单 | 管理后台 | 商品 | 无 | 无 | 桌面端 | 标准 | 精致 | 无 | active | ui/PAGE-AD-002.md |
+| PAGE-AD-007 | 时间轴 | 管理后台 | 套件 | 无 | 无 | 桌面端 | 标准 | 精致 | 无 | fixture | ui/PAGE-AD-007.md |
+| PAGE-AD-008 | 商品详情 | 管理后台 | 商品 | 无 | 无 | 桌面端 | 标准 | 精致 | 无 | active | ui/PAGE-AD-008.md |
+| PAGE-AD-009 | 表单 | 管理后台 | 套件 | 无 | 无 | 桌面端 | 标准 | 精致 | 无 | fixture | ui/PAGE-AD-009.md |
 
 ## 4. 局部自定义UI组件索引清单（如有）
 
