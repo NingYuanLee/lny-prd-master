@@ -408,7 +408,15 @@ def validate_coverage_regressions(module, errors: list[str]) -> None:
         )
         if module.mobile_section_head_required(typed_mobile):
             fail(errors, f"coverage required a section head on {page_class}")
-    for content_class in ("md-group-list", "md-card md-card--order"):
+    for content_class in (
+        "md-card md-card--cover",
+        "md-card md-card--tile",
+        "md-card md-card--row",
+        "md-card md-card--order",
+        "md-grid-2",
+        "md-comment-list",
+        "md-group-list",
+    ):
         typed_mobile = module.PageParser()
         typed_mobile.feed(
             '<div class="md-mobile-page md-standard">'

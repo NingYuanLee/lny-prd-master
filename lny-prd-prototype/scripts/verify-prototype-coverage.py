@@ -358,12 +358,12 @@ def check_density(path: Path, parser: PageParser) -> list[str]:
 
 
 def mobile_section_head_required(parser: PageParser) -> bool:
-    """Require section headings only on page types where they carry structure."""
+    """Require a heading only when no self-describing mobile structure exists."""
     if not parser.is_mobile:
         return False
     if parser.classes_seen & MOBILE_SECTION_HEAD_OPTIONAL_CLASSES:
         return False
-    if parser.has_func_area and not parser.has_list_module:
+    if parser.has_func_area or parser.has_list_module:
         return False
     return True
 
