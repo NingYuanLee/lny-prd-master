@@ -1,6 +1,6 @@
 # LNY-PRD — 李宁远产品工作流
 
-**工具包版本：2.13.0**
+**工具包版本：2.14.0**
 
 ## 背景
 
@@ -57,24 +57,7 @@ LNY-PRD 做的是 **vibe-spec-coding** 里的 **vibe-spec**：帮助审视产品
 
 **②③④** 为规格三件套，按 **②→③→④ 同轮批处理**（中间不问「继续」）。用户目标是原型/演示时，总控在**当前版本**静默补 ②③④⑤⑥，**禁止静默 ⑩**（只有明确说新迭代才建新版本）。⑥ 按用户指定页面范围执行；未指定时一次完成当前全部缺失业务页，并对每页独立执行规格、金样与验收门禁。
 
-**职责顺序**：`FEATURE → AC → 验证证据` 是纵向验收主线，UI 是跨 Feature 的横向展示聚合，API 是实现契约；④ 收束并反查 ②③，⑤ 同时读取 Feature 验收线与 UI 页面线。⑦ 先检查客观完整性与交付证据，⑧ 再做产品判断。评审员给出明确结论，产品只需确认或指出修改项；“继续”不会误触批准。旧项目可继续读取，新增的模块、评审和交付范围字段在项目被迭代或准备导出时渐进补齐；只有云效导出门禁要求其完整。
-
-### 可选集成：云效导出计划
-
-`/lny-prd-yunxiao` 不属于编号工作流步骤。它只读校验 `versions/{v}/delivery_scope.md`，并把稳定的 `MODULE-*` / `FEATURE-*` / PAGE / API 来源编号映射为确定性的云效工作项 JSON 计划。首版提供 `validate` 与 `plan`，不调用云效写接口，也不把云效实际 ID、负责人或研发状态写回 PRD。Mini Shop 的完整生成快照见 [`examples/mini-shop/versions/v1.0.0/yunxiao-plan.json`](examples/mini-shop/versions/v1.0.0/yunxiao-plan.json)。
-
-```bash
-python <skills-dir>/lny-prd-yunxiao/scripts/build-yunxiao-plan.py <prd-root> --mode validate --version v1.0.0
-python <skills-dir>/lny-prd-yunxiao/scripts/build-yunxiao-plan.py <prd-root> --mode plan --version v1.0.0
-```
-
-导出门禁要求：版本范围与所选 Feature 均已批准、确认/阻塞项为 0、未决决策全部关闭；`本期开发` Feature 必须为 `active + approved`，至少有一条完整 AC，并映射为更新计划；页面调用绑定优先取当前单页 PRD，缺页时回退根 UI 明细，无法归属到任何 Feature 的绑定会阻塞。`本期下线` Feature 必须为 `deprecated + approved`，且最近更早版本存在已审阅的 `yunxiao-plan.json`，关闭集合以该历史快照为准；二者均引用已注册的 `MODULE-*`。没有 `delivery_scope.md` 的历史项目只有在用户明确传入 `--feature FEATURE-###` 时可选择 active Feature，其他门禁不会跳过。
-
-公司默认任务面固定为 `BE / MP / TEST`：API、EXT、AD 管理端页面归 `BE`，其余客户端页面归 `MP`，每个 Feature 生成验收任务 `TEST`。云效的 `MP` 对应 ⑨ SP 口径中的 `FE`，但两边保留各自字段名，不改写 `FE_SP`。
-
-API 的实现所有权归 BE，不等于 MP 不记录调用责任：MP 任务保留客户端 PAGE 为 `sourceRefs`，把页面调用的 API 记为 `dependencyRefs`，并从单页 PRD §5 生成用途/触发时机绑定；Feature AC 按关联 PAGE/API 同时投影到相关研发任务，完整 AC 仍由 TEST 做最终验收。
-
-产品评审或调整既有版本范围时使用 ⑧ `/lny-prd-review`：它先使用 ⑦ 的检查结果；当前对话没有有效检查结果时，同轮先执行 ⑦。评审员主动组装候选范围并给出包含范围取舍和状态变化的完整拟定结论。产品可直接确认，也可补事实、调范围、改条件或质疑判断；评审员重评并生成完整修订结论，循环到确认后再创建或更新该版本 `delivery_scope.md`。有交付范围则由⑨据此估点，⑩只在前版闭合后创建下一版本且不写范围文件。云效适配器始终只读。
+**职责顺序**：`FEATURE → AC → 验证证据` 是纵向验收主线，UI 是跨 Feature 的横向展示聚合，API 是实现契约；④ 收束并反查 ②③，⑤ 同时读取 Feature 验收线与 UI 页面线。⑦ 先检查客观完整性与交付证据，⑧ 再做产品判断。评审员给出明确结论，产品只需确认或指出修改项；“继续”不会误触批准。旧项目可继续读取，新增的模块、评审和交付范围字段在项目被迭代时渐进补齐。
 
 ## 二、核心原则
 
@@ -102,7 +85,6 @@ API 的实现所有权归 BE，不等于 MP 不记录调用责任：MP 任务保
 | **文档检查** | 对已有 PRD 做只读一致性校验（引用闭环、编号规范、统计对齐），输出审计报告 |
 | **迭代管理** | 创建新版本目录骨架、变更台账（ui/api/feature），标注委派清单 |
 | **版本工时点** | 按版本汇总 FE/BE 标准工时点（总人时，不是日历工期），落盘 `sp_report.md` |
-| **云效导出计划** | 只读校验本期交付门禁，生成产品需求 → 业务需求 → 研发任务的 JSON 映射计划 |
 
 **一句话**：从「已经想清楚要做什么」到「规格和原型齐了，交给 coding 环节」——只覆盖 vibe-spec，不覆盖实现。
 
@@ -117,7 +99,6 @@ API 的实现所有权归 BE，不等于 MP 不记录调用责任：MP 任务保
 | **不做技术选型** | 不定框架版本、不选数据库、不设计缓存策略——那是开发侧的事 |
 | **不做项目管理** | 没有甘特图、人员排期；**⑨** 只给版本级标准工程人时，不承诺日历工期 |
 | **不跳过产品确认** | ⑧ 负责下拟定结论，产品无需重做分析，但必须确认后才能写成正式批准事实 |
-| **不写云效工作项** | 当前适配器只生成可审阅计划；不创建/更新云效工作项，不同步负责人或实时状态 |
 
 **一句话**：产物停在 PRD + 静态原型；开发 Agent 读它来写代码，终端用户用不上它。
 
@@ -154,7 +135,7 @@ FE：① ui 页壳 → ② api 全局层 → ③ 可复用 COMP → ④ 多 Agen
 ## 四、前置条件
 
 - 支持 Agent Skills 的 AI 编程工具（Cursor、ChatGPT、TraeWork CN）
-- 已按 5.1 将本仓库的 10 个核心 `lny-prd-*/` 技能与云效适配器作为整包安装
+- 已按 5.1 将本仓库的 10 个核心 `lny-prd-*/` 技能作为整包安装
 - 准备一个 **空的 PRD 项目目录**（不要用本技能包仓库根当项目根）
 
 ## 五、快速开始
@@ -163,7 +144,7 @@ FE：① ui 页壳 → ② api 全局层 → ③ 可复用 COMP → ④ 多 Agen
 
 将本仓库克隆到本地。本仓库 = 技能包；PRD 项目 = 另开目录。安装器只使用 Python 标准库，不需要先安装 `requirements-dev.txt`。
 
-10 个核心技能（十步工作流）与 1 个可选云效适配器是一个原子、同版本的安装包，禁止只更新其中一部分。仅支持用户级安装：
+10 个核心技能（十步工作流）是一个原子、同版本的安装包，禁止只更新其中一部分。仅支持用户级安装：
 
 | 工具 | `--host` | 默认技能目录 |
 |------|----------|--------------|
@@ -264,7 +245,6 @@ my-project/                         # PRD 项目根目录
     │   ├── iteration_notes.md      #     过程性留痕
     │   ├── delivery_scope.md       #     ⑧确认后才创建的本期范围与评审决议
     │   ├── sp_report.md            #     版本标准工时点（⑨ 负责；夹具已给出）
-    │   ├── yunxiao-plan.json       #     可选云效工作项计划快照（夹具已给出）
     │   ├── pages_prd/              #     单页 PRD（⑤ 负责）
     │   │   └── PAGE-MP-001.md
     └── v1.1.0/                     #   次版（⑩ 创建）
@@ -479,9 +459,8 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 ├── lny-prd-check/                   # ⑦ 只读检查 + 路径/跨文档语义扫描器
 ├── lny-prd-iter/SKILL.md + reference.md
 ├── lny-prd-sp/SKILL.md + reference-weights.md
-├── lny-prd-yunxiao/                # 可选集成：只读 validate/plan + 映射策略
 ├── examples/mini-shop/             # 人类只读样例 + CI 回归数据（不参与安装）
-├── skill-bundle.json               # 整包 ID、版本、10 核心技能 + 1 适配器与可选资源
+├── skill-bundle.json               # 整包 ID、版本、10 核心技能与可选资源
 ├── scripts/install-skills.py       # 三平台用户级整包安装、更新、状态与卸载
 ├── scripts/test_install_skills.py  # 安装事务、回滚、漂移与平台配置测试
 ├── scripts/test_verify_prototype_browser.mjs # 浏览器门禁负例回归
@@ -549,7 +528,7 @@ node lny-prd-prototype/scripts/verify-prototype-browser.mjs examples/mini-shop
 node scripts/test_verify_prototype_browser.mjs
 ```
 
-静态门禁使用真实 YAML 解析并逐一 quick-validate 10 个核心技能与 1 个适配器，同时检查 `skill-bundle.json` 与 README 版本一致、技能运行时不依赖 `examples/`、`agents/openai.yaml`、Markdown 链接、全量文本 UTF-8、Python/JavaScript 语法、安装事务与回滚、产物路径正反例、跨文档语义一致性、云效导出计划正负例、迁移冲突保护、kit 与副本、全部金样、根原型页面 ID 与带正反例的 coverage；同时禁止 `versions/{v}/prototypes/` 副本。跨文档语义门禁会对账索引/文件名/明细身份、Feature 状态、模块/评审/交付范围、根统计、Feature 页面/API 引用以及已有 SP 报告中的 Feature 输入快照。浏览器门禁再对全部 `PAGE-*.html` 检查真实渲染、离线资源、Console / 页面错误、横向溢出、截图有效性及常见控件冒烟交互，并用 7 类负例验证门禁不会静默失效。GitHub Actions 在 push 和 pull request 时运行两层门禁，失败时保留浏览器截图 7 天；任一项失败均不得发布。元数据路由固定为：总控 `allow_implicit_invocation: true`，其余子技能与适配器为 `false`，仍可通过 `$lny-prd-*` 显式调用。
+静态门禁使用真实 YAML 解析并逐一 quick-validate 10 个核心技能，同时检查 `skill-bundle.json` 与 README 版本一致、技能运行时不依赖 `examples/`、`agents/openai.yaml`、Markdown 链接、全量文本 UTF-8、Python/JavaScript 语法、安装事务与回滚、产物路径正反例、跨文档语义一致性、迁移冲突保护、kit 与副本、全部金样、根原型页面 ID 与带正反例的 coverage；同时禁止 `versions/{v}/prototypes/` 副本。跨文档语义门禁会对账索引/文件名/明细身份、Feature 状态、模块/评审/交付范围、根统计、Feature 页面/API 引用以及已有 SP 报告中的 Feature 输入快照。浏览器门禁再对全部 `PAGE-*.html` 检查真实渲染、离线资源、Console / 页面错误、横向溢出、截图有效性及常见控件冒烟交互，并用 7 类负例验证门禁不会静默失效。GitHub Actions 在 push 和 pull request 时运行两层门禁，失败时保留浏览器截图 7 天；任一项失败均不得发布。元数据路由固定为：总控 `allow_implicit_invocation: true`，其余子技能为 `false`，仍可通过 `$lny-prd-*` 显式调用。
 
 ## 十一、许可证
 

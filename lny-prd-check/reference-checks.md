@@ -68,7 +68,7 @@
 |--------|------|------------|--------|
 | 故事↔功能 | `main_spec` §1.2 每条 `STORY-*` 关联列为有效 `FEATURE-*` 或显式「框架承接」；被引用 FEATURE 须在 `feature_spec` 存在 | `/lny-prd-master` / `/lny-prd-feature` 补关联或改编号 | 高 |
 | FEATURE↔AC↔PAGE | 每个 **active** FEATURE（见「状态口径」）至少一条 AC；同一 Feature 内 AC ID 唯一，验收描述与验证方式非空。新建/修改 AC 涉及页面行为时挂 `PAGE-*`，有数据依赖时挂 `API-*` / `EXT-*`，否则显式「无」；单页 PRD §6 以 `关联AC` 反向登记本页承接的 AC ID，并与 Feature 完全一致。`验证方式`只写证据类型，禁止混入 `FE/BE/MP/AD/PC/APP/H5/TEST` 等终端或交付角色。旧 AC 缺页面列、旧 PAGE 缺 `关联AC` 列可读，修改时补齐 | `/lny-prd-feature` 补 AC 页面/接口引用，或 `/lny-prd-page` 补 PAGE 反向 AC | 高 |
-| 模块来源稳定性 | 使用新交付契约的项目：`main_spec` 有唯一 `MODULE-*` 注册表；Feature 索引/明细的模块编号与显示名一致。旧项目缺字段不阻塞普通 PRD 验收，但不得判定外部台账导出就绪 | `/lny-prd-master` 注册模块，`/lny-prd-feature` 对齐引用 | 高 |
+| 模块来源稳定性 | 使用新交付契约的项目：`main_spec` 有唯一 `MODULE-*` 注册表；Feature 索引/明细的模块编号与显示名一致。旧项目缺字段不阻塞普通 PRD 验收 | `/lny-prd-master` 注册模块，`/lny-prd-feature` 对齐引用 | 高 |
 | Feature 评审语义 | `状态` 只表达 `draft/active/deprecated` 生命周期；独立 `评审状态` 只用 `pending/reviewing/approved/blocked`，禁止把 active 解释为已批准。字段缺失按 `pending` 读取，不作为普通 PRD 验收缺陷；值非法或两类状态混用才报。是否应该批准不在本步判断 | 字段结构交 `/lny-prd-feature`；产品结论交 `/lny-prd-review` | 高 |
 | Feature↔页面/接口 | 每个 FEATURE 关联页面、关联接口非空或显式「无」；页面 ∈ `ui_manifest`；接口 ∈ `api_spec` **§4（API）** 或 **§2（EXT）**，无孤儿引用 | `/lny-prd-feature` 修复引用或补齐页面/接口 | 高 |
 | 非静态 PAGE↔API | 非静态页须关联至少一 `API-*` 或正文标明静态/无数据；静态页须标明 | `/lny-prd-ui` / `/lny-prd-api` 补关联或标静态 | 中 |
@@ -236,6 +236,6 @@
 | 需先修复再评审 | 用户/目标/Feature/AC/关键 PAGE/API 证据存在阻塞缺口，当前只能可靠得出“退回补充” | 按责任技能修复后重跑⑦；用户直接要求评审时，仍可同轮交⑧给出“退回补充”结论 |
 | 无需发起⑧ | 仅纯文档修复、元数据整理、原型实现问题，且不存在产品范围或价值取舍 | 按检查委派处理，不创建 `delivery_scope.md` |
 
-已有 `delivery_scope.md` 时，⑦可报告结构或引用不一致，但不得重新判断其中产品结论。外部导出资格由⑧确认产物和 `/lny-prd-yunxiao` 自身门禁校验。
+已有 `delivery_scope.md` 时，⑦可报告结构或引用不一致，但不得重新判断其中产品结论。
 
 ---

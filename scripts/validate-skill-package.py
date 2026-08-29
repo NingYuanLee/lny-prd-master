@@ -35,7 +35,6 @@ EXPECTED_SKILL_ORDER = (
     "lny-prd-check",
     "lny-prd-iter",
     "lny-prd-sp",
-    "lny-prd-yunxiao",
 )
 EXPECTED_SKILLS = set(EXPECTED_SKILL_ORDER)
 FRONTMATTER_RE = re.compile(r"\A---\r?\n(.*?)\r?\n---(?:\r?\n|\Z)", re.S)
@@ -51,9 +50,6 @@ INSTALLER_TESTS = ROOT / "scripts" / "test_install_skills.py"
 ARTIFACT_PATH_CHECKER = ROOT / "lny-prd-check" / "scripts" / "verify-artifact-paths.py"
 PRD_SEMANTIC_CHECKER = ROOT / "lny-prd-check" / "scripts" / "validate-prd-project.py"
 PRD_SEMANTIC_TESTS = ROOT / "scripts" / "test_validate_prd_project.py"
-YUNXIAO_ADAPTER_TESTS = ROOT / "scripts" / "test_yunxiao_adapter.py"
-YUNXIAO_PLAN_BUILDER = ROOT / "lny-prd-yunxiao" / "scripts" / "build-yunxiao-plan.py"
-YUNXIAO_PLAN_VALIDATOR = ROOT / "lny-prd-yunxiao" / "scripts" / "validate-export-plan.py"
 
 
 def fail(errors: list[str], message: str) -> None:
@@ -107,7 +103,7 @@ def validate_bundle_contract(errors: list[str]) -> None:
     if not isinstance(version, str) or not SEMVER_RE.fullmatch(version):
         fail(errors, f"{manifest_path}: bundle_version must be stable X.Y.Z")
     if manifest.get("skills") != list(EXPECTED_SKILL_ORDER):
-        fail(errors, f"{manifest_path}: skills must list ten ordered core skills plus the Yunxiao adapter")
+        fail(errors, f"{manifest_path}: skills must list ten ordered core skills")
     expected_resources = {"examples": {"path": "examples", "audience": "human"}}
     if manifest.get("optional_resources") != expected_resources:
         fail(errors, f"{manifest_path}: optional_resources must declare human-only examples")
@@ -664,47 +660,6 @@ def validate_prototypes(errors: list[str]) -> None:
             fail(errors, "gold validation: " + error)
 
 
-def validate_yunxiao_sample(errors: list[str]) -> None:
-    fixture_plan = ROOT / "examples" / "mini-shop" / "versions" / "v1.0.0" / "yunxiao-plan.json"
-    command = [
-        sys.executable,
-        str(YUNXIAO_PLAN_BUILDER),
-        str(ROOT / "examples" / "mini-shop"),
-        "--mode",
-        "plan",
-        "--version",
-        "v1.0.0",
-        "--allow-fixture-status",
-    ]
-    result = run(command)
-    if result.returncode:
-        fail(errors, "mini-shop Yunxiao plan failed:\n" + (result.stdout + result.stderr).strip())
-        return
-    if not fixture_plan.is_file():
-        fail(errors, f"mini-shop Yunxiao plan fixture is missing: {fixture_plan.relative_to(ROOT)}")
-        return
-    if fixture_plan.read_text(encoding="utf-8") != result.stdout:
-        fail(
-            errors,
-            "mini-shop Yunxiao plan fixture is stale; regenerate "
-            "examples/mini-shop/versions/v1.0.0/yunxiao-plan.json",
-        )
-    try:
-        plan = json.loads(result.stdout)
-    except json.JSONDecodeError as exc:
-        fail(errors, f"mini-shop Yunxiao plan is not JSON: {exc}")
-        return
-    source_ids = [item.get("sourceId") for item in plan.get("items", []) if isinstance(item, dict)]
-    expected = {"MODULE-001", "FEATURE-001", "FEATURE-002", "FEATURE-003"}
-    if not expected <= set(source_ids):
-        fail(errors, f"mini-shop Yunxiao plan is missing source IDs: {sorted(expected - set(source_ids))}")
-    require_run(
-        [sys.executable, str(YUNXIAO_PLAN_VALIDATOR), str(fixture_plan)],
-        errors,
-        "mini-shop Yunxiao plan schema",
-    )
-
-
 def main() -> int:
     errors: list[str] = []
     validate_bundle_contract(errors)
@@ -723,11 +678,6 @@ def main() -> int:
         "PRD semantic validator tests",
     )
     require_run(
-        [sys.executable, str(YUNXIAO_ADAPTER_TESTS), "-v"],
-        errors,
-        "Yunxiao adapter tests",
-    )
-    require_run(
         [
             sys.executable,
             str(PRD_SEMANTIC_CHECKER),
@@ -737,7 +687,6 @@ def main() -> int:
         errors,
         "mini-shop semantic validation",
     )
-    validate_yunxiao_sample(errors)
     require_run(
         [sys.executable, str(INSTALLER_TESTS), "-v"],
         errors,
@@ -749,10 +698,10 @@ def main() -> int:
             print("- " + error, file=sys.stderr)
         return 1
     print(
-        f"skill package validation ok: {len(SKILL_DIRS)} skills (10 core + 1 adapter); bundle/version contract; "
+        f"skill package validation ok: {len(SKILL_DIRS)} skills (10 core); bundle/version contract; "
         "runtime examples isolation; real YAML + quick validation; links; UTF-8; Python/JS; "
         "installer transactions; migration; artifact paths; semantic consistency; kit/gold; "
-        "prototype identity; Yunxiao plan gates; fixture + negative coverage"
+        "prototype identity; fixture + negative coverage"
     )
     return 0
 

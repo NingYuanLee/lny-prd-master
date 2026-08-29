@@ -178,7 +178,7 @@ class InstallerTests(unittest.TestCase):
             with quiet_output():
                 installer.command_install(args, self.bundle, target)
 
-            added_skill = "lny-prd-yunxiao"
+            added_skill = "lny-prd-sp"
             installer.remove_tree(destination / added_skill, destination, added_skill)
             state = json.loads(target.state_file.read_text(encoding="utf-8"))
             state["bundle_version"] = "2.9.0"
@@ -191,6 +191,32 @@ class InstallerTests(unittest.TestCase):
             updated = json.loads(target.state_file.read_text(encoding="utf-8"))
             self.assertEqual(updated["bundle_version"], self.bundle.version)
             self.assertIn(added_skill, updated["skills"])
+
+    def test_update_removes_a_skill_dropped_by_a_new_bundle(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lny-prd-installer-remove-") as temp:
+            destination = Path(temp) / "skills"
+            target = installer.resolve_target("cursor", str(destination))
+            args = options(dest=str(destination))
+            with quiet_output():
+                installer.command_install(args, self.bundle, target)
+
+            dropped_skill = "lny-prd-dropped"
+            dropped_dir = destination / dropped_skill
+            dropped_dir.mkdir()
+            (dropped_dir / "SKILL.md").write_text(
+                "---\nname: lny-prd-dropped\ndescription: dropped\n---\n# dropped\n",
+                encoding="utf-8",
+            )
+            state = json.loads(target.state_file.read_text(encoding="utf-8"))
+            state["skills"][dropped_skill] = installer.directory_digest(dropped_dir)
+            state["bundle_version"] = "2.9.0"
+            installer.write_json_atomic(target.state_file, state)
+
+            with quiet_output():
+                self.assertEqual(installer.command_update(args, self.bundle, target), 0)
+            self.assertFalse((destination / dropped_skill).exists())
+            updated = json.loads(target.state_file.read_text(encoding="utf-8"))
+            self.assertNotIn(dropped_skill, updated["skills"])
 
     def test_examples_export_is_separate_from_skills(self) -> None:
         with tempfile.TemporaryDirectory(prefix="lny-prd-installer-examples-") as temp:

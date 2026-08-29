@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "bundle_id": "lny-prd",
-  "bundle_version": "2.13.0",
+  "bundle_version": "2.14.0",
   "skills": [
     "lny-prd-master",
     "lny-prd-ui",
@@ -12,8 +12,7 @@
     "lny-prd-prototype",
     "lny-prd-check",
     "lny-prd-iter",
-    "lny-prd-sp",
-    "lny-prd-yunxiao"
+    "lny-prd-sp"
   ],
   "optional_resources": {
     "examples": {

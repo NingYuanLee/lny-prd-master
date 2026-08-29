@@ -199,7 +199,6 @@
 - 不创建缺失的版本目录；版本目录属于 ①/⑩。目录存在时，本技能可在确认轮创建 `delivery_scope.md`。
 - 不修改 `iteration_notes.md`、三类 `*_changes.md`、`eval_signals.md` 或根规范变更记录。
 - 不直接修改根 Feature 其它正文。结论包含 Feature 评审状态时，在确认轮按 `/lny-prd-feature` 规则同轮同步该字段。
-- 不写云效工作项 ID、负责人或研发状态。
 
 ## 7. 与 check 的分界
 

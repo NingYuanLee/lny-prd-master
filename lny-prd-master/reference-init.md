@@ -86,7 +86,7 @@
 - 示例：FEATURE-001、FEATURE-002、FEATURE-003
 
 **业务模块编号规则：** `MODULE-{三位序号}`
-- 示例：MODULE-001、MODULE-002；模块改名时编号不变，不使用云效实际 ID
+- 示例：MODULE-001、MODULE-002；模块改名时编号不变
 
 **用户故事编号规则：** `STORY-{三位序号}`
 - 示例：STORY-001、STORY-002；与 FEATURE 可为 N:M（FEATURE 明细标明主/次关联）

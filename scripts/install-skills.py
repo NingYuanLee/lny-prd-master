@@ -31,7 +31,6 @@ EXPECTED_SKILLS = {
     "lny-prd-review",
     "lny-prd-sp",
     "lny-prd-ui",
-    "lny-prd-yunxiao",
 }
 IGNORED_NAMES = {".DS_Store", ".git", "__pycache__"}
 IGNORED_SUFFIXES = {".pyc", ".pyo"}
@@ -181,7 +180,7 @@ def load_bundle() -> Bundle:
         or len(skills) != len(set(skills))
         or set(skills) != EXPECTED_SKILLS
     ):
-        raise InstallError("skill-bundle.json must list the ten core LNY-PRD skills and optional Yunxiao adapter")
+        raise InstallError("skill-bundle.json must list the ten core LNY-PRD skills")
     resources = raw.get("optional_resources")
     examples_config = resources.get("examples") if isinstance(resources, dict) else None
     if not isinstance(examples_config, dict) or examples_config.get("audience") != "human":
@@ -338,7 +337,9 @@ def load_trae_config(path: Path) -> dict:
     return raw
 
 
-def update_trae_config(bundle: Bundle, target: Target, *, remove: bool) -> bool:
+def update_trae_config(
+    bundle: Bundle, target: Target, *, remove: bool, dropped: tuple[str, ...] = ()
+) -> bool:
     path = target.trae_config_file
     if path is None:
         return False
@@ -351,6 +352,8 @@ def update_trae_config(bundle: Bundle, target: Target, *, remove: bool) -> bool:
             managed.pop(name, None)
         else:
             managed[name] = "user_upload"
+    for skill in dropped:
+        managed.pop(skill, None)
     if managed == before:
         return False
     write_json_atomic(path, config)
@@ -452,7 +455,12 @@ def replace_bundle(bundle: Bundle, target: Target, old_state: dict | None) -> No
                 (backup / "skill-config.json").write_bytes(original_config)
 
             try:
-                for skill in bundle.skills:
+                dropped_skills = [
+                    skill
+                    for skill in (old_state.get("skills", {}) if old_state else {})
+                    if skill not in bundle.skills
+                ]
+                for skill in [*bundle.skills, *dropped_skills]:
                     destination = target.skills_root / skill
                     validate_direct_child(target.skills_root, destination, skill)
                     if destination.exists():
@@ -462,7 +470,7 @@ def replace_bundle(bundle: Bundle, target: Target, old_state: dict | None) -> No
                     destination = target.skills_root / skill
                     os.replace(stage / skill, destination)
                     installed_new.append(skill)
-                update_trae_config(bundle, target, remove=False)
+                update_trae_config(bundle, target, remove=False, dropped=tuple(dropped_skills))
                 write_json_atomic(target.state_file, build_state(bundle, target))
             except Exception as exc:
                 for skill in reversed(installed_new):
@@ -676,7 +684,7 @@ def add_target_arguments(parser: argparse.ArgumentParser) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Install the atomic LNY-PRD bundle: ten core skills plus the Yunxiao adapter."
+        description="Install the atomic LNY-PRD bundle: ten core skills."
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 

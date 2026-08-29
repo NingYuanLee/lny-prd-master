@@ -1,6 +1,0 @@
-interface:
-  display_name: "LNY-PRD Yunxiao"
-  short_description: "只读校验 PRD 交付范围与评审门禁并生成云效工作项导出计划"
-  default_prompt: "Use $lny-prd-yunxiao to validate this PRD delivery scope and generate a read-only Yunxiao export plan."
-policy:
-  allow_implicit_invocation: false

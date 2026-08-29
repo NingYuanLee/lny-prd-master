@@ -1,7 +1,7 @@
 ---
 name: lny-prd-master
 description: >-
-  LNY-PRD（李宁远产品工作流）总控入口与立项。Use when the user mentions lny-prd, 李宁远, 云效导出,
+  LNY-PRD（李宁远产品工作流）总控入口与立项。Use when the user mentions lny-prd, 李宁远,
   @lny-prd-master, /lny-prd-master, /lny-prd-ui, /lny-prd-api, /lny-prd-feature, /lny-prd-prototype,
   /lny-prd-page, /lny-prd-review, /lny-prd-check, /lny-prd-iter, /lny-prd-sp, product spec, or PRD workflows.
   空目录走立项脚手架；已有 main_spec.md 时按 §3 判定下一步并 Read 对应 lny-prd-*/SKILL.md。
@@ -12,7 +12,7 @@ description: >-
 
 🔷 **LNY-PRD** 共十步：**①** `/lny-prd-master` 立项 · **②** `/lny-prd-ui` · **③** `/lny-prd-api` · **④** `/lny-prd-feature` · **⑤** `/lny-prd-page` · **⑥** `/lny-prd-prototype` · **⑦** `/lny-prd-check` · **⑧** `/lny-prd-review` · **⑨** `/lny-prd-sp` · **⑩** `/lny-prd-iter`。**②③④ 规格三件套同轮批处理**；**⑧ 基于规格与检查证据给出产品结论，⑨ 只估已确认范围，⑩ 再开新版本**；**⑥ 默认依赖 ⑤**（`pages_prd`；例外 `ui直出`）。入口 `@lny-prd-master` / `/lny-prd-master` /「继续」等价；按本协议判定后 **Read** 对应 `lny-prd-*/SKILL.md` 执行。
 
-十步编号表达技能职责，不表示每次都按序串行执行：⑧ 只在用户明确要求评审或处理上一轮评审结论时触发，并可读取最近一次 ⑦ 检查报告作为证据。② UI 保持横向展示聚合，④ Feature 作为 `FEATURE → AC → 验证证据` 的纵向验收主线并反查 ②③，⑤ 汇合两条线。②③④ 仍同轮完成；新增模块、评审、范围字段在迭代或外部台账导出前渐进补齐。
+十步编号表达技能职责，不表示每次都按序串行执行：⑧ 只在用户明确要求评审或处理上一轮评审结论时触发，并可读取最近一次 ⑦ 检查报告作为证据。② UI 保持横向展示聚合，④ Feature 作为 `FEATURE → AC → 验证证据` 的纵向验收主线并反查 ②③，⑤ 汇合两条线。②③④ 仍同轮完成；新增模块、评审、范围字段在迭代前渐进补齐。
 
 ---
 
@@ -90,7 +90,6 @@ description: >-
 | --- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | A   | 尚无 `main_spec.md` 且目录无非隐藏文件、正走 **§2** 立项                                                                                          | 仅执行本文 **立项**；完成后生成 `main_spec.md` 等                                         |
 | B2  | 用户明确要求**新增/变更/删减终端**，或 `ui_manifest`/`api_spec` 所需终端不在 `main_spec` 第4章表中 | **① master**：Read 本文，更新 `main_spec` **第4章终端说明**（**无** `###` 小节）；再交 **②** 补 `ui_manifest` |
-| Y   | 用户明确要求云效导出、云效需求映射或 `/lny-prd-yunxiao` | Read `lny-prd-yunxiao/SKILL.md`；只执行 `validate/plan`，不改 PRD、不调用云效写接口 |
 | Review | 用户明确要求需求/产品/范围评审、判断是否值得做，或维护既有版本的本期开发/下线范围与未决决策；**或上一轮 ⑧ 结论包待处理且本轮确认、否定、补充或调整**；同时明确新迭代/新版本时除外 | **⑧ review**：Read `lny-prd-review/SKILL.md`；首次评审若无本轮有效 ⑦ 结果，先同轮 Read 并执行 `lny-prd-check/SKILL.md` 的只读检查，再由 ⑧ 主动组装候选范围并给唯一拟定结论包；调整轮重评并重发完整结论，确认轮创建或更新 `delivery_scope.md`，并按需同轮交 ④ 同步 Feature 评审状态 |
 | I2-spec | `versions/{latest}/` 存在且 `ui_changes.md` / `api_changes.md` / `feature_changes.md` 中仍有 `待②` / `待③` / `待④`（**⑩ 已建版、规格委派未清**） | 见 **§3.1** 清完 ②③④。若本轮**同时**是演示/原型目标，清完后**同一轮**继续 §3.2 的 ⑤⑥ |
 | I2-page | 无 `待②`/`待③`/`待④`，但台账仍有 `待⑤` | **⑤ page**。若本轮**同时**是演示/原型目标，⑤ 完成后**同一轮**继续 ⑥ |
