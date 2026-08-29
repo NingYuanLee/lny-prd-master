@@ -1,0 +1,6 @@
+interface:
+  display_name: "LNY-PRD Review"
+  short_description: "评审需求价值、目标、范围、方案、验收、风险与版本交付决策"
+  default_prompt: "Use $lny-prd-review to produce a concrete review conclusion for product confirmation."
+policy:
+  allow_implicit_invocation: false

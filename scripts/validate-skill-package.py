@@ -29,6 +29,7 @@ EXPECTED_SKILL_ORDER = (
     "lny-prd-ui",
     "lny-prd-api",
     "lny-prd-feature",
+    "lny-prd-review",
     "lny-prd-page",
     "lny-prd-prototype",
     "lny-prd-check",
@@ -106,7 +107,7 @@ def validate_bundle_contract(errors: list[str]) -> None:
     if not isinstance(version, str) or not SEMVER_RE.fullmatch(version):
         fail(errors, f"{manifest_path}: bundle_version must be stable X.Y.Z")
     if manifest.get("skills") != list(EXPECTED_SKILL_ORDER):
-        fail(errors, f"{manifest_path}: skills must list nine ordered core skills plus the Yunxiao adapter")
+        fail(errors, f"{manifest_path}: skills must list ten ordered core skills plus the Yunxiao adapter")
     expected_resources = {"examples": {"path": "examples", "audience": "human"}}
     if manifest.get("optional_resources") != expected_resources:
         fail(errors, f"{manifest_path}: optional_resources must declare human-only examples")
@@ -731,7 +732,7 @@ def main() -> int:
             print("- " + error, file=sys.stderr)
         return 1
     print(
-        f"skill package validation ok: {len(SKILL_DIRS)} skills (9 core + 1 adapter); bundle/version contract; "
+        f"skill package validation ok: {len(SKILL_DIRS)} skills (10 core + 1 adapter); bundle/version contract; "
         "runtime examples isolation; real YAML + quick validation; links; UTF-8; Python/JS; "
         "installer transactions; migration; artifact paths; semantic consistency; kit/gold; "
         "prototype identity; Yunxiao plan gates; fixture + negative coverage"

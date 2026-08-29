@@ -31,7 +31,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 ## 写产物纪律
 
-开笔前 Read 索引 + `feature/` + 根规格校验引用，并确认 `main_spec` 模块注册表。先清单后落盘。命中双图必画条件则补图（节点用 PAGE/API/EXT 编号）。评审结论只有产品明确给出时才写 `approved`，否则保持 `pending/reviewing`。`iteration_notes` 文末追加业务变更。
+开笔前 Read 索引 + `feature/` + 根规格校验引用，并确认 `main_spec` 模块注册表。先清单后落盘。命中双图必画条件则补图（节点用 PAGE/API/EXT 编号）。评审结论只有产品明确给出，或产品确认了 R `/lny-prd-review` 的最新结论包时才写 `approved`，否则保持 `pending/reviewing`。仅同步评审状态不写 `iteration_notes`；业务正文变更仍按规则追加。
 
 ## 前置条件
 

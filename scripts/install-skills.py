@@ -28,6 +28,7 @@ EXPECTED_SKILLS = {
     "lny-prd-master",
     "lny-prd-page",
     "lny-prd-prototype",
+    "lny-prd-review",
     "lny-prd-sp",
     "lny-prd-ui",
     "lny-prd-yunxiao",
@@ -180,7 +181,7 @@ def load_bundle() -> Bundle:
         or len(skills) != len(set(skills))
         or set(skills) != EXPECTED_SKILLS
     ):
-        raise InstallError("skill-bundle.json must list the nine core LNY-PRD skills and optional Yunxiao adapter")
+        raise InstallError("skill-bundle.json must list the ten core LNY-PRD skills and optional Yunxiao adapter")
     resources = raw.get("optional_resources")
     examples_config = resources.get("examples") if isinstance(resources, dict) else None
     if not isinstance(examples_config, dict) or examples_config.get("audience") != "human":
@@ -675,7 +676,7 @@ def add_target_arguments(parser: argparse.ArgumentParser) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Install the atomic LNY-PRD bundle: nine core skills plus the Yunxiao adapter."
+        description="Install the atomic LNY-PRD bundle: ten core skills plus the Yunxiao adapter."
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
