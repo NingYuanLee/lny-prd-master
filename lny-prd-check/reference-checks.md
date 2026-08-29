@@ -161,7 +161,7 @@
 | 浏览器冒烟 | 宿主可解析 `playwright` / `pngjs` 时脚本 exit 0；exit 1 的页面级渲染、离线资源、Console、横向溢出或交互失败须逐项报告 | `/lny-prd-prototype` 修复对应 PAGE 或 kit | 高 |
 | 交互体验设计 §2.3 | 每个 `ui/PAGE-*` 含观感与舒适、动效与过渡、微反馈、收纳与浮层；不得只列控件。除一次直接点击的简单交互外，复杂交互须在 PAGE §2.3 或所引 COMP 写清触发、可见过程/过渡、结果状态及适用的取消/失败/禁用反馈 | `/lny-prd-ui` 补 §2.3 / COMP 状态矩阵 | 高 |
 | 布局与 COMP 态 | 布局与 `ui/PAGE-*` 一致；COMP 态与矩阵可演示 | ② 或 ⑥ | 中 |
-| 逐页对照 G.4 | 每个业务 `PAGE-*.html` 对照 `pages_prd`：ASCII 只定分区；视觉须达 `gold/` 金样下限且不照搬演示功能；须能过 `verify-prototype-coverage.py`。密度按共享 `PT-DENSITY`，移动列表、D1-1 与悬浮控件分别按 `PT-MOBILE-LIST`、`PT-DESKTOP-LIST`、`PT-FLOAT`；另查无低保真占位、封面变体、状态栏、ASCII 残留及桌面表 Chip/缩略图 | `/lny-prd-prototype` 按共享页型规则与 G.4/G.5 补页（每轮最多 3 页） | 高 |
+| 逐页对照 G.4 | 每个业务 `PAGE-*.html` 对照 `pages_prd`：ASCII 只定分区；视觉须达 `gold/` 金样下限且不照搬演示功能；须能过 `verify-prototype-coverage.py`。密度按共享 `PT-DENSITY`，移动列表、D1-1 与悬浮控件分别按 `PT-MOBILE-LIST`、`PT-DESKTOP-LIST`、`PT-FLOAT`；另查无低保真占位、封面变体、状态栏、ASCII 残留及桌面表 Chip/缩略图 | `/lny-prd-prototype` 按目标范围补页，并对每页执行 G.4/G.5 门禁 | 高 |
 | 接口与 Feature | 展示字段能在 `api/API-*` 找到；主操作有 API；流程与 FEATURE/AC 可对照 | ③④ 或 ⑥ | 中 |
 | 跨层编号 | 原型中的 `PAGE-*` / `API-*` / `FEATURE-*` 可回溯索引 | 对应步补引用 | 高 |
 | 跳转 | 页面间跳转无死路；目标在 manifest | ⑥ 修跳转 | 低 |

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "bundle_id": "lny-prd",
-  "bundle_version": "2.12.0",
+  "bundle_version": "2.13.0",
   "skills": [
     "lny-prd-master",
     "lny-prd-ui",

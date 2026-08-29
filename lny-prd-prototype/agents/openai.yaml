@@ -1,6 +1,6 @@
 interface:
   display_name: "LNY-PRD Prototype"
   short_description: "依据页面规格、体验要求和视觉金样生成高保真静态交互原型"
-  default_prompt: "Use $lny-prd-prototype to generate the next batch of high-fidelity prototype pages."
+  default_prompt: "Use $lny-prd-prototype to generate the requested high-fidelity prototype pages, or all currently missing active pages when no page list is provided."
 policy:
   allow_implicit_invocation: false

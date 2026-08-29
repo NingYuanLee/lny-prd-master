@@ -3,7 +3,7 @@ name: lny-prd-prototype
 description: >-
   按规格生成高保真可交互原型。写每一页前必须 Read gold/ 金样以对标视觉下限（密度/类名），
   禁止按 ASCII 线框降质，也禁止把金样里的演示功能整页搬进业务页。
-  全端静态 HTML + MUI 套件；每轮最多 3 个业务页。Use when the user mentions
+  全端静态 HTML + MUI 套件；按目标页面范围一次完成并逐页验收。Use when the user mentions
   /lny-prd-prototype, @lny-prd-prototype, 原型, prototypes.
 ---
 
@@ -11,7 +11,7 @@ description: >-
 
 本步为 **⑥ `/lny-prd-prototype`**。只写根 `prototypes/`（含总入口 `index.html`、各端目录），禁止生成 `versions/{v}/prototypes/`。禁止改根规格与 `iteration_notes`。缺规格时 **本步内** Read ②③④⑤ 对应 SKILL 并落盘，再写 HTML；**禁止**空中楼阁 HTML，**禁止**停下来只说「交总控」。⑨ 交来时只走「只刷总入口」，禁止升级成全量出原型。⑦ 须用户明确要求检查。全流程见 `lny-prd-master/SKILL.md`。
 
-**分批硬顶**：本轮最多生成/重画 **3** 个业务 `PAGE-*.html`（不含各端 `index.html` / `map.html` / 总入口）。未完成的 PAGE 列出编号，下一轮「继续」只续 ⑥（总控 **G-partial**），禁止借机重做 ②③④⑤，禁止同一轮把全部页画完。
+**页面范围**：用户给出 `页面编号列表` 时，一次生成/重画该列表中的业务 `PAGE-*.html`；未指定时，一次完成 `ui_manifest` 中当前全部 active 缺页（排除项不计入）。数量不设固定上限，但每一页都必须独立读取规格、对照金样并通过验收，禁止以页面较多为由合并或跳过质量门禁。因失败中断时列出未完成 PAGE，下一轮「继续」只补 ⑥（总控 **G-partial**），禁止借机重做 ②③④⑤。
 
 # 生成原型 `/lny-prd-prototype`
 
@@ -108,8 +108,8 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 1. `python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}`
 2. Read [`reference-kit.md`](reference-kit.md)：**高保真落地** + `index.html` 只填 `PROTO_SHELL`；单页只用 `md-*` 类；无对应类名时用该文「无类名组合」，**禁止裸 HTML**、禁止「示例 A/B」低保真数据。
-3. 业务图标：Read [`reference-icons.md`](reference-icons.md)。闭集能覆盖则 `data-icon`；否则 `search-icons.py --pick 0 --name … --out …/assets`。无网或接口失败时按该文选择闭集近义项并记录替代，**不中止本批**。
-4. 壳层行为（状态演示 / 规格说明 / 缩放 / 关系图）见 [`reference-shell.md`](reference-shell.md)。每批末按 [`reference-scope.md`](reference-scope.md) 覆盖刷新 `prototypes/index.html`（含页底右下 SKILL 标注）。各端 `index.html` 的同类标注由 `proto-shell.js` 注入，禁止手写。
+3. 业务图标：Read [`reference-icons.md`](reference-icons.md)。闭集能覆盖则 `data-icon`；否则 `search-icons.py --pick 0 --name … --out …/assets`。无网或接口失败时按该文选择闭集近义项并记录替代，**不中止本轮**。
+4. 壳层行为（状态演示 / 规格说明 / 缩放 / 关系图）见 [`reference-shell.md`](reference-shell.md)。目标页完成后按 [`reference-scope.md`](reference-scope.md) 覆盖刷新 `prototypes/index.html`（含页底右下 SKILL 标注）。各端 `index.html` 的同类标注由 `proto-shell.js` 注入，禁止手写。
 
 **状态机硬约束**：`PROTO_SHELL.pages[].comps[].states` 只能从对应 `ui/COMP-*.md` 的 UI 状态矩阵复制，逐字且按行顺序一致；禁止凭空补 `edit` / `disabled` / `pending` 等状态。`loading` / `empty` / `error` 必须分别落地 `data-skel-for` / `data-empty-for` 视觉实现，其它状态必须有 `data-state-for` + `data-state` 视觉块。默认显示壳层状态演示；只有页内产品控件明确承担同一 COMP 切态时才写 `stateDemo: false`，不要再用 `tabBarExempt` 隐藏有组件的页面。覆盖验收会同时检查状态矩阵、壳层枚举和页面视觉实现。
 
@@ -138,12 +138,12 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 ## 职责与禁止
 
-- **负责**：按端分批生成/更新根 `prototypes/` 下的 **高保真** 当前原型；逐页对照 `pages_prd`；UTF-8 与 coverage 验收；BUG 自检。
-- **禁止**：用 HTML 编造规格；改根规范或流水；交付已知 BUG；页内保留演示专用按钮（须归位状态演示）；同一轮画完超过 3 个业务页；未 Read 该页 `pages_prd` 或未 Read `gold/` 就写 HTML；按 ASCII 线框降质；把金样演示功能（如凡图即灯箱、全套表单样例）搬进规格没写的业务页；给封面叠字 / 双列 / Banner / 文件上传加预览；裸 `<button>` / `<input type="submit">` 露出浏览器原生皮肤（必须 `md-btn` 等套件类）；把本轮临时文件留在业务项目里交付。
+- **负责**：按目标范围生成/更新根 `prototypes/` 下的 **高保真** 当前原型；逐页对照 `pages_prd`；UTF-8 与 coverage 验收；BUG 自检。
+- **禁止**：用 HTML 编造规格；改根规范或流水；交付已知 BUG；页内保留演示专用按钮（须归位状态演示）；因目标页较多而跳过逐页规格读取、金样对照或验收；未 Read 该页 `pages_prd` 或未 Read `gold/` 就写 HTML；按 ASCII 线框降质；把金样演示功能（如凡图即灯箱、全套表单样例）搬进规格没写的业务页；给封面叠字 / 双列 / Banner / 文件上传加预览；裸 `<button>` / `<input type="submit">` 露出浏览器原生皮肤（必须 `md-btn` 等套件类）；把本轮临时文件留在业务项目里交付。
 
 ## 写产物纪律
 
-先清单后落盘。含 CJK 的文件整文件 UTF-8 写入，禁止用 StrReplace 改中文块。每页写后执行 UTF-8 验收；本批全部页写完再跑 coverage。失败则重写，不得交付。细则见 [`reference-quality.md`](reference-quality.md)。
+先清单后落盘。含 CJK 的文件整文件 UTF-8 写入，禁止用 StrReplace 改中文块。每页写后执行 UTF-8 验收；全部目标页写完再跑 coverage。失败则重写，不得交付。细则见 [`reference-quality.md`](reference-quality.md)。
 
 **工具路径**：copy-kit / 搜图标 / UTF-8 / coverage / 浏览器冒烟一律执行 **技能包** `<skillDir>/scripts/…`，不要把技能脚本永久拷进 `prdRoot`。浏览器冒烟依赖宿主可解析 `playwright` 与 `pngjs`；依赖只装在宿主或技能仓库，**禁止**为验收在业务 `prdRoot` 初始化 npm 或生成 `node_modules/`。
 
@@ -164,7 +164,7 @@ node <skillDir>/scripts/verify-prototype-browser.mjs <prdRoot> --page PAGE-… -
 
 ```yaml
 版本号: v1.0.0
-页面编号列表: (可选；未指定则按 manifest 缺页优先，本轮仍最多 3 个)
+页面编号列表: (可选；指定则一次完成该列表，未指定则一次完成 manifest 当前全部 active 缺页)
 只刷总入口: false  # ⑨ 交来或只要更新版本清单时为 true
 ```
 
@@ -183,10 +183,10 @@ node <skillDir>/scripts/verify-prototype-browser.mjs <prdRoot> --page PAGE-… -
 若输入 `只刷总入口: true` 或由 ⑨ 交来 → 只走上一节。
 
 1. 校验版本目录。有未清委派或缺规格 → 先补链（见开笔前），不要停。
-2. 列出本轮目标页：`ui_manifest` 中 **active** 且 `prototypes/{终端}/PAGE-*.html` 尚不存在的页（用户给了 `页面编号列表` 则从其截取）。**截取最多 3 个**。其余记入「本轮不做」。
-3. 复制 kit 到本批每个 `prototypes/{终端}/assets/`（续批若 assets 已齐可跳过 copy-kit）。
+2. 列出本轮目标页：用户给了 `页面编号列表` 时，以其中在 `ui_manifest` 中为 **active** 的业务页为准，可生成缺页或重画已有页；未指定时，选择 `ui_manifest` 中 **active** 且 `prototypes/{终端}/PAGE-*.html` 尚不存在的全部业务页（排除项不计入）。不按数量截取。
+3. 复制 kit 到目标页涉及的每个 `prototypes/{终端}/assets/`（assets 已齐可跳过 copy-kit）。
 4. **逐页**：对该页完整 Read `pages_prd`（无则须 `ui直出`）+ `ui/PAGE-*` **§2.3** + COMP。按页类型 Read 金样全文，**对标视觉骨架**（密度/类名不得低于金样），再按本页规格换文案并落地 §2.3 与舒适默认。写完立刻过 [`reference-quality.md`](reference-quality.md) **§G.4 / G.5**。禁止凭记忆、禁止按 ASCII 降质、禁止忽略金样、禁止把金样演示功能搬进规格没写的页。
 5. 按 [`reference-shell.md`](reference-shell.md) 写/刷新各端 `index.html`（及移动端 `map.html`）：**只挂已落盘**的 `PAGE-*.html`。按 [`reference-scope.md`](reference-scope.md) 写 `prototypes/index.html`。禁止写项目根 `index.html`、`versions/{v}/index.html` 或 `versions/{v}/prototypes/`，不写 `scope.html`。
-6. 对本批页跑 UTF-8 脚本 + `verify-prototype-coverage.py` + `<checkSkillDir>/scripts/verify-artifact-paths.py` + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）；宿主依赖可用时，再对本批 PAGE 跑 `verify-prototype-browser.mjs`。任一步失败则重写，不得交付；浏览器依赖缺失须按上文披露。
+6. 对全部目标页跑 UTF-8 脚本 + `verify-prototype-coverage.py` + `<checkSkillDir>/scripts/verify-artifact-paths.py` + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）；宿主依赖可用时，再对全部目标 PAGE 跑 `verify-prototype-browser.mjs`。任一步失败则重写，不得交付；浏览器依赖缺失须按上文披露。
 7. **清理临时文件**：删除本轮在 `prdRoot` 留下的辅助脚本/草稿/备份及空的 `scripts/` 等（见写产物纪律）；未建临时文件可跳过。
-8. 输出：本批路径列表、验收通过说明、**剩余未生成 PAGE 编号**（无则写「全部已齐」）。有剩余时明确下一步：「继续」只续 ⑥。
+8. 输出：目标页路径列表、验收通过说明、**仍未生成的 active PAGE 编号**（无则写「全部已齐」）。若因失败中断而有未完成目标页，明确下一步：「继续」只补 ⑥。

@@ -118,6 +118,23 @@ def validate_bundle_contract(errors: list[str]) -> None:
     if isinstance(version, str) and readme_version != version:
         fail(errors, f"README version {readme_version!r} does not match bundle {version!r}")
 
+    prototype_skill = (ROOT / "lny-prd-prototype" / "SKILL.md").read_text(encoding="utf-8")
+    master_skill = (ROOT / "lny-prd-master" / "SKILL.md").read_text(encoding="utf-8")
+    prototype_contract_files = {
+        "README.md": readme,
+        "lny-prd-master/SKILL.md": master_skill,
+        "lny-prd-prototype/SKILL.md": prototype_skill,
+    }
+    fixed_page_cap_patterns = ("每轮最多 3", "截取最多 3", "超过 3 个业务页")
+    for label, text in prototype_contract_files.items():
+        for pattern in fixed_page_cap_patterns:
+            if pattern in text:
+                fail(errors, f"{label}: prototype workflow must not restore fixed three-page cap {pattern!r}")
+    if "不按数量截取" not in prototype_skill or "全部 active 缺页" not in prototype_skill:
+        fail(errors, "lny-prd-prototype/SKILL.md: missing unbounded target-page selection contract")
+    if "逐页执行金样对照与质量门禁" not in master_skill:
+        fail(errors, "lny-prd-master/SKILL.md: missing per-page prototype quality contract")
+
     for skill_dir in SKILL_DIRS:
         for path in skill_dir.rglob("*"):
             if not path.is_file() or path.suffix.lower() not in TEXT_SUFFIXES:
