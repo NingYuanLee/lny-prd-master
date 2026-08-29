@@ -9,7 +9,7 @@ description: >-
 
 ## 与总控的关系
 
-本步为 **② `/lny-prd-ui`**。产物：`ui_manifest.md` + `ui/`。禁止改 `main_spec` 第4章、禁止写 API/原型。下一跳通常 **③ api** 与 **④ feature**（规格三件套批）。全流程见 `lny-prd-master/SKILL.md`。变更记录表仅 ① 首行 / ⑧ 追加；过程流水见 master §1.1。
+本步为 **② `/lny-prd-ui`**。产物：`ui_manifest.md` + `ui/`。禁止改 `main_spec` 第4章、禁止写 API/原型。下一跳通常 **③ api** 与 **④ feature**（规格三件套批）。全流程见 `lny-prd-master/SKILL.md`。变更记录表仅 ① 首行 / ⑩ 追加；过程流水见 master §1.1。
 
 # 用户交互体验设计 `/lny-prd-ui`
 
@@ -131,7 +131,7 @@ COMP **编号必填** `COMP-{三位序号}`，与 `ui_manifest` §4「组件编�
 
 ## 前置条件
 
-已有 `main_spec.md`。⑧ 委派进入时 Read `ui_changes.md` 中 `待②` 条目。
+已有 `main_spec.md`。⑩ 委派进入时 Read `ui_changes.md` 中 `待②` 条目。
 
 ## 输入
 

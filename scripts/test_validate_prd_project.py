@@ -362,6 +362,14 @@ FEATURE-001 PAGE-MP-001
 
             approved_scope = scope_path.read_text(encoding="utf-8")
             scope_path.write_text(
+                approved_scope.replace("| 评审状态 | approved |", "| 评审结论 | 待定 |\n| 评审状态 | approved |"),
+                encoding="utf-8",
+            )
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertIn("INVALID_SCOPE_REVIEW_CONCLUSION", codes)
+            scope_path.write_text(approved_scope, encoding="utf-8")
+
+            scope_path.write_text(
                 approved_scope.replace("| 本期开发 |", "| 本期下线 |"),
                 encoding="utf-8",
             )

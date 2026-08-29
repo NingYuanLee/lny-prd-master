@@ -7,7 +7,7 @@ description: >-
 
 ## 与总控的关系
 
-本步为 **⑤ `/lny-prd-page`**。产物：`versions/{v}/pages_prd/`（含桌面 `_shell`）。不依赖原型。完成后建议 **⑥ 原型**；⑦ 须用户明确要求检查。全流程见 `lny-prd-master/SKILL.md`。变更记录表仅 ① 首行 / ⑧ 追加；仅改 `pages_prd` 且未改根规格时可省略流水。
+本步为 **⑤ `/lny-prd-page`**。产物：`versions/{v}/pages_prd/`（含桌面 `_shell`）。不依赖原型。完成后建议 **⑥ 原型**；⑦ 须用户明确要求检查。全流程见 `lny-prd-master/SKILL.md`。变更记录表仅 ① 首行 / ⑩ 追加；仅改 `pages_prd` 且未改根规格时可省略流水。
 
 # 产出单页 PRD `/lny-prd-page`
 
@@ -84,7 +84,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 ## 前置条件
 
-已执行 ①②③④；目标 `PAGE-*` 已在 `ui/` 登记。⑧ 委派时以 `ui_changes.md` 的 `pages_prd目标路径` 为准。
+已执行 ①②③④；目标 `PAGE-*` 已在 `ui/` 登记。⑩ 委派时以 `ui_changes.md` 的 `pages_prd目标路径` 为准。
 
 ## 输入
 

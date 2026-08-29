@@ -7,7 +7,7 @@ description: >-
 
 ## 与总控的关系
 
-本步为 **④ `/lny-prd-feature`**。产物：`feature_spec.md` + `feature/`。禁止写接口字段表与 UI 线框。下一跳通常 **⑤ page**。全流程见 `lny-prd-master/SKILL.md`。变更记录表仅 ① 首行 / ⑧ 追加；过程流水见 master §1.1。
+本步为 **④ `/lny-prd-feature`**。产物：`feature_spec.md` + `feature/`。禁止写接口字段表与 UI 线框。下一跳通常 **⑤ page**。全流程见 `lny-prd-master/SKILL.md`。变更记录表仅 ① 首行 / ⑩ 追加；过程流水见 master §1.1。
 
 # 功能规格 `/lny-prd-feature`
 
@@ -31,11 +31,11 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 ## 写产物纪律
 
-开笔前 Read 索引 + `feature/` + 根规格校验引用，并确认 `main_spec` 模块注册表。先清单后落盘。命中双图必画条件则补图（节点用 PAGE/API/EXT 编号）。评审结论只有产品明确给出，或产品确认了 R `/lny-prd-review` 的最新结论包时才写 `approved`，否则保持 `pending/reviewing`。仅同步评审状态不写 `iteration_notes`；业务正文变更仍按规则追加。
+开笔前 Read 索引 + `feature/` + 根规格校验引用，并确认 `main_spec` 模块注册表。先清单后落盘。命中双图必画条件则补图（节点用 PAGE/API/EXT 编号）。评审结论只有产品明确给出，或产品确认了 ⑧ `/lny-prd-review` 的最新结论包时才写 `approved`，否则保持 `pending/reviewing`。仅同步评审状态不写 `iteration_notes`；业务正文变更仍按规则追加。
 
 ## 前置条件
 
-已有 `main_spec.md`、`api_spec.md`、`ui_manifest.md`。⑧ 委派进入时 Read `feature_changes.md` 中 `待④`。
+已有 `main_spec.md`、`api_spec.md`、`ui_manifest.md`。⑩ 委派进入时 Read `feature_changes.md` 中 `待④`。
 
 ## 输入
 

@@ -1,6 +1,6 @@
 interface:
   display_name: "LNY-PRD Standard Hours"
-  short_description: "按指定版本估算前后端标准工时点、信号缺口并生成可校准报告"
-  default_prompt: "Use $lny-prd-sp to estimate FE and BE standard-hour points for the requested PRD version."
+  short_description: "按产品已确认交付范围估算前后端标准工时点并生成可校准报告"
+  default_prompt: "Use $lny-prd-sp to estimate FE and BE standard-hour points for the confirmed delivery scope."
 policy:
   allow_implicit_invocation: false

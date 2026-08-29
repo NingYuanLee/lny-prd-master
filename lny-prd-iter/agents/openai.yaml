@@ -1,6 +1,6 @@
 interface:
   display_name: "LNY-PRD Iteration"
-  short_description: "创建新版本目录、变更台账、估点信号汇总和后续委派清单"
-  default_prompt: "Use $lny-prd-iter to create the next PRD version and its change ledgers."
+  short_description: "核验前版评审与估点终态后，创建新版本目录、变更台账和委派清单"
+  default_prompt: "Use $lny-prd-iter to verify the prior version is closed, then create the next PRD version and its change ledgers."
 policy:
   allow_implicit_invocation: false

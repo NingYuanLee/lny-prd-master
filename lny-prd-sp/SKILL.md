@@ -8,7 +8,7 @@ description: >-
 
 ## 与总控的关系
 
-本步为 **⑨ `/lny-prd-sp`**。只写 `versions/{v}/sp_report.md`。落盘后 **同一轮** 按总控 **§3.3** 交 ⑥「只刷总入口」（Read `lny-prd-prototype/SKILL.md` 该节 + `reference-scope.md`），禁止本步手改 HTML，禁止停下来只说「交总控」。建议在 ⑦ 产品链可估之后。全流程见 `lny-prd-master/SKILL.md`。变更记录表仅 ① 首行 / ⑧ 追加。
+本步为 **⑨ `/lny-prd-sp`**，位于 ⑧ 评审确认之后、⑩ 新迭代之前。只按 `delivery_scope.md` 已确认的交付范围写 `versions/{v}/sp_report.md`，禁止退回全量 active 规格猜范围。落盘后 **同一轮** 按总控 **§3.3** 交 ⑥「只刷总入口」（Read `lny-prd-prototype/SKILL.md` 该节 + `reference-scope.md`），禁止本步手改 HTML，禁止停下来只说「交总控」。全流程见 `lny-prd-master/SKILL.md`。变更记录表仅 ① 首行 / ⑩ 追加。
 
 # 版本标准工时点 `/lny-prd-sp`
 
@@ -39,8 +39,11 @@ BE校准系数: 0.90        # 可选；无可靠样本则省略
 
 ## 计分范围
 
-- 无有效台账行 → 全量 active 规格。
-- 有台账 → 仅本版变更对象，乘变更形态 × 存量数据影响。
+- 先读取目标版本 `delivery_scope.md`。只纳入其中已确认的 `本期开发` Feature 及其 PAGE/API/EXT 证据；不得把全部 active Feature 当默认范围。
+- 有台账时，在已确认 Feature 范围内按本版变更对象计分，并应用变更形态 × 存量数据影响。
+- 无有效台账行时，按已确认的 `本期开发` Feature 全量计分。
+- `本期下线` 只计算台账中明确登记的下线实现影响，不把 deprecated Feature 正文当新增实现量。
+- `评审结论=不进入本期` 时无交付范围，明确回复“本版本无需估点”，不创建空 `sp_report.md`。
 
 ## 门禁
 
@@ -51,12 +54,12 @@ BE校准系数: 0.90        # 可选；无可靠样本则省略
 
 ## 前置条件
 
-存在 `versions/{版本号}/`。未指定则取 `versions/` 最大版本并写进报告抬头。
+存在 `versions/{版本号}/`，且 ⑧ 已创建 `delivery_scope.md`。范围须为产品确认后的终态：新格式 `评审结论=通过`、`评审状态=approved`、确认/阻塞数为 0、无 `open` 决策；旧格式缺 `评审结论` 时，范围及所有 Feature 行均 `approved`、计数为 0、无 `open` 决策可兼容视为通过。未指定版本则取 `versions/` 最大版本并写进报告抬头。
 
 ## 执行步骤
 
-1. 解析版本；判定全量或本版变更。
-2. 读 `ui/PAGE`、`pages_prd` §5/§7、`api/`、`feature/`、`eval_signals.md`（若有）。
+1. 解析版本；先读 `delivery_scope.md` 并锁定已确认 Feature 范围，再判定全量或本版变更。范围缺失、未确认或仍有 open 决策时停止估点并建议回 ⑧，不写报告。
+2. 读范围内 Feature 对应的 `ui/PAGE`、`pages_prd` §5/§7、`api/`、`feature/`、`eval_signals.md`（若有）。
 3. 产品链门禁。不可估则数值用 `—`，不编造合计；**不要结束**。
 4. 可估则 Read [`reference-weights.md`](reference-weights.md) 计算（先算对象基准点，再应用单一实现系数，最后分别应用 FE/BE 校准系数；明细按小计降序；报告末可选附录「压缩候选」，不进合计、不换算工期、不宣布 MVP）；不可估则跳过本步。
 5. 覆盖写入 `sp_report.md`（UTF-8）。对话回报 FE_SP / BE_SP / 合计三行。默认不写 `iteration_notes`。

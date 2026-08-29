@@ -19,6 +19,7 @@ VERSION_RE = re.compile(r"^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 TABLE_SEPARATOR_RE = re.compile(r"^:?-{3,}:?$")
 FEATURE_STATUSES = {"draft", "active", "deprecated"}
 REVIEW_STATUSES = {"pending", "reviewing", "approved", "blocked"}
+SCOPE_REVIEW_CONCLUSIONS = {"通过", "附条件通过", "退回补充", "不进入本期"}
 SCOPE_INCLUSIONS = {"本期开发", "本期下线", "待确认"}
 AC_DELIVERY_ROLE_RE = re.compile(r"(?<![A-Z0-9_-])(?:FE|BE|MP|AD|PC|APP|H5|TEST)(?![A-Z0-9_-])")
 
@@ -648,6 +649,14 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
                 "INVALID_SCOPE_REVIEW_STATUS",
                 scope_path,
                 f"review={scope_review or 'missing'}; allowed: {', '.join(sorted(REVIEW_STATUSES))}",
+            )
+        scope_conclusion = scope_facts.get("评审结论", "").strip()
+        if scope_conclusion and scope_conclusion not in SCOPE_REVIEW_CONCLUSIONS:
+            add(
+                issues,
+                "INVALID_SCOPE_REVIEW_CONCLUSION",
+                scope_path,
+                f"conclusion={scope_conclusion}; allowed: {', '.join(sorted(SCOPE_REVIEW_CONCLUSIONS))}",
             )
         confirmation_count = nonnegative_int(scope_facts.get("产品确认项", ""))
         if confirmation_count is None:

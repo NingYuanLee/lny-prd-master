@@ -2,7 +2,7 @@
 name: lny-prd-review
 description: >-
   评审 PRD 的用户价值、目标、范围、方案、验收与风险，形成可直接确认的产品评审结论包；首次输出只读。
-  产品确认上一轮结论后，记录既有版本 delivery_scope.md，并按责任技能同步 Feature 评审状态。
+  产品确认上一轮结论后，创建或更新版本 delivery_scope.md，并按责任技能同步 Feature 评审状态。
   Use when the user mentions /lny-prd-review, @lny-prd-review, 需求评审, 产品评审, 范围评审,
   该不该做, 是否值得做, 评一下需求, 本期开发范围, 本期下线范围, or 未决决策.
   不用于文档一致性检查、原型验收、估点或创建新版本。
@@ -10,15 +10,16 @@ description: >-
 
 ## 与总控的关系
 
-本技能是 LNY-PRD 的横向评审门禁 **R `/lny-prd-review`**，不占用既有九步编号。先输出带明确结论和落盘预览的只读评审结论包；产品可确认，也可补事实、改范围或质疑判断，评审员据此重评并给出修订结论。确认后结论成为产品决议，本技能记录 `delivery_scope.md`，需同步根 Feature 评审状态时同轮交 `/lny-prd-feature`，不要求产品复述整份结论。全流程见 `lny-prd-master/SKILL.md`。
+本步为 **⑧ `/lny-prd-review`**，位于 **⑦ `/lny-prd-check` 之后**。⑦ 负责核对事实、交付证据与评审就绪度，⑧ 基于这些证据主动组装候选范围，做产品判断并输出带明确结论和落盘预览的只读评审结论包；产品可确认，也可补事实、改范围或质疑判断，评审员据此重评并给出修订结论。首次评审没有本轮有效 ⑦ 结果时，先同轮执行 ⑦ 只读检查，再进入 ⑧；不得把检查结论冒充产品判断。确认后结论成为产品决议，本技能创建或更新 `delivery_scope.md`，需同步根 Feature 评审状态时同轮交 `/lny-prd-feature`，不要求产品复述整份结论。全流程见 `lny-prd-master/SKILL.md`。
 
 # 需求与交付范围评审 `/lny-prd-review`
 
 ## Additional resources
 
 - 评审维度、结论口径与范围决议协议：[`reference.md`](reference.md)
-- `delivery_scope.md` 结构：[`../lny-prd-iter/reference.md`](../lny-prd-iter/reference.md) 的对应章节
+- 候选组装、评审结论与 `delivery_scope.md` 模板：[`reference.md`](reference.md)
 - 正式落点与历史版本约束：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
+- 框架排除：[`../lny-prd-master/framework-exclusions.md`](../lny-prd-master/framework-exclusions.md)
 
 ## 两种模式
 
@@ -32,26 +33,28 @@ description: >-
 
 1. 上一轮由本技能给出了同一对象、同一版本的完整拟定结论包；
 2. 用户直接回复“确认 / 同意 / 按此结论执行 / 按建议做 / 确认落盘”等无保留确认；
-3. 结论涉及版本范围时，目标 `versions/{v}/delivery_scope.md` 已存在。
+3. 结论涉及版本范围时，目标 `versions/{v}/` 已存在；`delivery_scope.md` 可不存在，由确认轮创建。
 
 确认回复等价于产品明确采纳上一轮完整结论，用户无需逐项复述。若用户补充事实、调整范围、修改条件或质疑结论，进入评审修订循环：先判断这些变化是否改变依据与风险，说明采纳或不采纳的理由，再输出一份自足的修订结论包等待确认。不得机械迎合，也不得要求产品自己重写整份结论。`继续`、`可以继续`等通用流程口令不等于确认产品结论。
 
-范围结论由本技能整块更新 `delivery_scope.md`。结论包含 Feature 产品评审状态时，同轮 Read `/lny-prd-feature` 并只同步已确认的评审状态，不改其它 Feature 事实。不得创建版本、擅自扩大已确认结论、修改台账、原型、SP 或流水。
+范围结论由本技能在确认轮整块创建或更新 `delivery_scope.md`。结论包含 Feature 产品评审状态时，同轮 Read `/lny-prd-feature` 并只同步已确认的评审状态，不改其它 Feature 事实。不得创建版本目录、擅自扩大已确认结论、修改台账、原型、SP 或流水。
 
 ## 工作版本与对象
 
 - 用户指定 `vX.Y.Z` 且目录存在时使用该版本；否则使用 `versions/` 最大 semver。
-- 未指定对象时评审该版本 `delivery_scope.md` 中的候选 Feature；无候选范围时评审 active Feature 并明确标为“候选分析”，不得擅自写入范围。
+- 未指定对象时，优先读取该版本已有 `delivery_scope.md`；不存在时，以该版本 `feature_changes.md`、用户明确目标及相关 Feature 为主要候选来源。不得把全部 active Feature 自动纳入，但必须主动给出候选取舍，不能要求产品先整理清单。
 - 用户指定 `FEATURE-*` 时只评审该对象及其直接 STORY、AC、PAGE、API/EXT 证据，除非跨 Feature 依赖会改变结论。
 - 旧版本默认只读；只有用户明确要求纠正该版本历史决议并确认事实时才可记录。
 
 ## 执行步骤
 
-1. Read [`reference.md`](reference.md)；若会写入，再 Read 产物路径契约和 `lny-prd-iter/reference.md` 的 `delivery_scope.md` 章节。
-2. 读取 `main_spec.md` 的用户/故事、产品目标、成功怎么算、明确不做；读取评审对象对应的 `feature_spec.md`、`feature/FEATURE-*.md` 及必要的 UI/API/单页 PRD。范围评审另读目标版本 `delivery_scope.md` 与三类变更台账。
-3. 先列证据缺口，再做判断；不得为缺失的用户研究、收益、优先级、成本或批准结论编造事实。
+1. Read [`reference.md`](reference.md) 与框架排除。若当前对话没有覆盖同一对象、同一版本的有效 ⑦ 检查结果，先完整 Read `../lny-prd-check/SKILL.md` 并同轮执行只读检查；若会写入，再 Read 产物路径契约。
+2. 读取 `main_spec.md` 的用户/故事、产品目标、成功怎么算、明确不做；读取评审对象对应的 `feature_spec.md`、`feature/FEATURE-*.md` 及必要的 UI/API/单页 PRD。范围评审另读目标版本三类变更台账及已有 `delivery_scope.md`（若有），按 reference 的候选组装顺序形成候选范围。
+3. 区分 ⑦ 的客观问题、产品判断依据与仍缺的事实，再做判断；不得为缺失的用户研究、收益、优先级、成本或批准结论编造事实。
 4. 按评审维度输出完整拟定结论包：明确结论、核心依据、范围取舍、条件/未决项、确认后状态变化与后续动作。结尾要求产品“确认，或指出需要调整的事实/范围/条件/判断”；本轮不落盘。
-5. 用户提出调整时，按 [`reference.md`](reference.md) 的评审修订循环重新评估并输出完整修订结论，不落盘。用户确认时，直接引用上一轮结论执行，不要求重新陈述；按协议更新 `delivery_scope.md`，需同步 Feature 评审状态时同轮 Read `/lny-prd-feature` 执行对应字段更新，最后报告已确认结论与实际变更。
+5. 用户提出调整时，按 [`reference.md`](reference.md) 的评审修订循环重新评估并输出完整修订结论，不落盘。用户确认时，直接引用上一轮结论执行，不要求重新陈述；按协议创建或更新 `delivery_scope.md`，需同步 Feature 评审状态时同轮 Read `/lny-prd-feature` 执行对应字段更新，最后报告已确认结论与实际变更。
+
+确认后下一步必须按结论明确给出：`通过` 且有交付范围 → ⑨ `/lny-prd-sp`；`不进入本期` 且范围为空 → 可考虑 ⑩ `/lny-prd-iter`；`附条件通过` / `退回补充` → 先完成结论中的动作并重新进入⑦/⑧，不得建议⑨或⑩。
 
 ## 结论与边界
 
@@ -59,4 +62,4 @@ description: >-
 - 产品确认后，上一轮完整结论即成为明确产品决议；`approved`、范围成员变化和 `closed` 可按该结论记录。
 - 根 `feature_spec.md` / `feature/` 的评审状态仍由 `/lny-prd-feature` 维护；本技能在确认轮同轮调用其规则同步，无需产品二次确认。
 - 文档一致性、引用闭环、原型符合规格和导出门禁的客观复核属于 `/lny-prd-check`；本技能可引用其结果，但不复制整套检查表。
-- 创建新版本及初始 `delivery_scope.md` 壳属于 `/lny-prd-iter`。
+- 创建新版本目录属于 ⑩ `/lny-prd-iter`；创建和维护 `delivery_scope.md` 只属于本技能。

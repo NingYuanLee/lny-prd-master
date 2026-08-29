@@ -7,7 +7,7 @@ description: >-
 
 ## 与总控的关系
 
-本步为 **③ `/lny-prd-api`**。产物：`api_spec.md` + `api/`。禁止写 UI 线框与原型。下一跳通常 **④ feature**。全流程见 `lny-prd-master/SKILL.md`。变更记录表仅 ① 首行 / ⑧ 追加；过程流水见 master §1.1。
+本步为 **③ `/lny-prd-api`**。产物：`api_spec.md` + `api/`。禁止写 UI 线框与原型。下一跳通常 **④ feature**。全流程见 `lny-prd-master/SKILL.md`。变更记录表仅 ① 首行 / ⑩ 追加；过程流水见 master §1.1。
 
 # 梳理接口需求 `/lny-prd-api`
 
@@ -44,7 +44,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 ## 前置条件
 
-已有 `main_spec.md`；建议已有页面索引。⑧ 委派进入时 Read `api_changes.md` 中 `待③`。
+已有 `main_spec.md`；建议已有页面索引。⑩ 委派进入时 Read `api_changes.md` 中 `待③`。
 
 ## 输入
 
