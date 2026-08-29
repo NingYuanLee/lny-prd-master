@@ -93,7 +93,8 @@
 
   function hasStatePanel(page) {
     if (!page) return false;
-    if (page.tabBarExempt) return false;
+    /* State demos are opt-out only when the product page owns the state switch. */
+    if (page.stateDemo === false) return false;
     return !!(page.comps && page.comps.length);
   }
 

@@ -184,7 +184,7 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
           name: "首页",
           module: "首页",
           file: "./PAGE-MP-001.html",
-          tabBarExempt: true,
+          stateDemo: true,
           comps: [],
           spec: {
             layout: "依据 ui/PAGE-MP-001.md …",
@@ -207,8 +207,9 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 | 字段 | 规则 |
 |------|------|
 | `mode` | MP/H5/APP → `mobile`（手机框 + `fitPhoneFrame`）；PC/AD → `desktop`（iframe 铺满，无手机框） |
-| `tabBarExempt` | 页内已有 TabBar/Tabs 承担 COMP 切态时 `true`，壳层隐藏状态演示 |
-| `comps[].states` | 与 `ui/COMP-*.md` 状态矩阵 **逐字一致** |
+| `stateDemo` | 默认显示状态演示；仅当页内 TabBar/Tabs/SegmentedControl 明确承担同一 COMP 切态时才写 `false` |
+| `tabBarExempt` | 已废弃兼容字段，不控制状态演示；禁止用它隐藏有 COMP 的页面 |
+| `comps[].states` | 与 `ui/COMP-*.md` 状态矩阵 **逐字、按行顺序一致**；每个状态必须有页面视觉实现 |
 | `spec` 五项 | 顺序固定；接口首行 `API-* · 描述`，交互另起一行 |
 
 ## 单页类名（只许用这些，禁止自造皮肤类）
@@ -641,6 +642,8 @@ python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}
 ```
 
 壳层 `postMessage({ type:'comp-state', compId, state })` 由 `proto-page.js` 写到 `data-state`。`loading` 显示骨架（卡片内渐变 + `.md-skel-host`）；`empty`/`error` 隐藏卡片并显示 `.md-empty`。空态文案写在 `.md-empty__text`，禁止让脚本把插画 DOM 整段清掉。
+
+自定义状态（例如业务明确需要的 `pending`）不得只增加一个状态按钮；必须在页面提供对应视觉块并标记：`<div class="is-hidden" data-state-for="COMP-001" data-state="pending">…</div>`。脚本会在切态时只显示匹配状态。无视觉差异的状态（如把 `edit`、`disabled` 当作泛化枚举）不得加入状态演示。
 
 **筛选栏 / 抽屉 / 上传**
 

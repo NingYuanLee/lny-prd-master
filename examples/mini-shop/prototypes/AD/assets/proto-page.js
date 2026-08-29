@@ -26,6 +26,10 @@
     skels.forEach(function (n) {
       n.classList.toggle("is-hidden", state !== "loading");
     });
+    var stateViews = document.querySelectorAll('[data-state-for="' + compId + '"]');
+    stateViews.forEach(function (n) {
+      n.classList.toggle("is-hidden", n.getAttribute("data-state") !== state);
+    });
     var page = document.documentElement;
     page.setAttribute("data-comp-" + compId, state);
   }

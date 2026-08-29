@@ -47,11 +47,12 @@
 
 ### C. 状态演示
 
-数据来自 `ui/COMP-*.md` 状态矩阵，禁止编造。选项与矩阵逐字一致。`tabBarExempt: true` 时隐藏状态演示（页内 TabBar/Tabs 已承担切态）。
+数据来自 `ui/COMP-*.md` 状态矩阵，禁止编造。`comps[].states` 必须与矩阵逐字、按行顺序一致；页面实际 DOM 还必须为每个状态提供视觉实现。默认显示状态演示。只有产品页内 TabBar/Tabs/SegmentedControl 明确承担同一组件状态切换时，才显式写 `stateDemo: false` 隐藏壳层演示。旧字段 `tabBarExempt` 不再控制状态面板，禁止用它代替状态矩阵。
 
 - **须进状态演示**（禁止页内演示按钮）：后端数据态（空/加载/失败）、系统/环境态（权限、未授权）。
 - **可留页内**：用户点击/滑动/输入、页内 TabBar 切态。
 - 自检：`demo-*` / `setDemo*` 且模拟后端 → 移入状态演示。切态用 `postMessage`（`proto-page.js` 已监听）。
+- `loading` 必须配 `data-skel-for`，`empty`/`error` 必须配 `data-empty-for`；其它状态必须配 `<… data-state-for="COMP-xxx" data-state="状态" …>` 视觉块。没有视觉差异的状态不得写入矩阵或壳层。
 
 ### D. 移动端缩放
 

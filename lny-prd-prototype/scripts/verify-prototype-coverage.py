@@ -58,6 +58,153 @@ MOBILE_SECTION_HEAD_OPTIONAL_CLASSES = {
 MOBILE_LIST_CARD_CLASSES = {"md-card--order", "md-card--row"}
 
 
+def _extract_balanced(text: str, start: int, opening: str, closing: str) -> str | None:
+    """Return a JS array/object including delimiters, ignoring quoted delimiters."""
+    if start < 0 or start >= len(text) or text[start] != opening:
+        return None
+    depth = 0
+    quote: str | None = None
+    escaped = False
+    for index in range(start, len(text)):
+        char = text[index]
+        if quote:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == quote:
+                quote = None
+            continue
+        if char in {'"', "'", "`"}:
+            quote = char
+        elif char == opening:
+            depth += 1
+        elif char == closing:
+            depth -= 1
+            if depth == 0:
+                return text[start : index + 1]
+    return None
+
+
+def _top_level_objects(array_text: str) -> list[str]:
+    objects: list[str] = []
+    depth = 0
+    start: int | None = None
+    quote: str | None = None
+    escaped = False
+    for index, char in enumerate(array_text):
+        if quote:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == quote:
+                quote = None
+            continue
+        if char in {'"', "'", "`"}:
+            quote = char
+        elif char == "{" and depth == 0:
+            start = index
+            depth = 1
+        elif char == "{" and depth:
+            depth += 1
+        elif char == "}" and depth:
+            depth -= 1
+            if depth == 0 and start is not None:
+                objects.append(array_text[start : index + 1])
+                start = None
+    return objects
+
+
+def _js_value(raw: str) -> str:
+    raw = raw.strip()
+    if len(raw) >= 2 and raw[0] == raw[-1] and raw[0] in {'"', "'"}:
+        value = raw[1:-1]
+        return value.replace("\\n", "\n").replace("\\\"", '"').replace("\\'", "'")
+    return raw
+
+
+def parse_shell_page(index_text: str, page_id: str) -> dict | None:
+    """Parse the small, deliberately data-only PROTO_SHELL object without eval."""
+    pages_match = re.search(r"\bpages\s*:\s*\[", index_text)
+    if not pages_match:
+        return None
+    pages_array = _extract_balanced(index_text, pages_match.end() - 1, "[", "]")
+    if not pages_array:
+        return None
+    for page_object in _top_level_objects(pages_array[1:-1]):
+        id_match = re.search(r"\bid\s*:\s*(['\"])(.*?)\1", page_object)
+        if not id_match or id_match.group(2) != page_id:
+            continue
+        comps_match = re.search(r"\bcomps\s*:\s*\[", page_object)
+        comps_array = (
+            _extract_balanced(page_object, comps_match.end() - 1, "[", "]")
+            if comps_match
+            else "[]"
+        )
+        comps: list[dict] = []
+        for comp_object in _top_level_objects((comps_array or "[]")[1:-1]):
+            comp_id = re.search(r"\bid\s*:\s*(['\"])(.*?)\1", comp_object)
+            if not comp_id:
+                continue
+            states_match = re.search(r"\bstates\s*:\s*\[", comp_object)
+            states_array = (
+                _extract_balanced(comp_object, states_match.end() - 1, "[", "]")
+                if states_match
+                else "[]"
+            )
+            states = [
+                _js_value(match.group(0))
+                for match in re.finditer(r"(['\"])(?:\\.|(?!\1).)*\1", (states_array or "[]"))
+            ]
+            comps.append({"id": comp_id.group(2), "states": states})
+        state_demo = re.search(r"\bstateDemo\s*:\s*(true|false)", page_object)
+        legacy = re.search(r"\btabBarExempt\s*:\s*(true|false)", page_object)
+        return {
+            "comps": comps,
+            "stateDemo": None if state_demo is None else state_demo.group(1) == "true",
+            "tabBarExempt": None if legacy is None else legacy.group(1) == "true",
+        }
+    return None
+
+
+def parse_comp_states(text: str) -> list[str]:
+    heading = re.search(r"^##\s*5\.\s*UI 状态矩阵.*$", text, flags=re.M)
+    if not heading:
+        return []
+    tail = text[heading.end() :]
+    next_heading = re.search(r"^##\s+", tail, flags=re.M)
+    section = tail[: next_heading.start()] if next_heading else tail
+    states: list[str] = []
+    for line in section.splitlines():
+        if not line.lstrip().startswith("|"):
+            continue
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        if len(cells) < 4 or cells[0] in {"状态", "------", ""}:
+            continue
+        if set(cells[0]) <= {"-", ":"}:
+            continue
+        if cells[0] not in states:
+            states.append(cells[0])
+    return states
+
+
+def find_comp_doc(prd_root: Path, comp_id: str) -> Path | None:
+    ui_root = prd_root / "ui"
+    if not ui_root.is_dir():
+        return None
+    matches = list(ui_root.rglob(comp_id + ".md"))
+    return matches[0] if matches else None
+
+
+def find_page_ui(prd_root: Path, page_id: str) -> Path | None:
+    ui_root = prd_root / "ui"
+    if not ui_root.is_dir():
+        return None
+    matches = list(ui_root.rglob(page_id + ".md"))
+    return matches[0] if matches else None
+
+
 def terminal_of(page_id: str) -> str:
     parts = page_id.split("-")
     return parts[1] if len(parts) >= 3 else ""
@@ -139,6 +286,9 @@ class PageParser(HTMLParser):
         self.has_list_module = False
         self.has_func_area = False
         self.classes_seen: set[str] = set()
+        self.comp_states: dict[str, set[str]] = {}
+        self.state_views: dict[str, set[str]] = {}
+        self.skel_for: set[str] = set()
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         ad = {k: (v or "") for k, v in attrs}
@@ -207,9 +357,19 @@ class PageParser(HTMLParser):
         comp = ad.get("data-comp")
         if comp:
             self.comps.add(comp)
+            state = ad.get("data-state")
+            if state:
+                self.comp_states.setdefault(comp, set()).add(state)
+        state_for = ad.get("data-state-for")
+        state_view = ad.get("data-state")
+        if state_for and state_view:
+            self.state_views.setdefault(state_for, set()).add(state_view)
         empty_for = ad.get("data-empty-for")
         if empty_for:
             self.empty_for.add(empty_for)
+        skel_for = ad.get("data-skel-for")
+        if skel_for:
+            self.skel_for.add(skel_for)
         style = ad.get("style") or ""
         if style and STYLE_THEME_RE.search(style):
             self.errors.append("inline theme style: " + style[:80])
@@ -330,6 +490,103 @@ def check_html(
     if parser.is_desktop and not parser.has_breadcrumb:
         errors.append(str(path) + ": desktop page missing md-breadcrumb")
     errors.extend(check_visual_floor(path, page_id, text, parser, fixture=fixture))
+    return errors
+
+
+def check_state_contract(
+    prd_root: Path,
+    version: str,
+    page_id: str,
+    expected_comps: set[str] | None,
+    path: Path,
+) -> list[str]:
+    """Keep the shell state machine, COMP matrix, and page visuals in lockstep."""
+    errors: list[str] = []
+    terminal = terminal_of(page_id)
+    index_path = prd_root / "prototypes" / terminal / "index.html"
+    if not index_path.is_file():
+        return [str(index_path) + ": missing terminal shell for state contract"]
+    try:
+        index_text = index_path.read_text(encoding="utf-8")
+    except OSError as exc:
+        return [str(index_path) + ": cannot read terminal shell: " + str(exc)]
+    shell_page = parse_shell_page(index_text, page_id)
+    if shell_page is None:
+        return [str(index_path) + ": PROTO_SHELL missing page " + page_id]
+
+    shell_comps = {comp["id"] for comp in shell_page["comps"]}
+    if expected_comps is not None and shell_comps != expected_comps:
+        errors.append(
+            str(index_path)
+            + ": shell comps "
+            + repr(sorted(shell_comps))
+            + " do not match PAGE components "
+            + repr(sorted(expected_comps))
+        )
+    if shell_page["tabBarExempt"] is True and shell_comps and shell_page["stateDemo"] is None:
+        errors.append(
+            str(index_path)
+            + ": tabBarExempt cannot hide a page with components; use explicit stateDemo:false only"
+        )
+
+    parser = PageParser()
+    try:
+        parser.feed(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError) as exc:
+        return errors + [str(path) + ": cannot read page for state contract: " + str(exc)]
+
+    for comp in shell_page["comps"]:
+        comp_id = comp["id"]
+        shell_states = comp["states"]
+        if not shell_states:
+            errors.append(str(index_path) + ": " + comp_id + " has no states")
+            continue
+        if len(shell_states) != len(set(shell_states)):
+            errors.append(str(index_path) + ": " + comp_id + " has duplicate states")
+        doc = find_comp_doc(prd_root, comp_id)
+        if doc is None:
+            errors.append(str(index_path) + ": missing ui/" + comp_id + ".md for state source")
+            continue
+        matrix_states = parse_comp_states(doc.read_text(encoding="utf-8"))
+        if not matrix_states:
+            errors.append(str(doc) + ": UI state matrix is missing or empty")
+        elif shell_states != matrix_states:
+            errors.append(
+                str(index_path)
+                + ": "
+                + comp_id
+                + " states "
+                + repr(shell_states)
+                + " do not exactly match "
+                + str(doc)
+                + " states "
+                + repr(matrix_states)
+            )
+        if comp_id not in parser.comps:
+            errors.append(str(path) + ": missing data-comp=" + comp_id + " for shell component")
+        for state in shell_states:
+            if state == "loading" and comp_id not in parser.skel_for:
+                errors.append(str(path) + ": " + comp_id + " loading state missing data-skel-for")
+            elif state in {"empty", "error"} and comp_id not in parser.empty_for:
+                errors.append(str(path) + ": " + comp_id + " " + state + " state missing data-empty-for")
+            elif state not in {"loading", "empty", "error", "default"} and state not in parser.state_views.get(comp_id, set()):
+                errors.append(
+                    str(path)
+                    + ": "
+                    + comp_id
+                    + " custom state "
+                    + state
+                    + " missing data-state-for visual"
+                )
+        undeclared_views = parser.state_views.get(comp_id, set()) - set(shell_states)
+        if undeclared_views:
+            errors.append(
+                str(path)
+                + ": "
+                + comp_id
+                + " has undeclared visual states "
+                + repr(sorted(undeclared_views))
+            )
     return errors
 
 
@@ -628,26 +885,34 @@ def main(argv: list[str]) -> int:
 
     for page_id in pages:
         prd = find_pages_prd(prd_root, version, page_id)
-        comps: set[str] = set()
+        comps: set[str] | None = None
         jumps: set[str] = set()
         quotes: list[str] = []
         if prd is None:
             if not ui_direct:
                 all_errors.append(page_id + ": pages_prd missing (not ui直出)")
+            else:
+                ui_page = find_page_ui(prd_root, page_id)
+                if ui_page is not None:
+                    comps = set(COMP_RE.findall(ui_page.read_text(encoding="utf-8")))
+                else:
+                    comps = None
         else:
             text = prd.read_text(encoding="utf-8")
             comps, jumps, quotes = parse_prd(text)
             jumps.discard("无")
+        page_path = html_path(prd_root, page_id)
         all_errors.extend(
             check_html(
-                html_path(prd_root, page_id),
+                page_path,
                 page_id,
-                comps,
+                comps or set(),
                 jumps,
                 quotes,
                 fixture=page_id in fixture_pages,
             )
         )
+        all_errors.extend(check_state_contract(prd_root, version, page_id, comps, page_path))
 
     if all_errors:
         for line in all_errors:
