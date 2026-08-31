@@ -31,18 +31,6 @@ class ProjectSemanticValidatorTests(unittest.TestCase):
         (root / "versions" / "v1.0.0" / "pages_prd").mkdir(parents=True)
         (root / "main_spec.md").write_text(
             """# Product
-| 终端类型编码 | 终端名称 | 有效页面总数 | 有效局部自定义UI组件数 |
-|---|---|---:|---:|
-| MP | Mini | 1 | 1 |
-
-| 终端类型编码 | 终端名称 | 有效API数 |
-|---|---|---:|
-| MP | Mini | 1 |
-
-| 统计项 | 数值 |
-|---|---:|
-| 有效 Feature 个数 | 1 |
-
 | 故事编号 | 关联 FEATURE / 框架承接 |
 |---|---|
 | STORY-001 | FEATURE-001 |
@@ -163,11 +151,6 @@ FEATURE-001 PAGE-MP-001
         with tempfile.TemporaryDirectory(prefix="lny-prd-semantic-bad-") as temp:
             root = Path(temp)
             self.make_project(root)
-            main = (root / "main_spec.md").read_text(encoding="utf-8")
-            (root / "main_spec.md").write_text(
-                main.replace("| MP | Mini | 1 | 1 |", "| MP | Mini | 9 | 1 |"),
-                encoding="utf-8",
-            )
             feature = (root / "feature" / "FEATURE-001.md").read_text(encoding="utf-8")
             (root / "feature" / "FEATURE-001.md").write_text(
                 feature.replace("- 关联接口：API-MP-001", "- 关联接口：API-MP-999"),
@@ -180,7 +163,7 @@ FEATURE-001 PAGE-MP-001
             )
             codes = {issue.code for issue in self.validator.validate_project(root)}
             self.assertTrue(
-                {"PAGE_COUNT_DRIFT", "FEATURE_API_DRIFT", "UNDEFINED_API_REF", "SP_FEATURE_INPUT_DRIFT"}
+                {"FEATURE_API_DRIFT", "UNDEFINED_API_REF", "SP_FEATURE_INPUT_DRIFT"}
                 <= codes
             )
 
@@ -395,12 +378,7 @@ FEATURE-001 PAGE-MP-001
                 active_manifest.replace("| PAGE-MP-001 | active |", "| PAGE-MP-001 | deprecated |"),
                 encoding="utf-8",
             )
-            main_path.write_text(
-                active_main
-                .replace("| MP | Mini | 1 | 1 |", "| MP | Mini | 0 | 1 |")
-                .replace("| 有效 Feature 个数 | 1 |", "| 有效 Feature 个数 | 0 |"),
-                encoding="utf-8",
-            )
+            main_path.write_text(active_main, encoding="utf-8")
             codes = {issue.code for issue in self.validator.validate_project(root)}
             self.assertNotIn("SCOPE_FEATURE_LIFECYCLE_MISMATCH", codes)
 

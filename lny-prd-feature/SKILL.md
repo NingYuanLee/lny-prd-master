@@ -23,7 +23,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 ## 职责与禁止
 
-- **负责**：Feature 索引与明细（模块来源、生命周期、产品评审、目标/规则/AC/验证方式/双图）；active Feature 至少一条 AC，且 AC ID 唯一、描述与验证方式非空；FEATURE ↔ PAGE/API/EXT 闭环，并与单页 PRD §6 的 `关联AC` 双向一致；`main_spec` §3.3 模块注册表与 §7 统计；成功自检后推进本次 `feature_changes.md` 对应行状态。
+- **负责**：Feature 索引与明细（模块来源、生命周期、产品评审、目标/规则/AC/验证方式/双图）；active Feature 至少一条 AC，且 AC ID 唯一、描述与验证方式非空；FEATURE ↔ PAGE/API/EXT 闭环，并与单页 PRD §6 的 `关联AC` 双向一致；`main_spec` §3.3 模块注册表；成功自检后推进本次 `feature_changes.md` 对应行状态。
 - **禁止**：在 `api_spec` 写字段；在 `ui_manifest` 写线框；写入预览壳机制；根规范「变更记录」表新增行；把 `feature_spec.md` 或 `feature/` 复制到 `versions/{v}/`（含 `versions/{v}/feature/` 与版本根散落文件）。②③④⑤⑥ **禁止**展开「明确不做」。仅当 PM 已说出点位才写埋点；**禁止自拟埋点方案**。
 - **AC 证据口径**：`验证方式`只写如何证明结果，例如 `UI + API 联调`、`数据校验`、`异常流测试`；不得写 `FE`、`BE`、`MP`、`AD`、`TEST` 等终端或交付角色。责任归属由 PAGE/API/EXT 引用及外部映射决定，不从验证文案推断。
 
@@ -53,6 +53,6 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 1. 缺 `feature_spec.md` / `feature/` 时按 [`reference.md`](reference.md) 创建骨架。
 2. add：分配编号、写明细、更新 §3；modify：同步明细与索引。
-3. 补双图或免画理由；更新 `main_spec` §7。
+3. 补双图或免画理由。
 4. 确认索引有文件、文件有索引、关联 ID 有定义。
 5. 自检通过后，将本次 `feature_changes.md` 条目由 `待④` 改为 `已完成`；有缺口或失败则保留 `待④`。

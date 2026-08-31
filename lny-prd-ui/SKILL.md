@@ -114,7 +114,7 @@ Read `lny-prd-master/framework-exclusions.md`、`lny-prd-master/reference-artifa
 
 ## 职责与禁止
 
-- **负责**：以体验设计师身份产出 `ui_manifest.md` + `ui/PAGE-*.md` + `ui/COMP-*.md`（含 **§2.3 交互体验设计**：原则、视觉层级、组件、布局、反馈）；`main_spec.md` **只写 §5 统计**；成功自检后推进本次 `ui_changes.md` 对应行状态。
+- **负责**：以体验设计师身份产出 `ui_manifest.md` + `ui/PAGE-*.md` + `ui/COMP-*.md`（含 **§2.3 交互体验设计**：原则、视觉层级、组件、布局、反馈）；成功自检后推进本次 `ui_changes.md` 对应行状态。
 - **禁止**：只列控件不设计体验；改第4章终端表；写 `api_spec` 字段；改 `prototypes/`；写预览壳机制（状态演示/postMessage/`map.html`）；在根规范「变更记录」表新增行；落盘 `pages_prd/_shell`（属 ⑤）；把 `ui_manifest.md` 或 `ui/` 复制到 `versions/{v}/`（含 `versions/{v}/ui/` 与版本根散落文件）。**规格里**不要写 `#hex` / `px` / 阴影参数表（动效用「快/中/慢」「过渡滑入」）；**必须**用语义写主次、疏密、图文比例与反馈——「不写色值表」≠「不设计视觉」。仅当 PM 已说出点位或 AD 字典条目才写埋点；**禁止自拟埋点方案**。
 
 COMP **编号必填** `COMP-{三位序号}`，与 `ui_manifest` §4「组件编号」列、`ui/COMP-*.md` 文件名一致。
@@ -125,9 +125,9 @@ COMP **编号必填** `COMP-{三位序号}`，与 `ui_manifest` §4「组件编�
 
 ## 写产物纪律
 
-1. 开笔前 Read `main_spec` 第4章（只读）、§5、`ui_manifest` 与相关 `ui/` 明细。
+1. 开笔前 Read `main_spec` 第4章（只读）、`ui_manifest` 与相关 `ui/` 明细。
 2. 一次对话一条主线；先清单后落盘；整块写。
-3. 收尾：更新 §5 统计；`versions/{版本号}/iteration_notes.md` 文末追加业务变更流水（非则跳过）。
+3. 收尾：`versions/{版本号}/iteration_notes.md` 文末追加业务变更流水（非则跳过）。
 
 ## 前置条件
 
@@ -151,7 +151,7 @@ COMP **编号必填** `COMP-{三位序号}`，与 `ui_manifest` §4「组件编�
 2. 缺 `ui_manifest.md` / `ui/` 时按 [`reference.md`](reference.md) 创建索引骨架（立项兜底）。
 3. 更新 `§3.2` 与 `ui/PAGE-*.md`：新建/在用页状态为 `active`，废弃页为 `deprecated`；**结构（L/D）+ §2.3**（含舒适默认六项）。移动端落实 §1.3.3。表外页型选最接近金样，禁止误套 D1-1。`fixture` 仅供技能包仓库回归样例，用户项目禁止生成。
 4. 涉及 COMP：更新 §4 与 `ui/COMP-*.md`（状态矩阵 + **按下/成功/失败/过渡**，禁止只写 default）。
-5. 更新 `main_spec` §5 统计；文末追加 `iteration_notes`（若有业务变更）。
+5. 文末追加 `iteration_notes`（若有业务变更）。
 6. **自检**：删掉该页 §2.3 后，⑥ 是否只能画出线框空盒子？是 → 没写够。舒适默认六项是否都有一句（或「无」）？表外页型是否误套了 D1-1？**有序向导**：**步骤区**是否三选一点名 + 共 N 步？L3 是否只写一种导览？除一次直接点击的简单交互外，每项复杂交互是否写清触发、可见过程/过渡、结果状态及适用的取消/失败/禁用反馈？
 7. 自检通过后推进 `ui_changes.md` 状态：新增/修改页 `待②` → `待⑤`；废弃页 `待②` → `已完成`。有缺口或失败则保留 `待②`。
 8. 输出已改文件与页面编号。

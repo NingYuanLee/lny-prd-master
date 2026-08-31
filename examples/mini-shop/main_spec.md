@@ -61,13 +61,16 @@
 | `ui_manifest.md` + `ui/` | 页面/组件清单与详述（布局、状态、组件） |
 | `api_spec.md` + `api/` | 接口需求（业务语义，非技术契约） |
 | `feature_spec.md` + `feature/` | 功能规格（目标、规则、AC、时序/流程图） |
+| `versions/{v}/delivery_scope.md` | 本期评审确认的开发/下线范围（feature_spec 里的 active Feature 未必本期都开发） |
+| `versions/{v}/*_changes.md` | 迭代版本（非 v1.0.0）相对上一版的变更清单（新增/修改/废弃 + 存量数据影响） |
 | `versions/{v}/pages_prd/` | 单页 PRD（逐页数据来源、跳转、API 交互） |
 | `prototypes/` | 静态原型（仅视觉参考，见 §2.6） |
 
-### 2.3 开发侧阅读顺序
+### 2.3 开发侧阅读顺序（按依赖，非硬性分工）
 
-- **BE**：`main_spec`（§1 概述 / §4 终端 / §6 API 索引）→ `api_spec` → `api/` → `feature/`（AC、规则、时序图）
-- **FE**：`main_spec`（§1 / §4 / §5 UI 索引）→ `ui_manifest` → `ui/`（先 COMP 再 PAGE）→ `api/` 全局层 → `pages_prd` 装配
+- **先总后分**：`main_spec`（§1 概述 / §4 终端）→ 相应索引（`ui_manifest` / `api_spec` / `feature_spec`）→ 明细（`ui/` / `api/` / `feature/`）→ `pages_prd` → `prototypes/`。
+- **按功能追踪**：从 `feature/` 的 AC、规则、时序图定位涉及的 `PAGE-*` 与 `API-*`，再到对应 `ui/PAGE-*` 与 `pages_prd` 看该页。
+- **FE/BE 只是主入口建议，不是分工边界**：FE 多从 `ui/` + `pages_prd` 入手，BE 多从 `api/` + `feature/` 入手；但 **AD 管理后台页通常由 BE/全栈承担**，此时 BE 同样要读 `ui/PAGE-AD-*` 与 `pages_prd` 的 AD 页。跨端团队按实际归属补齐，勿因「FE/BE」字样漏读。
 
 ### 2.4 技术选型决策点（开发侧自定）
 
@@ -83,7 +86,7 @@ Feature 的 AC 是自然语言验收标准，不是可执行测试。开发侧�
 
 ### 2.7 非需求文件（开发侧可忽略）
 
-`versions/{v}/` 下的 `sp_report.md`（估点）、`delivery_scope.md`（评审决议）、`eval_signals.md`（迭代估点信号）、`*_changes.md`（变更台账）、`iteration_notes.md`（过程流水）是产品管理过程文件，编码实现无需阅读。
+`versions/{v}/` 下的 `sp_report.md`（标准工时点）、`eval_signals.md`（迭代估点信号）、`iteration_notes.md`（过程流水）是产品估点/过程记录，编码实现无需阅读。
 
 ## 3. 专业术语介绍（如有）
 
@@ -112,31 +115,13 @@ Feature 的 AC 是自然语言验收标准，不是可执行测试。开发侧�
 - 设计清单索引：详见 [ui_manifest.md](./ui_manifest.md)
 - 页面与局部自定义UI组件明细：详见 `ui/` 目录
 
-| 终端类型编码 | 终端名称 | 有效页面总数 | 有效局部自定义UI组件数 |
-|--------------|----------|--------------|------------------|
-| MP | 微信小程序 | 4 | 1 |
-| AD | 管理后台 | 3 | 0 |
-
 ## 6. API接口需求索引
 - 接口索引与规则：详见 [api_spec.md](./api_spec.md)
 - 单接口明细：详见 `api/` 目录
 
-| 终端类型编码 | 终端名称 | 有效API数 |
-|--------------|----------|-----------|
-| MP | 微信小程序 | 3 |
-| AD | 管理后台 | 3 |
-
-| 统计项 | 数值 |
-|--------|------|
-| 有效第三方接口（EXT）个数 | 0 |
-
 ## 7. Feature 功能规格索引
 - 功能索引与全局规则：详见 [feature_spec.md](./feature_spec.md)
 - 单功能明细：详见 `feature/` 目录
-
-| 统计项 | 数值 |
-|--------|------|
-| 有效 Feature 个数 | 3 |
 
 ## 8. 资源和附件说明
 

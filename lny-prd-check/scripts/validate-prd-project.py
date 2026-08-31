@@ -551,59 +551,6 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
             detail.append("active Feature pages not active in manifest: " + ", ".join(missing_from_index))
         add(issues, "ACTIVE_PAGE_FEATURE_DRIFT", ui_path, "; ".join(detail))
 
-    page_stat_tables = matching_tables(
-        main, {"终端类型编码", "有效页面总数", "有效局部自定义UI组件数"}
-    )
-    if page_stat_tables:
-        for row in page_stat_tables[0]:
-            terminal = row["终端类型编码"].strip()
-            expected_pages = sum(
-                1 for page_id in indexed_active_pages if page_id.startswith(f"PAGE-{terminal}-")
-            )
-            actual_pages = first_int(row["有效页面总数"])
-            if actual_pages != expected_pages:
-                add(
-                    issues,
-                    "PAGE_COUNT_DRIFT",
-                    main_path,
-                    f"{terminal} effective pages={actual_pages}, active manifest pages={expected_pages}",
-                )
-            expected_comps = sum(
-                1
-                for comp_row in comps.values()
-                if terminal in re.findall(r"\b[A-Z][A-Z0-9]{1,3}\b", comp_row.get("适用终端", ""))
-            )
-            actual_comps = first_int(row["有效局部自定义UI组件数"])
-            if actual_comps != expected_comps:
-                add(
-                    issues,
-                    "COMP_COUNT_DRIFT",
-                    main_path,
-                    f"{terminal} components={actual_comps}, component index={expected_comps}",
-                )
-
-    api_stat_tables = matching_tables(main, {"终端类型编码", "有效API数"})
-    if api_stat_tables:
-        for row in api_stat_tables[0]:
-            terminal = row["终端类型编码"].strip()
-            expected = sum(1 for api_id in apis if api_id.startswith(f"API-{terminal}-"))
-            actual = first_int(row["有效API数"])
-            if actual != expected:
-                add(issues, "API_COUNT_DRIFT", main_path, f"{terminal} APIs={actual}, API index={expected}")
-
-    feature_count_tables = matching_tables(main, {"统计项", "数值"})
-    for table in feature_count_tables:
-        for row in table:
-            if "Feature" in row["统计项"]:
-                actual = first_int(row["数值"])
-                if actual != active_feature_count:
-                    add(
-                        issues,
-                        "FEATURE_COUNT_DRIFT",
-                        main_path,
-                        f"active Features={actual}, feature index={active_feature_count}",
-                    )
-
     for report in sorted((root / "versions").glob("v*/sp_report.md")):
         report_text = read_utf8(report, issues)
         if report_text is None:

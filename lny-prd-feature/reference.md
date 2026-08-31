@@ -35,7 +35,7 @@
 
 | 文档 | 职责 |
 |------|------|
-| `main_spec.md` | 项目概述、终端说明（第4章）、各域 **统计索引**（§7 Feature 个数） |
+| `main_spec.md` | 项目概述、终端说明（第4章）、各域索引（§5 UI / §6 API / §7 Feature） |
 | `ui_manifest.md` + `ui/` | 页面/组件布局与 UI 状态（**不写**业务流程正文） |
 | `api_spec.md` + `api/` | 接口需求（**不写**跨页流程编排） |
 | **`feature_spec.md` + `feature/`** | **业务能力级**规则、流程、验收、关联 `PAGE-*` / `API-*` / `EXT-*` |
@@ -82,7 +82,7 @@
 
 1. 若 **`feature_spec.md` 不存在**：按 **「feature_spec.md 模板」** 在根目录创建；同步创建 **`feature/`**（若不存在）。
 2. 若 **`feature/` 不存在**：创建空目录；旧版单体 `feature_spec.md` 大段功能正文须 **迁移** 至 `feature/FEATURE-*.md` 后改维护索引模式。
-3. 新增 **`FEATURE-*`**：更新 **§3** 索引行 → 按 **「明细必填字段」** 创建 **`feature/FEATURE-{三位序号}.md`** → 更新 **`main_spec.md` §7** 有效 Feature 数（若项目维护该统计）。
+3. 新增 **`FEATURE-*`**：更新 **§3** 索引行 → 按 **「明细必填字段」** 创建 **`feature/FEATURE-{三位序号}.md`**。
 4. **禁止**在 `feature/` 存放接口字段表、UI 布局正文、原型 HTML；**禁止**写入预览壳专用机制（状态演示、postMessage 等）。
 
 ## 双图规范（时序图 + 流程图）

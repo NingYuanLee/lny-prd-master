@@ -27,7 +27,7 @@ description: >-
 | 步 | Read | 产物 | 禁止 |
 |----|------|------|------|
 | ① | 本文 | `versions/v1.0.0/`、根规范初稿、模块注册表、变更记录首行、第4章终端 | 续跑不得重建 v1.0.0；② 不得改第4章 |
-| ② | `lny-prd-ui/SKILL.md` | `ui_manifest` + `ui/`（含 PAGE **§2.3 交互体验设计**）；`main_spec` §5 | 不改第4章、api 字段、`prototypes/`；只列控件不设计体验 |
+| ② | `lny-prd-ui/SKILL.md` | `ui_manifest` + `ui/`（含 PAGE **§2.3 交互体验设计**） | 不改第4章、api 字段、`prototypes/`；只列控件不设计体验 |
 | ③ | `lny-prd-api/SKILL.md` | `api_spec` 索引 + `api/API-*`/`EXT-*`（禁路由/JSON/code） | 不写 UI 线框；不改 `prototypes/` |
 | ④ | `lny-prd-feature/SKILL.md` | `feature_spec` + `feature/`；FEATURE↔PAGE/API 闭环 | 不写接口字段、UI 线框 |
 | ⑤ | `lny-prd-page/SKILL.md` | `pages_prd/`；PC/AD 必产 `_shell` | 不替代 ②③④；不依赖原型 |

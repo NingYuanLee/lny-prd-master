@@ -25,7 +25,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 ## 职责与禁止
 
-- **负责**：`api_spec.md` §1～§4 索引与规则；`api/API-*.md` / `api/EXT-*.md`；`main_spec` §6 统计；成功自检后推进本次 `api_changes.md` 对应行状态。
+- **负责**：`api_spec.md` §1～§4 索引与规则；`api/API-*.md` / `api/EXT-*.md`；成功自检后推进本次 `api_changes.md` 对应行状态。
 - **禁止**：写 UI 线框；改 `prototypes/`；实现向内容；根规范「变更记录」表新增行；把 `api_spec.md` 或 `api/` 复制到 `versions/{v}/`（含 `versions/{v}/api/` 与版本根散落文件）。仅当 PM 已说出点位或 AD 字典条目才写埋点；**禁止自拟埋点方案**。
 
 **新立项只走目录化**。旧 `api_spec` §5 单体大段只提示迁移，禁止双轨扩写。
@@ -54,6 +54,6 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 1. 缺 `api_spec.md` / `api/` 时按 [`reference.md`](reference.md) 创建骨架。
 2. 按页面与第4章终端梳理接口；写 EXT 前过联调门槛门禁。
-3. 更新 §2 / §4 索引与明细文件；更新 `main_spec` §6。
+3. 更新 §2 / §4 索引与明细文件。
 4. 文末追加 `iteration_notes`（若有业务变更）。
 5. 索引、明细与引用自检通过后，将本次 `api_changes.md` 条目由 `待③` 改为 `已完成`；有缺口或失败则保留 `待③`。

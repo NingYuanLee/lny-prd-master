@@ -209,7 +209,7 @@ Agent 将自动判定当前状态：
 ```
 my-project/                         # PRD 项目根目录
 │
-├── main_spec.md                    # 产品规格说明书（概述、§2 通用规范与阅读指南、终端、统计索引）
+├── main_spec.md                    # 产品规格说明书（概述、§2 通用规范与阅读指南、终端、三大索引）
 ├── api_spec.md                     # 接口需求索引（§4 终端对齐 + API/EXT 清单）
 ├── ui_manifest.md                  # UI 设计清单（页面/分包/组件索引）
 ├── feature_spec.md                 # 功能规格索引（全局规则 + Feature 索引）
@@ -526,7 +526,7 @@ node lny-prd-prototype/scripts/verify-prototype-browser.mjs examples/mini-shop
 node scripts/test_verify_prototype_browser.mjs
 ```
 
-静态门禁使用真实 YAML 解析并逐一 quick-validate 10 个核心技能，同时检查 `skill-bundle.json` 与 README 版本一致、技能运行时不依赖 `examples/`、`agents/openai.yaml`、Markdown 链接、全量文本 UTF-8、Python/JavaScript 语法、安装事务与回滚、产物路径正反例、跨文档语义一致性、迁移冲突保护、kit 与副本、全部金样、根原型页面 ID 与带正反例的 coverage；同时禁止 `versions/{v}/prototypes/` 副本。跨文档语义门禁会对账索引/文件名/明细身份、Feature 状态、模块/评审/交付范围、根统计、Feature 页面/API 引用以及已有 SP 报告中的 Feature 输入快照。浏览器门禁再对全部 `PAGE-*.html` 检查真实渲染、离线资源、Console / 页面错误、横向溢出、截图有效性及常见控件冒烟交互，并用 7 类负例验证门禁不会静默失效。GitHub Actions 在 push 和 pull request 时运行两层门禁，失败时保留浏览器截图 7 天；任一项失败均不得发布。元数据路由固定为：总控 `allow_implicit_invocation: true`，其余子技能为 `false`，仍可通过 `$lny-prd-*` 显式调用。
+静态门禁使用真实 YAML 解析并逐一 quick-validate 10 个核心技能，同时检查 `skill-bundle.json` 与 README 版本一致、技能运行时不依赖 `examples/`、`agents/openai.yaml`、Markdown 链接、全量文本 UTF-8、Python/JavaScript 语法、安装事务与回滚、产物路径正反例、跨文档语义一致性、迁移冲突保护、kit 与副本、全部金样、根原型页面 ID 与带正反例的 coverage；同时禁止 `versions/{v}/prototypes/` 副本。跨文档语义门禁会对账索引/文件名/明细身份、Feature 状态、模块/评审/交付范围、Feature 页面/API 引用以及已有 SP 报告中的 Feature 输入快照。浏览器门禁再对全部 `PAGE-*.html` 检查真实渲染、离线资源、Console / 页面错误、横向溢出、截图有效性及常见控件冒烟交互，并用 7 类负例验证门禁不会静默失效。GitHub Actions 在 push 和 pull request 时运行两层门禁，失败时保留浏览器截图 7 天；任一项失败均不得发布。元数据路由固定为：总控 `allow_implicit_invocation: true`，其余子技能为 `false`，仍可通过 `$lny-prd-*` 显式调用。
 
 ## 十一、许可证
 
