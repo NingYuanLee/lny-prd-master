@@ -32,7 +32,7 @@ EXPECTED_SKILLS = {
     "lny-prd-sp",
     "lny-prd-ui",
 }
-IGNORED_NAMES = {".DS_Store", ".git", "__pycache__"}
+IGNORED_NAMES = {".DS_Store", ".git", "__pycache__", "node_modules"}
 IGNORED_SUFFIXES = {".pyc", ".pyo"}
 SEMVER_RE = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 FRONTMATTER_NAME_RE = re.compile(r"^name:\s*([^\r\n]+)\s*$", re.MULTILINE)
@@ -40,6 +40,10 @@ FRONTMATTER_NAME_RE = re.compile(r"^name:\s*([^\r\n]+)\s*$", re.MULTILINE)
 
 class InstallError(RuntimeError):
     """A user-actionable installation failure."""
+
+
+class UnreadableSkillError(InstallError):
+    """A skill directory exists but cannot be enumerated or read."""
 
 
 @dataclass(frozen=True)
@@ -123,14 +127,29 @@ def ignored(relative: Path) -> bool:
 
 def bundle_files(root: Path) -> list[Path]:
     files: list[Path] = []
-    for path in root.rglob("*"):
-        relative = path.relative_to(root)
-        if ignored(relative):
-            continue
-        if path.is_symlink():
-            raise InstallError(f"symlinks are not allowed in the source bundle: {path}")
-        if path.is_file():
-            files.append(path)
+
+    def walk(directory: Path) -> None:
+        try:
+            entries = list(os.scandir(directory))
+        except OSError as exc:
+            raise UnreadableSkillError(
+                f"cannot read directory {directory}: {exc}"
+            ) from exc
+        for entry in entries:
+            path = Path(entry.path)
+            relative = path.relative_to(root)
+            if ignored(relative):
+                continue
+            if entry.is_symlink():
+                raise InstallError(
+                    f"symlinks are not allowed in the source bundle: {path}"
+                )
+            if entry.is_dir():
+                walk(path)
+            elif entry.is_file():
+                files.append(path)
+
+    walk(root)
     return sorted(files, key=lambda path: path.relative_to(root).as_posix())
 
 
@@ -138,13 +157,18 @@ def directory_digest(root: Path) -> str:
     if not root.is_dir():
         raise InstallError(f"skill directory missing: {root}")
     digest = hashlib.sha256()
-    for path in bundle_files(root):
-        relative = path.relative_to(root).as_posix().encode("utf-8")
-        content = path.read_bytes()
-        digest.update(len(relative).to_bytes(4, "big"))
-        digest.update(relative)
-        digest.update(len(content).to_bytes(8, "big"))
-        digest.update(content)
+    try:
+        for path in bundle_files(root):
+            relative = path.relative_to(root).as_posix().encode("utf-8")
+            content = path.read_bytes()
+            digest.update(len(relative).to_bytes(4, "big"))
+            digest.update(relative)
+            digest.update(len(content).to_bytes(8, "big"))
+            digest.update(content)
+    except UnreadableSkillError:
+        raise
+    except OSError as exc:
+        raise UnreadableSkillError(f"cannot read {root}: {exc}") from exc
     return digest.hexdigest()
 
 
@@ -253,7 +277,7 @@ def copy_skill(source: Path, destination: Path) -> None:
     shutil.copytree(
         source,
         destination,
-        ignore=shutil.ignore_patterns(".DS_Store", ".git", "__pycache__", "*.pyc", "*.pyo"),
+        ignore=shutil.ignore_patterns(".DS_Store", ".git", "__pycache__", "node_modules", "*.pyc", "*.pyo"),
     )
 
 
@@ -294,30 +318,34 @@ def load_install_state(target: Target, *, required: bool) -> dict | None:
     return raw
 
 
-def current_digests(bundle: Bundle, target: Target) -> tuple[dict[str, str], list[str]]:
+def current_digests(bundle: Bundle, target: Target) -> tuple[dict[str, str], list[str], list[str]]:
     digests: dict[str, str] = {}
     missing: list[str] = []
+    unreadable: list[str] = []
     for skill in bundle.skills:
         path = target.skills_root / skill
         if not path.is_dir():
             missing.append(skill)
-        else:
+            continue
+        try:
             digests[skill] = directory_digest(path)
-    return digests, missing
+        except UnreadableSkillError:
+            unreadable.append(skill)
+    return digests, missing, unreadable
 
 
-def state_drift(bundle: Bundle, target: Target, state: dict) -> list[str]:
+def state_drift(bundle: Bundle, target: Target, state: dict) -> tuple[list[str], list[str]]:
     recorded = state.get("skills")
     if not isinstance(recorded, dict):
-        return ["install state has no valid skill digests"]
-    current, missing = current_digests(bundle, target)
+        return ["install state has no valid skill digests"], []
+    current, missing, unreadable = current_digests(bundle, target)
     drift = [f"{skill}: missing" for skill in missing if skill in recorded]
     for skill, digest in current.items():
         if skill not in recorded:
             drift.append(f"{skill}: unmanaged collision")
         elif recorded.get(skill) != digest:
             drift.append(f"{skill}: locally modified")
-    return drift
+    return drift, unreadable
 
 
 def load_trae_config(path: Path) -> dict:
@@ -421,9 +449,11 @@ def prune_backups(target: Target, keep: int = 1) -> None:
 
 
 def build_state(bundle: Bundle, target: Target) -> dict:
-    digests, missing = current_digests(bundle, target)
+    digests, missing, unreadable = current_digests(bundle, target)
     if missing:
         raise InstallError(f"installed bundle is incomplete: {', '.join(missing)}")
+    if unreadable:
+        raise InstallError(f"installed bundle is not readable: {', '.join(unreadable)}")
     return {
         "schema_version": 1,
         "bundle_id": bundle.bundle_id,
@@ -529,7 +559,12 @@ def command_install(args: argparse.Namespace, bundle: Bundle, target: Target) ->
 def command_update(args: argparse.Namespace, bundle: Bundle, target: Target) -> int:
     state = load_install_state(target, required=True)
     assert state is not None
-    drift = state_drift(bundle, target, state)
+    drift, unreadable = state_drift(bundle, target, state)
+    if unreadable:
+        raise InstallError(
+            "installed skills are not readable; fix permissions before updating:\n  "
+            + "\n  ".join(f"{skill}: unreadable" for skill in unreadable)
+        )
     if drift and not args.force:
         raise InstallError(
             "installed skills changed since the last managed install:\n  "
@@ -543,9 +578,10 @@ def command_update(args: argparse.Namespace, bundle: Bundle, target: Target) -> 
         raise InstallError(
             f"refusing downgrade {installed_version} -> {bundle.version}; use --allow-downgrade"
         )
-    current, missing = current_digests(bundle, target)
+    current, missing, unreadable = current_digests(bundle, target)
     if (
         not missing
+        and not unreadable
         and current == bundle.digests
         and installed_version == bundle.version
         and trae_config_healthy(bundle, target)
@@ -572,16 +608,23 @@ def command_status(args: argparse.Namespace, bundle: Bundle, target: Target) -> 
             return 1
         print(f"{target.host.display_name}: not installed")
         return 0
-    drift = state_drift(bundle, target, state)
+    drift, unreadable = state_drift(bundle, target, state)
     if not trae_config_healthy(bundle, target):
         drift.append("TraeWork CN managedSkills registration is missing or invalid")
     installed_version = state.get("bundle_version", "unknown")
-    if drift:
-        print(f"{target.host.display_name}: unhealthy at {installed_version}")
+    if drift or unreadable:
+        label = "unhealthy" if drift else "unreadable"
+        print(f"{target.host.display_name}: {label} at {installed_version}")
         for item in drift:
             print(f"  - {item}")
+        for skill in unreadable:
+            print(f"  - {skill}: unreadable")
         return 1
     suffix = " (update available)" if installed_version != bundle.version else ""
+    if installed_version == bundle.version:
+        current, missing, unreadable = current_digests(bundle, target)
+        if not missing and not unreadable and current != bundle.digests:
+            suffix = " (repository content differs; run update)"
     print(f"{target.host.display_name}: healthy at {installed_version}{suffix}")
     print(f"skills: {target.skills_root}")
     return 0
@@ -590,7 +633,12 @@ def command_status(args: argparse.Namespace, bundle: Bundle, target: Target) -> 
 def command_uninstall(args: argparse.Namespace, bundle: Bundle, target: Target) -> int:
     state = load_install_state(target, required=True)
     assert state is not None
-    drift = state_drift(bundle, target, state)
+    drift, unreadable = state_drift(bundle, target, state)
+    if unreadable:
+        raise InstallError(
+            "installed skills are not readable; fix permissions before uninstalling:\n  "
+            + "\n  ".join(f"{skill}: unreadable" for skill in unreadable)
+        )
     if drift and not args.force:
         raise InstallError(
             "installed skills changed since the last managed install:\n  "

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import dataclasses
 import importlib.util
 import io
 import json
@@ -227,6 +228,79 @@ class InstallerTests(unittest.TestCase):
                 )
             self.assertTrue((destination / "mini-shop" / "main_spec.md").is_file())
             self.assertFalse(any(destination.glob("lny-prd-*")))
+
+
+    def test_unreadable_skills_are_reported_and_block_force(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lny-prd-installer-unreadable-") as temp:
+            destination = Path(temp) / "skills"
+            target = installer.resolve_target("cursor", str(destination))
+            args = options(dest=str(destination))
+            with quiet_output():
+                installer.command_install(args, self.bundle, target)
+
+            def deny_scandir(_path):
+                raise PermissionError(13, "Permission denied")
+
+            with mock.patch.object(installer.os, "scandir", side_effect=deny_scandir):
+                out = io.StringIO()
+                with contextlib.redirect_stdout(out):
+                    code = installer.command_status(args, self.bundle, target)
+                self.assertEqual(code, 1)
+                self.assertIn("unreadable", out.getvalue())
+                self.assertNotIn("locally modified", out.getvalue())
+
+                with self.assertRaises(installer.InstallError):
+                    with quiet_output():
+                        installer.command_update(
+                            options(dest=str(destination), force=True),
+                            self.bundle,
+                            target,
+                        )
+
+                with self.assertRaises(installer.InstallError):
+                    with quiet_output():
+                        installer.command_uninstall(
+                            options(dest=str(destination), force=True),
+                            self.bundle,
+                            target,
+                        )
+
+
+    def test_stray_node_modules_is_ignored_by_digest(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lny-prd-installer-node-modules-") as temp:
+            destination = Path(temp) / "skills"
+            target = installer.resolve_target("cursor", str(destination))
+            args = options(dest=str(destination))
+            with quiet_output():
+                installer.command_install(args, self.bundle, target)
+
+            stray = destination / "lny-prd-master" / "node_modules" / "some-pkg"
+            stray.mkdir(parents=True)
+            (stray / "index.js").write_text("// stray dependency", encoding="utf-8")
+
+            with quiet_output():
+                self.assertEqual(installer.command_status(args, self.bundle, target), 0)
+            with quiet_output():
+                self.assertEqual(installer.command_update(args, self.bundle, target), 0)
+
+
+    def test_status_hints_when_repo_differs_without_version_bump(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lny-prd-installer-repo-drift-") as temp:
+            destination = Path(temp) / "skills"
+            target = installer.resolve_target("cursor", str(destination))
+            args = options(dest=str(destination))
+            with quiet_output():
+                installer.command_install(args, self.bundle, target)
+
+            modified = dataclasses.replace(
+                self.bundle,
+                digests={name: "0" * 64 for name in self.bundle.digests},
+            )
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                code = installer.command_status(args, modified, target)
+            self.assertEqual(code, 0)
+            self.assertIn("repository content differs", out.getvalue())
 
 
 if __name__ == "__main__":
