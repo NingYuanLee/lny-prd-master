@@ -17,7 +17,7 @@ description: >-
 
 ## Additional resources
 
-- 套件类名与壳数据：[`reference-kit.md`](reference-kit.md)
+- 套件类名与壳数据：[`reference-kit.md`](reference-kit.md)（索引 + `reference-kit/` 分域分片）
 - 移动端设计词典落地（原则→金样/Token）：[`reference-mobile-design.md`](reference-mobile-design.md)
 - 内置图标：[`reference-icons.md`](reference-icons.md)
 - 壳层 / 关系图 / 缩放：[`reference-shell.md`](reference-shell.md)
@@ -38,7 +38,7 @@ description: >-
 
 ## 三步对照（防错用）
 
-先 Read [`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)。本步只维护金样类名、视觉密度和 HTML 行为；下方速查表只保留 ⑥ 的专属落地规则。
+先 Read [`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)。本步只维护金样类名、视觉密度和 HTML 行为；下方速查表只保留 ⑥ 的专属落地规则。页型 ↔ 编号 ↔ 金样映射与跨步骤不变量以该正本为唯一事实源；本表与正本冲突时以正本为准（发布门禁自动比对）。
 
 **树 vs 章节列表**：写 HTML 前若页含可展开层级列表，先读 master **「树 vs 章节列表选型」**——分类/组织 → `md-tree`（MP-008）；章节目录 → `md-chapter-list`（MP-015）；左分组右横卡滚联动 → `md-locator`（MP-013）。三者禁止混用。
 
@@ -107,7 +107,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 **本地预览**：在 `prototypes/` 目录执行 `python -m http.server`（不要用 `npx serve`，也**禁止**在业务项目生成 `serve.json`）。
 
 1. `python <skillDir>/scripts/copy-kit.py <prdRoot>/prototypes/{终端}`
-2. Read [`reference-kit.md`](reference-kit.md)：**高保真落地** + `index.html` 只填 `PROTO_SHELL`；单页只用 `md-*` 类；无对应类名时用该文「无类名组合」，**禁止裸 HTML**、禁止「示例 A/B」低保真数据。
+2. Read [`reference-kit.md`](reference-kit.md) 索引（全局 token + **高保真落地**），再 Read 本页对应分片：触屏 `reference-kit/mobile-classes.md`、桌面 `reference-kit/desktop-controls.md`；生成壳层读 `reference-kit/shell.md`（`index.html` 只填 `PROTO_SHELL`）；无对应类名用 `reference-kit/combos.md`「无类名组合」。单页只用 `md-*` 类；**禁止裸 HTML**、禁止「示例 A/B」低保真数据。
 3. 业务图标：Read [`reference-icons.md`](reference-icons.md)。闭集能覆盖则 `data-icon`；否则 `search-icons.py --pick 0 --name … --out …/assets`。无网或接口失败时按该文选择闭集近义项并记录替代，**不中止本轮**。
 4. 壳层行为（状态演示 / 规格说明 / 缩放 / 关系图）见 [`reference-shell.md`](reference-shell.md)。目标页完成后按 [`reference-scope.md`](reference-scope.md) 覆盖刷新 `prototypes/index.html`（含页底右下 SKILL 标注）。各端 `index.html` 的同类标注由 `proto-shell.js` 注入，禁止手写。
 

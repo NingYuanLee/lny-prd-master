@@ -675,6 +675,84 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
     return issues
 
 
+# 机器可读「下一步建议」路由：issue 码 → 建议委派的技能短名（① master 消费）。
+# 短名与 /lny-prd-* 对应；master 指 ① 总控（根规格/可读性/模块注册）。
+NEXT_ROUTE: dict[str, str] = {
+    "MISSING_ROOT_SPEC": "master",
+    "INVALID_UTF8": "master",
+    "READ_ERROR": "master",
+    "DUPLICATE_INDEX_ID": "master",
+    "MODULE_REGISTRY_MISSING": "master",
+    "INVALID_MODULE_ROW": "master",
+    "DUPLICATE_MODULE_ID": "master",
+    "UNDEFINED_MODULE_REF": "master",
+
+    "FEATURE_PAGE_DRIFT": "feature",
+    "FEATURE_API_DRIFT": "feature",
+    "FEATURE_EXT_DRIFT": "feature",
+    "FEATURE_BRANCH_DRIFT": "feature",
+    "FEATURE_MODULE_ID_DRIFT": "feature",
+    "FEATURE_MODULE_NAME_DRIFT": "feature",
+    "FEATURE_STATUS_DRIFT": "feature",
+    "FEATURE_REVIEW_STATUS_DRIFT": "feature",
+    "INVALID_FEATURE_STATUS": "feature",
+    "INVALID_FEATURE_REVIEW_STATUS": "feature",
+    "INVALID_AC_ID": "feature",
+    "DUPLICATE_AC_ID": "feature",
+    "AC_DESCRIPTION_MISSING": "feature",
+    "AC_VERIFICATION_MISSING": "feature",
+    "AC_VERIFICATION_ROLE_LEAK": "feature",
+    "FEATURE_AC_MISSING": "feature",
+    "AC_PAGE_OUTSIDE_FEATURE": "feature",
+    "AC_API_OUTSIDE_FEATURE": "feature",
+    "AC_EXT_OUTSIDE_FEATURE": "feature",
+    "UNDEFINED_FEATURE_REF": "feature",
+    "MISSING_FEATURE_DETAIL": "feature",
+    "FEATURE_DETAIL_ID": "feature",
+
+    "UNDEFINED_PAGE_REF": "page",
+    "PAGE_AC_UNKNOWN_FEATURE": "page",
+    "PAGE_AC_UNKNOWN_AC": "page",
+    "PAGE_AC_DRIFT": "page",
+
+    "ACTIVE_PAGE_FEATURE_DRIFT": "ui",
+    "INVALID_PAGE_STATUS": "ui",
+    "MISSING_PAGE_DETAIL": "ui",
+    "MISSING_COMP_DETAIL": "ui",
+    "PAGE_DETAIL_ID": "ui",
+    "COMP_DETAIL_ID": "ui",
+    "UNDEFINED_COMP_REF": "ui",
+
+    "UNDEFINED_API_REF": "api",
+    "UNDEFINED_EXT_REF": "api",
+    "MISSING_API_DETAIL": "api",
+    "API_DETAIL_ID": "api",
+    "EXT_DETAIL_ID": "api",
+
+    "DELIVERY_SCOPE_VERSION_DRIFT": "review",
+    "DELIVERY_SCOPE_FEATURE_TABLE_MISSING": "review",
+    "DUPLICATE_SCOPE_FEATURE": "review",
+    "SCOPE_UNKNOWN_FEATURE": "review",
+    "SCOPE_FEATURE_LIFECYCLE_MISMATCH": "review",
+    "INVALID_SCOPE_INCLUSION": "review",
+    "INVALID_SCOPE_REVIEW_STATUS": "review",
+    "INVALID_SCOPE_REVIEW_CONCLUSION": "review",
+    "INVALID_SCOPE_FEATURE_REVIEW": "review",
+    "INVALID_SCOPE_BLOCKER_COUNT": "review",
+    "INVALID_SCOPE_CONFIRMATION_COUNT": "review",
+    "INVALID_DECISION_STATUS": "review",
+
+    "SP_UNKNOWN_FEATURE": "sp",
+    "SP_FEATURE_INPUT_DRIFT": "sp",
+}
+
+
+def suggested_routes(issues: list[Issue]) -> list[str]:
+    routes = {NEXT_ROUTE.get(issue.code) for issue in issues}
+    routes.discard(None)
+    return sorted(routes)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("prd_root", type=Path)
@@ -688,6 +766,8 @@ def main(argv: list[str] | None = None) -> int:
     if not root.is_dir():
         parser.error(f"PRD root does not exist: {root}")
     issues = validate_project(root, allow_fixture_status=args.allow_fixture_status)
+    routes = suggested_routes(issues)
+    print("NEXT_STEP_ROUTE: " + (",".join(routes) if routes else "none"))
     if issues:
         print(f"PRD semantic validation failed: {len(issues)} issue(s)", file=sys.stderr)
         for issue in issues:

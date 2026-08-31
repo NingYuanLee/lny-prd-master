@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import re
 import sys
 import tempfile
 import unittest
@@ -395,6 +396,28 @@ FEATURE-001 PAGE-MP-001
             )
             codes = {issue.code for issue in self.validator.validate_project(root)}
             self.assertIn("FEATURE_MODULE_ID_DRIFT", codes)
+
+
+    def test_suggested_routes_returns_distinct_sorted_skills(self) -> None:
+        issue = self.validator.Issue
+        issues = [
+            issue("FEATURE_AC_MISSING", Path("a.md"), "x"),
+            issue("UNDEFINED_PAGE_REF", Path("b.md"), "y"),
+            issue("FEATURE_PAGE_DRIFT", Path("c.md"), "z"),
+            issue("UNKNOWN_CODE", Path("d.md"), "w"),
+        ]
+        self.assertEqual(self.validator.suggested_routes(issues), ["feature", "page"])
+
+    def test_next_step_route_mapping_is_complete(self) -> None:
+        source = Path(self.validator.__file__).read_text(encoding="utf-8")
+        inline = set(re.findall(r"add\(\s*issues,\s*\"([A-Z][A-Z0-9_]+)\"", source))
+        multiline = set(re.findall(r"^\s*\"([A-Z][A-Z0-9_]+)\"," r"""\s*$""", source, flags=re.M))
+        variable = set(re.findall(r"(?:missing|identity)_code=\"([A-Z][A-Z0-9_]+)\"", source))
+        labels = re.findall(r"[A-Z]+_RE,\s*\"([A-Z]+)\"", source)
+        fstring = {f"UNDEFINED_{label}_REF" for label in labels}
+        codes = inline | multiline | variable | fstring
+        mapped = set(self.validator.NEXT_ROUTE)
+        self.assertFalse(codes - mapped, f"unmapped issue codes: {sorted(codes - mapped)}")
 
 
 if __name__ == "__main__":

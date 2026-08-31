@@ -215,7 +215,7 @@ description: >-
 2. 生成根规范（**不在项目内落地 `.templates/`**）：
    - `main_spec.md` ← [`reference-init.md`](reference-init.md)
    - `api_spec.md` ← `lny-prd-api/reference.md`
-   - `ui_manifest.md` ← `lny-prd-ui/reference.md`
+   - `ui_manifest.md` ← `lny-prd-ui/reference/ui-manifest-template.md`
    - `feature_spec.md` ← `lny-prd-feature/reference.md`
 3. 四份文档统一文档信息 / 变更记录首行 v1.0.0；`main_spec` 第4章终端表直接放在二级标题下，**禁止** `###` 小节
 4. 创建 `versions/v1.0.0/` 与 `iteration_notes.md`（含「版本名称」，无则写「首版」）；不创建 `delivery_scope.md`，该文件仅由 ⑧ 在产品确认结论后创建
@@ -240,7 +240,7 @@ description: >-
 - 框架排除：[`framework-exclusions.md`](framework-exclusions.md)
 - ②⑤⑥ 共用页型职责与金样映射：[`reference-page-types.md`](reference-page-types.md)（含 **「树 vs 章节列表选型」**）
 - `api_spec.md` → `lny-prd-api/reference.md`
-- `ui_manifest.md` → `lny-prd-ui/reference.md`
+- `ui_manifest.md` → `lny-prd-ui/reference/ui-manifest-template.md`
 - `feature_spec.md` → `lny-prd-feature/reference.md`
 - 单页 PRD → `lny-prd-page/reference.md`
 

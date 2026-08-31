@@ -13,7 +13,7 @@
 | 组件 | 用哪类控件、状态、收纳 | `md-*` 类名与行为 | 自造组件名当皮肤 |
 | 布局与适配 | L0/L1/L2、贴顶贴底、安全区、弹性分区 | 375 预览、safe-area、flex 金样 | 自拟 750 稿尺寸当唯一真理 |
 | 交互与反馈 | 手势结果、按下/加载/成功/失败、空失败 | Toast/Dialog/骨架实现 | ms、hover 当唯一态 |
-| 文档元信息 | `ui_manifest` 索引 + PAGE 表头 | 工具包版本见仓库 README | — |
+| 文档元信息 | `ui_manifest` 索引 + PAGE 表头 | 工具包当前版本号 | — |
 
 **正确理解**：「规格不写色值清单」≠「不用设计视觉」。② 必须写清**层级与节奏**；⑥ 必须按金样把视觉做满。
 
@@ -40,7 +40,7 @@
 | 列表卡高度 | 「横卡/封面/双列/订单卡随内容增高，不定 min-height」 | 套件已去掉触屏卡片 min-height；左图仍 96×96 双锁 |
 | 图片 | 「列表区点名形态；叠字/瓷砖可横可竖或定宽随图；横卡左图 1:1 或竖图；详情主图 16:9；详情图、横卡多行图、上传缩略默认可点预览」 | `--cover` / `--tile`（`--ratio-*` / `--ratio-auto`）/ `--row`（左图 `--ratio-1x1` / `--ratio-3x4` / `--ratio-2x3`）/ `md-set-row`；`md-swiper--wide`；详情页根 `data-lightbox`；上传 `md-upload` / `md-upload-grid` |
 
-列表区的横卡多行/单行选择、字段层级和操作位置直接遵守共享页型规则 `PT-MOBILE-LIST`；本文件只补封面叠字、双列和轻阴影等移动视觉原则。功能区形态选型遵守共享 **`PT-MOBILE-FUNC`**（详表 `lny-prd-ui` **§1.3.6**）：成组、每组入口有限；宫格/双卡/通栏/一行两个/**宫格+双卡**；**不限首页**；**无列表时倾向双卡填实**。**设置项**＝当页当行直接操作；**功能入口**＝只跳转或开半屏/弹窗（同壳不同行为）。详见 prototype `reference-kit`。
+列表区的横卡多行/单行选择、字段层级和操作位置直接遵守共享页型规则 `PT-MOBILE-LIST`；本文件只补封面叠字、双列和轻阴影等移动视觉原则。功能区形态选型遵守共享 **`PT-MOBILE-FUNC`**（详表 `lny-prd-ui` **§1.3.6**）：成组、每组入口有限；宫格/双卡/通栏/一行两个/**宫格+双卡**；**不限首页**；**无列表时倾向双卡填实**。**设置项**＝当页当行直接操作；**功能入口**＝只跳转或开半屏/弹窗（同壳不同行为）。详见 prototype `reference-kit.md` 索引与 `reference-kit/` 分片。
 
 ## 3. 组件规范（工具箱）
 
@@ -66,16 +66,16 @@
 
 | 项 | ② / L 层级 | ⑥ |
 |----|------------|---|
-| 滚动容器底与边 | body 纯滚动（透明、无 padding）；sheet 浅灰 + 统一内边距 | body 透明；sheet `#f7f7f7` + safe；`md-mobile-sheet--flush-x` 取消左右 safe | 见 `reference.md` §1.3.4 |
-| 滚动区页型选型 | 列表族 vs 内容/表单族；**字段列表 MP-012 = 列表族·无分页·多条按组** | 横卡列表 / **字段列表** sheet 有 safe + `md-group-list`；图文/表单/设置 flush | 见 `reference.md` §1.3.4 |
-| 结构 | L0/L1 无 sheet；L2 必有 `body` > `sheet` > L3 | 固定区与 body 并列；Hero 与 body 并列；详见 `reference.md` §1.3.4「何时有 sheet」 |
+| 滚动容器底与边 | body 纯滚动（透明、无 padding）；sheet 浅灰 + 统一内边距 | body 透明；sheet `#f7f7f7` + safe；`md-mobile-sheet--flush-x` 取消左右 safe | 见 `reference/ui-manifest-template.md` §1.3.4 |
+| 滚动区页型选型 | 列表族 vs 内容/表单族；**字段列表 MP-012 = 列表族·无分页·多条按组** | 横卡列表 / **字段列表** sheet 有 safe + `md-group-list`；图文/表单/设置 flush | 见 `reference/ui-manifest-template.md` §1.3.4 |
+| 结构 | L0/L1 无 sheet；L2 必有 `body` > `sheet` > L3 | 固定区与 body 并列；Hero 与 body 并列；详见 `reference/ui-manifest-template.md` §1.3.4「何时有 sheet」 |
 | L2 下沉 vs 随滚 Banner | 下沉 → L2【下沉首屏】+ 沉浸式；随滚 → L3 普通模块内 Banner，不写 Hero 钉底 | 下沉：页级 `md-hero` ∥ `md-mobile-body`；随滚：sheet 内 `md-module` + `md-swiper` |
 | 固定 vs 吸顶 | L1：滚动容器**外**（搜索/筛选/返回/TabBar/贴底条）；L3 吸顶：容器**内** sticky（写顶距） | 列表 `md-list-toolbar` 在 body 外；吸顶模块 sticky 顶距避开 L1 |
 | 安全区 | 正文左右 **12**；标准顶栏左右 4；状态栏 28；底栏 48；overlay/cover 避让胶囊 | `--md-safe-edge` / `--md-safe-l/r` **12**；标准顶栏 inset 4 |
 | 弹性布局 | 「左图右文可伸缩；主文与底栏分开；树页左树右内容；时间轴左竖轨右**横卡文本**（无左图，正文可 `__photos`）」 | `__main` + `__foot` flex；树 `md-tree-page`；时间轴 `md-timeline` |
 | 适配基准 | 不写死唯一稿宽 | 预览逻辑宽 **375**；`viewport-fit=cover` |
 
-顶栏四选一（禁止混用）：① 16:9+slogan ② 16:9+返回标题 ③ 标准返回标题 ④ 两倍高度封面。**沉浸式**（L0）与 **下沉滚过**（L2【下沉首屏】）是两套概念——见 `reference.md` §1.3.4。
+顶栏四选一（禁止混用）：① 16:9+slogan ② 16:9+返回标题 ③ 标准返回标题 ④ 两倍高度封面。**沉浸式**（L0）与 **下沉滚过**（L2【下沉首屏】）是两套概念——见 `reference/ui-manifest-template.md` §1.3.4。
 
 ## 5. 交互与反馈
 
@@ -92,7 +92,7 @@
 
 | 项 | 落点 |
 |----|------|
-| 版本 | 项目 `versions/{v}/`；工具包版本见仓库根 `README.md` |
+| 版本 | 项目 `versions/{v}/`；工具包版本记录于技能包 `skill-bundle.json` |
 | 适用范围 | `main_spec` 第4章终端；本词典默认覆盖 MP/H5/APP 触屏；桌面另遵 §1.4.3 |
 | 修订 | 改根规范 → `iteration_notes`；改技能包 → 工具包版本号 |
 

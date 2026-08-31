@@ -16,8 +16,7 @@ description: >-
 
 ## Additional resources
 
-- 评审维度、结论口径与范围决议协议：[`reference.md`](reference.md)
-- 候选组装、评审结论与 `delivery_scope.md` 模板：[`reference.md`](reference.md)
+- 评审维度、结论口径、候选组装与 `delivery_scope.md` 模板：[`reference.md`](reference.md)
 - 正式落点与历史版本约束：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
 - 框架排除：[`../lny-prd-master/framework-exclusions.md`](../lny-prd-master/framework-exclusions.md)
 

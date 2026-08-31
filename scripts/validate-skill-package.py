@@ -660,6 +660,137 @@ def validate_prototypes(errors: list[str]) -> None:
             fail(errors, "gold validation: " + error)
 
 
+CANONICAL_PAGE_TYPES = ROOT / "lny-prd-master" / "reference-page-types.md"
+GOLD_BASENAME_RE = re.compile(r"([a-z][a-z0-9]*(?:-[a-z0-9]+)*\.html)")
+PAGE_ID_RE = re.compile(r"PAGE-(MP|AD)-(\d{3})")
+
+
+def section_between(text: str, start_heading: str, end_heading: str) -> str | None:
+    start = text.find(start_heading)
+    if start == -1:
+        return None
+    end = text.find(end_heading, start + len(start_heading))
+    if end == -1:
+        return None
+    return text[start:end]
+
+
+def parse_canonical_page_map(errors: list[str]) -> dict[str, set[str]] | None:
+    text = CANONICAL_PAGE_TYPES.read_text(encoding="utf-8")
+    section = section_between(text, "## 页型映射", "## 金样边界")
+    if section is None:
+        fail(errors, "reference-page-types.md: 页型映射 / 金样边界 sections missing")
+        return None
+    mapping: dict[str, set[str]] = {}
+    for line in section.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|") or "---" in stripped:
+            continue
+        cells = [cell.strip() for cell in stripped.strip("|").split("|")]
+        if len(cells) < 5 or cells[0] == "页型":
+            continue
+        _page_type, mp_cell, ad_cell, mp_gold, ad_gold = cells[:5]
+        for num in re.findall(r"MP-\d{3}", mp_cell):
+            mapping.setdefault(num, set()).update(GOLD_BASENAME_RE.findall(mp_gold))
+        for num in re.findall(r"AD-\d{3}", ad_cell):
+            mapping.setdefault(num, set()).update(GOLD_BASENAME_RE.findall(ad_gold))
+    if not mapping:
+        fail(errors, "reference-page-types.md: 页型映射 table parsed empty")
+        return None
+    return mapping
+
+
+def validate_page_type_consistency(errors: list[str]) -> None:
+    """The ②⑤⑥ quick-reference tables must not drift from the canonical page map."""
+    mapping = parse_canonical_page_map(errors)
+    if mapping is None:
+        return
+    all_canonical_golds: set[str] = set().union(*mapping.values())
+
+    for skill_name in ("lny-prd-ui", "lny-prd-page", "lny-prd-prototype"):
+        skill_text = (ROOT / skill_name / "SKILL.md").read_text(encoding="utf-8")
+        if "reference-page-types.md" not in skill_text:
+            fail(errors, f"{skill_name}/SKILL.md: missing canonical reference-page-types.md pointer")
+
+    ui_quick = section_between((ROOT / "lny-prd-ui" / "SKILL.md").read_text(encoding="utf-8"), "## 页型速查", "## 开笔前")
+    page_quick = section_between((ROOT / "lny-prd-page" / "SKILL.md").read_text(encoding="utf-8"), "## 页型速查", "## 开笔前")
+    if ui_quick is None or page_quick is None:
+        fail(errors, "lny-prd-ui/lny-prd-page SKILL.md: 页型速查 section missing")
+    else:
+        for label, quick in (("lny-prd-ui", ui_quick), ("lny-prd-page", page_quick)):
+            for terminal, num in PAGE_ID_RE.findall(quick):
+                if f"{terminal}-{num}" not in mapping:
+                    fail(errors, f"{label}/SKILL.md 速查表: PAGE-{terminal}-{num} missing from canonical 页型映射")
+
+    proto_quick = section_between((ROOT / "lny-prd-prototype" / "SKILL.md").read_text(encoding="utf-8"), "## 金样速查", "## 开笔前")
+    if proto_quick is None:
+        fail(errors, "lny-prd-prototype/SKILL.md: 金样速查 section missing")
+        return
+    for line in proto_quick.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|"):
+            continue
+        ids = PAGE_ID_RE.findall(stripped)
+        if not ids:
+            continue
+        key = f"{ids[0][0]}-{ids[0][1]}"
+        row_golds = set(GOLD_BASENAME_RE.findall(stripped))
+        canonical = mapping.get(key)
+        if canonical is None:
+            fail(errors, f"lny-prd-prototype/SKILL.md 金样速查: PAGE-{key} missing from canonical 页型映射")
+            continue
+        missing = canonical - row_golds
+        if missing:
+            fail(errors, f"lny-prd-prototype/SKILL.md 金样速查 PAGE-{key}: canonical gold file(s) missing from row: {sorted(missing)}")
+        unknown = row_golds - all_canonical_golds
+        if unknown:
+            fail(errors, f"lny-prd-prototype/SKILL.md 金样速查 PAGE-{key}: gold file(s) unknown to canonical mapping: {sorted(unknown)}")
+
+
+REPO_ROOT_REF_RE = re.compile(
+    r"仓库\s*根?\s*[`「『(（]?\s*(?:README|LICENSE\b|skill-bundle\.json|CHANGELOG\.md|requirements[^\s`」』)）]*\.txt)",
+    re.IGNORECASE,
+)
+
+
+def validate_skill_references(errors: list[str]) -> None:
+    """Skill prose must not point at repository-root files that are never installed.
+
+    Anchored on 仓库/仓库根 + root-file name so legitimate in-skill references
+    (e.g. gold/README.md) and PRD-project wording ("PRD 仓库根目录") pass through.
+    """
+    for skill_dir in SKILL_DIRS:
+        for path in sorted(skill_dir.rglob("*.md")):
+            if "__pycache__" in path.parts:
+                continue
+            text = path.read_text(encoding="utf-8")
+            for lineno, line in enumerate(text.splitlines(), start=1):
+                match = REPO_ROOT_REF_RE.search(line)
+                if match:
+                    rel = path.relative_to(ROOT).as_posix()
+                    fail(
+                        errors,
+                        f"{rel}:{lineno}: references repository root file "
+                        f"({match.group(0)!r}); repo-root files are not installed with the skill",
+                    )
+
+
+def validate_changelog(errors: list[str]) -> None:
+    path = ROOT / "CHANGELOG.md"
+    if not path.is_file():
+        fail(errors, "CHANGELOG.md missing at repository root")
+        return
+    text = path.read_text(encoding="utf-8")
+    match = re.search(r"^## (\d+\.\d+\.\d+)\b", text, flags=re.M)
+    if match is None:
+        fail(errors, "CHANGELOG.md: no '## X.Y.Z' version section found")
+        return
+    manifest = json.loads((ROOT / "skill-bundle.json").read_text(encoding="utf-8"))
+    version = manifest.get("bundle_version")
+    if match.group(1) != version:
+        fail(errors, f"CHANGELOG.md top version {match.group(1)!r} != skill-bundle.json bundle_version {version!r}")
+
+
 def main() -> int:
     errors: list[str] = []
     validate_bundle_contract(errors)
@@ -669,6 +800,9 @@ def main() -> int:
     validate_script_syntax(errors)
     validate_example_prototype_identity(errors)
     validate_kit_copies(errors)
+    validate_page_type_consistency(errors)
+    validate_changelog(errors)
+    validate_skill_references(errors)
     validate_migration(errors)
     validate_artifact_path_checker(errors)
     validate_prototypes(errors)

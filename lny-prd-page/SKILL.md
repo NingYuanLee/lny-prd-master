@@ -20,7 +20,7 @@ description: >-
 
 ## 三步对照（防错用）
 
-先 Read [`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)。本步只维护 ASCII 分区顺序和单页 PRD 表达；下方速查表只保留 ⑤ 的专属措辞。
+先 Read [`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)。本步只维护 ASCII 分区顺序和单页 PRD 表达；下方速查表只保留 ⑤ 的专属措辞。页型 ↔ 编号 ↔ 金样映射与跨步骤不变量以该正本为唯一事实源；本表与正本冲突时以正本为准（发布门禁自动比对）。
 
 **树 vs 章节列表**：ASCII 与「结构与控件」须跟 master 选型一致——章节目录写 `md-chapter-list`（PAGE-MP-015）；分类树写左树右内容（PAGE-MP-008）；左分组右横卡写 `md-locator`（PAGE-MP-013）。禁止三者混名。
 

@@ -447,7 +447,8 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 ├── lny-prd-page/SKILL.md + reference.md
 ├── lny-prd-prototype/
 │   ├── SKILL.md                    # ⑥ 全端静态 HTML + kit
-│   ├── reference-kit.md            #     MUI 视觉类名与壳数据
+│   ├── reference-kit.md            #     MUI 视觉索引与全局 token（圆角/高保真/间距/滚动容器）
+│   ├── reference-kit/              #     类名字典分片（壳层/触屏/桌面/无类名组合/组件速查）
 │   ├── reference-icons.md          #     闭集 + search-icons.py
 │   ├── reference-shell.md
 │   ├── reference-quality.md

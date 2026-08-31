@@ -1,6 +1,6 @@
 # 原型壳层与关系图（§A–E）
 
-仅在生成/更新原型时 Read。皮肤、类名、`PROTO_SHELL` 字段见 [`reference-kit.md`](reference-kit.md)。**禁止**另写侧栏/顶栏/状态演示/规格说明 DOM 或 `fitPhoneFrame`——套件 `proto-shell.js` 已实现。
+仅在生成/更新原型时 Read。皮肤、类名、`PROTO_SHELL` 字段见 [`reference-kit.md`](reference-kit.md)（全局 token）与 `reference-kit/shell.md` 分片。**禁止**另写侧栏/顶栏/状态演示/规格说明 DOM 或 `fitPhoneFrame`——套件 `proto-shell.js` 已实现。
 
 ## 目录
 

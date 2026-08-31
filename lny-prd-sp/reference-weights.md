@@ -1,6 +1,6 @@
 # 标准工时点权重与报告模板
 
-计算与落盘时 Read 本节。说明书见仓库 README 第八章。
+计算与落盘时 Read 本节。小时口径与校准原理见本节 §0；SP 定义、门禁与校准系数规则见 `lny-prd-sp/SKILL.md`。
 
 ## 0. 小时口径与校准
 
@@ -301,7 +301,7 @@
 
 ## 5. 备注
 
-- 权重见 `lny-prd-sp/reference-weights.md`；说明书见仓库 `README.md` 第八章。
+- 权重见 `lny-prd-sp/reference-weights.md`；SP 定义与门禁见 `lny-prd-sp/SKILL.md`。
 - {不可估时：列出断点；AD 页缺骨架码/D5 不可数时列编号；可估且无其它则写「无」}
 
 ## 6. 压缩候选（可选附录，不进 SP 合计）

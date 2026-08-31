@@ -78,7 +78,7 @@ node <skillDir>/scripts/verify-prototype-browser.mjs <prdRoot> --page PAGE-MP-01
 | G4.1 | 本页 `pages_prd` | 本页文件已 Read；未用其它页或记忆顶替 |
 | G4.1b | `ui/PAGE` §2.3 | 动效/微反馈/收纳已按体验规格落地，未另发明交互 |
 | G4.2 | §3 ASCII 线框与 `###` 分区 | 每个内容分区在 HTML 有对应可见区块（`data-section` 或可见标题）；禁止只画顶栏+一张空表 |
-| G4.3 | 各分区「结构与控件」 | 每个按钮/输入/Tab/卡片/列均用 `md-*` 落地；套件无类名 → [`reference-kit.md`](reference-kit.md)「无类名组合」 |
+| G4.3 | 各分区「结构与控件」 | 每个按钮/输入/Tab/卡片/列均用 `md-*` 落地；套件无类名 → [`reference-kit/combos.md`](reference-kit/combos.md)「无类名组合」 |
 | G4.4 | §4 跳转清单 | 每个目标 `PAGE-*` 有可点 `href`（本页自身与「无」除外） |
 | G4.5 | `ui/COMP-*` 状态矩阵 | `data-comp` + `data-state`；`empty`/`error` 有 `.md-empty`；`loading` 有骨架（卡片态或 `md-skel-host`） |
 | G4.6 | 脚本 | `verify-prototype-coverage.py` 对根 `prototypes/` 本页 exit 0 |

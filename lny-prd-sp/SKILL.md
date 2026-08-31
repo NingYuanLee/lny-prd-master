@@ -16,7 +16,6 @@ description: >-
 
 - 权重表与报告模板：[`reference-weights.md`](reference-weights.md)
 - 正式落点与禁止副本范围：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
-- 原理说明书：仓库 `README.md` 第八章
 
 ## 职责与禁止
 
