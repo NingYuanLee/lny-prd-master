@@ -124,12 +124,10 @@ Superpower 等编程技能包（需求理解 → 技术方案 → 逐模块编�
 lny-prd-check（回归检查需求是否遗漏或偏离）
 ```
 
-> Superpower 等技能包擅长根据需求描述（尤其是本工具包生成的 `main_spec`、`feature/`、`api/` 等结构化文档）快速生成技术方案和工程代码，补齐本工具包不覆盖的编码与部署环节。
+> Superpower 等技能包擅长根据需求描述（尤其是本工具包生成的 `main_spec`、`feature/`、`api/` 等结构化文档）快速生成技术方案和工程代码，补齐本工具包不覆盖的编码与部署环节。开发侧的入口清单、阅读顺序、选型决策点、AC→测试约定、原型定位与可忽略文件已统一写在 `main_spec.md` §2「通用规范与阅读指南」。
 
 ```text
-BE：main_spec 自上而下 + feature/api → Superpower（不以 pages_prd 为主入口）
-FE：① ui 页壳 → ② api 全局层 → ③ 可复用 COMP → ④ 多 Agent 各读 pages_prd 装配
-原型：默认 pages_prd；例外标注 ui直出
+开发侧入口与阅读顺序：见 main_spec §2（BE 走 feature/api；FE 走 ui → api → COMP → pages_prd；原型默认 pages_prd，例外标注 ui直出）
 ```
 
 ## 四、前置条件
@@ -211,7 +209,7 @@ Agent 将自动判定当前状态：
 ```
 my-project/                         # PRD 项目根目录
 │
-├── main_spec.md                    # 产品规格说明书（概述、终端、统计索引）
+├── main_spec.md                    # 产品规格说明书（概述、§2 通用规范与阅读指南、终端、统计索引）
 ├── api_spec.md                     # 接口需求索引（§4 终端对齐 + API/EXT 清单）
 ├── ui_manifest.md                  # UI 设计清单（页面/分包/组件索引）
 ├── feature_spec.md                 # 功能规格索引（全局规则 + Feature 索引）
