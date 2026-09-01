@@ -700,6 +700,43 @@ def parse_canonical_page_map(errors: list[str]) -> dict[str, set[str]] | None:
     return mapping
 
 
+def prototype_quick_row_errors(
+    mapping: dict[str, set[str]],
+    all_canonical_golds: set[str],
+    proto_quick: str,
+    *,
+    label: str = "lny-prd-prototype/SKILL.md 金样速查",
+) -> list[str]:
+    """Check every PAGE id on every prototype quick-ref table row."""
+    found: list[str] = []
+    for line in proto_quick.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|"):
+            continue
+        ids = PAGE_ID_RE.findall(stripped)
+        row_golds = set(GOLD_BASENAME_RE.findall(stripped))
+        unknown = row_golds - all_canonical_golds
+        if unknown:
+            found.append(f"{label}: gold file(s) unknown to canonical mapping: {sorted(unknown)}")
+        if not ids:
+            continue
+        row_canonical: set[str] = set()
+        for terminal, num in ids:
+            key = f"{terminal}-{num}"
+            canonical = mapping.get(key)
+            if canonical is None:
+                found.append(f"{label}: PAGE-{key} missing from canonical 页型映射")
+                continue
+            row_canonical.update(canonical)
+        if row_canonical:
+            extra = row_golds - row_canonical
+            if extra:
+                found.append(
+                    f"{label}: gold file(s) not in canonical mapping for this row: {sorted(extra)}"
+                )
+    return found
+
+
 def validate_page_type_consistency(errors: list[str]) -> None:
     """②⑤⑥ quick-reference tables may list PAGE ids; they must exist in the canonical map.
 
@@ -710,6 +747,17 @@ def validate_page_type_consistency(errors: list[str]) -> None:
     if mapping is None:
         return
     all_canonical_golds: set[str] = set().union(*mapping.values())
+
+    second_id_errors = prototype_quick_row_errors(
+        mapping,
+        all_canonical_golds,
+        "| PAGE-MP-001 / PAGE-MP-999 | md-hero |\n",
+    )
+    if not any("PAGE-MP-999" in item for item in second_id_errors):
+        fail(
+            errors,
+            "page-type gate missed a second illegal PAGE id on a prototype quick-ref row",
+        )
 
     for skill_name in ("lny-prd-ui", "lny-prd-page", "lny-prd-prototype"):
         skill_text = (ROOT / skill_name / "SKILL.md").read_text(encoding="utf-8")
@@ -730,31 +778,8 @@ def validate_page_type_consistency(errors: list[str]) -> None:
     if proto_quick is None:
         fail(errors, "lny-prd-prototype/SKILL.md: 金样速查 section missing")
         return
-    for line in proto_quick.splitlines():
-        stripped = line.strip()
-        if not stripped.startswith("|"):
-            continue
-        ids = PAGE_ID_RE.findall(stripped)
-        row_golds = set(GOLD_BASENAME_RE.findall(stripped))
-        unknown = row_golds - all_canonical_golds
-        if unknown:
-            fail(
-                errors,
-                f"lny-prd-prototype/SKILL.md 金样速查: gold file(s) unknown to canonical mapping: {sorted(unknown)}",
-            )
-        if not ids:
-            continue
-        key = f"{ids[0][0]}-{ids[0][1]}"
-        canonical = mapping.get(key)
-        if canonical is None:
-            fail(errors, f"lny-prd-prototype/SKILL.md 金样速查: PAGE-{key} missing from canonical 页型映射")
-            continue
-        extra = row_golds - canonical
-        if extra:
-            fail(
-                errors,
-                f"lny-prd-prototype/SKILL.md 金样速查 PAGE-{key}: gold file(s) not in canonical mapping for this PAGE: {sorted(extra)}",
-            )
+    for item in prototype_quick_row_errors(mapping, all_canonical_golds, proto_quick):
+        fail(errors, item)
 
 
 REPO_ROOT_REF_RE = re.compile(

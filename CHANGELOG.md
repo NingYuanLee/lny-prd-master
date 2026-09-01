@@ -8,6 +8,11 @@ LNY-PRD 技能包（`bundle_id: lny-prd`）的显著变更记录于此文件。
 
 ## Unreleased
 
+## 2.16.1 - 2026-09-01
+
+- ⑥ 金样速查门禁校验一行内全部 PAGE 编号（不再只看第一个），并内置「第二编号非法」负例。
+- Cursor 宿主同步改为走 `install-skills.py update --host cursor`，禁止只拷目录导致 `install.json` 落后。
+
 ## 2.16.0 - 2026-09-01
 
 - 立项确认摘要必须列出 `lny-default` 将不展开的类别闭集；看不见清单不得请用户确认。确认仍等于沿用。
