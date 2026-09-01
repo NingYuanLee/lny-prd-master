@@ -207,8 +207,8 @@ def load_bundle() -> Bundle:
         raise InstallError("skill-bundle.json must list the ten core LNY-PRD skills")
     resources = raw.get("optional_resources")
     examples_config = resources.get("examples") if isinstance(resources, dict) else None
-    if not isinstance(examples_config, dict) or examples_config.get("audience") != "human":
-        raise InstallError("examples must be declared as an optional human resource")
+    if not isinstance(examples_config, dict) or examples_config.get("audience") != "regression":
+        raise InstallError("examples must be declared as an optional regression resource")
     examples_path = examples_config.get("path")
     if not isinstance(examples_path, str):
         raise InstallError("examples.path must be a string")
@@ -721,7 +721,7 @@ def command_export_examples(args: argparse.Namespace, bundle: Bundle) -> int:
             raise
     finally:
         shutil.rmtree(stage, ignore_errors=True)
-    print("examples exported for human reference")
+    print("examples exported for local regression reference")
     return 0
 
 
@@ -758,7 +758,7 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("detect", help="show supported user-level host paths")
 
     examples = subparsers.add_parser(
-        "export-examples", help="export human-only examples outside skill directories"
+        "export-examples", help="export regression examples outside skill directories for local reference"
     )
     examples.add_argument("--dest", help="destination, default ~/.lny-prd/examples")
     examples.add_argument("--force", action="store_true")

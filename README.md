@@ -167,7 +167,7 @@ python scripts/install-skills.py status --host <host>
 
 本地修改过已安装副本时，更新会停止；确认丢弃这些修改时才对 `update` 加 `--force`。可先用 `--dry-run` 预览，卸载使用 `uninstall`。TraeWork CN 安装前须至少启动过一次；安装器会保留 `~/.trae-cn/skill-config.json` 中无关字段，并登记 10 个 `user_upload` 技能。
 
-[`examples/`](examples/) 仅供人类查看，同时作为仓库 CI 回归数据；技能运行不依赖它，也不会把它复制进技能目录。需要仓库之外的独立副本时执行：
+[`examples/`](examples/) 是仓库的**回归夹具**（供 ⑦ 检查类 AI 自检与作者验收对照，不是对外展示的样例）；技能运行不依赖它，也不会把它复制进技能目录。需要本地独立副本对照时执行：
 
 ```bash
 python scripts/install-skills.py export-examples
@@ -257,9 +257,9 @@ my-project/                         # PRD 项目根目录
 
 根 `prototypes/` 是唯一当前原型；`versions/{v}/` 不复制原型树。历史原型通过项目 Git commit/tag 回看，需要独立历史交付包时再按需导出。
 
-## 七、产物示例
+## 七、回归夹具示例（mini-shop）
 
-以下摘取五种核心产物的典型片段，展示实际落盘格式。
+以下摘取回归夹具 `examples/mini-shop/` 五种核心产物的典型片段，展示实际落盘格式（供 ⑦ 检查类 AI 自检与作者验收对照）。
 
 #### 7.1 API 需求明细（`api/API-MP-001.md`）— 请求 & 响应参数字段表
 
@@ -458,7 +458,7 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 ├── lny-prd-check/                   # ⑦ 只读检查 + 路径/跨文档语义扫描器
 ├── lny-prd-iter/SKILL.md + reference.md
 ├── lny-prd-sp/SKILL.md + reference-weights.md
-├── examples/mini-shop/             # 人类只读样例 + CI 回归数据（不参与安装）
+├── examples/mini-shop/             # 回归夹具：AI 自检 / 作者验收对照（不参与安装）
 ├── skill-bundle.json               # 整包 ID、版本、10 核心技能与可选资源
 ├── scripts/install-skills.py       # 三平台用户级整包安装、更新、状态与卸载
 ├── scripts/test_install_skills.py  # 安装事务、回滚、漂移与平台配置测试

@@ -2,7 +2,7 @@
 
 **profile = lny-default**（ThinkPHP / uni-app / 微信支付 / 类 likeadmin）。这是作者栈的**个性化配置**，不是强制行业表。
 
-立项须确认本项目是否沿用；不沿用 → YAML 声明 `框架排除 profile: none`，或把本文件复制到 PRD 项目根覆盖。**未确认不得按本表删需求。**
+立项确认时显式展示 profile 询问；**用户未主动要求更改即按默认沿用**。不沿用 → YAML 声明 `框架排除 profile: none`，或把本文件复制到 PRD 项目根覆盖。**立项确认完成前不得按本表删需求。**
 
 - 换栈：立项 YAML 声明 `框架排除 profile: none`（空表，全部业务能力都可建 PAGE/API/FEATURE），或把本文件复制到 PRD 项目根覆盖。
 - **profile `none`**：不采用下表默认排除；仅遵守用户追加的 `框架内置排除`。

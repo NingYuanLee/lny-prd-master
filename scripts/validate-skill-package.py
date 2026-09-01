@@ -104,9 +104,9 @@ def validate_bundle_contract(errors: list[str]) -> None:
         fail(errors, f"{manifest_path}: bundle_version must be stable X.Y.Z")
     if manifest.get("skills") != list(EXPECTED_SKILL_ORDER):
         fail(errors, f"{manifest_path}: skills must list ten ordered core skills")
-    expected_resources = {"examples": {"path": "examples", "audience": "human"}}
+    expected_resources = {"examples": {"path": "examples", "audience": "regression"}}
     if manifest.get("optional_resources") != expected_resources:
-        fail(errors, f"{manifest_path}: optional_resources must declare human-only examples")
+        fail(errors, f"{manifest_path}: optional_resources must declare regression-only examples")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     match = re.search(r"\*\*工具包版本：([^*]+)\*\*", readme)

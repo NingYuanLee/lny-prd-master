@@ -17,7 +17,7 @@
   "optional_resources": {
     "examples": {
       "path": "examples",
-      "audience": "human"
+      "audience": "regression"
     }
   }
 }

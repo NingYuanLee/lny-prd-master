@@ -17,7 +17,9 @@ LNY-PRD 技能包（`bundle_id: lny-prd`）的显著变更记录于此文件。
 - `.cursor/rules` 本地规则去重并声明仅 Cursor 宿主生效。
 - `lny-prd-ui/reference.md` 拆分索引化：索引保留落地/初始化约定与分片表；`ui_manifest.md` / `ui/COMP-*.md` / `ui/PAGE-*.md` 三份模板分别落 `lny-prd-ui/reference/` 下三片，入站 §x.y 指针同步更新。
 - ⑦ 语义扫描器 `validate-prd-project.py` 输出机器可读 `NEXT_STEP_ROUTE:`（issue 码 → 建议委派技能，供 ① 总控路由消费）。
-- 评审决议（2026-08-31 收敛，显式后置非遗漏）：`lny-default` 默认 profile 弱化、`examples` 样例/夹具分离、CI Playwright/npm 缓存（P3）。
+- `examples/` 定位为**回归夹具**单一身份（供 ⑦ 检查类 AI 自检与作者验收对照）：`skill-bundle.json` audience 改 `regression`，README 与 `export-examples` 文案同步，撤「人类样例」表述（2026-09-01 决议：不做样例/夹具分目录，单一身份即收口）。
+- 框架排除 profile 立项交互显式化：确认摘要中明确「要不要改」询问，**用户未主动要求更改即按 `lny-default` 默认沿用**（2026-09-01 决议：作者为主要使用者，默认不变，仅显式展示询问）。
+- 评审决议（2026-09-01 收敛）：CI Playwright/npm 缓存为唯一剩余 P3 后置项（原 P3 三项中两项已按决议收口）。
 
 ## 2.14.0 - 2026-08-29
 
