@@ -19,7 +19,7 @@ LNY-PRD 技能包（`bundle_id: lny-prd`）的显著变更记录于此文件。
 - ⑦ 语义扫描器 `validate-prd-project.py` 输出机器可读 `NEXT_STEP_ROUTE:`（issue 码 → 建议委派技能，供 ① 总控路由消费）。
 - `examples/` 定位为**回归夹具**单一身份（供 ⑦ 检查类 AI 自检与作者验收对照）：`skill-bundle.json` audience 改 `regression`，README 与 `export-examples` 文案同步，撤「人类样例」表述（2026-09-01 决议：不做样例/夹具分目录，单一身份即收口）。
 - 框架排除 profile 立项交互显式化：确认摘要中明确「要不要改」询问，**用户未主动要求更改即按 `lny-default` 默认沿用**（2026-09-01 决议：作者为主要使用者，默认不变，仅显式展示询问）。
-- 评审决议（2026-09-01 收敛）：CI Playwright/npm 缓存为唯一剩余 P3 后置项（原 P3 三项中两项已按决议收口）。
+- CI 缓存：`.github/workflows/validate-skills.yml` 用 `actions/cache@v4` 按版本键缓存 `~/.cache/ms-playwright` 与 `~/.npm`，命中时浏览器不再全量下载。至此原 P3 三项全部收口（profile 显式化、examples 单一身份、CI 缓存）。
 
 ## 2.14.0 - 2026-08-29
 
