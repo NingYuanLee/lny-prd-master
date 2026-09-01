@@ -8,6 +8,8 @@ LNY-PRD 技能包（`bundle_id: lny-prd`）的显著变更记录于此文件。
 
 ## Unreleased
 
+## 2.15.0 - 2026-09-01
+
 - 修复 6 处已发布技能内的「仓库 README」死链（改指随包可达位置或删除指针）。
 - 新增防复发门禁 `validate_skill_references`：禁止技能文件在 prose 中引用仓库根文件（README/LICENSE/skill-bundle.json/CHANGELOG/requirements）。
 - `reference-kit.md` 拆分索引化：索引保留全局 token（67K 字符 → 8.4K），类名字典分为 `reference-kit/` 下 5 个分域分片，入站引用同步更新。
