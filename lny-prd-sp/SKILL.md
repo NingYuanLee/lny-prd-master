@@ -61,5 +61,16 @@ BE校准系数: 0.90        # 可选；无可靠样本则省略
 2. 读范围内 Feature 对应的 `ui/PAGE`、`pages_prd` §5/§7、`api/`、`feature/`、`eval_signals.md`（若有）。
 3. 产品链门禁。不可估则数值用 `—`，不编造合计；**不要结束**。
 4. 可估则 Read [`reference-weights.md`](reference-weights.md) 计算（先算对象基准点，再应用单一实现系数，最后分别应用 FE/BE 校准系数；明细按小计降序；报告末可选附录「压缩候选」，不进合计、不换算工期、不宣布 MVP）；不可估则跳过本步。
-5. 覆盖写入 `sp_report.md`（UTF-8）。对话回报 FE_SP / BE_SP / 合计三行。默认不写 `iteration_notes`。
+5. 覆盖写入 `sp_report.md`（UTF-8）。默认不写 `iteration_notes`。对话必须按下列五行回报，禁止只报三个数字：
+
+```text
+FE_SP：{n / —}
+BE_SP：{n / —}
+合计：{n / —}
+校准系数：FE {1.0（暂定） / n（来源）}；BE {1.0（暂定） / n（来源）}
+口径：合计是标准工程人时，不是日历工期、人数或发布日。
+```
+
+无用户给出的系数、且不满 3 个已完成版本的实际小时样本时，必须写 `1.0（暂定）`，禁止写「已校准」。
+
 6. **只刷总入口**：Read `lny-prd-prototype/SKILL.md`「只刷总入口」与 [`../lny-prd-prototype/reference-scope.md`](../lny-prd-prototype/reference-scope.md)。有任一 `prototypes/{终端}/` 则覆盖刷新 `prototypes/index.html`；无则跳过并说明。禁止重画各端页面或写 `versions/{v}/prototypes/`。

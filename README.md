@@ -1,6 +1,6 @@
 # LNY-PRD — 李宁远产品工作流
 
-**工具包版本：2.15.0**
+**工具包版本：2.16.0**
 
 ## 背景
 
@@ -67,7 +67,7 @@ LNY-PRD 做的是 **vibe-spec-coding** 里的 **vibe-spec**：帮助审视产品
 - **台账单值状态**：页面 `待② → 待⑤ → 已完成`；API `待③ → 已完成`；Feature `待④ → 已完成`。仅在本步成功落盘并自检后推进，禁止 `待②/待⑤` 复合值
 - **评审员下结论、人确认或调整**：⑧ 必须基于 ⑦ 证据给出唯一拟定结论和落盘预览；产品可确认，也可指出调整项触发重评；未确认不得写 `approved`
 - **只读检查**：⑦ `/lny-prd-check` 不改任何文件，仅输出报告与委派建议
-- **框架内置排除**：`lny-default` 是作者栈的个性化配置，**不是**强制行业表（见 [`lny-prd-master/framework-exclusions.md`](lny-prd-master/framework-exclusions.md)）；立项须确认；换栈可设 `none`；未确认不得按默认表删需求
+- **框架内置排除**：`lny-default` 是作者栈的个性化配置，**不是**强制行业表（见 [`lny-prd-master/framework-exclusions.md`](lny-prd-master/framework-exclusions.md)）；立项确认摘要必须列出将不展开的类别，看不见清单不得请用户确认；确认仍等于沿用；换栈可设 `none`；未确认不得按默认表删需求
 
 ## 三、能力边界
 
@@ -191,7 +191,7 @@ python scripts/install-skills.py export-examples
 
 Agent 将自动判定当前状态：
 
-- **空目录**：进入立项对话；确认是否沿用 `框架排除 profile`（`lny-default` 为个性化配置，换栈用 `none`；未确认不得按默认表删需求）后生成初始文档
+- **空目录**：进入立项对话；确认摘要必须列出 `lny-default` 将不展开的类别（看不见清单不得请用户确认）；确认仍等于沿用该 profile（换栈用 `none`）；未确认不得按默认表删需求后生成初始文档
 - **已有项目**：按状态检测路由；用户要原型则静默补 ②→⑥。回复「继续」= 重新走 §3（不是自动走完 ⑤⑥⑦⑧⑨）。⑩ 之后「继续」先清 ②③④，再 ⑤；⑥ 仅当当轮仍是演示/原型目标；规格齐了停在建议
 
 ### 5.3 推荐工作流
@@ -201,6 +201,24 @@ Agent 将自动判定当前状态：
 ```
 
 「继续」= 重新走总控 §3，不是按上表自动走完。**②③④** 缺口会在同一轮连续完成。规格齐了只建议 ⑤⑥⑦⑧，不自动落盘。当轮目标为演示时同一轮可做到 ⑥。要原型时对人静默补规格（禁止用 HTML 代替规格）；只有明确说新迭代才走 ⑩；⑦/⑧ 须明确要求，直接评审时若无有效 ⑦ 结果则同轮先检查。⑨ 只估⑧确认范围，落盘后同轮只刷 `prototypes/index.html` 版本清单，不重画各端页面。估点见 [第八章](#八估点与可评估性)。
+
+### 5.4 换栈（`profile: none`）
+
+`lny-default` 按作者栈排除登录、RBAC、支付等。换栈或要把这些当业务需求展开时，立项 YAML 声明 `框架排除 profile: none`。确认摘要必须出现「无默认排除，仅遵守本项目追加项」；看不见该句不得请用户确认。
+
+```yaml
+项目名称: 示例项目
+产品定位: 一句话定位
+目标用户和故事:
+  - 用户: 终端用户
+    故事: 完成核心任务
+产品目标: 先把主路径做成可评审规格
+终端范围: [小程序, 管理后台]
+框架排除 profile: none
+框架内置排除: []
+```
+
+需要自定义排除表时，把 [`lny-prd-master/framework-exclusions.md`](lny-prd-master/framework-exclusions.md) 拷到 PRD 项目根后改，或把类别写入 `框架内置排除`。对照 YAML 见 [`lny-prd-master/reference-init.md`](lny-prd-master/reference-init.md)。`examples/` 仍是回归夹具，不是换栈样例。
 
 ## 六、产物结构
 
@@ -425,7 +443,7 @@ AD 页默认归 BE 是“后端/全栈人员承担管理后台”的团队口径
 
 样例直觉：主流程下单（高分支、多对象写入、可能含支付 EXT）≫ 独立反馈页（低分支、简单写入）。
 
-对话回报 FE_SP / BE_SP / 合计三行，并说明是否仍使用 `1.0（暂定）` 校准系数。⑦ check 第三项（估点与交付门禁）含 FE/BE/迭代信号，**不计点**。
+对话回报固定五行：FE_SP、BE_SP、合计、FE/BE 校准系数（无样本则 `1.0（暂定）`，禁止写「已校准」）、以及「合计是标准工程人时，不是日历工期、人数或发布日」。⑦ check 第三项（估点与交付门禁）含 FE/BE/迭代信号，**不计点**。
 
 ## 九、工具包结构
 
@@ -434,6 +452,7 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 ├── lny-prd-master/
 │   ├── SKILL.md                    # ① 总控与立项
 │   ├── reference-init.md           # main_spec 模板
+│   ├── reference-routing.md        # 总控 §3 完整条件表
 │   ├── reference-artifact-paths.md # 根规格、版本产物与原型落点
 │   ├── reference-page-types.md     # ②⑤⑥ 共用页型职责与金样映射
 │   └── framework-exclusions.md     # lny-default / none

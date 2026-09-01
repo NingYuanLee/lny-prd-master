@@ -8,6 +8,14 @@ LNY-PRD 技能包（`bundle_id: lny-prd`）的显著变更记录于此文件。
 
 ## Unreleased
 
+## 2.16.0 - 2026-09-01
+
+- 立项确认摘要必须列出 `lny-default` 将不展开的类别闭集；看不见清单不得请用户确认。确认仍等于沿用。
+- 总控 §3 改为用户意图短树；完整条件表下沉 `lny-prd-master/reference-routing.md`。
+- ②⑤⑥ 速查只留本步增量（体验 / 线框词 / 关键类）；金样文件名以 `reference-page-types.md` 为正本。`validate_page_type_consistency` 不再要求 ⑥ 每行自带金样文件名。
+- README 新增 5.4 换栈（`profile: none`）最小立项示例；`examples/` 仍是回归夹具。
+- ⑨ 对话回报固定五行：FE_SP / BE_SP / 合计、校准系数（默认 `1.0（暂定）`）、非日历工期声明。
+
 ## 2.15.0 - 2026-09-01
 
 - 修复 6 处已发布技能内的「仓库 README」死链（改指随包可达位置或删除指针）。

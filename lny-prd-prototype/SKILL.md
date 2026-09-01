@@ -44,47 +44,47 @@ description: >-
 
 ## 金样速查（写 HTML 前扫一眼）
 
-金样用来**快速对标视觉下限**（密度、比例、类名），不是业务功能清单。按**页类型**对照金样，不要按 PAGE 序号左右对齐；再按本页规格换文案、跳转和控件，并落地舒适默认与 [`reference-mobile-design.md`](reference-mobile-design.md) **审美必做**。类名细则见 [`reference-kit.md`](reference-kit.md)，本步不依赖仓库示例。
+金样用来**快速对标视觉下限**（密度、比例、类名），不是业务功能清单。写页前 Read [`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md) **取金样文件名**，再 Read 该金样全文。按**页类型**对照，不要按 PAGE 序号左右对齐；再按本页规格换文案、跳转和控件，并落地舒适默认与 [`reference-mobile-design.md`](reference-mobile-design.md) **审美必做**。类名细则见 [`reference-kit.md`](reference-kit.md)，本步不依赖仓库示例。
 
 **移动端**
 
-| 页型标识（无需读取示例） | 金样 | 关键类 / 调用 |
-|--------|------|----------------|
-| PAGE-MP-001 首页 | `gold/mobile-grid.html` | L2【下沉首屏】页级 `md-hero`（与 body 同级）+ sheet；L3 `md-module`；`PT-MOBILE-FUNC` 宫格+双卡+列表合览；**规格无列表时改双卡/宫格+双卡**；`md-card--cover` + `md-card--tile`；TabBar |
-| PAGE-MP-002 商品列表 | `gold/mobile-list.html` | L1 固定 `md-appbar--center` + `md-list-toolbar`（body 外）；L2 只滚列表；`PT-MOBILE-LIST`；TabBar；**单列表默认无 `md-section-head`**，金样「今日上架」仅演示第二列表分区，只有规格 L4 / §2.3 点名用户可见文案时才复用该结构 |
-| PAGE-MP-003 详情 | `gold/mobile-detail.html` | L3 **`md-appbar--overlay`** 滚变实底；`md-profile`；目录四项；右下目录+回顶 |
-| PAGE-MP-012 字段列表 | `gold/mobile-fields.html` | **列表族·无分页·多条按组**；默认 sheet（safe）+ `md-group-list` 白卡浮灰；标准顶栏；= 桌面 lists 第三签；非图文、非横卡列表、非表单 |
-| PAGE-MP-004 表单（套件样例） | `gold/mobile-form.html` | **样例才整页铺齐**。`md-form-page` 浅灰底+白底 `md-module` 分组；返回顶栏；全部触屏表单控件；`md-action-bar` 贴底。业务表单按规格裁字段并同样分组。进度条见步骤向导 |
-| PAGE-MP-005 步骤向导 | `gold/mobile-wizard.html` | `md-form-page`；**数字 `md-stepper` 或分段 `md-advance--lg` 或无极 `md-progress--lg`（三选一）**；**仅 stepper 可点跳步**；advance/progress **只展示**；当前步表单；`md-action-bar` 贴底，最后一步才提交 |
-| PAGE-MP-006 设置 | `gold/mobile-settings.html` | L6 **`md-appbar--cover`**；`md-set-page`；设置项/多选/图片单选等 |
-| PAGE-MP-010 我的/服务 | `gold/mobile-menu.html` | `md-set-page` 浅灰底；顶区 **`md-profile--me`**（圆角矩形头像/昵称均 **底半屏** 改）；**`md-svc-strip`**（2/3/4 等分；`__icon`+**`__badge`** / **`__value`+`__help`**）；功能入口通栏/`md-set-pair`；右可为文字或 **方形配图 `--thumb`**；组间距漏底 |
-| PAGE-MP-007 按钮（套件样例） | `gold/mobile-buttons.html` | 小 `--sm` / 中 / 大 `--lg`；线框、色块、**浅底 `--soft`**、文字、**`--link`**、**通栏 `--block` / `md-btn-row`**、置灰、`md-badge`；贴底仅一钮自动占满。禁止当业务首页。禁止裸 `<button>` |
-| PAGE-MP-011 悬浮胶囊（套件样例） | `gold/mobile-pod.html` | L4 无顶栏 + **`md-pod--tl`**；`PT-FLOAT`；与页内顶栏互斥 |
-| PAGE-MP-008 分类树 | `gold/mobile-tree.html` | `md-tree-page`；`md-split` 左多级树右 **图文介绍**（`md-cat-intro`）；浏览用 `data-tree-edit="off"`；点节点只换右区。桌面维护树见 `desktop-split` |
-| PAGE-MP-013 分类导航 | `gold/mobile-locator.html` | `md-locator-page`；左一级 `md-locator--outline`（子章 `__item--l2`）；右分组 **横卡列表**；点选滚锚点 + 滚正文高亮联动（对标 `desktop-locator` 左栏）。**不是**树 |
-| 触屏父子章节列表 | `gold/mobile-chapter-list.html` | `md-chapter-list` + `__group`/`__head`/`__body`/`__parent`/`__child`；**父章 toggle 可收起子章**；夹具 `PAGE-MP-015`。不是树、不是横卡 |
-| PAGE-MP-014 订单列表 | `gold/mobile-order-list.html` | L1 **返回+搜索**顶栏 + **下划线页签+筛选**（toolbar 在 body 外）；`md-card--order` 推广条/店头/商品行价量/实付款/浅底操作；查看物流 → PAGE-MP-009 |
-| PAGE-MP-009 物流时间轴 | `gold/mobile-timeline.html` | `md-timeline--static` 只读；**仅已发生节点**；倒序；`is-active` 当前高亮、`is-path` 途经、`is-origin` 起点空心；竖轨全程主色；右 **横卡文本**（无左图，正文可 `__photos`） |
+| 页型 | 关键类 / 调用 |
+|------|----------------|
+| PAGE-MP-001 首页 | L2【下沉首屏】页级 `md-hero`（与 body 同级）+ sheet；L3 `md-module`；`PT-MOBILE-FUNC` 宫格+双卡+列表合览；**规格无列表时改双卡/宫格+双卡**；`md-card--cover` + `md-card--tile`；TabBar |
+| PAGE-MP-002 商品列表 | L1 固定 `md-appbar--center` + `md-list-toolbar`（body 外）；L2 只滚列表；`PT-MOBILE-LIST`；TabBar；**单列表默认无 `md-section-head`**，「今日上架」仅演示第二列表分区，只有规格 L4 / §2.3 点名用户可见文案时才复用该结构 |
+| PAGE-MP-003 详情 | L3 **`md-appbar--overlay`** 滚变实底；`md-profile`；目录四项；右下目录+回顶 |
+| PAGE-MP-012 字段列表 | **列表族·无分页·多条按组**；默认 sheet（safe）+ `md-group-list` 白卡浮灰；标准顶栏；= 桌面 lists 第三签；非图文、非横卡列表、非表单 |
+| PAGE-MP-004 表单（套件样例） | **样例才整页铺齐**。`md-form-page` 浅灰底+白底 `md-module` 分组；返回顶栏；全部触屏表单控件；`md-action-bar` 贴底。业务表单按规格裁字段并同样分组。进度条见步骤向导 |
+| PAGE-MP-005 步骤向导 | `md-form-page`；**数字 `md-stepper` 或分段 `md-advance--lg` 或无极 `md-progress--lg`（三选一）**；**仅 stepper 可点跳步**；advance/progress **只展示**；当前步表单；`md-action-bar` 贴底，最后一步才提交 |
+| PAGE-MP-006 设置 | L6 **`md-appbar--cover`**；`md-set-page`；设置项/多选/图片单选等 |
+| PAGE-MP-010 我的/服务 | `md-set-page` 浅灰底；顶区 **`md-profile--me`**（圆角矩形头像/昵称均 **底半屏** 改）；**`md-svc-strip`**（2/3/4 等分；`__icon`+**`__badge`** / **`__value`+`__help`**）；功能入口通栏/`md-set-pair`；右可为文字或 **方形配图 `--thumb`**；组间距漏底 |
+| PAGE-MP-007 按钮（套件样例） | 小 `--sm` / 中 / 大 `--lg`；线框、色块、**浅底 `--soft`**、文字、**`--link`**、**通栏 `--block` / `md-btn-row`**、置灰、`md-badge`；贴底仅一钮自动占满。禁止当业务首页。禁止裸 `<button>` |
+| PAGE-MP-011 悬浮胶囊（套件样例） | L4 无顶栏 + **`md-pod--tl`**；`PT-FLOAT`；与页内顶栏互斥 |
+| PAGE-MP-008 分类树 | `md-tree-page`；`md-split` 左多级树右 **图文介绍**（`md-cat-intro`）；浏览用 `data-tree-edit="off"`；点节点只换右区。桌面维护树见 `md-d1--split` |
+| PAGE-MP-013 分类导航 | `md-locator-page`；左一级 `md-locator--outline`（子章 `__item--l2`）；右分组 **横卡列表**；点选滚锚点 + 滚正文高亮联动。**不是**树 |
+| PAGE-MP-015 章节目录 | `md-chapter-list` + `__group`/`__head`/`__body`/`__parent`/`__child`；**父章 toggle 可收起子章**。不是树、不是横卡 |
+| PAGE-MP-014 订单列表 | L1 **返回+搜索**顶栏 + **下划线页签+筛选**（toolbar 在 body 外）；`md-card--order` 推广条/店头/商品行价量/实付款/浅底操作；查看物流 → PAGE-MP-009 |
+| PAGE-MP-009 物流时间轴 | `md-timeline--static` 只读；**仅已发生节点**；倒序；`is-active` 当前高亮、`is-path` 途经、`is-origin` 起点空心；竖轨全程主色；右 **横卡文本**（无左图，正文可 `__photos`） |
 
 **桌面端**
 
-| 页型标识（无需读取示例） | 金样 | 关键类 / 调用 |
-|--------|------|----------------|
-| PAGE-AD-001 列表 | `gold/desktop-lists.html` | 六型合一，**金样只对标列表区**（无搜索栏、无功能栏）。分页标准：`md-d1 md-d1--list`、操作列按按钮形态与数量定宽、`md-cell-stack`、`md-col-switch`。树表：`md-table--nest`、子行缩进、+/−。卡片：`md-d1__list`+`md-card-grid`+底栏分页；卡右上角开关/右下角按钮。筛区/功能栏按规格另加，不要从金样抄成「不要筛」 |
-| PAGE-AD-002 商品表单 | `gold/desktop-form.html` | `md-breadcrumb`；`md-field--sm`；栅格有行距。**按规格裁字段**；分栏布局勿用本表单；状态导览见 wizard / state-flow |
-| PAGE-AD-009 表单（套件样例） | `gold/desktop-form.html` | **样例才整页铺齐**。`--cols-1/2/3/4` + `md-combo` 七种下拉。**不要**加 `md-d1--list`，不要触屏 `data-wheel`，不要当页面左右分栏 |
-| PAGE-AD-008 详情 | `gold/desktop-detail.html` | 整页浅灰；白底区块；`md-profile`；灯箱分区；**右定宽目录** + 滚正文联动（`md-split--outline-right`）。图文签。不要沉浸式、不要右下悬浮目录 |
-| PAGE-AD-012 字段列表 | `gold/desktop-fields.html`（六型合览见 `desktop-lists.html` 第三签） | **列表族·无分页·多条按组**；`md-d1--list` + `md-group-list`；桌面 `--cols-2` / `--span`。非图文、非表单、非 D1-1 标准表壳 |
-| PAGE-AD-003 向导 | `gold/desktop-wizard.html` + `gold/desktop-state-flow.html` | **数字 `md-stepper` 或分段 `md-advance`（二选一，禁止同页叠加）**；**仅 stepper 可点跳步**；advance **只展示**；当前步包在 `md-d1__form` |
-| PAGE-AD-004 工作台 | `gold/desktop-dashboard.html` | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
-| PAGE-AD-005 商品分类 | `gold/desktop-split.html` | 不分页维护树：`md-d1--split` + `md-tree` + `md-tree-bar`（左根节点、右展开/收起切换）；右区 **分类表单**；增子/重命名/删除；拖到上/中/下。只读树与表内嵌套读 `desktop-lists.html`。**不是**分类钮 |
-| PAGE-AD-013 章节大纲（套件样例） | `gold/desktop-locator.html` | 两种：左可收缩 / 右悬浮可收起；**收起后点线轨**；点选滚锚点；**滚正文时当前点高亮**；与树分离 |
-| PAGE-AD-014 页面分栏（套件样例） | `gold/desktop-layout.html` | `md-layout--full/2col/fix-left/fix-right/3col/pin`；**禁止** `md-d1__form` 冒充分栏。卡片列表见 `desktop-lists.html` |
-| PAGE-AD-006 设置 | `gold/desktop-settings.html` | `md-d1 md-set-page` 浅灰底；**设置项**：开关可点；桌面 **`md-set-grid`** 多列；`md-set-picks` 文字/图标/图片 + 未选空圈；左图标可有可无；无极 / `data-menu` 改值 |
-| PAGE-AD-010 我的/服务 | `gold/desktop-menu.html` | `md-set-page` 浅灰底；**`md-svc-strip--desk`** 订单待办/经营概览；桌面功能入口 **`md-set-grid--cols-2/3/4`**（触屏仍通栏/`md-set-pair`）；右可为文字或方形配图 `--thumb`。不要 `md-d1--list` |
-| PAGE-AD-007 时间轴 | `gold/desktop-timeline.html` | 通栏 `md-timeline--static` 只读物流轴；**仅已发生节点**、倒序；左竖轨右 **横卡文本**。可交互章节导航见 `desktop-locator`，禁止可点切换进度 |
-| PAGE-AD-011 悬浮按钮（套件样例） | `gold/desktop-pod.html` | 仅规格点名时按共享 `PT-FLOAT` 落到业务页；用 `md-pod md-pod--desk` + `position:fixed`，折叠态用 `md-pod--fold` + `__toggle`，禁止触屏方位类和 `md-fab` |
-| 关系图 | `prototypes/{端}/map.html` | `ProtoMap.boot`；预览区 **375×812**；连线端口错开 + 线中 `label`；底部色线图例；拖动写入 localStorage；「导出图片」 |
+| 页型 | 关键类 / 调用 |
+|------|----------------|
+| PAGE-AD-001 列表 | 六型合一，**金样只对标列表区**（无搜索栏、无功能栏）。分页标准：`md-d1 md-d1--list`、操作列按按钮形态与数量定宽、`md-cell-stack`、`md-col-switch`。树表：`md-table--nest`、子行缩进、+/−。卡片：`md-d1__list`+`md-card-grid`+底栏分页；卡右上角开关/右下角按钮。筛区/功能栏按规格另加，不要从金样抄成「不要筛」 |
+| PAGE-AD-002 商品表单 | `md-breadcrumb`；`md-field--sm`；栅格有行距。**按规格裁字段**；分栏布局勿用本表单；状态导览见 stepper / advance |
+| PAGE-AD-009 表单（套件样例） | **样例才整页铺齐**。`--cols-1/2/3/4` + `md-combo` 七种下拉。**不要**加 `md-d1--list`，不要触屏 `data-wheel`，不要当页面左右分栏 |
+| PAGE-AD-008 详情 | 整页浅灰；白底区块；`md-profile`；灯箱分区；**右定宽目录** + 滚正文联动（`md-split--outline-right`）。图文签。不要沉浸式、不要右下悬浮目录 |
+| PAGE-AD-012 字段列表 | **列表族·无分页·多条按组**；`md-d1--list` + `md-group-list`；桌面 `--cols-2` / `--span`。非图文、非表单、非 D1-1 标准表壳 |
+| PAGE-AD-003 向导 | **数字 `md-stepper` 或分段 `md-advance`（二选一，禁止同页叠加）**；**仅 stepper 可点跳步**；advance **只展示**；当前步包在 `md-d1__form` |
+| PAGE-AD-004 工作台 | 指标卡 `md-stat-grid`；趋势 `md-chart-ph`；下面短表 |
+| PAGE-AD-005 商品分类 | 不分页维护树：`md-d1--split` + `md-tree` + `md-tree-bar`（左根节点、右展开/收起切换）；右区 **分类表单**；增子/重命名/删除；拖到上/中/下。只读树与表内嵌套用列表六型金样。**不是**分类钮 |
+| PAGE-AD-013 章节大纲（套件样例） | 两种：左可收缩 / 右悬浮可收起；**收起后点线轨**；点选滚锚点；**滚正文时当前点高亮**；与树分离 |
+| PAGE-AD-014 页面分栏（套件样例） | `md-layout--full/2col/fix-left/fix-right/3col/pin`；**禁止** `md-d1__form` 冒充分栏。卡片列表见列表六型 |
+| PAGE-AD-006 设置 | `md-d1 md-set-page` 浅灰底；**设置项**：开关可点；桌面 **`md-set-grid`** 多列；`md-set-picks` 文字/图标/图片 + 未选空圈；左图标可有可无；无极 / `data-menu` 改值 |
+| PAGE-AD-010 我的/服务 | `md-set-page` 浅灰底；**`md-svc-strip--desk`** 订单待办/经营概览；桌面功能入口 **`md-set-grid--cols-2/3/4`**（触屏仍通栏/`md-set-pair`）；右可为文字或方形配图 `--thumb`。不要 `md-d1--list` |
+| PAGE-AD-007 时间轴 | 通栏 `md-timeline--static` 只读物流轴；**仅已发生节点**、倒序；左竖轨右 **横卡文本**。可交互章节导航见 PAGE-AD-013，禁止可点切换进度 |
+| PAGE-AD-011 悬浮按钮（套件样例） | 仅规格点名时按共享 `PT-FLOAT` 落到业务页；用 `md-pod md-pod--desk` + `position:fixed`，折叠态用 `md-pod--fold` + `__toggle`，禁止触屏方位类和 `md-fab` |
+| 关系图 | `ProtoMap.boot`；预览区 **375×812**；连线端口错开 + 线中 `label`；底部色线图例；拖动写入 localStorage；「导出图片」 |
 
 ## 开笔前
 

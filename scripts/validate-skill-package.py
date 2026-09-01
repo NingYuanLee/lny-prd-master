@@ -701,7 +701,11 @@ def parse_canonical_page_map(errors: list[str]) -> dict[str, set[str]] | None:
 
 
 def validate_page_type_consistency(errors: list[str]) -> None:
-    """The ②⑤⑥ quick-reference tables must not drift from the canonical page map."""
+    """②⑤⑥ quick-reference tables may list PAGE ids; they must exist in the canonical map.
+
+    Gold filenames belong in reference-page-types.md. If a ⑥ row still names a
+    ``*.html`` file, it must be a known canonical gold and belong to that PAGE.
+    """
     mapping = parse_canonical_page_map(errors)
     if mapping is None:
         return
@@ -731,20 +735,26 @@ def validate_page_type_consistency(errors: list[str]) -> None:
         if not stripped.startswith("|"):
             continue
         ids = PAGE_ID_RE.findall(stripped)
+        row_golds = set(GOLD_BASENAME_RE.findall(stripped))
+        unknown = row_golds - all_canonical_golds
+        if unknown:
+            fail(
+                errors,
+                f"lny-prd-prototype/SKILL.md 金样速查: gold file(s) unknown to canonical mapping: {sorted(unknown)}",
+            )
         if not ids:
             continue
         key = f"{ids[0][0]}-{ids[0][1]}"
-        row_golds = set(GOLD_BASENAME_RE.findall(stripped))
         canonical = mapping.get(key)
         if canonical is None:
             fail(errors, f"lny-prd-prototype/SKILL.md 金样速查: PAGE-{key} missing from canonical 页型映射")
             continue
-        missing = canonical - row_golds
-        if missing:
-            fail(errors, f"lny-prd-prototype/SKILL.md 金样速查 PAGE-{key}: canonical gold file(s) missing from row: {sorted(missing)}")
-        unknown = row_golds - all_canonical_golds
-        if unknown:
-            fail(errors, f"lny-prd-prototype/SKILL.md 金样速查 PAGE-{key}: gold file(s) unknown to canonical mapping: {sorted(unknown)}")
+        extra = row_golds - canonical
+        if extra:
+            fail(
+                errors,
+                f"lny-prd-prototype/SKILL.md 金样速查 PAGE-{key}: gold file(s) not in canonical mapping for this PAGE: {sorted(extra)}",
+            )
 
 
 REPO_ROOT_REF_RE = re.compile(
