@@ -185,6 +185,10 @@ def detail_path(root: Path, row: dict[str, str], column: str, fallback: Path) ->
     return fallback
 
 
+def normalized_relative_path(value: str) -> str:
+    return "/".join(part for part in re.split(r"[\\/]+", value.strip().strip("`")) if part)
+
+
 def collect_details(
     root: Path,
     index: dict[str, dict[str, str]],
@@ -293,6 +297,13 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
         issues,
     )
     delivery_scopes = sorted((root / "versions").glob("v*/delivery_scope.md"))
+    version_dirs = sorted(
+        (
+            (tuple(int(value) for value in match.groups()), path)
+            for path in (root / "versions").glob("v*")
+            if path.is_dir() and (match := VERSION_RE.fullmatch(path.name))
+        )
+    )
     versioned_delivery_scopes = [
         (tuple(int(value) for value in match.groups()), path)
         for path in delivery_scopes
@@ -436,6 +447,8 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
     feature_facts: dict[str, tuple[int | None, int]] = {}
     feature_statuses: dict[str, str] = {}
     feature_page_acs: dict[tuple[str, str], set[str]] = {}
+    feature_api_refs: dict[str, set[str]] = {}
+    feature_ext_refs: dict[str, set[str]] = {}
     feature_ac_ids: dict[str, set[str]] = {}
     feature_story_refs: dict[str, set[str]] = {}
     module_feature_refs: dict[str, set[str]] = {module_id: set() for module_id in modules}
@@ -537,6 +550,8 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
             add(issues, "UNDEFINED_API_REF", path, f"{feature_id} references {api_id}")
         for ext_id in sorted(detail_exts - set(exts)):
             add(issues, "UNDEFINED_EXT_REF", path, f"{feature_id} references {ext_id}")
+        feature_api_refs[feature_id] = detail_apis
+        feature_ext_refs[feature_id] = detail_exts
         ac_tables = matching_tables(text, {"AC 编号", "验收描述（可验证）"})
         ac_rows = [ac_row for table in ac_tables for ac_row in table]
         seen_ac_ids: set[str] = set()
@@ -593,22 +608,16 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
             add(issues, "MODULE_WITHOUT_FEATURE", feature_path, f"{module_id} is not referenced by any Feature detail")
 
     page_prd_by_id: dict[str, Path] = {}
-    version_dirs = sorted(
-        (
-            (tuple(int(value) for value in match.groups()), path)
-            for path in (root / "versions").glob("v*")
-            if path.is_dir() and (match := VERSION_RE.fullmatch(path.name))
-        ),
-        reverse=True,
-    )
-    for _, version_dir in version_dirs:
-        page_root = version_dir / "pages_prd"
-        if not page_root.is_dir():
-            continue
+    page_root = root / "pages_prd"
+    if page_root.is_dir():
         for page_path in sorted(page_root.rglob("PAGE-*.md")):
             page_ids = id_set(PAGE_RE, page_path.stem)
-            if len(page_ids) == 1:
-                page_prd_by_id.setdefault(sorted(page_ids)[0], page_path)
+            if len(page_ids) != 1:
+                continue
+            page_id = sorted(page_ids)[0]
+            if page_id in page_prd_by_id:
+                add(issues, "DUPLICATE_PAGE_PRD", page_path, f"{page_id} has more than one root working source")
+            page_prd_by_id[page_id] = page_path
     for page_id, page_path in page_prd_by_id.items():
         page_text = read_utf8(page_path, issues)
         if page_text is None:
@@ -717,6 +726,8 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
         if not scope_tables:
             add(issues, "DELIVERY_SCOPE_FEATURE_TABLE_MISSING", scope_path, "Feature scope table is missing")
         seen_scope_features: set[str] = set()
+        approved_development_features: set[str] = set()
+        selected_scope_features: set[str] = set()
         for table in scope_tables:
             for row in table:
                 feature_ids = id_set(FEATURE_RE, row.get("Feature", ""))
@@ -753,8 +764,186 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
                 row_review = row.get("评审状态", "").strip().lower()
                 if row_review not in REVIEW_STATUSES:
                     add(issues, "INVALID_SCOPE_FEATURE_REVIEW", scope_path, f"{feature_id} review={row_review or 'missing'}")
+                if inclusion == "本期开发" and row_review == "approved":
+                    approved_development_features.add(feature_id)
+                if inclusion in {"本期开发", "本期下线"} and row_review == "approved":
+                    selected_scope_features.add(feature_id)
                 if nonnegative_int(row.get("阻塞决策", "")) is None:
                     add(issues, "INVALID_SCOPE_BLOCKER_COUNT", scope_path, f"{feature_id} 阻塞决策 must be a non-negative integer")
+
+        if scope_conclusion == "通过":
+            version_match = VERSION_RE.fullmatch(expected_version)
+            if version_match is None:
+                continue
+            version_tuple = tuple(int(value) for value in version_match.groups())
+            first_version_tuple = version_dirs[0][0] if version_dirs else version_tuple
+            baseline_features: set[str] = set()
+            for prior_tuple, prior_dir in version_dirs:
+                if prior_tuple >= version_tuple:
+                    break
+                prior_scope = prior_dir / "delivery_scope.md"
+                if not prior_scope.is_file():
+                    continue
+                prior_text = read_utf8(prior_scope, issues)
+                if prior_text is None:
+                    continue
+                for prior_table in matching_tables(prior_text, {"Feature", "纳入方式", "评审状态", "阻塞决策"}):
+                    for prior_row in prior_table:
+                        prior_ids = id_set(FEATURE_RE, prior_row.get("Feature", ""))
+                        if len(prior_ids) != 1 or prior_row.get("评审状态", "").strip().lower() != "approved":
+                            continue
+                        prior_id = sorted(prior_ids)[0]
+                        if prior_row.get("纳入方式", "").strip() == "本期开发":
+                            baseline_features.add(prior_id)
+                        elif prior_row.get("纳入方式", "").strip() == "本期下线":
+                            baseline_features.discard(prior_id)
+            if version_tuple == first_version_tuple:
+                affected_features = {
+                    feature_id
+                    for feature_id, status in feature_statuses.items()
+                    if status == "active"
+                }
+            else:
+                changed_features: set[str] = set()
+                changed_pages: set[str] = set()
+                changed_apis: set[str] = set()
+                changed_exts: set[str] = set()
+                for name, pattern, destination in (
+                    ("feature_changes.md", FEATURE_RE, changed_features),
+                    ("ui_changes.md", PAGE_RE, changed_pages),
+                    ("api_changes.md", API_RE, changed_apis),
+                    ("api_changes.md", EXT_RE, changed_exts),
+                ):
+                    change_path = scope_path.parent / name
+                    if not change_path.is_file():
+                        continue
+                    change_text = read_utf8(change_path, issues)
+                    if change_text is None:
+                        continue
+                    for table in tables(change_text):
+                        for row in table:
+                            destination.update(id_set(pattern, row.get("ID", "")))
+                affected_features = set(changed_features)
+                affected_features |= {
+                    feature_id
+                    for (feature_id, page_id), ac_ids in feature_page_acs.items()
+                    if ac_ids and page_id in changed_pages
+                }
+                affected_features |= {
+                    feature_id
+                    for feature_id, api_ids in feature_api_refs.items()
+                    if api_ids & changed_apis
+                }
+                affected_features |= {
+                    feature_id
+                    for feature_id, ext_ids in feature_ext_refs.items()
+                    if ext_ids & changed_exts
+                }
+
+            unchanged_baseline_features = baseline_features - affected_features
+
+            affected_by_page: dict[str, set[str]] = {}
+            for (feature_id, page_id), ac_ids in feature_page_acs.items():
+                if ac_ids and feature_id in affected_features:
+                    affected_by_page.setdefault(page_id, set()).add(feature_id)
+            for page_id, page_features in sorted(affected_by_page.items()):
+                selected = page_features & selected_scope_features
+                excluded = page_features - selected_scope_features
+                if selected and excluded:
+                    add(
+                        issues,
+                        "PAGE_SCOPE_ATOMICITY",
+                        scope_path,
+                        f"{page_id} mixes selected {sorted(selected)} with excluded affected Features {sorted(excluded)}",
+                    )
+
+            mapping_tables = matching_tables(scope_text, {"PAGE", "终端", "工作源", "页面路由", "快照路径"})
+            if not mapping_tables:
+                add(issues, "PAGE_PUBLICATION_MAPPING_MISSING", scope_path, "approved scope needs a PAGE publication mapping")
+            mappings: dict[str, dict[str, str]] = {}
+            for table in mapping_tables:
+                for row in table:
+                    page_ids = id_set(PAGE_RE, row.get("PAGE", ""))
+                    if len(page_ids) != 1:
+                        add(issues, "INVALID_PAGE_PUBLICATION_ROW", scope_path, f"invalid PAGE mapping row: {row}")
+                        continue
+                    page_id = sorted(page_ids)[0]
+                    if page_id in mappings:
+                        add(issues, "DUPLICATE_PAGE_PUBLICATION", scope_path, f"{page_id} appears more than once")
+                    mappings[page_id] = row
+
+            expected_pages = {
+                page_id
+                for (feature_id, page_id), ac_ids in feature_page_acs.items()
+                if feature_id in approved_development_features and ac_ids
+            }
+            actual_pages = set(mappings)
+            for page_id in sorted(expected_pages - actual_pages):
+                add(issues, "PAGE_PUBLICATION_MISSING", scope_path, f"approved scope does not publish {page_id}")
+            for page_id in sorted(actual_pages - expected_pages):
+                add(issues, "PAGE_PUBLICATION_OUT_OF_SCOPE", scope_path, f"mapping publishes unapproved {page_id}")
+
+            expected_snapshot_paths: set[Path] = set()
+            for page_id, row in mappings.items():
+                match = PAGE_RE.fullmatch(page_id)
+                terminal = match.group(1) if match else ""
+                route = normalized_relative_path(pages.get(page_id, {}).get("页面路由", ""))
+                source = normalized_relative_path(row.get("工作源", ""))
+                mapped_route = normalized_relative_path(row.get("页面路由", ""))
+                snapshot = normalized_relative_path(row.get("快照路径", ""))
+                expected_source = f"pages_prd/{terminal}/{page_id}.md"
+                expected_snapshot = f"versions/{expected_version}/pages_prd/{terminal}/{route}/{page_id}.md"
+                if row.get("终端", "").strip() != terminal:
+                    add(issues, "PAGE_PUBLICATION_TERMINAL_DRIFT", scope_path, f"{page_id} terminal must be {terminal}")
+                if source != expected_source:
+                    add(issues, "PAGE_PUBLICATION_SOURCE_DRIFT", scope_path, f"{page_id} source must be {expected_source}")
+                if not route or mapped_route != route:
+                    add(issues, "PAGE_PUBLICATION_ROUTE_DRIFT", scope_path, f"{page_id} route must be {route or 'defined in ui_manifest'}")
+                if snapshot != expected_snapshot:
+                    add(issues, "PAGE_PUBLICATION_PATH_DRIFT", scope_path, f"{page_id} snapshot must be {expected_snapshot}")
+                snapshot_path = root.joinpath(*expected_snapshot.split("/"))
+                expected_snapshot_paths.add(snapshot_path)
+                if not snapshot_path.is_file():
+                    add(issues, "PAGE_SNAPSHOT_MISSING", snapshot_path, f"approved snapshot for {page_id} is missing")
+                    continue
+                snapshot_text = read_utf8(snapshot_path, issues)
+                if snapshot_text is None:
+                    continue
+                snapshot_reverse: dict[str, set[str]] = {}
+                for reverse_table in matching_tables(snapshot_text, {"Feature编号", "关联AC"}):
+                    for reverse_row in reverse_table:
+                        row_features = id_set(FEATURE_RE, reverse_row.get("Feature编号", ""))
+                        row_acs = id_set(re.compile(r"AC-\d+"), reverse_row.get("关联AC", ""))
+                        for feature_id in row_features:
+                            snapshot_reverse.setdefault(feature_id, set()).update(row_acs)
+                snapshot_features = set(snapshot_reverse)
+                allowed_snapshot_features = approved_development_features | unchanged_baseline_features
+                unapproved = snapshot_features - allowed_snapshot_features
+                if unapproved:
+                    add(issues, "PAGE_SNAPSHOT_SCOPE_LEAK", snapshot_path, f"contains unapproved Features: {', '.join(sorted(unapproved))}")
+                expected_snapshot_features = {
+                    feature_id
+                    for feature_id in allowed_snapshot_features
+                    if feature_page_acs.get((feature_id, page_id))
+                }
+                for feature_id in sorted(expected_snapshot_features):
+                    expected_acs = feature_page_acs.get((feature_id, page_id), set())
+                    actual_acs = snapshot_reverse.get(feature_id, set())
+                    if expected_acs != actual_acs:
+                        add(
+                            issues,
+                            "PAGE_SNAPSHOT_AC_DRIFT",
+                            snapshot_path,
+                            f"{page_id} {feature_id} approved ACs={sorted(expected_acs)}, snapshot ACs={sorted(actual_acs)}",
+                        )
+
+            snapshot_root = scope_path.parent / "pages_prd"
+            if (snapshot_root / "_shell").exists():
+                add(issues, "VERSION_PAGE_SHELL", snapshot_root / "_shell", "version snapshots must not contain shell PRDs")
+            if snapshot_root.is_dir():
+                actual_snapshot_paths = set(snapshot_root.rglob("PAGE-*.md"))
+                for extra in sorted(actual_snapshot_paths - expected_snapshot_paths):
+                    add(issues, "PAGE_SNAPSHOT_OUT_OF_SCOPE", extra, "snapshot is not listed in the approved PAGE mapping")
         for table in matching_tables(scope_text, {"决策编号", "状态", "问题", "影响对象"}):
             for row in table:
                 decision_id = row.get("决策编号", "").strip()
@@ -825,6 +1014,7 @@ NEXT_ROUTE: dict[str, str] = {
     "PAGE_AC_UNKNOWN_FEATURE": "page",
     "PAGE_AC_UNKNOWN_AC": "page",
     "PAGE_AC_DRIFT": "page",
+    "DUPLICATE_PAGE_PRD": "page",
 
     "ACTIVE_PAGE_FEATURE_DRIFT": "ui",
     "INVALID_PAGE_STATUS": "ui",
@@ -852,6 +1042,21 @@ NEXT_ROUTE: dict[str, str] = {
     "INVALID_SCOPE_BLOCKER_COUNT": "review",
     "INVALID_SCOPE_CONFIRMATION_COUNT": "review",
     "INVALID_DECISION_STATUS": "review",
+    "PAGE_PUBLICATION_MAPPING_MISSING": "review",
+    "PAGE_SCOPE_ATOMICITY": "review",
+    "INVALID_PAGE_PUBLICATION_ROW": "review",
+    "DUPLICATE_PAGE_PUBLICATION": "review",
+    "PAGE_PUBLICATION_MISSING": "review",
+    "PAGE_PUBLICATION_OUT_OF_SCOPE": "review",
+    "PAGE_PUBLICATION_TERMINAL_DRIFT": "review",
+    "PAGE_PUBLICATION_SOURCE_DRIFT": "review",
+    "PAGE_PUBLICATION_ROUTE_DRIFT": "review",
+    "PAGE_PUBLICATION_PATH_DRIFT": "review",
+    "PAGE_SNAPSHOT_MISSING": "review",
+    "PAGE_SNAPSHOT_SCOPE_LEAK": "review",
+    "PAGE_SNAPSHOT_AC_DRIFT": "review",
+    "VERSION_PAGE_SHELL": "review",
+    "PAGE_SNAPSHOT_OUT_OF_SCOPE": "review",
 
     "SP_UNKNOWN_FEATURE": "sp",
     "SP_FEATURE_INPUT_DRIFT": "sp",

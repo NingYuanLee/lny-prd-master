@@ -112,7 +112,8 @@
 | `feature_spec.md` + `feature/` | 领域模块边界与功能规格（目标、规则、AC、时序/流程图） |
 | `versions/{v}/delivery_scope.md` | 本期评审确认的开发/下线范围（feature_spec 里的 active Feature 未必本期都开发） |
 | `versions/{v}/*_changes.md` | 迭代版本（非 v1.0.0）相对上一版的变更清单（新增/修改/废弃 + 存量数据影响） |
-| `versions/{v}/pages_prd/` | 单页 PRD（逐页数据来源、跳转、API 交互） |
+| `pages_prd/` | 当前可编辑单页 PRD 工作源（按终端与 PAGE 编号平铺；逐页数据来源、跳转、API 交互） |
+| `versions/{v}/pages_prd/` | ⑧最终“通过”后按真实页面路由发布的批准业务页快照（只读、不含 `_shell`） |
 | `prototypes/` | 静态原型（仅视觉参考，见 §2.6） |
 
 ### 2.3 开发侧阅读顺序（按依赖，非硬性分工）

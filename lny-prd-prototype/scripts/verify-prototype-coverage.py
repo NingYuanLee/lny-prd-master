@@ -211,7 +211,8 @@ def terminal_of(page_id: str) -> str:
 
 
 def find_pages_prd(prd_root: Path, version: str, page_id: str) -> Path | None:
-    base = prd_root / "versions" / version / "pages_prd"
+    """Find the canonical current page PRD; version snapshots are never authoring input."""
+    base = prd_root / "pages_prd"
     if not base.is_dir():
         return None
     matches = list(base.rglob(page_id + ".md"))

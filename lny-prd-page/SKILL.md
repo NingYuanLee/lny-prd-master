@@ -1,13 +1,13 @@
 ---
 name: lny-prd-page
 description: >-
-  生成单页 PRD 至 versions/{v}/pages_prd/；含 ASCII 线框与估点信号。PC/AD 必产 _shell。
+  生成当前单页 PRD 工作源至根 pages_prd/{终端}/；含 ASCII 线框与估点信号。PC/AD 必产根 _shell。
   Use when the user mentions /lny-prd-page, @lny-prd-page, 单页 PRD, pages_prd.
 ---
 
 ## 与总控的关系
 
-本步为 **⑤ `/lny-prd-page`**。产物：`versions/{v}/pages_prd/`（含桌面 `_shell`）。不依赖原型。完成后建议 **⑥ 原型**；⑦ 须用户明确要求检查。全流程见 `lny-prd-master/SKILL.md`。变更记录表仅 ① 首行 / ⑩ 追加；仅改 `pages_prd` 且未改根规格时可省略流水。
+本步为 **⑤ `/lny-prd-page`**。产物：根 `pages_prd/{终端}/PAGE-*.md` 与桌面 `pages_prd/_shell/` 工作源；不写版本快照，不依赖原型。②③④完成后由总控先做⑤前置自检，通过即自动执行本步；本步完成后自动进入 **⑦/Q-S**，通过后自动进入⑥。全流程见 `lny-prd-master/SKILL.md`。变更记录表仅①首行/⑩追加；仅改根 `pages_prd` 且未改根四规范时可省略流水。
 
 # 产出单页 PRD `/lny-prd-page`
 
@@ -79,12 +79,12 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 ## 职责与禁止
 
-- **负责**：按页生成 `pages_prd`；§6 用 `关联AC` 反向登记本页承接的 Feature AC（只写 AC ID，不复制正文）；**项目含 PC 或 AD 时必须**落盘 `pages_prd/_shell/{终端编码}-shell.md`；成功自检后推进本次 `ui_changes.md` 对应行状态。
+- **负责**：按页生成根 `pages_prd/{终端}/` 工作源；§6 用 `关联AC` 反向登记本页承接的 Feature AC（只写 AC ID，不复制正文）；**项目含 PC 或 AD 时必须**落盘 `pages_prd/_shell/{终端编码}-shell.md`；成功自检后推进本次 `ui_changes.md` 对应行状态。
 - **禁止**：抄 `api/` 字段表；编造未立项 PAGE；把约束说明写入产物；单页罗列壳层换页。仅当 PM 已说出点位才写埋点；**禁止自拟埋点方案**。
 
 ## 前置条件
 
-已执行 ①②③④；目标 `PAGE-*` 已在 `ui/` 登记。⑩ 委派时以 `ui_changes.md` 的 `pages_prd目标路径` 为准。
+已执行①②③④；目标 `PAGE-*` 已在 `ui/` 登记。总控在进入⑤前执行轻量输入自检：核对页面、接口、Feature/AC及必要产品事实是否足以生成逐页规格。可自动修复的缺口定向返回②③④并同轮重检；缺产品事实才询问用户。该自检不是正式Q-S。
 
 ## 输入
 
@@ -102,8 +102,8 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 1. 校验版本目录与页面编号；有台账则核对目标路径。
 2. Read `ui/PAGE-*` + 引用 COMP、`api/API-*`、`feature/`、`main_spec` §1.2（仅作背景）。
 3. 按 [`reference.md`](reference.md) 模板落盘；§1 表后写根规格依赖引用块；§3 顶 ASCII 线框默认必填（页型顺序见上方页型速查）；§6 反查 Feature AC 的 `关联页面`，写入本页对应的 AC ID 集合并核对双向一致。交互、动效、收纳从 `ui/PAGE-*` **§2.3** 带入，禁止降级成「有个按钮」。桌面 D1-1 须写列宽语义与紧凑密度。
-4. 路径：`pages/{m}` → `pages_prd/pages/{m}/`；`subpackages/{m}` → `pages_prd/subpackages/{m}/`；`views/{m}` → `pages_prd/views/{m}/`。
+4. 工作源路径固定为 `pages_prd/{终端编码}/{PAGE-ID}.md`，例如 `pages_prd/MP/PAGE-MP-001.md`、`pages_prd/AD/PAGE-AD-001.md`。页面真实路由写入基本信息，不参与工作源文件寻址。
 5. 若终端含 PC/AD：按壳模板写 `_shell/{编码}-shell.md`（尚无则创建）。
 6. 单页 PRD 与桌面壳自检通过后，将本次 `ui_changes.md` 条目由 `待⑤` 改为 `已完成`；有缺口或失败则保留 `待⑤`。
 7. 若改了根四规范：`iteration_notes` 文末追加；否则省略。
-8. 提示下一步：**⑥ `/lny-prd-prototype`**。⑦ 须用户明确要求检查，不自动跑。
+8. 自动进入 **⑦/Q-S**。Q-S通过后自动进入⑥；失败则按责任定向返修②③④或⑤并重跑。仅当用户明确要求“只要规格/不要原型”时，在Q-S通过后停止。

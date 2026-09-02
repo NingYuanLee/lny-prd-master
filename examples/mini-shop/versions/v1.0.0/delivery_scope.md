@@ -29,7 +29,21 @@
 | FEATURE-002 | 本期开发 | approved | 0 |
 | FEATURE-003 | 本期开发 | approved | 0 |
 
-## 3. 未决决策
+## 3. PAGE 发布映射
+
+| PAGE | 终端 | 工作源 | 页面路由 | 快照路径 |
+|------|------|--------|----------|----------|
+| PAGE-MP-001 | MP | pages_prd/MP/PAGE-MP-001.md | pages/index/index | versions/v1.0.0/pages_prd/MP/pages/index/index/PAGE-MP-001.md |
+| PAGE-MP-002 | MP | pages_prd/MP/PAGE-MP-002.md | pages/goods/index | versions/v1.0.0/pages_prd/MP/pages/goods/index/PAGE-MP-002.md |
+| PAGE-MP-003 | MP | pages_prd/MP/PAGE-MP-003.md | pages/goods/detail | versions/v1.0.0/pages_prd/MP/pages/goods/detail/PAGE-MP-003.md |
+| PAGE-MP-004 | MP | pages_prd/MP/PAGE-MP-004.md | pages/kit/form | versions/v1.0.0/pages_prd/MP/pages/kit/form/PAGE-MP-004.md |
+| PAGE-AD-001 | AD | pages_prd/AD/PAGE-AD-001.md | views/goods/index | versions/v1.0.0/pages_prd/AD/views/goods/index/PAGE-AD-001.md |
+| PAGE-AD-002 | AD | pages_prd/AD/PAGE-AD-002.md | views/goods/form | versions/v1.0.0/pages_prd/AD/views/goods/form/PAGE-AD-002.md |
+| PAGE-AD-008 | AD | pages_prd/AD/PAGE-AD-008.md | views/goods/detail | versions/v1.0.0/pages_prd/AD/views/goods/detail/PAGE-AD-008.md |
+
+> 本表仅列 `FEATURE-001`～`FEATURE-003` 已批准 AC 实际覆盖的业务页；版本快照不包含 `_shell` 或夹具专用页面。
+
+## 4. 未决决策
 
 > **产品经理填写说明**
 > - 每个待确认问题单独一行：未形成结论填 `open`，形成明确结论并已同步相关 PRD 后改为 `closed`。

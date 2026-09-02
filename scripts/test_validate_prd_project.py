@@ -29,7 +29,8 @@ class ProjectSemanticValidatorTests(unittest.TestCase):
         (root / "ui").mkdir()
         (root / "api").mkdir()
         (root / "feature").mkdir()
-        (root / "versions" / "v1.0.0" / "pages_prd").mkdir(parents=True)
+        (root / "pages_prd" / "MP").mkdir(parents=True)
+        (root / "versions" / "v1.0.0").mkdir(parents=True)
         (root / "main_spec.md").write_text(
             """# Product
 | 故事编号 | 故事类型 | 角色 / 利益相关方 | 画像 / 背景 | 需求故事 |
@@ -40,9 +41,9 @@ class ProjectSemanticValidatorTests(unittest.TestCase):
         )
         (root / "ui_manifest.md").write_text(
             """# UI
-| 页面编号 | 状态 | 明细路径 |
-|---|---|---|
-| PAGE-MP-001 | active | ui/PAGE-MP-001.md |
+| 页面编号 | 页面路由 | 状态 | 明细路径 |
+|---|---|---|---|
+| PAGE-MP-001 | pages/index/index | active | ui/PAGE-MP-001.md |
 
 | 组件编号 | 适用终端 | 明细路径 |
 |---|---|---|
@@ -125,7 +126,7 @@ FEATURE-001 PAGE-MP-001
 """,
             encoding="utf-8",
         )
-        (root / "versions" / "v1.0.0" / "pages_prd" / "PAGE-MP-001.md").write_text(
+        (root / "pages_prd" / "MP" / "PAGE-MP-001.md").write_text(
             """# PAGE-MP-001
 ## 6. Feature 关联清单
 | Feature编号 | Feature名称 | 关联AC | 本页关联点 | 来源路径 |
@@ -252,6 +253,42 @@ FEATURE-001 PAGE-MP-001
             )
             self.assertEqual(self.validator.validate_project(root), [])
 
+    def add_second_feature_on_same_page(self, root: Path) -> None:
+        feature_spec = root / "feature_spec.md"
+        feature_spec.write_text(
+            feature_spec.read_text(encoding="utf-8").replace(
+                "| FEATURE-001 | Browse | feature/FEATURE-001.md |",
+                "| FEATURE-001 | Browse | feature/FEATURE-001.md |\n| FEATURE-002 | Compare | feature/FEATURE-002.md |",
+            ),
+            encoding="utf-8",
+        )
+        (root / "feature" / "FEATURE-002.md").write_text(
+            """# FEATURE-002
+| 属性 | 内容 |
+|---|---|
+| 功能编号 | FEATURE-002 |
+| 模块编号 | MODULE-001 |
+| 关联 STORY | STORY-001（主） |
+| 状态 | active |
+| 评审状态 | pending |
+| 分支数 | 1 |
+- 关联页面：PAGE-MP-001
+- 关联接口：API-MP-001
+| AC 编号 | 验收描述（可验证） | 关联页面 | 关联接口 | 验证方式 |
+|---|---|---|---|---|
+| AC-1 | Compares | PAGE-MP-001 | API-MP-001 | UI + API 联调 |
+""",
+            encoding="utf-8",
+        )
+        page = root / "pages_prd" / "MP" / "PAGE-MP-001.md"
+        page.write_text(
+            page.read_text(encoding="utf-8").replace(
+                "| FEATURE-001 | Browse | AC-1, AC-2 | Browse | feature/FEATURE-001.md |",
+                "| FEATURE-001 | Browse | AC-1, AC-2 | Browse | feature/FEATURE-001.md |\n| FEATURE-002 | Compare | AC-1 | Compare | feature/FEATURE-002.md |",
+            ),
+            encoding="utf-8",
+        )
+
     def test_rejects_delivery_roles_in_ac_verification(self) -> None:
         for leaked_role in ("MP", "FE", "BE", "AD", "PC", "APP", "H5", "TEST"):
             with self.subTest(leaked_role=leaked_role), tempfile.TemporaryDirectory(
@@ -294,7 +331,7 @@ FEATURE-001 PAGE-MP-001
         with tempfile.TemporaryDirectory(prefix="lny-prd-semantic-page-ac-") as temp:
             root = Path(temp)
             self.make_project(root)
-            page = root / "versions" / "v1.0.0" / "pages_prd" / "PAGE-MP-001.md"
+            page = root / "pages_prd" / "MP" / "PAGE-MP-001.md"
             page.write_text(page.read_text(encoding="utf-8").replace("AC-1, AC-2", "AC-1, AC-9"), encoding="utf-8")
             codes = {issue.code for issue in self.validator.validate_project(root)}
             self.assertIn("PAGE_AC_UNKNOWN_AC", codes)
@@ -306,7 +343,7 @@ FEATURE-001 PAGE-MP-001
             self.make_project(root)
             manifest = (root / "ui_manifest.md").read_text(encoding="utf-8")
             (root / "ui_manifest.md").write_text(
-                manifest.replace("| PAGE-MP-001 | active |", "| PAGE-MP-001 | fixture |"),
+                manifest.replace("| PAGE-MP-001 | pages/index/index | active |", "| PAGE-MP-001 | pages/index/index | fixture |"),
                 encoding="utf-8",
             )
             codes = {issue.code for issue in self.validator.validate_project(root)}
@@ -395,6 +432,138 @@ FEATURE-001 PAGE-MP-001
             )
             codes = {issue.code for issue in self.validator.validate_project(root)}
             self.assertIn("UNDEFINED_MODULE_REF", codes)
+
+    def test_validates_approved_page_publication_mapping(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lny-prd-semantic-publication-") as temp:
+            root = Path(temp)
+            self.make_project(root)
+            scope = root / "versions" / "v1.0.0" / "delivery_scope.md"
+            snapshot = root / "versions" / "v1.0.0" / "pages_prd" / "MP" / "pages" / "index" / "index" / "PAGE-MP-001.md"
+            snapshot.parent.mkdir(parents=True)
+            snapshot.write_text((root / "pages_prd" / "MP" / "PAGE-MP-001.md").read_text(encoding="utf-8"), encoding="utf-8")
+            scope.write_text(
+                """# Scope
+| 属性 | 内容 |
+|---|---|
+| 版本号 | v1.0.0 |
+| 评审结论 | 通过 |
+| 评审状态 | approved |
+| 产品确认项 | 0 |
+
+| Feature | 纳入方式 | 评审状态 | 阻塞决策 |
+|---|---|---|---:|
+| FEATURE-001 | 本期开发 | approved | 0 |
+
+| PAGE | 终端 | 工作源 | 页面路由 | 快照路径 |
+|---|---|---|---|---|
+| PAGE-MP-001 | MP | pages_prd/MP/PAGE-MP-001.md | pages/index/index | versions/v1.0.0/pages_prd/MP/pages/index/index/PAGE-MP-001.md |
+
+| 决策编号 | 状态 | 问题 | 影响对象 |
+|---|---|---|---|
+| 无 | closed | 无 | 无 |
+""",
+                encoding="utf-8",
+            )
+            self.assertEqual(self.validator.validate_project(root), [])
+
+            snapshot.write_text(snapshot.read_text(encoding="utf-8").replace("AC-1, AC-2", "AC-1, AC-9"), encoding="utf-8")
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertIn("PAGE_SNAPSHOT_AC_DRIFT", codes)
+            snapshot.write_text(snapshot.read_text(encoding="utf-8").replace("AC-1, AC-9", "AC-1, AC-2"), encoding="utf-8")
+
+            scope.write_text(scope.read_text(encoding="utf-8").replace("pages/index/index | versions", "pages/index/wrong | versions"), encoding="utf-8")
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertIn("PAGE_PUBLICATION_ROUTE_DRIFT", codes)
+
+            scope.write_text(scope.read_text(encoding="utf-8").replace("pages/index/wrong | versions", "pages/index/index | versions"), encoding="utf-8")
+            (root / "versions" / "v1.0.0" / "pages_prd" / "_shell").mkdir()
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertIn("VERSION_PAGE_SHELL", codes)
+
+    def test_first_version_rejects_split_feature_scope_on_one_page(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lny-prd-semantic-page-atomic-v1-") as temp:
+            root = Path(temp)
+            self.make_project(root)
+            self.add_second_feature_on_same_page(root)
+            snapshot = root / "versions" / "v1.0.0" / "pages_prd" / "MP" / "pages" / "index" / "index" / "PAGE-MP-001.md"
+            snapshot.parent.mkdir(parents=True)
+            snapshot.write_text((root / "pages_prd" / "MP" / "PAGE-MP-001.md").read_text(encoding="utf-8"), encoding="utf-8")
+            (root / "versions" / "v1.0.0" / "delivery_scope.md").write_text(
+                """# Scope
+| 属性 | 内容 |
+|---|---|
+| 版本号 | v1.0.0 |
+| 评审结论 | 通过 |
+| 评审状态 | approved |
+| 产品确认项 | 0 |
+
+| Feature | 纳入方式 | 评审状态 | 阻塞决策 |
+|---|---|---|---:|
+| FEATURE-001 | 本期开发 | approved | 0 |
+
+| PAGE | 终端 | 工作源 | 页面路由 | 快照路径 |
+|---|---|---|---|---|
+| PAGE-MP-001 | MP | pages_prd/MP/PAGE-MP-001.md | pages/index/index | versions/v1.0.0/pages_prd/MP/pages/index/index/PAGE-MP-001.md |
+""",
+                encoding="utf-8",
+            )
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertIn("PAGE_SCOPE_ATOMICITY", codes)
+
+    def test_later_version_allows_unchanged_published_feature_on_changed_page(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lny-prd-semantic-page-atomic-v2-") as temp:
+            root = Path(temp)
+            self.make_project(root)
+            self.add_second_feature_on_same_page(root)
+            (root / "versions" / "v1.0.0" / "delivery_scope.md").write_text(
+                """# Scope
+| 属性 | 内容 |
+|---|---|
+| 版本号 | v1.0.0 |
+| 评审状态 | approved |
+| 产品确认项 | 0 |
+
+| Feature | 纳入方式 | 评审状态 | 阻塞决策 |
+|---|---|---|---:|
+| FEATURE-001 | 本期开发 | approved | 0 |
+| FEATURE-002 | 本期开发 | approved | 0 |
+""",
+                encoding="utf-8",
+            )
+            version = root / "versions" / "v1.1.0"
+            version.mkdir()
+            (version / "feature_changes.md").write_text(
+                """| ID | 操作 | 变更形态 | 存量数据影响 | 摘要 | 委派步 | pages_prd目标路径 | 状态 |
+|---|---|---|---|---|---|---|---|
+| FEATURE-001 | 修改 | 修改 | 无 | Update browse | ④ | — | 已完成 |
+""",
+                encoding="utf-8",
+            )
+            snapshot = version / "pages_prd" / "MP" / "pages" / "index" / "index" / "PAGE-MP-001.md"
+            snapshot.parent.mkdir(parents=True)
+            snapshot.write_text((root / "pages_prd" / "MP" / "PAGE-MP-001.md").read_text(encoding="utf-8"), encoding="utf-8")
+            (version / "delivery_scope.md").write_text(
+                """# Scope
+| 属性 | 内容 |
+|---|---|
+| 版本号 | v1.1.0 |
+| 评审结论 | 通过 |
+| 评审状态 | approved |
+| 产品确认项 | 0 |
+
+| Feature | 纳入方式 | 评审状态 | 阻塞决策 |
+|---|---|---|---:|
+| FEATURE-001 | 本期开发 | approved | 0 |
+
+| PAGE | 终端 | 工作源 | 页面路由 | 快照路径 |
+|---|---|---|---|---|
+| PAGE-MP-001 | MP | pages_prd/MP/PAGE-MP-001.md | pages/index/index | versions/v1.1.0/pages_prd/MP/pages/index/index/PAGE-MP-001.md |
+""",
+                encoding="utf-8",
+            )
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertNotIn("PAGE_SCOPE_ATOMICITY", codes)
+            self.assertNotIn("PAGE_SNAPSHOT_SCOPE_LEAK", codes)
 
     def test_story_feature_mapping_is_owned_by_feature_detail(self) -> None:
         with tempfile.TemporaryDirectory(prefix="lny-prd-semantic-story-") as temp:

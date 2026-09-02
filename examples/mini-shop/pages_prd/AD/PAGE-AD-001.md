@@ -9,7 +9,7 @@
 | 所属终端 | 管理后台 |
 | 所属模块 | 商品 |
 | 小程序路由 | 无 |
-| 前端路由 | views/goods/list |
+| 前端路由 | views/goods/index |
 | 所属版本 | v1.0.0 |
 | 操控形态 | 桌面端 |
 | MasterGo | 无 |

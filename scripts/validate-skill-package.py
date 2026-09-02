@@ -599,7 +599,8 @@ def validate_artifact_path_checker(errors: list[str]) -> None:
         (root / "ui").mkdir()
         (root / "feature").mkdir()
         (root / "prototypes" / "MP").mkdir(parents=True)
-        (version / "pages_prd" / "pages" / "index").mkdir(parents=True)
+        (root / "pages_prd" / "MP").mkdir(parents=True)
+        (version / "pages_prd" / "MP" / "pages" / "index" / "index").mkdir(parents=True)
         for name in ("main_spec.md", "ui_manifest.md", "api_spec.md", "feature_spec.md"):
             (root / name).write_text("# spec\n", encoding="utf-8")
         (root / "api" / "API-MP-001.md").write_text("# API\n", encoding="utf-8")
@@ -628,6 +629,12 @@ def validate_artifact_path_checker(errors: list[str]) -> None:
             "VERSION_PROTOTYPE_TREE",
             "VERSION_LOOSE_DETAIL",
         }
+        (root / "pages_prd" / "pages" / "index").mkdir(parents=True)
+        (root / "pages_prd" / "pages" / "index" / "PAGE-MP-002.md").write_text("wrong\n", encoding="utf-8")
+        (version / "pages_prd" / "_shell").mkdir()
+        invalid = run([sys.executable, str(ARTIFACT_PATH_CHECKER), str(root)])
+        output = invalid.stdout + invalid.stderr
+        expected_codes |= {"ROOT_PAGE_PRD_PATH", "VERSION_PAGE_SHELL"}
         missing = sorted(code for code in expected_codes if code not in output)
         if invalid.returncode != 1 or missing:
             fail(
@@ -663,7 +670,7 @@ def validate_prototypes(errors: list[str]) -> None:
 
     pages = sorted(
         path.stem
-        for path in (example / "versions" / "v1.0.0" / "pages_prd").rglob("PAGE-*.md")
+        for path in (example / "pages_prd").rglob("PAGE-*.md")
     )
     command = [sys.executable, str(coverage), str(example), "--version", "v1.0.0"]
     for page in pages:

@@ -1,6 +1,6 @@
-# 检查表（文档性 / 功能性 / 估点与交付门禁）
+# ⑦横向门禁检查表（Q-S规格 / Q-P原型）
 
-执行三大块时 Read 本节。检查事实源仅为项目规格、共享页型不变量与本文件；不依赖仓库示例。
+Q-S执行第一、第三部分；Q-P执行第二部分；full依次执行。检查事实源仅为项目规格、共享页型不变量与本文件；不依赖仓库示例。
 
 ## 一、文档性检查
 
@@ -22,7 +22,7 @@
 | `ui/` 落点归属 | 凡 UI `PAGE-*.md`/`COMP-*.md` 须唯一位于 PRD 根的直接子目录 `ui/`，不得散落根目录、版本目录或其它目录（只看路径，不读文件） | `/lny-prd-ui` 迁移 | 高 |
 | `api/` 落点归属 | 凡 `API-*.md`/`EXT-*.md` 须唯一位于 PRD 根的直接子目录 `api/`（只看路径） | `/lny-prd-api` 迁移 | 高 |
 | `feature/` 落点归属 | 凡 `FEATURE-*.md` 须唯一位于 PRD 根的直接子目录 `feature/`（只看路径） | `/lny-prd-feature` 迁移 | 高 |
-| `pages_prd` 落点归属 | 单页 PRD 文件须在 `versions/{v}/pages_prd/` 树下（允许嵌套子目录；只看路径） | `/lny-prd-page` 迁移 | 中 |
+| `pages_prd` 落点归属 | 当前单页 PRD 须在根 `pages_prd/{终端}/PAGE-{终端}-*.md`；根 `_shell` 只允许 `pages_prd/_shell/` | `/lny-prd-page` 迁移 | 中 |
 | `prototypes` 落点归属 | 页原型 `PAGE-*.html` 须在 `prototypes/{终端}/` 下且 `{终端}` 与文件名终端编码一致（只看路径；有无文件见 1.6） | `/lny-prd-prototype` 迁移 | 中 |
 
 ### 1.2 编号与索引一致性类
@@ -102,7 +102,7 @@
 | 原型图文件存在性（建议） | 每个页面可有 `prototypes/{终端}/PAGE-{终端}-{序号}.html`；不作为规格阻塞项 | 运行 `/lny-prd-prototype`（⑥） | 低 |
 | 原型总入口 | 若已有任一端 `prototypes/{终端}/`：须有 `prototypes/index.html`（含简介正文 + 各端入口）；**不**再写 `scope.html` | 运行 `/lny-prd-prototype`（⑥）补总入口 | 中 |
 | 错位总入口 | 正式入口只在根 `prototypes/index.html`；项目根 `index.html`、`versions/{v}/index.html` 和 `versions/{v}/prototypes/index.html` 均禁止 | `/lny-prd-prototype` 迁移；删除须用户授权 | 高 |
-| 原型须有单页 PRD 来源 | 每个业务页原型 `prototypes/{终端}/PAGE-*.html`（不含各端 `index.html`/`map.html`、也不含 `prototypes/index.html`）须能对应到 `versions/{v}/pages_prd/**` 下同源单页 PRD；**例外**仅当台账或产物明确标注 **`ui直出`**（须可核对） | 缺来源则先跑 `/lny-prd-page`（⑤）补单页 PRD，再 `/lny-prd-prototype`；或补标 `ui直出` | 中 |
+| 原型须有单页 PRD 来源 | 每个业务页原型 `prototypes/{终端}/PAGE-*.html`（不含各端 `index.html`/`map.html`、也不含 `prototypes/index.html`）须能对应到根 `pages_prd/{终端}/PAGE-*.md` 工作源；**例外**仅当台账或产物明确标注 **`ui直出`**（须可核对） | 缺来源则先跑 `/lny-prd-page`（⑤）补单页 PRD并过Q-S，再 `/lny-prd-prototype` | 中 |
 | 页面 ID | 每个根 `prototypes/{终端}/PAGE-*.html` 的 `<title>` 以文件名 PAGE ID 开头；终端目录与 PAGE ID 终端码一致 | `/lny-prd-prototype` 按当前规格修正根原型 | 高 |
 
 ---
@@ -113,11 +113,11 @@
 
 ### 无原型时的行为（必读）
 
-当工作版本下 **不存在** 任何业务页 `prototypes/{终端}/PAGE-*.html`（不含仅有 `index.html`/`map.html`）时：
+执行Q-P/full且 **不存在** 任何业务页 `prototypes/{终端}/PAGE-*.html`（不含仅有 `index.html`/`map.html`）时：
 
 1. **跳过** 本节逐项对照（不编造失败项）。
 2. 输出 **一条** 须关注项：原型缺失，本轮功能性验收跳过；优先级 **中**（用户目标是演示则可升 **高**）。
-3. 委派：`#序号` → 建议 `/lny-prd-prototype`（⑥）；缺 `pages_prd` 且非 `ui直出` 则建议先 ⑤。**等用户确认**后再交总控执行。不要让 ⑦ 空报完事，也不要在报告结束后静默刷原型。
+3. 委派：`#序号` → 自动进入 `/lny-prd-prototype`（⑥）；缺根 `pages_prd` 且非 `ui直出` 则先⑤与Q-S。只有缺产品事实时才等待用户，禁止让⑦空报完事。
 4. 若仅有壳层汇总而无业务 `PAGE-*.html`，同上视为「无业务页原型」。
 
 ### 功能性验收执行步骤

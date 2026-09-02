@@ -12,6 +12,7 @@ ROOT_SPECS = {"main_spec.md", "ui_manifest.md", "api_spec.md", "feature_spec.md"
 FORBIDDEN_VERSION_DIRS = {"api", "feature", "ui"}
 VERSION_PROTOTYPE_DIR = "prototypes"
 LOOSE_DETAIL_RE = re.compile(r"^(?:API-[A-Z]+-\d{3}|EXT-\d{3}|FEATURE-\d{3}|PAGE-[A-Z]+-\d{3}|COMP-\d{3})\.md$")
+PAGE_FILE_RE = re.compile(r"^PAGE-([A-Z]+)-\d{3}\.md$")
 
 
 def issue(code: str, path: Path, root: Path) -> str:
@@ -22,6 +23,17 @@ def scan(root: Path) -> list[str]:
     errors: list[str] = []
     if (root / "index.html").exists():
         errors.append(issue("ROOT_INDEX", root / "index.html", root))
+
+    page_root = root / "pages_prd"
+    if page_root.is_dir():
+        for page in sorted(page_root.rglob("PAGE-*.md")):
+            match = PAGE_FILE_RE.fullmatch(page.name)
+            if not match or page.parent != page_root / match.group(1):
+                errors.append(issue("ROOT_PAGE_PRD_PATH", page, root))
+        shell_root = page_root / "_shell"
+        for shell in sorted(page_root.rglob("*-shell.md")):
+            if shell.parent != shell_root:
+                errors.append(issue("ROOT_PAGE_SHELL_PATH", shell, root))
 
     versions = root / "versions"
     if not versions.is_dir():
@@ -41,6 +53,9 @@ def scan(root: Path) -> list[str]:
         index = version / "index.html"
         if index.exists():
             errors.append(issue("VERSION_ROOT_INDEX", index, root))
+        version_shell = version / "pages_prd" / "_shell"
+        if version_shell.exists():
+            errors.append(issue("VERSION_PAGE_SHELL", version_shell, root))
         for path in sorted(version.iterdir()):
             if path.is_file() and LOOSE_DETAIL_RE.fullmatch(path.name):
                 errors.append(issue("VERSION_LOOSE_DETAIL", path, root))

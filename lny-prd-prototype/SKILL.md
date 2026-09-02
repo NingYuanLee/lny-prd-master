@@ -9,7 +9,7 @@ description: >-
 
 ## 与总控的关系
 
-本步为 **⑥ `/lny-prd-prototype`**。只写根 `prototypes/`（含总入口 `index.html`、各端目录），禁止生成 `versions/{v}/prototypes/`。禁止改根规格与 `iteration_notes`。缺规格时 **本步内** Read ②③④⑤ 对应 SKILL 并落盘，再写 HTML；**禁止**空中楼阁 HTML，**禁止**停下来只说「交总控」。⑨ 交来时只走「只刷总入口」，禁止升级成全量出原型。⑦ 须用户明确要求检查。全流程见 `lny-prd-master/SKILL.md`。
+本步为 **⑥ `/lny-prd-prototype`**。只写根 `prototypes/`（含总入口 `index.html`、各端目录），只读取根 `pages_prd/` 工作源，禁止读取版本快照作为当前依据，禁止生成 `versions/{v}/prototypes/`。禁止改根规格与 `iteration_notes`。缺规格时 **本步内** Read ②③④⑤ 对应 SKILL 并落盘，再经⑦/Q-S通过后写 HTML；**禁止**空中楼阁 HTML，**禁止**停下来只说“交总控”。⑨交来时只走“只刷总入口”。完成作者自检后自动进入 **⑦/Q-P**；Q-P通过才询问是否进入⑧。全流程见 `lny-prd-master/SKILL.md`。
 
 **页面范围**：用户给出 `页面编号列表` 时，一次生成/重画该列表中的业务 `PAGE-*.html`；未指定时，一次完成 `ui_manifest` 中当前全部 active 缺页（排除项不计入）。数量不设固定上限，但每一页都必须独立读取规格、对照金样并通过验收，禁止以页面较多为由合并或跳过质量门禁。因失败中断时列出未完成 PAGE，下一轮「继续」只补 ⑥（总控 **G-partial**），禁止借机重做 ②③④⑤。
 
@@ -90,7 +90,7 @@ description: >-
 
 Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-artifact-paths.md`。不生成已排除项的 `PAGE-*.html`。Read `main_spec` §1.5「明确不做」（若有）：**禁止**在原型中实现或展示清单中的能力。
 
-**输入优先级**：默认 Read 对应 `pages_prd`；无则须 `ui直出`（用户确认或台账标明）。缺规格或有 `待②`/`待③`/`待④`/`待⑤` → **本步内补链**：依次完整 Read `lny-prd-ui` / `lny-prd-api` / `lny-prd-feature` / `lny-prd-page` 的 `SKILL.md` 并落盘缺口，然后继续写 HTML。禁止自行编造规格；禁止因缺口停止本步、只把球踢回总控。
+**输入优先级**：默认 Read 根 `pages_prd/{终端}/{PAGE-ID}.md` 工作源；无则须 `ui直出`（用户确认或台账标明）。缺规格或有 `待②`/`待③`/`待④`/`待⑤` → **本步内补链**：依次完整 Read `lny-prd-ui` / `lny-prd-api` / `lny-prd-feature` / `lny-prd-page` 的 `SKILL.md` 并落盘缺口，执行Q-S，通过后继续写HTML。禁止自行编造规格；禁止因缺口停止本步、只把球踢回总控。
 
 埋点：仅当规格已写明点位或 AD 字典条目时才在原型展示；**禁止自拟埋点方案**。
 
@@ -158,7 +158,7 @@ node <skillDir>/scripts/verify-prototype-browser.mjs <prdRoot> --page PAGE-… -
 浏览器脚本 exit 1 表示页面或交互失败，必须修复；exit 2 表示宿主缺 Node 依赖，须明确回报“浏览器冒烟未执行”并继续人工预览，不得伪报通过。截图仅在排障时用 `--artifacts <系统临时目录>` 输出，禁止写入业务项目。
 ## 前置条件
 
-已有 `main_spec.md`。若尚无 `ui_manifest` / 目标页 / `pages_prd`（且非 `ui直出`），或台账仍有 `待②`～`待⑤`：先按开笔前补链，再写原型。不要因此拒绝。
+已有 `main_spec.md`。若尚无 `ui_manifest` / 目标页 / 根 `pages_prd`（且非 `ui直出`），或台账仍有 `待②`～`待⑤`：先按开笔前补链并通过Q-S，再写原型。不要因此拒绝。
 
 ## 输入
 
@@ -189,4 +189,4 @@ node <skillDir>/scripts/verify-prototype-browser.mjs <prdRoot> --page PAGE-… -
 5. 按 [`reference-shell.md`](reference-shell.md) 写/刷新各端 `index.html`（及移动端 `map.html`）：**只挂已落盘**的 `PAGE-*.html`。按 [`reference-scope.md`](reference-scope.md) 写 `prototypes/index.html`。禁止写项目根 `index.html`、`versions/{v}/index.html` 或 `versions/{v}/prototypes/`，不写 `scope.html`。
 6. 对全部目标页跑 UTF-8 脚本 + `verify-prototype-coverage.py` + `<checkSkillDir>/scripts/verify-artifact-paths.py` + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）；宿主依赖可用时，再对全部目标 PAGE 跑 `verify-prototype-browser.mjs`。任一步失败则重写，不得交付；浏览器依赖缺失须按上文披露。
 7. **清理临时文件**：删除本轮在 `prdRoot` 留下的辅助脚本/草稿/备份及空的 `scripts/` 等（见写产物纪律）；未建临时文件可跳过。
-8. 输出：目标页路径列表、验收通过说明、**仍未生成的 active PAGE 编号**（无则写「全部已齐」）。若因失败中断而有未完成目标页，明确下一步：「继续」只补 ⑥。
+8. 作者自检全部通过后自动执行 **⑦/Q-P**。Q-P发现纯原型问题则本步同轮修复并重跑；发现规格问题则按总控回到②③④⑤与Q-S，再更新原型。Q-P通过后输出目标页、验收结果与未完成编号，并只在此时询问产品是否进入⑧评审。
