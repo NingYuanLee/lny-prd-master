@@ -23,7 +23,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 ## 职责与禁止
 
-- **负责**：`feature_spec.md` 中的领域模块定义与 Feature 轻量索引，以及 Feature 明细（Story 来源、模块归属、生命周期、产品评审、目标/规则/AC/验证方式/双图）；索引只登记编号、名称与明细路径，其余 Feature 事实只写明细；每个 Feature 至少关联一个有效 Story 和一个 Module；active Feature 至少一条 AC，且 AC ID 唯一、描述与验证方式非空；FEATURE ↔ PAGE/API/EXT 闭环，并与单页 PRD §6 的 `关联AC` 双向一致；成功自检后推进本次 `feature_changes.md` 对应行状态。
+- **负责**：`feature_spec.md` 中少量、稳定、粗粒度的领域模块定义与 Feature 轻量索引，以及 Feature 明细（Story 来源、模块归属、生命周期、产品评审、目标/规则/AC/验证方式/双图）；新增 Module 前执行 reference「领域粒度门禁」，优先复用现有边界，具体规则、流程与验收下沉 Feature；索引只登记编号、名称与明细路径，其余 Feature 事实只写明细；每个 Feature 至少关联一个有效 Story 和一个 Module；active Feature 至少一条 AC，且 AC ID 唯一、描述与验证方式非空；FEATURE ↔ PAGE/API/EXT 闭环，并与单页 PRD §6 的 `关联AC` 双向一致；成功自检后推进本次 `feature_changes.md` 对应行状态。
 - **禁止**：在 `api_spec` 写字段；在 `ui_manifest` 写线框；写入预览壳机制；根规范「变更记录」表新增行；把 `feature_spec.md` 或 `feature/` 复制到 `versions/{v}/`（含 `versions/{v}/feature/` 与版本根散落文件）。②③④⑤⑥ **禁止**展开「明确不做」。仅当 PM 已说出点位才写埋点；**禁止自拟埋点方案**。
 - **AC 证据口径**：`验证方式`只写如何证明结果，例如 `UI + API 联调`、`数据校验`、`异常流测试`；不得写 `FE`、`BE`、`MP`、`AD`、`TEST` 等终端或交付角色。责任归属由 PAGE/API/EXT 引用及外部映射决定，不从验证文案推断。
 
@@ -52,7 +52,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 ## 执行步骤
 
 1. 缺 `feature_spec.md` / `feature/` 时按 [`reference.md`](reference.md) 创建骨架。
-2. 先在 `feature_spec.md` 定义或复用 Module；边界变化时同步检查受影响 Feature。
+2. 先执行领域粒度门禁：能归入现有 Module 就复用；只有形成独立稳定边界时才在 `feature_spec.md` 新建 Module。边界变化时同步检查受影响 Feature。
 3. add：分配编号、写明细、更新 Feature 索引；modify：修改明细，仅在编号、名称或路径变化时同步索引。
 4. 补双图或免画理由。
 5. 确认每个 Feature 的 Story、Module、AC、PAGE/API/EXT 引用有效，索引与文件双向一致。

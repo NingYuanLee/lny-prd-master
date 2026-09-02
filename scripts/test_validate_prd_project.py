@@ -437,6 +437,53 @@ FEATURE-001 PAGE-MP-001
             codes = {issue.code for issue in self.validator.validate_project(root)}
             self.assertIn("UNDEFINED_MODULE_DEPENDENCY", codes)
 
+    def test_module_granularity_objective_guards(self) -> None:
+        module_two = """
+### MODULE-002 订单
+| 属性 | 内容 |
+|---|---|
+| 模块编号 | MODULE-002 |
+| 模块名称 | 订单 |
+| 领域职责 | 管理订单生命周期 |
+| 核心业务对象 | 订单 |
+| 范围内 | 订单处理 |
+| 范围外 | 商品维护 |
+| 对外提供能力 | 订单状态查询 |
+| 依赖模块 | 无 |
+| 跨模块交互 | 读取商品快照 |
+
+"""
+        with tempfile.TemporaryDirectory(prefix="lny-prd-semantic-module-granularity-") as temp:
+            root = Path(temp)
+            self.make_project(root)
+            feature_spec = root / "feature_spec.md"
+            original = feature_spec.read_text(encoding="utf-8")
+
+            feature_spec.write_text(
+                original.replace("| 对外提供能力 | 商品信息查询 |", "| 对外提供能力 | 通过 API-MP-001 查询商品 |"),
+                encoding="utf-8",
+            )
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertIn("MODULE_DETAIL_LEAK", codes)
+
+            feature_spec.write_text(
+                original.replace("| 功能编号 | 功能名称 | 明细路径 |", module_two + "| 功能编号 | 功能名称 | 明细路径 |"),
+                encoding="utf-8",
+            )
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertIn("MODULE_WITHOUT_FEATURE", codes)
+
+            cyclic_module_two = module_two.replace("| 依赖模块 | 无 |", "| 依赖模块 | MODULE-001 |")
+            feature_spec.write_text(
+                original.replace("| 依赖模块 | 无 |", "| 依赖模块 | MODULE-002 |", 1).replace(
+                    "| 功能编号 | 功能名称 | 明细路径 |",
+                    cyclic_module_two + "| 功能编号 | 功能名称 | 明细路径 |",
+                ),
+                encoding="utf-8",
+            )
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertIn("CYCLIC_MODULE_DEPENDENCY", codes)
+
 
     def test_suggested_routes_returns_distinct_sorted_skills(self) -> None:
         issue = self.validator.Issue

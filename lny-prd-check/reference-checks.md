@@ -68,6 +68,8 @@
 | 故事来源与覆盖 | `main_spec` §1.2 每条 `STORY-*` 有类型、角色/利益相关方、背景与需求故事；类型为用户价值/运营/合规/迁移/技术使能。每个 Feature 明细至少关联一个有效 Story，禁止「无/框架承接」；每条 Story 至少被一个 Feature 反向承接。立项后尚未执行④时可暂为待拆解，但完整规格不得断链 | `/lny-prd-master` 补 Story 事实；`/lny-prd-feature` 补权威映射 | 高 |
 | FEATURE↔AC↔PAGE | 每个 **active** FEATURE（见「状态口径」）至少一条 AC；同一 Feature 内 AC ID 唯一，验收描述与验证方式非空。新建/修改 AC 涉及页面行为时挂 `PAGE-*`，有数据依赖时挂 `API-*` / `EXT-*`，否则显式「无」；单页 PRD §6 以 `关联AC` 反向登记本页承接的 AC ID，并与 Feature 完全一致。`验证方式`只写证据类型，禁止混入 `FE/BE/MP/AD/PC/APP/H5/TEST` 等终端或交付角色。旧 AC 缺页面列、旧 PAGE 缺 `关联AC` 列可读，修改时补齐 | `/lny-prd-feature` 补 AC 页面/接口引用，或 `/lny-prd-page` 补 PAGE 反向 AC | 高 |
 | 领域模块边界 | `feature_spec` §3 是 Module 唯一事实源：每个 `MODULE-*` 定义名称、领域职责、核心对象、范围内/外、对外能力、依赖与跨模块交互；编号唯一、依赖有效且不自依赖。每个 Feature 明细只引用一个有效模块编号，不复制模块名称。旧项目缺字段可读，修改时迁移 | `/lny-prd-feature` 补领域定义或对齐引用 | 高 |
+| Module 粒度与内聚 | 新建 Module 已先尝试复用现有边界；Module 不得是页面/菜单/终端、CRUD 动作、流程阶段、单个 Feature 改名、技术组件或纯目录分类。Module 应有稳定核心对象、职责边界和对外契约。只有一个 Feature、Module 数接近 Feature 数、职责高度相似或频繁互相依赖属于**复核信号**，须说明或合并，但不凭数量单独判错 | `/lny-prd-feature` 合并伪领域，具体能力下沉 Feature | 中 |
+| Module 内无功能细节 | Module 定义只保留边界级短句/短列表，不出现 `STORY/FEATURE/AC/PAGE/API/EXT-*` 编号、业务规则、流程分支、验收或具体交互；这些事实必须写 Feature 明细。Module 必须至少被一个 Feature 引用，依赖图不得成环 | `/lny-prd-feature` 下沉细节、删除孤立 Module 或重划循环边界 | 高 |
 | Feature 评审语义 | `状态` 只表达 `draft/active/deprecated` 生命周期；独立 `评审状态` 只用 `pending/reviewing/approved/blocked`，禁止把 active 解释为已批准。字段缺失按 `pending` 读取，不作为普通 PRD 验收缺陷；值非法或两类状态混用才报。是否应该批准不在本步判断 | 字段结构交 `/lny-prd-feature`；产品结论交 `/lny-prd-review` | 高 |
 | Feature↔页面/接口 | 每个 FEATURE 关联页面、关联接口非空或显式「无」；页面 ∈ `ui_manifest`；接口 ∈ `api_spec` **§4（API）** 或 **§2（EXT）**，无孤儿引用 | `/lny-prd-feature` 修复引用或补齐页面/接口 | 高 |
 | 非静态 PAGE↔API | 非静态页须关联至少一 `API-*` 或正文标明静态/无数据；静态页须标明 | `/lny-prd-ui` / `/lny-prd-api` 补关联或标静态 | 中 |

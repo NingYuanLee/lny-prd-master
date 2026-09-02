@@ -8,6 +8,12 @@ LNY-PRD 技能包（`bundle_id: lny-prd`）的显著变更记录于此文件。
 
 ## Unreleased
 
+## 2.18.0 - 2026-09-02
+
+- ④ 新增领域粒度门禁：Module 默认复用现有边界，只有具备稳定核心对象、独立规则/生命周期、清晰范围与跨域契约时才允许新建；页面、终端、CRUD、流程阶段、技术组件和单 Feature 改名不得充当领域。
+- 明确 Module 少量、稳定、粗粒度，Module 只写边界级短句/短列表；业务规则、流程、验收及 STORY/FEATURE/AC/PAGE/API/EXT 细节统一下沉 Feature。
+- ⑦ 新增 Module 功能级编号泄漏、孤立 Module 和循环依赖校验与负例；单 Feature Module、Module/Feature 数量接近等只作为语义复核信号，不设僵硬数量阈值。
+
 ## 2.17.0 - 2026-09-02
 
 - 建立规格、Story、Module、Feature/AC 四驱动模型：Story 扩展到用户价值、运营、合规、迁移和技术使能，所有正式 Feature 必须具备明确 Story 来源、唯一 Module 归属和可验证 AC。

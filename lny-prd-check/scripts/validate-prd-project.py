@@ -16,6 +16,7 @@ FEATURE_RE = re.compile(r"FEATURE-(\d{3})")
 COMP_RE = re.compile(r"COMP-(\d{3})")
 MODULE_RE = re.compile(r"MODULE-(\d{3})")
 STORY_RE = re.compile(r"STORY-(\d{3})")
+AC_RE = re.compile(r"AC-(\d+)")
 VERSION_RE = re.compile(r"^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 TABLE_SEPARATOR_RE = re.compile(r"^:?-{3,}:?$")
 FEATURE_STATUSES = {"draft", "active", "deprecated"}
@@ -31,6 +32,7 @@ MODULE_REQUIRED_FIELDS = {
     "依赖模块",
     "跨模块交互",
 }
+MODULE_BOUNDARY_FIELDS = MODULE_REQUIRED_FIELDS - {"依赖模块"}
 SCOPE_REVIEW_CONCLUSIONS = {"通过", "附条件通过", "退回补充", "不进入本期"}
 SCOPE_INCLUSIONS = {"本期开发", "本期下线", "待确认"}
 AC_DELIVERY_ROLE_RE = re.compile(r"(?<![A-Z0-9_-])(?:FE|BE|MP|AD|PC|APP|H5|TEST)(?![A-Z0-9_-])")
@@ -101,6 +103,27 @@ def first_int(value: str) -> int | None:
 def nonnegative_int(value: str) -> int | None:
     stripped = value.strip()
     return int(stripped) if re.fullmatch(r"\d+", stripped) else None
+
+
+def cyclic_dependency_edges(graph: dict[str, set[str]]) -> set[tuple[str, str]]:
+    state: dict[str, int] = {}
+    cyclic: set[tuple[str, str]] = set()
+
+    def visit(node: str) -> None:
+        state[node] = 1
+        for dependency in sorted(graph.get(node, set())):
+            if dependency not in graph:
+                continue
+            if state.get(dependency, 0) == 0:
+                visit(dependency)
+            elif state.get(dependency) == 1:
+                cyclic.add((node, dependency))
+        state[node] = 2
+
+    for node in sorted(graph):
+        if state.get(node, 0) == 0:
+            visit(node)
+    return cyclic
 
 
 def key_values(text: str) -> dict[str, str]:
@@ -308,6 +331,18 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
                 feature_path,
                 f"{module_id} missing: {', '.join(missing_fields)}",
             )
+        leaked_ids = set()
+        for field in MODULE_BOUNDARY_FIELDS:
+            value = facts.get(field, "")
+            for pattern in (STORY_RE, FEATURE_RE, AC_RE, PAGE_RE, API_RE, EXT_RE):
+                leaked_ids |= id_set(pattern, value)
+        if leaked_ids:
+            add(
+                issues,
+                "MODULE_DETAIL_LEAK",
+                feature_path,
+                f"{module_id} contains Feature-level IDs: {', '.join(sorted(leaked_ids))}",
+            )
         module_dependencies[module_id] = id_set(MODULE_RE, facts.get("依赖模块", ""))
     if not module_tables:
         # Read-only compatibility for pre-migration projects. New and modified
@@ -330,6 +365,14 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
             add(issues, "MODULE_SELF_DEPENDENCY", feature_path, f"{module_id} depends on itself")
         for dependency in sorted(dependencies - set(modules)):
             add(issues, "UNDEFINED_MODULE_DEPENDENCY", feature_path, f"{module_id} depends on {dependency}")
+    for module_id, dependency in cyclic_dependency_edges(module_dependencies):
+        if module_id != dependency:
+            add(
+                issues,
+                "CYCLIC_MODULE_DEPENDENCY",
+                feature_path,
+                f"dependency cycle includes {module_id} -> {dependency}",
+            )
 
     detail_cache: dict[Path, str | None] = {}
     page_details = collect_details(
@@ -395,6 +438,7 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
     feature_page_acs: dict[tuple[str, str], set[str]] = {}
     feature_ac_ids: dict[str, set[str]] = {}
     feature_story_refs: dict[str, set[str]] = {}
+    module_feature_refs: dict[str, set[str]] = {module_id: set() for module_id in modules}
     story_fact_contract_enabled = any("故事类型" in row for row in stories.values())
     story_mapping_contract_enabled = story_fact_contract_enabled or any(
         "关联 STORY" in detail[2] for detail in feature_details.values()
@@ -467,6 +511,8 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
                     path,
                     f"{feature_id} references {sorted(detail_modules)[0]}",
                 )
+            else:
+                module_feature_refs[sorted(detail_modules)[0]].add(feature_id)
         detail_branch = first_int(facts.get("分支数", ""))
         if detail_branch is None or detail_branch < 1:
             add(
@@ -542,6 +588,9 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
         covered_stories = set().union(*feature_story_refs.values()) if feature_story_refs else set()
         for story_id in sorted(set(stories) - covered_stories):
             add(issues, "STORY_WITHOUT_FEATURE", main_path, f"{story_id} is not referenced by any Feature detail")
+    if module_tables:
+        for module_id in sorted(set(modules) - {key for key, refs in module_feature_refs.items() if refs}):
+            add(issues, "MODULE_WITHOUT_FEATURE", feature_path, f"{module_id} is not referenced by any Feature detail")
 
     page_prd_by_id: dict[str, Path] = {}
     version_dirs = sorted(
@@ -746,9 +795,12 @@ NEXT_ROUTE: dict[str, str] = {
     "INVALID_LEGACY_MODULE_ROW": "feature",
     "INVALID_MODULE_DEFINITION": "feature",
     "INCOMPLETE_MODULE_BOUNDARY": "feature",
+    "MODULE_DETAIL_LEAK": "feature",
     "DUPLICATE_MODULE_ID": "feature",
     "MODULE_SELF_DEPENDENCY": "feature",
     "UNDEFINED_MODULE_DEPENDENCY": "feature",
+    "CYCLIC_MODULE_DEPENDENCY": "feature",
+    "MODULE_WITHOUT_FEATURE": "feature",
     "UNDEFINED_MODULE_REF": "feature",
     "FEATURE_STORY_MISSING": "feature",
     "STORY_WITHOUT_FEATURE": "feature",
