@@ -140,6 +140,52 @@ def validate_bundle_contract(errors: list[str]) -> None:
                 fail(errors, f"{path}: skill runtime must not reference repository examples/")
 
 
+def validate_feature_template_boundary(errors: list[str]) -> None:
+    """Generated feature_spec keeps reader semantics, not authoring governance."""
+    reference_path = ROOT / "lny-prd-feature" / "reference.md"
+    reference = reference_path.read_text(encoding="utf-8")
+    match = re.search(r"## feature_spec\.md 模板.*?```markdown\s*(.*?)```", reference, re.S)
+    if match is None:
+        fail(errors, "lny-prd-feature/reference.md: feature_spec.md template block missing")
+        return
+    template = match.group(1)
+    leaked_authoring_rules = (
+        "领域粒度门禁",
+        "新增/拆分 Module 前必做",
+        "默认决策是复用现有 Module",
+        "以下默认不是 Module",
+        "lny-prd-feature/SKILL.md",
+        "/lny-prd-feature",
+    )
+    for phrase in leaked_authoring_rules:
+        if phrase in template:
+            fail(errors, f"feature_spec.md template leaks authoring governance: {phrase!r}")
+
+    required_reader_semantics = (
+        "文档范围与关系",
+        "与根规格的分工",
+        "引用与闭环",
+        "公共语义",
+        "规格状态",
+        "评审状态",
+        "领域模块定义",
+        "Feature 索引表",
+        "跨功能约定",
+    )
+    for phrase in required_reader_semantics:
+        if phrase not in template:
+            fail(errors, f"feature_spec.md template lost reader-facing semantics: {phrase!r}")
+
+    skill = (ROOT / "lny-prd-feature" / "SKILL.md").read_text(encoding="utf-8")
+    if "领域粒度门禁（仅约束生成过程，不写入项目文档）" not in skill:
+        fail(errors, "lny-prd-feature/SKILL.md: domain gate must remain in skill instructions")
+
+    example = (ROOT / "examples" / "mini-shop" / "feature_spec.md").read_text(encoding="utf-8")
+    for phrase in leaked_authoring_rules:
+        if phrase in example:
+            fail(errors, f"mini-shop feature_spec.md leaks authoring governance: {phrase!r}")
+
+
 def validate_skill_metadata(errors: list[str]) -> None:
     names = {path.name for path in SKILL_DIRS}
     if names != EXPECTED_SKILLS:
@@ -829,6 +875,7 @@ def validate_changelog(errors: list[str]) -> None:
 def main() -> int:
     errors: list[str] = []
     validate_bundle_contract(errors)
+    validate_feature_template_boundary(errors)
     validate_skill_metadata(errors)
     validate_markdown_links(errors)
     validate_text_and_yaml(errors)
