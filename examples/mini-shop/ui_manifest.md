@@ -42,29 +42,29 @@
 
 ### 3.2 页面索引表
 
-| 页面编号 | 页面名称 | 所属终端 | 所属模块 | 小程序路由 | 主包/分包 | 操控形态 | 交互体验 | 视觉细节 | MasterGo | 状态 | 明细路径 |
-|----------|----------|----------|----------|------------|-----------|----------|----------|----------|----------|------|----------|
-| PAGE-MP-001 | 首页 | 微信小程序 | 首页 | pages/index/index | 主包 | 移动端 | 简单 | 粗糙 | 无 | active | ui/PAGE-MP-001.md |
-| PAGE-MP-002 | 商品列表 | 微信小程序 | 商品 | pages/goods/index | 主包 | 移动端 | 标准 | 标准 | 无 | active | ui/PAGE-MP-002.md |
-| PAGE-MP-003 | 商品详情 | 微信小程序 | 商品 | pages/goods/detail | 主包 | 移动端 | 标准 | 标准 | 无 | active | ui/PAGE-MP-003.md |
-| PAGE-MP-004 | 表单 | 微信小程序 | 套件 | pages/kit/form | 主包 | 移动端 | 标准 | 标准 | 无 | active | ui/PAGE-MP-004.md |
-| PAGE-MP-005 | 步骤向导 | 微信小程序 | 商品 | pages/goods/wizard | 主包 | 移动端 | 标准 | 标准 | 无 | fixture | ui/PAGE-MP-005.md |
-| PAGE-MP-008 | 分类树 | 微信小程序 | 商品 | pages/goods/category-tree | 主包 | 移动端 | 标准 | 标准 | 无 | fixture | ui/PAGE-MP-008.md |
-| PAGE-MP-013 | 分类导航 | 微信小程序 | 商品 | pages/goods/category-nav | 主包 | 移动端 | 标准 | 标准 | 无 | fixture | ui/PAGE-MP-013.md |
-| PAGE-MP-014 | 订单列表 | 微信小程序 | 订单 | pages/order/list | 主包 | 移动端 | 标准 | 标准 | 无 | fixture | ui/PAGE-MP-014.md |
-| PAGE-MP-015 | 章节目录 | 微信小程序 | 套件 | pages/kit/chapter-list | 主包 | 移动端 | 标准 | 标准 | 无 | fixture | ui/PAGE-MP-015.md |
-| PAGE-MP-009 | 物流时间轴 | 微信小程序 | 订单 | pages/order/logistics | 主包 | 移动端 | 标准 | 标准 | 无 | fixture | ui/PAGE-MP-009.md |
-| PAGE-AD-001 | 商品列表 | 管理后台 | 商品 | 无 | 无 | 桌面端 | 较复杂 | 精致 | 无 | active | ui/PAGE-AD-001.md |
-| PAGE-AD-002 | 商品表单 | 管理后台 | 商品 | 无 | 无 | 桌面端 | 标准 | 精致 | 无 | active | ui/PAGE-AD-002.md |
-| PAGE-AD-007 | 时间轴 | 管理后台 | 套件 | 无 | 无 | 桌面端 | 标准 | 精致 | 无 | fixture | ui/PAGE-AD-007.md |
-| PAGE-AD-008 | 商品详情 | 管理后台 | 商品 | 无 | 无 | 桌面端 | 标准 | 精致 | 无 | active | ui/PAGE-AD-008.md |
-| PAGE-AD-009 | 表单 | 管理后台 | 套件 | 无 | 无 | 桌面端 | 标准 | 精致 | 无 | fixture | ui/PAGE-AD-009.md |
+| 页面编号 | 页面名称 | 所属终端 | 所属模块 | 页面路由 | 主包/分包 | 状态 | 明细路径 |
+|----------|----------|----------|----------|----------|-----------|------|----------|
+| PAGE-MP-001 | 首页 | 微信小程序 | 首页 | pages/index/index | 主包 | active | ui/PAGE-MP-001.md |
+| PAGE-MP-002 | 商品列表 | 微信小程序 | 商品 | pages/goods/index | 主包 | active | ui/PAGE-MP-002.md |
+| PAGE-MP-003 | 商品详情 | 微信小程序 | 商品 | pages/goods/detail | 主包 | active | ui/PAGE-MP-003.md |
+| PAGE-MP-004 | 表单 | 微信小程序 | 套件 | pages/kit/form | 主包 | active | ui/PAGE-MP-004.md |
+| PAGE-MP-005 | 步骤向导 | 微信小程序 | 商品 | pages/goods/wizard | 主包 | fixture | ui/PAGE-MP-005.md |
+| PAGE-MP-008 | 分类树 | 微信小程序 | 商品 | pages/goods/category-tree | 主包 | fixture | ui/PAGE-MP-008.md |
+| PAGE-MP-013 | 分类导航 | 微信小程序 | 商品 | pages/goods/category-nav | 主包 | fixture | ui/PAGE-MP-013.md |
+| PAGE-MP-014 | 订单列表 | 微信小程序 | 订单 | pages/order/list | 主包 | fixture | ui/PAGE-MP-014.md |
+| PAGE-MP-015 | 章节目录 | 微信小程序 | 套件 | pages/kit/chapter-list | 主包 | fixture | ui/PAGE-MP-015.md |
+| PAGE-MP-009 | 物流时间轴 | 微信小程序 | 订单 | pages/order/logistics | 主包 | fixture | ui/PAGE-MP-009.md |
+| PAGE-AD-001 | 商品列表 | 管理后台 | 商品 | views/goods/index | 无 | active | ui/PAGE-AD-001.md |
+| PAGE-AD-002 | 商品表单 | 管理后台 | 商品 | views/goods/form | 无 | active | ui/PAGE-AD-002.md |
+| PAGE-AD-007 | 时间轴 | 管理后台 | 套件 | views/kit/timeline | 无 | fixture | ui/PAGE-AD-007.md |
+| PAGE-AD-008 | 商品详情 | 管理后台 | 商品 | views/goods/detail | 无 | active | ui/PAGE-AD-008.md |
+| PAGE-AD-009 | 表单 | 管理后台 | 套件 | views/kit/form | 无 | fixture | ui/PAGE-AD-009.md |
 
 ## 4. 局部自定义UI组件索引清单（如有）
 
-| 组件编号 | 组件名称 | 适用终端 | 覆盖页面数 | 覆盖页面（`PAGE-*`） | 明细路径 |
-|----------|----------|----------|------------|----------------------|----------|
-| COMP-001 | 商品卡片 | MP | 2 | PAGE-MP-001, PAGE-MP-002 | ui/COMP-001.md |
+| 组件编号 | 组件名称 | 明细路径 |
+|----------|----------|----------|
+| COMP-001 | 商品卡片 | ui/COMP-001.md |
 
 ## 5. 特殊说明（如有）
 

@@ -1,7 +1,7 @@
 ---
 name: lny-prd-feature
 description: >-
-  维护 feature_spec 索引与 feature/FEATURE-*.md 明细，并与 PAGE/API/EXT 保持引用闭环。
+  维护 feature_spec 领域模块定义与 Feature 索引、feature/FEATURE-*.md 明细，并保持 STORY/AC/PAGE/API/EXT 引用闭环。
   Use when the user mentions /lny-prd-feature, @lny-prd-feature, 功能规格, FEATURE-*.
 ---
 
@@ -23,7 +23,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 ## 职责与禁止
 
-- **负责**：Feature 索引与明细（模块来源、生命周期、产品评审、目标/规则/AC/验证方式/双图）；active Feature 至少一条 AC，且 AC ID 唯一、描述与验证方式非空；FEATURE ↔ PAGE/API/EXT 闭环，并与单页 PRD §6 的 `关联AC` 双向一致；`main_spec` §3.3 模块注册表；成功自检后推进本次 `feature_changes.md` 对应行状态。
+- **负责**：`feature_spec.md` 中的领域模块定义与 Feature 轻量索引，以及 Feature 明细（Story 来源、模块归属、生命周期、产品评审、目标/规则/AC/验证方式/双图）；索引只登记编号、名称与明细路径，其余 Feature 事实只写明细；每个 Feature 至少关联一个有效 Story 和一个 Module；active Feature 至少一条 AC，且 AC ID 唯一、描述与验证方式非空；FEATURE ↔ PAGE/API/EXT 闭环，并与单页 PRD §6 的 `关联AC` 双向一致；成功自检后推进本次 `feature_changes.md` 对应行状态。
 - **禁止**：在 `api_spec` 写字段；在 `ui_manifest` 写线框；写入预览壳机制；根规范「变更记录」表新增行；把 `feature_spec.md` 或 `feature/` 复制到 `versions/{v}/`（含 `versions/{v}/feature/` 与版本根散落文件）。②③④⑤⑥ **禁止**展开「明确不做」。仅当 PM 已说出点位才写埋点；**禁止自拟埋点方案**。
 - **AC 证据口径**：`验证方式`只写如何证明结果，例如 `UI + API 联调`、`数据校验`、`异常流测试`；不得写 `FE`、`BE`、`MP`、`AD`、`TEST` 等终端或交付角色。责任归属由 PAGE/API/EXT 引用及外部映射决定，不从验证文案推断。
 
@@ -31,7 +31,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 ## 写产物纪律
 
-开笔前 Read 索引 + `feature/` + 根规格校验引用，并确认 `main_spec` 模块注册表。先清单后落盘。命中双图必画条件则补图（节点用 PAGE/API/EXT 编号）。评审结论只有产品明确给出，或产品确认了 ⑧ `/lny-prd-review` 的最新结论包时才写 `approved`，否则保持 `pending/reviewing`。仅同步评审状态不写 `iteration_notes`；业务正文变更仍按规则追加。
+开笔前 Read `main_spec` Story、`feature_spec` Module/索引、`feature/` 与关联规格。先明确 Story 来源与领域边界，再拆 Feature 和 AC。Module 事实只写 `feature_spec.md`，Feature 明细只引用 `MODULE-*`，禁止复制模块名称；Story↔Feature 事实只写 Feature 明细，禁止回写 `main_spec`。索引只作发现与导航，禁止把模块、优先级、生命周期、评审状态、分支数或 PAGE/API/EXT 关联复制回索引。命中双图必画条件则补图（节点用 PAGE/API/EXT 编号）。评审结论只有产品明确给出，或产品确认了 ⑧ `/lny-prd-review` 的最新结论包时才写 `approved`，否则保持 `pending/reviewing`。仅同步评审状态不写 `iteration_notes`；业务正文变更仍按规则追加。
 
 ## 前置条件
 
@@ -52,7 +52,8 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 ## 执行步骤
 
 1. 缺 `feature_spec.md` / `feature/` 时按 [`reference.md`](reference.md) 创建骨架。
-2. add：分配编号、写明细、更新 §3；modify：同步明细与索引。
-3. 补双图或免画理由。
-4. 确认索引有文件、文件有索引、关联 ID 有定义。
-5. 自检通过后，将本次 `feature_changes.md` 条目由 `待④` 改为 `已完成`；有缺口或失败则保留 `待④`。
+2. 先在 `feature_spec.md` 定义或复用 Module；边界变化时同步检查受影响 Feature。
+3. add：分配编号、写明细、更新 Feature 索引；modify：修改明细，仅在编号、名称或路径变化时同步索引。
+4. 补双图或免画理由。
+5. 确认每个 Feature 的 Story、Module、AC、PAGE/API/EXT 引用有效，索引与文件双向一致。
+6. 自检通过后，将本次 `feature_changes.md` 条目由 `待④` 改为 `已完成`；有缺口或失败则保留 `待④`。

@@ -8,6 +8,14 @@ LNY-PRD 技能包（`bundle_id: lny-prd`）的显著变更记录于此文件。
 
 ## Unreleased
 
+## 2.17.0 - 2026-09-02
+
+- 建立规格、Story、Module、Feature/AC 四驱动模型：Story 扩展到用户价值、运营、合规、迁移和技术使能，所有正式 Feature 必须具备明确 Story 来源、唯一 Module 归属和可验证 AC。
+- Story↔Feature 映射统一以 `feature/FEATURE-*.md` 为事实源；`main_spec.md` Story 表移除 Feature 反向列，检查器由 Feature 明细反查 Story 覆盖。
+- Module 领域边界迁入 `feature_spec.md` 并由④统一维护，不新增技能或 `module/` 目录；`main_spec.md` 删除模块注册表，Feature 明细只引用 `MODULE-*`，不复制模块名称。
+- 收敛三类根索引的事实源边界：Feature 与 API/EXT 仅保留编号、名称和明细路径；UI manifest 只保留全局页面注册、路由、包类型和生命周期，PAGE/COMP 设计事实回归明细。
+- ⑦ 语义扫描器直接从明细验证生命周期、评审、Story、Module、分支及 PAGE/API/EXT 关联，并新增 Story 覆盖、Module 边界与依赖负例；旧宽索引、旧 Story 表和旧 Module 注册表保留只读兼容。
+
 ## 2.16.1 - 2026-09-01
 
 - ⑥ 金样速查门禁校验一行内全部 PAGE 编号（不再只看第一个），并内置「第二编号非法」负例。

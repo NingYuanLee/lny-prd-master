@@ -26,10 +26,10 @@ description: >-
 
 | 步 | Read | 产物 | 禁止 |
 |----|------|------|------|
-| ① | 本文 | `versions/v1.0.0/`、根规范初稿、模块注册表、变更记录首行、第4章终端 | 续跑不得重建 v1.0.0；② 不得改第4章 |
+| ① | 本文 | `versions/v1.0.0/`、根规范初稿、需求故事、变更记录首行、第4章终端 | 续跑不得重建 v1.0.0；② 不得改第4章 |
 | ② | `lny-prd-ui/SKILL.md` | `ui_manifest` + `ui/`（含 PAGE **§2.3 交互体验设计**） | 不改第4章、api 字段、`prototypes/`；只列控件不设计体验 |
 | ③ | `lny-prd-api/SKILL.md` | `api_spec` 索引 + `api/API-*`/`EXT-*`（禁路由/JSON/code） | 不写 UI 线框；不改 `prototypes/` |
-| ④ | `lny-prd-feature/SKILL.md` | `feature_spec` + `feature/`；FEATURE↔PAGE/API 闭环 | 不写接口字段、UI 线框 |
+| ④ | `lny-prd-feature/SKILL.md` | `feature_spec` Module 定义 + Feature 索引、`feature/`；STORY/AC/PAGE/API 闭环 | 不写接口字段、UI 线框 |
 | ⑤ | `lny-prd-page/SKILL.md` | `pages_prd/`；PC/AD 必产 `_shell` | 不替代 ②③④；不依赖原型 |
 | ⑥ | `lny-prd-prototype/SKILL.md` | 唯一当前原型 `prototypes/`（总入口 `index.html` + `{终端}/`）；按目标范围一次完成，逐页对照 `pages_prd` 与 `gold/` 金样（视觉下限） | 用 HTML 代替规格；改根规格或 `iteration_notes`；写 `versions/{v}/prototypes/`；npm / `prototypes-mui-app/`；按 ASCII 线框降质；忽略金样或把金样演示功能整页搬进业务页 |
 | ⑦ | `lny-prd-check/SKILL.md` | 只读报告 | 改任何 PRD 正文 |
@@ -168,7 +168,7 @@ description: >-
 
 ### 一次性输入（推荐）
 
-同一条消息附 YAML。完整字段见 [`reference-init.md`](reference-init.md)。最少：项目名称、定位、用户与故事、产品目标、终端范围；可选 `框架排除 profile`（`lny-default` / `none`）、`框架内置排除`、`成功怎么算`、`明确不做`。
+同一条消息附 YAML。完整字段见 [`reference-init.md`](reference-init.md)。最少：项目名称、定位、需求故事、产品目标、终端范围；Story 的角色可为终端用户、运营、合规、迁移责任方或技术维护者。可选 `框架排除 profile`（`lny-default` / `none`）、`框架内置排除`、`成功怎么算`、`明确不做`。
 
 ### 对话式补充
 
@@ -184,9 +184,9 @@ description: >-
 项目立项信息确认：
 - 项目名称：xxx
 - 产品定位：xxx
-- 目标用户和故事：
-  1. {用户A}：{故事A}
-  2. {用户B}：{故事B}
+- 需求故事：
+  1. [{故事类型}] {角色A}：{故事A}
+  2. [{故事类型}] {角色B}：{故事B}
 - 产品目标：xxx
 - 终端范围：小程序、管理后台
 - 成功怎么算：{1～3 句；未填则「未填写」}

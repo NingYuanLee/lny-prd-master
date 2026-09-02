@@ -32,9 +32,9 @@ class ProjectSemanticValidatorTests(unittest.TestCase):
         (root / "versions" / "v1.0.0" / "pages_prd").mkdir(parents=True)
         (root / "main_spec.md").write_text(
             """# Product
-| 故事编号 | 关联 FEATURE / 框架承接 |
-|---|---|
-| STORY-001 | FEATURE-001 |
+| 故事编号 | 故事类型 | 角色 / 利益相关方 | 画像 / 背景 | 需求故事 |
+|---|---|---|---|---|
+| STORY-001 | 用户价值 | 买家 | 浏览商品的消费者 | 作为买家，我需要浏览商品，以便选择商品 |
 """,
             encoding="utf-8",
         )
@@ -60,9 +60,22 @@ class ProjectSemanticValidatorTests(unittest.TestCase):
         )
         (root / "feature_spec.md").write_text(
             """# Features
-| 功能编号 | 状态 | 分支数 | 关联页面 | 关联接口 | 明细路径 |
-|---|---|---:|---|---|---|
-| FEATURE-001 | active | 2 | PAGE-MP-001 | API-MP-001 | feature/FEATURE-001.md |
+### MODULE-001 商品
+| 属性 | 内容 |
+|---|---|
+| 模块编号 | MODULE-001 |
+| 模块名称 | 商品 |
+| 领域职责 | 管理商品浏览能力 |
+| 核心业务对象 | 商品 |
+| 范围内 | 商品查询 |
+| 范围外 | 订单交易 |
+| 对外提供能力 | 商品信息查询 |
+| 依赖模块 | 无 |
+| 跨模块交互 | 无 |
+
+| 功能编号 | 功能名称 | 明细路径 |
+|---|---|---|
+| FEATURE-001 | Browse | feature/FEATURE-001.md |
 """,
             encoding="utf-8",
         )
@@ -98,7 +111,10 @@ FEATURE-001 PAGE-MP-001
 | 属性 | 内容 |
 |---|---|
 | 功能编号 | FEATURE-001 |
+| 模块编号 | MODULE-001 |
+| 关联 STORY | STORY-001（主） |
 | 状态 | active |
+| 评审状态 | pending |
 | 分支数 | 2 |
 - 关联页面：PAGE-MP-001
 - 关联接口：API-MP-001
@@ -164,11 +180,11 @@ FEATURE-001 PAGE-MP-001
             )
             codes = {issue.code for issue in self.validator.validate_project(root)}
             self.assertTrue(
-                {"FEATURE_API_DRIFT", "UNDEFINED_API_REF", "SP_FEATURE_INPUT_DRIFT"}
+                {"UNDEFINED_API_REF", "SP_FEATURE_INPUT_DRIFT"}
                 <= codes
             )
 
-    def test_detects_detail_identity_and_feature_status_drift(self) -> None:
+    def test_detects_detail_identity_drift(self) -> None:
         with tempfile.TemporaryDirectory(prefix="lny-prd-semantic-identity-") as temp:
             root = Path(temp)
             self.make_project(root)
@@ -182,16 +198,9 @@ FEATURE-001 PAGE-MP-001
                     path.read_text(encoding="utf-8").replace(source, target),
                     encoding="utf-8",
                 )
-            feature_path = root / "feature" / "FEATURE-001.md"
-            feature_path.write_text(
-                feature_path.read_text(encoding="utf-8").replace(
-                    "| 状态 | active |", "| 状态 | deprecated |"
-                ),
-                encoding="utf-8",
-            )
             codes = {issue.code for issue in self.validator.validate_project(root)}
             self.assertTrue(
-                {"PAGE_DETAIL_ID", "COMP_DETAIL_ID", "API_DETAIL_ID", "FEATURE_STATUS_DRIFT"}
+                {"PAGE_DETAIL_ID", "COMP_DETAIL_ID", "API_DETAIL_ID"}
                 <= codes
             )
 
@@ -207,13 +216,6 @@ FEATURE-001 PAGE-MP-001
         with tempfile.TemporaryDirectory(prefix="lny-prd-semantic-status-") as temp:
             root = Path(temp)
             self.make_project(root)
-            index_path = root / "feature_spec.md"
-            index_path.write_text(
-                index_path.read_text(encoding="utf-8").replace(
-                    "| FEATURE-001 | active |", "| FEATURE-001 | enabled |"
-                ),
-                encoding="utf-8",
-            )
             detail_path = root / "feature" / "FEATURE-001.md"
             detail_path.write_text(
                 detail_path.read_text(encoding="utf-8").replace(
@@ -223,6 +225,32 @@ FEATURE-001 PAGE-MP-001
             )
             codes = {issue.code for issue in self.validator.validate_project(root)}
             self.assertIn("INVALID_FEATURE_STATUS", codes)
+
+    def test_legacy_feature_index_mirrors_are_ignored(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lny-prd-semantic-legacy-index-") as temp:
+            root = Path(temp)
+            self.make_project(root)
+            (root / "feature_spec.md").write_text(
+                """# Features
+| 属性 | 内容 |
+|---|---|
+| 模块编号 | MODULE-001 |
+| 模块名称 | 商品 |
+| 领域职责 | 管理商品浏览能力 |
+| 核心业务对象 | 商品 |
+| 范围内 | 商品查询 |
+| 范围外 | 订单交易 |
+| 对外提供能力 | 商品信息查询 |
+| 依赖模块 | 无 |
+| 跨模块交互 | 无 |
+
+| 功能编号 | 功能名称 | 模块编号 | 所属模块 | 优先级 | 状态 | 评审状态 | 分支数 | 关联页面 | 关联接口 | 明细路径 |
+|---|---|---|---|---|---|---|---:|---|---|---|
+| FEATURE-001 | Stale | MODULE-999 | Stale | P2 | deprecated | blocked | 99 | PAGE-MP-999 | API-MP-999 | feature/FEATURE-001.md |
+""",
+                encoding="utf-8",
+            )
+            self.assertEqual(self.validator.validate_project(root), [])
 
     def test_rejects_delivery_roles_in_ac_verification(self) -> None:
         for leaked_role in ("MP", "FE", "BE", "AD", "PC", "APP", "H5", "TEST"):
@@ -289,37 +317,11 @@ FEATURE-001 PAGE-MP-001
             root = Path(temp)
             self.make_project(root)
             main_path = root / "main_spec.md"
-            main_path.write_text(
-                main_path.read_text(encoding="utf-8")
-                + """
-| 模块编号 | 模块名称 | 说明 |
-|---|---|---|
-| MODULE-001 | 商品 | 商品能力 |
-""",
-                encoding="utf-8",
-            )
-            index_path = root / "feature_spec.md"
-            index_path.write_text(
-                index_path.read_text(encoding="utf-8")
-                .replace(
-                    "| 功能编号 | 状态 | 分支数 | 关联页面 | 关联接口 | 明细路径 |",
-                    "| 功能编号 | 模块编号 | 所属模块 | 状态 | 评审状态 | 分支数 | 关联页面 | 关联接口 | 明细路径 |",
-                )
-                .replace(
-                    "|---|---|---:|---|---|---|",
-                    "|---|---|---|---|---|---:|---|---|---|",
-                )
-                .replace(
-                    "| FEATURE-001 | active | 2 | PAGE-MP-001 | API-MP-001 | feature/FEATURE-001.md |",
-                    "| FEATURE-001 | MODULE-001 | 商品 | active | approved | 2 | PAGE-MP-001 | API-MP-001 | feature/FEATURE-001.md |",
-                ),
-                encoding="utf-8",
-            )
             detail_path = root / "feature" / "FEATURE-001.md"
             detail_path.write_text(
                 detail_path.read_text(encoding="utf-8").replace(
                     "| 状态 | active |",
-                    "| 模块编号 | MODULE-001 |\n| 所属模块 | 商品 |\n| 状态 | active |\n| 评审状态 | approved |",
+                    "| 状态 | active |\n| 评审状态 | approved |",
                 ),
                 encoding="utf-8",
             )
@@ -361,7 +363,6 @@ FEATURE-001 PAGE-MP-001
             self.assertIn("SCOPE_FEATURE_LIFECYCLE_MISMATCH", codes)
             scope_path.write_text(approved_scope, encoding="utf-8")
 
-            active_index = index_path.read_text(encoding="utf-8")
             active_detail = detail_path.read_text(encoding="utf-8")
             active_manifest = (root / "ui_manifest.md").read_text(encoding="utf-8")
             active_main = main_path.read_text(encoding="utf-8")
@@ -373,7 +374,6 @@ FEATURE-001 PAGE-MP-001
                 .replace("| 本期开发 |", "| 本期下线 |"),
                 encoding="utf-8",
             )
-            index_path.write_text(active_index.replace("| active | approved |", "| deprecated | approved |"), encoding="utf-8")
             detail_path.write_text(active_detail.replace("| 状态 | active |", "| 状态 | deprecated |"), encoding="utf-8")
             (root / "ui_manifest.md").write_text(
                 active_manifest.replace("| PAGE-MP-001 | active |", "| PAGE-MP-001 | deprecated |"),
@@ -383,7 +383,6 @@ FEATURE-001 PAGE-MP-001
             codes = {issue.code for issue in self.validator.validate_project(root)}
             self.assertNotIn("SCOPE_FEATURE_LIFECYCLE_MISMATCH", codes)
 
-            index_path.write_text(active_index, encoding="utf-8")
             detail_path.write_text(active_detail, encoding="utf-8")
             (root / "ui_manifest.md").write_text(active_manifest, encoding="utf-8")
             main_path.write_text(active_main, encoding="utf-8")
@@ -395,7 +394,48 @@ FEATURE-001 PAGE-MP-001
                 encoding="utf-8",
             )
             codes = {issue.code for issue in self.validator.validate_project(root)}
-            self.assertIn("FEATURE_MODULE_ID_DRIFT", codes)
+            self.assertIn("UNDEFINED_MODULE_REF", codes)
+
+    def test_story_feature_mapping_is_owned_by_feature_detail(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lny-prd-semantic-story-") as temp:
+            root = Path(temp)
+            self.make_project(root)
+            detail_path = root / "feature" / "FEATURE-001.md"
+            original = detail_path.read_text(encoding="utf-8")
+            detail_path.write_text(
+                original.replace("| 关联 STORY | STORY-001（主） |", "| 关联 STORY | 无 |"),
+                encoding="utf-8",
+            )
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertIn("FEATURE_STORY_MISSING", codes)
+            self.assertIn("STORY_WITHOUT_FEATURE", codes)
+
+            detail_path.write_text(
+                original.replace("STORY-001（主）", "STORY-999（主）"),
+                encoding="utf-8",
+            )
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertIn("UNDEFINED_STORY_REF", codes)
+
+    def test_module_boundary_is_owned_by_feature_spec(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lny-prd-semantic-module-") as temp:
+            root = Path(temp)
+            self.make_project(root)
+            feature_spec = root / "feature_spec.md"
+            original = feature_spec.read_text(encoding="utf-8")
+            feature_spec.write_text(
+                original.replace("| 领域职责 | 管理商品浏览能力 |\n", ""),
+                encoding="utf-8",
+            )
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertIn("INCOMPLETE_MODULE_BOUNDARY", codes)
+
+            feature_spec.write_text(
+                original.replace("| 依赖模块 | 无 |", "| 依赖模块 | MODULE-999 |"),
+                encoding="utf-8",
+            )
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertIn("UNDEFINED_MODULE_DEPENDENCY", codes)
 
 
     def test_suggested_routes_returns_distinct_sorted_skills(self) -> None:
@@ -403,7 +443,7 @@ FEATURE-001 PAGE-MP-001
         issues = [
             issue("FEATURE_AC_MISSING", Path("a.md"), "x"),
             issue("UNDEFINED_PAGE_REF", Path("b.md"), "y"),
-            issue("FEATURE_PAGE_DRIFT", Path("c.md"), "z"),
+            issue("INVALID_FEATURE_STATUS", Path("c.md"), "z"),
             issue("UNKNOWN_CODE", Path("d.md"), "w"),
         ]
         self.assertEqual(self.validator.suggested_routes(issues), ["feature", "page"])

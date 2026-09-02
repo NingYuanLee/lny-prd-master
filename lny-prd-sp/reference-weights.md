@@ -144,7 +144,7 @@
 
 ## 门禁
 
-1. **产品链**（STORY→FEATURE→AC→PAGE→API 关键环，同 check §3.1）：不可估 → 仍写 `sp_report.md`，结论「不可估」，**不输出数值合计**。
+1. **产品链**（规格承载；STORY→FEATURE→AC→PAGE/API/EXT，FEATURE→MODULE，同 check §3.1）：不可估 → 仍写 `sp_report.md`，结论「不可估」，**不输出数值合计**。
 2. **FE 信号不全**：`FE_SP` 记 `—`，表内列缺口。
 3. **BE 信号不全**：`BE_SP` 记 `—`，表内列缺口。
 4. 任一侧为 `—` 时，版本「合计」记 `—`（或仅输出有分的一侧并注明）。

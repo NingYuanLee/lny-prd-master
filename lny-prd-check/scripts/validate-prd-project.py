@@ -15,10 +15,22 @@ EXT_RE = re.compile(r"EXT-(\d{3})")
 FEATURE_RE = re.compile(r"FEATURE-(\d{3})")
 COMP_RE = re.compile(r"COMP-(\d{3})")
 MODULE_RE = re.compile(r"MODULE-(\d{3})")
+STORY_RE = re.compile(r"STORY-(\d{3})")
 VERSION_RE = re.compile(r"^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 TABLE_SEPARATOR_RE = re.compile(r"^:?-{3,}:?$")
 FEATURE_STATUSES = {"draft", "active", "deprecated"}
 REVIEW_STATUSES = {"pending", "reviewing", "approved", "blocked"}
+STORY_TYPES = {"用户价值", "运营", "合规", "迁移", "技术使能"}
+MODULE_REQUIRED_FIELDS = {
+    "模块名称",
+    "领域职责",
+    "核心业务对象",
+    "范围内",
+    "范围外",
+    "对外提供能力",
+    "依赖模块",
+    "跨模块交互",
+}
 SCOPE_REVIEW_CONCLUSIONS = {"通过", "附条件通过", "退回补充", "不进入本期"}
 SCOPE_INCLUSIONS = {"本期开发", "本期下线", "待确认"}
 AC_DELIVERY_ROLE_RE = re.compile(r"(?<![A-Z0-9_-])(?:FE|BE|MP|AD|PC|APP|H5|TEST)(?![A-Z0-9_-])")
@@ -191,6 +203,15 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
     if not all((main, ui, api, feature)):
         return issues
 
+    stories = collect_index(
+        main,
+        {"故事编号"},
+        "故事编号",
+        STORY_RE,
+        main_path,
+        issues,
+    )
+
     pages = collect_index(
         ui,
         {"页面编号", "明细路径"},
@@ -242,7 +263,7 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
     )
     features = collect_index(
         feature,
-        {"功能编号", "状态", "分支数", "关联页面", "关联接口", "明细路径"},
+        {"功能编号", "明细路径"},
         "功能编号",
         FEATURE_RE,
         feature_path,
@@ -258,23 +279,57 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
         versioned_delivery_scopes,
         default=((), None),
     )[1]
-    module_contract_enabled = bool(delivery_scopes) or bool(
-        matching_tables(main, {"模块编号", "模块名称"})
-    )
+    module_tables = []
+    for table in matching_tables(feature, {"属性", "内容"}):
+        facts = {row["属性"]: row["内容"] for row in table}
+        if "模块编号" in facts:
+            module_tables.append(facts)
+    legacy_module_tables = matching_tables(main, {"模块编号", "模块名称"})
+    module_contract_enabled = bool(delivery_scopes) or bool(module_tables) or bool(legacy_module_tables)
     modules: dict[str, str] = {}
-    for table in matching_tables(main, {"模块编号", "模块名称"}):
-        for row in table:
-            module_ids = id_set(MODULE_RE, row.get("模块编号", ""))
-            module_name = row.get("模块名称", "").strip()
-            if len(module_ids) != 1 or not module_name:
-                add(issues, "INVALID_MODULE_ROW", main_path, f"invalid module row: {row}")
-                continue
-            module_id = sorted(module_ids)[0]
-            if module_id in modules:
-                add(issues, "DUPLICATE_MODULE_ID", main_path, f"{module_id} appears more than once")
-            modules[module_id] = module_name
+    module_dependencies: dict[str, set[str]] = {}
+    for facts in module_tables:
+        module_ids = id_set(MODULE_RE, facts.get("模块编号", ""))
+        module_name = facts.get("模块名称", "").strip()
+        if len(module_ids) != 1 or not module_name:
+            add(issues, "INVALID_MODULE_DEFINITION", feature_path, f"invalid module definition: {facts}")
+            continue
+        module_id = sorted(module_ids)[0]
+        if module_id in modules:
+            add(issues, "DUPLICATE_MODULE_ID", feature_path, f"{module_id} appears more than once")
+        modules[module_id] = module_name
+        missing_fields = sorted(
+            field for field in MODULE_REQUIRED_FIELDS if not facts.get(field, "").strip()
+        )
+        if missing_fields:
+            add(
+                issues,
+                "INCOMPLETE_MODULE_BOUNDARY",
+                feature_path,
+                f"{module_id} missing: {', '.join(missing_fields)}",
+            )
+        module_dependencies[module_id] = id_set(MODULE_RE, facts.get("依赖模块", ""))
+    if not module_tables:
+        # Read-only compatibility for pre-migration projects. New and modified
+        # projects define full Module boundaries in feature_spec.md.
+        for table in legacy_module_tables:
+            for row in table:
+                module_ids = id_set(MODULE_RE, row.get("模块编号", ""))
+                module_name = row.get("模块名称", "").strip()
+                if len(module_ids) != 1 or not module_name:
+                    add(issues, "INVALID_LEGACY_MODULE_ROW", main_path, f"invalid module row: {row}")
+                    continue
+                module_id = sorted(module_ids)[0]
+                if module_id in modules:
+                    add(issues, "DUPLICATE_MODULE_ID", main_path, f"{module_id} appears more than once")
+                modules[module_id] = module_name
     if module_contract_enabled and not modules:
-        add(issues, "MODULE_REGISTRY_MISSING", main_path, "delivery contract requires a MODULE registry")
+        add(issues, "MODULE_DEFINITION_MISSING", feature_path, "delivery contract requires MODULE definitions")
+    for module_id, dependencies in module_dependencies.items():
+        if module_id in dependencies:
+            add(issues, "MODULE_SELF_DEPENDENCY", feature_path, f"{module_id} depends on itself")
+        for dependency in sorted(dependencies - set(modules)):
+            add(issues, "UNDEFINED_MODULE_DEPENDENCY", feature_path, f"{module_id} depends on {dependency}")
 
     detail_cache: dict[Path, str | None] = {}
     page_details = collect_details(
@@ -336,84 +391,89 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
     active_pages: set[str] = set()
     active_feature_count = 0
     feature_facts: dict[str, tuple[int | None, int]] = {}
+    feature_statuses: dict[str, str] = {}
     feature_page_acs: dict[tuple[str, str], set[str]] = {}
     feature_ac_ids: dict[str, set[str]] = {}
-    for feature_id, row in features.items():
+    feature_story_refs: dict[str, set[str]] = {}
+    story_fact_contract_enabled = any("故事类型" in row for row in stories.values())
+    story_mapping_contract_enabled = story_fact_contract_enabled or any(
+        "关联 STORY" in detail[2] for detail in feature_details.values()
+    )
+    if story_fact_contract_enabled:
+        for story_id, row in stories.items():
+            story_type = row.get("故事类型", "").strip()
+            if story_type not in STORY_TYPES:
+                add(
+                    issues,
+                    "INVALID_STORY_TYPE",
+                    main_path,
+                    f"{story_id} type={story_type or 'missing'}; allowed: {', '.join(sorted(STORY_TYPES))}",
+                )
+            missing = [
+                field
+                for field in ("角色 / 利益相关方", "画像 / 背景", "需求故事")
+                if not row.get(field, "").strip()
+            ]
+            if missing:
+                add(issues, "STORY_FACT_MISSING", main_path, f"{story_id} missing: {', '.join(missing)}")
+    for feature_id in features:
         detail = feature_details.get(feature_id)
         if detail is None:
             continue
         path, text, facts = detail
-        index_status = row.get("状态", "").strip().lower()
         detail_status = facts.get("状态", "").strip().lower()
-        if index_status not in FEATURE_STATUSES:
+        feature_statuses[feature_id] = detail_status
+        if detail_status not in FEATURE_STATUSES:
             add(
                 issues,
                 "INVALID_FEATURE_STATUS",
-                feature_path,
-                f"{feature_id} status={index_status!r}; allowed: {', '.join(sorted(FEATURE_STATUSES))}",
-            )
-        if detail_status != index_status:
-            add(
-                issues,
-                "FEATURE_STATUS_DRIFT",
                 path,
-                f"{feature_id} index={index_status or 'missing'}, detail={detail_status or 'missing'}",
+                f"{feature_id} status={detail_status!r}; allowed: {', '.join(sorted(FEATURE_STATUSES))}",
             )
-        index_review = row.get("评审状态", "").strip().lower()
         detail_review = facts.get("评审状态", "").strip().lower()
-        index_modules = id_set(MODULE_RE, row.get("模块编号", ""))
         detail_modules = id_set(MODULE_RE, facts.get("模块编号", ""))
-        feature_contract_enabled = module_contract_enabled or bool(
-            index_review or detail_review or index_modules or detail_modules
-        )
+        detail_stories = id_set(STORY_RE, facts.get("关联 STORY", ""))
+        feature_story_refs[feature_id] = detail_stories
+        if story_mapping_contract_enabled:
+            if not detail_stories:
+                add(
+                    issues,
+                    "FEATURE_STORY_MISSING",
+                    path,
+                    f"{feature_id} must reference at least one STORY; '无/框架承接' is not allowed",
+                )
+            for story_id in sorted(detail_stories - set(stories)):
+                add(issues, "UNDEFINED_STORY_REF", path, f"{feature_id} references {story_id}")
+        feature_contract_enabled = module_contract_enabled or bool(detail_review or detail_modules)
         if feature_contract_enabled:
-            if index_review not in REVIEW_STATUSES:
+            if detail_review not in REVIEW_STATUSES:
                 add(
                     issues,
                     "INVALID_FEATURE_REVIEW_STATUS",
-                    feature_path,
-                    f"{feature_id} review={index_review or 'missing'}; allowed: {', '.join(sorted(REVIEW_STATUSES))}",
+                    path,
+                    f"{feature_id} review={detail_review or 'missing'}; allowed: {', '.join(sorted(REVIEW_STATUSES))}",
                 )
-            if detail_review != index_review:
+            if len(detail_modules) != 1:
                 add(
                     issues,
-                    "FEATURE_REVIEW_STATUS_DRIFT",
+                    "INVALID_FEATURE_MODULE",
                     path,
-                    f"{feature_id} index={index_review or 'missing'}, detail={detail_review or 'missing'}",
+                    f"{feature_id} detail must contain exactly one MODULE ID",
                 )
-            if len(index_modules) != 1 or detail_modules != index_modules:
-                add(
-                    issues,
-                    "FEATURE_MODULE_ID_DRIFT",
-                    path,
-                    f"{feature_id} index/detail must contain the same single MODULE ID",
-                )
-            elif sorted(index_modules)[0] not in modules:
+            elif sorted(detail_modules)[0] not in modules:
                 add(
                     issues,
                     "UNDEFINED_MODULE_REF",
                     path,
-                    f"{feature_id} references {sorted(index_modules)[0]}",
+                    f"{feature_id} references {sorted(detail_modules)[0]}",
                 )
-            else:
-                module_id = sorted(index_modules)[0]
-                index_module_name = row.get("所属模块", "").strip()
-                detail_module_name = facts.get("所属模块", "").strip()
-                if index_module_name != modules[module_id] or detail_module_name != index_module_name:
-                    add(
-                        issues,
-                        "FEATURE_MODULE_NAME_DRIFT",
-                        path,
-                        f"{feature_id} module name differs from {module_id}",
-                    )
-        index_branch = first_int(row.get("分支数", ""))
         detail_branch = first_int(facts.get("分支数", ""))
-        if index_branch != detail_branch:
+        if detail_branch is None or detail_branch < 1:
             add(
                 issues,
-                "FEATURE_BRANCH_DRIFT",
+                "INVALID_FEATURE_BRANCH_COUNT",
                 path,
-                f"{feature_id} index={index_branch}, detail={detail_branch}",
+                f"{feature_id} branch count must be a positive integer",
             )
         detail_pages = set()
         detail_apis = set()
@@ -425,15 +485,6 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
                 detail_apis |= id_set(API_RE, line)
             elif line.lstrip().startswith("- 关联第三方接口："):
                 detail_exts |= id_set(EXT_RE, line)
-        index_pages = id_set(PAGE_RE, row.get("关联页面", ""))
-        index_apis = id_set(API_RE, row.get("关联接口", ""))
-        index_exts = id_set(EXT_RE, row.get("关联接口", ""))
-        if index_pages != detail_pages:
-            add(issues, "FEATURE_PAGE_DRIFT", path, f"{feature_id} index/detail page sets differ")
-        if index_apis != detail_apis:
-            add(issues, "FEATURE_API_DRIFT", path, f"{feature_id} index/detail API sets differ")
-        if index_exts != detail_exts:
-            add(issues, "FEATURE_EXT_DRIFT", path, f"{feature_id} index/detail EXT sets differ")
         for page_id in sorted(detail_pages - set(pages)):
             add(issues, "UNDEFINED_PAGE_REF", path, f"{feature_id} references {page_id}")
         for api_id in sorted(detail_apis - set(apis)):
@@ -478,14 +529,19 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
                 add(issues, "AC_EXT_OUTSIDE_FEATURE", path, f"{feature_id} {ac_id} references {ext_id}")
             for page_id in ac_pages:
                 feature_page_acs.setdefault((feature_id, page_id), set()).add(ac_id)
-        if index_status == "active" and not seen_ac_ids:
+        if detail_status == "active" and not seen_ac_ids:
             add(issues, "FEATURE_AC_MISSING", path, f"{feature_id} needs at least one valid AC")
         feature_ac_ids[feature_id] = seen_ac_ids
         ac_count = len(seen_ac_ids)
         feature_facts[feature_id] = (detail_branch, ac_count)
-        if index_status == "active":
+        if detail_status == "active":
             active_feature_count += 1
             active_pages |= detail_pages
+
+    if story_mapping_contract_enabled:
+        covered_stories = set().union(*feature_story_refs.values()) if feature_story_refs else set()
+        for story_id in sorted(set(stories) - covered_stories):
+            add(issues, "STORY_WITHOUT_FEATURE", main_path, f"{story_id} is not referenced by any Feature detail")
 
     page_prd_by_id: dict[str, Path] = {}
     version_dirs = sorted(
@@ -637,7 +693,7 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
                     and inclusion in {"本期开发", "本期下线"}
                 ):
                     expected_status = "active" if inclusion == "本期开发" else "deprecated"
-                    actual_status = features[feature_id].get("状态", "").strip().lower()
+                    actual_status = feature_statuses.get(feature_id, "")
                     if actual_status != expected_status:
                         add(
                             issues,
@@ -676,25 +732,28 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
 
 
 # 机器可读「下一步建议」路由：issue 码 → 建议委派的技能短名（① master 消费）。
-# 短名与 /lny-prd-* 对应；master 指 ① 总控（根规格/可读性/模块注册）。
+# 短名与 /lny-prd-* 对应；master 指 ① 总控（根规格、Story 与可读性）。
 NEXT_ROUTE: dict[str, str] = {
     "MISSING_ROOT_SPEC": "master",
     "INVALID_UTF8": "master",
     "READ_ERROR": "master",
     "DUPLICATE_INDEX_ID": "master",
-    "MODULE_REGISTRY_MISSING": "master",
-    "INVALID_MODULE_ROW": "master",
-    "DUPLICATE_MODULE_ID": "master",
-    "UNDEFINED_MODULE_REF": "master",
+    "INVALID_STORY_TYPE": "master",
+    "STORY_FACT_MISSING": "master",
+    "UNDEFINED_STORY_REF": "master",
 
-    "FEATURE_PAGE_DRIFT": "feature",
-    "FEATURE_API_DRIFT": "feature",
-    "FEATURE_EXT_DRIFT": "feature",
-    "FEATURE_BRANCH_DRIFT": "feature",
-    "FEATURE_MODULE_ID_DRIFT": "feature",
-    "FEATURE_MODULE_NAME_DRIFT": "feature",
-    "FEATURE_STATUS_DRIFT": "feature",
-    "FEATURE_REVIEW_STATUS_DRIFT": "feature",
+    "MODULE_DEFINITION_MISSING": "feature",
+    "INVALID_LEGACY_MODULE_ROW": "feature",
+    "INVALID_MODULE_DEFINITION": "feature",
+    "INCOMPLETE_MODULE_BOUNDARY": "feature",
+    "DUPLICATE_MODULE_ID": "feature",
+    "MODULE_SELF_DEPENDENCY": "feature",
+    "UNDEFINED_MODULE_DEPENDENCY": "feature",
+    "UNDEFINED_MODULE_REF": "feature",
+    "FEATURE_STORY_MISSING": "feature",
+    "STORY_WITHOUT_FEATURE": "feature",
+    "INVALID_FEATURE_BRANCH_COUNT": "feature",
+    "INVALID_FEATURE_MODULE": "feature",
     "INVALID_FEATURE_STATUS": "feature",
     "INVALID_FEATURE_REVIEW_STATUS": "feature",
     "INVALID_AC_ID": "feature",

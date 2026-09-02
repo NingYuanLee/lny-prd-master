@@ -25,7 +25,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 ## 职责与禁止
 
-- **负责**：`api_spec.md` §1～§4 索引与规则；`api/API-*.md` / `api/EXT-*.md`；成功自检后推进本次 `api_changes.md` 对应行状态。
+- **负责**：`api_spec.md` §1～§4 跨接口规则与轻量索引；API/EXT 索引只登记编号、名称（用途）与明细路径，其余接口事实只写 `api/API-*.md` / `api/EXT-*.md`；成功自检后推进本次 `api_changes.md` 对应行状态。
 - **禁止**：写 UI 线框；改 `prototypes/`；实现向内容；根规范「变更记录」表新增行；把 `api_spec.md` 或 `api/` 复制到 `versions/{v}/`（含 `versions/{v}/api/` 与版本根散落文件）。仅当 PM 已说出点位或 AD 字典条目才写埋点；**禁止自拟埋点方案**。
 
 **新立项只走目录化**。旧 `api_spec` §5 单体大段只提示迁移，禁止双轨扩写。
@@ -40,7 +40,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 ## 写产物纪律
 
-开笔前 Read `api_spec` + `ui_manifest`/`ui/`。先清单后落盘。收尾核对 API↔PAGE；`iteration_notes` 文末追加业务变更。
+开笔前 Read `api_spec` + `ui_manifest`/`ui/`。先清单后落盘。旧版宽索引在本次修改涉及对应表时收敛到当前三列，禁止把涉及页面、服务商或人工统计复制回索引。收尾核对 API↔PAGE；`iteration_notes` 文末追加业务变更。
 
 ## 前置条件
 
