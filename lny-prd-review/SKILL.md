@@ -47,6 +47,10 @@ description: >-
 - 用户指定 `FEATURE-*` 时只评审该对象及其直接 STORY、AC、PAGE、API/EXT 证据，除非跨 Feature 依赖会改变结论。
 - 旧版本默认只读；只有用户明确要求纠正该版本历史决议并确认事实时才可记录。
 
+## 并行分片
+
+需要并行时完整 Read [`../lny-prd-master/reference-agent-orchestration.md`](../lny-prd-master/reference-agent-orchestration.md)。拟定结论模式可把用户价值/目标、范围/依赖、验收/风险、首版或非首版证据层等维度交给只读子 Agent 并行核验；子 Agent 只能返回依据与风险，不能各自下产品结论。主 Agent 去重冲突后给出唯一拟定结论包。确认模式的 `delivery_scope.md`、Feature 状态与批准 PAGE 快照全部由主 Agent 单写；无 subagent/Task 时顺序评审全部维度。
+
 ## 执行步骤
 
 1. Read [`reference.md`](reference.md) 与框架排除。若没有同一对象、版本和当前内容的有效Q-S/Q-P，先自动补齐规格/原型链与两道门禁；若会写入，再Read产物路径契约。

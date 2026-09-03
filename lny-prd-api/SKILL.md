@@ -42,6 +42,10 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 开笔前 Read `api_spec` + `ui_manifest`/`ui/`。先清单后落盘。旧版宽索引在本次修改涉及对应表时收敛到当前三列，禁止把涉及页面、服务商或人工统计复制回索引。收尾核对 API↔PAGE；`iteration_notes` 文末追加业务变更。
 
+## 并行分片
+
+需要并行时完整 Read [`../lny-prd-master/reference-agent-orchestration.md`](../lny-prd-master/reference-agent-orchestration.md)。主 Agent 先锁定 API/EXT ID、所属终端、调用目的和已确认的数据事实；随后可按单个 `api/API-*.md` 或 `api/EXT-*.md` 分片，每个子 Agent 只写一个独占明细文件。`api_spec.md` 索引与公共约定、跨接口冲突消解、台账状态和 `iteration_notes.md` 由主 Agent 单写。无 subagent/Task 时顺序执行同一分片清单。
+
 ## 前置条件
 
 已有 `main_spec.md`；建议已有页面索引。⑩ 委派进入时 Read `api_changes.md` 中 `待③`。

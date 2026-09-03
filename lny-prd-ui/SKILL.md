@@ -132,6 +132,10 @@ COMP **编号必填** `COMP-{三位序号}`，与 `ui_manifest` §4「组件编�
 2. 一次对话一条主线；先清单后落盘；整块写。旧版宽索引在本次修改涉及对应表时收敛到当前列；旧 §5 同轮分类：视觉共性留 §5，复用 UI 下沉 COMP，页面表现下沉 PAGE，产品/API 事实交④/③后从 UI 删除。迁移未完成不得宣称②完成，禁止为消除冲突直接丢弃产品事实。
 3. 收尾：`versions/{版本号}/iteration_notes.md` 文末追加业务变更流水（非则跳过）。
 
+## 并行分片
+
+需要并行时完整 Read [`../lny-prd-master/reference-agent-orchestration.md`](../lny-prd-master/reference-agent-orchestration.md)。主 Agent 先锁定 PAGE/COMP ID、终端、包模块/菜单分组与 §3/§4 注册结构；随后可按单个 `ui/PAGE-*.md` 或 `ui/COMP-*.md` 分给不同子 Agent，每个任务只写一个独占明细文件。`ui_manifest.md`、台账状态与 `iteration_notes.md` 始终由主 Agent 收口单写；子 Agent 不得把流程、字段契约或跨页产品规则回填到 §5。无 subagent/Task 时按同一清单顺序执行。
+
 ## 前置条件
 
 已有 `main_spec.md`。⑩ 委派进入时 Read `ui_changes.md` 中 `待②` 条目。

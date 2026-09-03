@@ -37,6 +37,10 @@ description: >-
 
 已立项；`main_spec.md` 有变更记录表；当前最新版本已完成 ⑧ 评审闭环。触发时同一条消息给出 YAML 或自然语言（见 [`reference.md`](reference.md)）；版本不合法则对话修正。
 
+## 并行分片
+
+需要并行时完整 Read [`../lny-prd-master/reference-agent-orchestration.md`](../lny-prd-master/reference-agent-orchestration.md)。输入量较大时，可让只读子 Agent 分别解析页面、API、Feature 三类变更并返回九类候选行和冲突；前版终态/SP/未清台账核验也可独立只读并行。版本号裁决、目录创建、三类台账、`eval_signals.md`、`iteration_notes.md` 开篇、四规范变更记录与最终委派清单全部由主 Agent 单写。无 subagent/Task 时顺序分析，绝不因并行失败部分建版。
+
 ## 执行步骤
 
 落盘前 Read [`reference.md`](reference.md) 与 `lny-prd-master/reference-artifact-paths.md`。新版本目录只写本步白名单文件，禁止复制根规范或 `ui/`、`api/`、`feature/`。

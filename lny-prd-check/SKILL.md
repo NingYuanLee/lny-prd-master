@@ -43,6 +43,10 @@ description: >-
 
 用户显式 `vX.Y.Z` 且目录存在则用之，否则 `versions/` 最大 semver。报告抬头写明版本。
 
+## 并行分片
+
+需要并行时完整 Read [`../lny-prd-master/reference-agent-orchestration.md`](../lny-prd-master/reference-agent-orchestration.md)。路径、跨文档语义、单页规格、原型静态与浏览器冒烟等互不写业务文件的检查可作为只读子任务并行；每个子 Agent 只返回带文件/位置/严重级/责任步骤的发现。主 Agent 必须等待全部检查完成，统一去重、排序并给出唯一门禁结论与 `NEXT_STEP_ROUTE`。任何子 Agent 都不得修改被检查产物；无 subagent/Task 时顺序执行完整检查表。
+
 ## 执行步骤
 
 1. 解析工作版本；目录须已存在。

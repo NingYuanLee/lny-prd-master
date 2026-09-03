@@ -18,7 +18,7 @@ description: >-
 
 ## LNY-PRD 总控协议（master 编排）
 
-**适用范围**：PRD 项目根（存在或将生成 `main_spec.md`）。路径以本技能包目录为准。任何写入或子任务委派前 Read [`reference-artifact-paths.md`](reference-artifact-paths.md)；当前工作版本不是根规格镜像目录。
+**适用范围**：PRD 项目根（存在或将生成 `main_spec.md`）。路径以本技能包目录为准。任何写入或子任务委派前 Read [`reference-artifact-paths.md`](reference-artifact-paths.md)；需要委派或并行时还须完整 Read [`reference-agent-orchestration.md`](reference-agent-orchestration.md)。当前工作版本不是根规格镜像目录。
 
 ### 1. 技能边界
 
@@ -74,6 +74,12 @@ description: >-
 
 子技能失败或仍有未落盘缺口时保留原状态。总控只按当前单值匹配 I2-spec / I2-page，禁止凭对话声称跳过台账状态。
 
+### 1.2 Subagent 与并行编排
+
+存在两个以上独立分片时，总控必须按 [`reference-agent-orchestration.md`](reference-agent-orchestration.md) 先做宿主能力检测，再建立依赖波次与独占写路径：支持 subagent/Task 则 fan-out/fan-in，不支持则按同一任务图顺序降级。不得把任一宿主专用工具当作正确性前提。
+
+总控负责判断①的只读资料归纳是否值得并行、本轮由②③④中的谁工作，以及⑤～⑩有哪些就绪分片可并行；子 Agent 只执行已确定的责任步骤，不得自行改变路由。任何共享索引、台账、流水、壳层、入口、范围、SP报告和最终门禁结论均由主 Agent 单写。⑤按 PAGE、⑥按业务页面 HTML、⑨按 FE/BE 是默认高价值并行点；完整边界见参考文件 §5。
+
 ### 2. 前置分流（续跑与立项）
 
 在 **PRD 根**按顶层可见项与 `main_spec.md` 是否存在分流（**不**将 `.` 开头项计入「空目录」）：
@@ -116,7 +122,8 @@ description: >-
 **批内纪律**：
 
 - 开批时明示：`本轮规格三件套批：②… ③… ④…`（列出实际要做的子集）。
-- 每步仍须 **完整 Read** 对应 `SKILL.md` 再落盘；遵守各步写产物纪律与框架排除。
+- 总控先按缺失文件、台账单值与 ⑦ `NEXT_STEP_ROUTE` 判定本轮实际责任步骤，建立 `②/③/④` 任务集合；没有待办的步骤不启动 Agent，也不为凑并行重复生成。
+- 每步仍须 **完整 Read** 对应 `SKILL.md` 再落盘；遵守各步写产物纪律与框架排除。②须先锁 PAGE/COMP；其后③与④输入已充分且互不等待时可按 §1.2 并行，否则保持②→③→④。
 - ②③④完成后立即做⑤输入自检。可由现有事实修复的缺口，定向返回责任步骤同轮修复；缺产品事实才询问用户。通过后自动执行⑤，再自动执行⑦/Q-S；中间禁止询问“继续”。
 - 若某步因缺用户输入无法落盘：列出缺口，**其余可做的 ②③④ 仍做完**，再停；不要因 ③ 缺字段而整批不做。
 

@@ -97,6 +97,10 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 未指定版本号时按 master §1.1。
 
+## 并行分片
+
+需要并行时完整 Read [`../lny-prd-master/reference-agent-orchestration.md`](../lny-prd-master/reference-agent-orchestration.md)。⑤输入自检通过且 PAGE ID、路由与引用已锁定后，可按每个 `pages_prd/{终端}/PAGE-*.md` 启动一个独占子任务；同一 PAGE 不拆给多个 Agent。`pages_prd/_shell/`、跨页导航一致性、台账 `待⑤→已完成` 与最终全量自检由主 Agent 单写/汇总。子任务必须返回实际文件、自检和未决问题；无 subagent/Task 时顺序生成全部目标页。
+
 ## 执行步骤
 
 1. 校验版本目录与页面编号；有台账则核对目标路径。

@@ -55,6 +55,10 @@ BE校准系数: 0.90        # 可选；无可靠样本则省略
 
 存在 `versions/{版本号}/`，且 ⑧ 已创建 `delivery_scope.md`。范围须为产品确认后的终态：新格式 `评审结论=通过`、`评审状态=approved`、确认/阻塞数为 0、无 `open` 决策；旧格式缺 `评审结论` 时，范围及所有 Feature 行均 `approved`、计数为 0、无 `open` 决策可兼容视为通过。未指定版本则取 `versions/` 最大版本并写进报告抬头。
 
+## 并行分片
+
+需要并行时完整 Read [`../lny-prd-master/reference-agent-orchestration.md`](../lny-prd-master/reference-agent-orchestration.md)。范围与产品链门禁由主 Agent 先锁定；可启动 `sp-fe` 与 `sp-be` 两个只读子任务并行计算对象基准明细，范围很大时再在各侧按 Feature 分波。子任务只返回对象、输入证据、公式、小计与阻塞项，不写文件。复用消重、变更形态、校准系数、FE/BE/合计与 `sp_report.md` 由主 Agent 统一计算并单写，之后仍由主 Agent 按⑥规则只刷总入口。无 subagent/Task 时顺序计算，公式与结果不变。
+
 ## 执行步骤
 
 1. 解析版本；先读 `delivery_scope.md` 并锁定已确认 Feature 范围，再判定全量或本版变更。范围缺失、未确认或仍有 open 决策时停止估点并建议回 ⑧，不写报告。

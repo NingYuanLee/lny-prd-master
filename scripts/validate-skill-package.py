@@ -140,6 +140,70 @@ def validate_bundle_contract(errors: list[str]) -> None:
                 fail(errors, f"{path}: skill runtime must not reference repository examples/")
 
 
+def validate_agent_orchestration_contract(errors: list[str]) -> None:
+    reference_path = ROOT / "lny-prd-master" / "reference-agent-orchestration.md"
+    if not reference_path.is_file():
+        fail(errors, "lny-prd-master/reference-agent-orchestration.md missing")
+        return
+
+    reference = reference_path.read_text(encoding="utf-8")
+    required_reference_phrases = (
+        "并行是优化，不是前置条件",
+        "一个正式文件一个写者",
+        "spawn_agent",
+        "wait_agent",
+        "必须循环等待",
+        "`list_agents` 确认本波所有目标均为终态",
+        "`task_name` 另行规范化为小写字母/数字/下划线",
+        "同一条 Agent 消息中发起多个独立 Task 调用",
+        'subagent_type="general_purpose_task"',
+        'query="完整任务包"',
+        "仅作为 TraeCode 概念旁证",
+        "无可确认原语则顺序执行",
+        "task_id",
+        "write_paths",
+        "forbidden_paths",
+        "`blocked` 默认必须满足 `changed_files: []`",
+        "可独立验收对象/依赖组",
+        "成功但尚未收口的独占产物",
+        "⑤ 单页 PRD",
+        "⑥ 原型",
+        "⑨ SP",
+        "⑥等待⑤与Q-S",
+        "⑨等待⑧最终通过且范围已确认",
+        "⑩等待⑧终态",
+    )
+    for phrase in required_reference_phrases:
+        if phrase not in reference:
+            fail(errors, f"agent orchestration reference missing contract: {phrase!r}")
+
+    master = (ROOT / "lny-prd-master" / "SKILL.md").read_text(encoding="utf-8")
+    if "### 1.2 Subagent 与并行编排" not in master:
+        fail(errors, "lny-prd-master/SKILL.md: missing orchestration entry")
+    if "本轮由②③④中的谁工作" not in master:
+        fail(errors, "lny-prd-master/SKILL.md: missing ②③④ dispatch ownership")
+    if "判断①的只读资料归纳是否值得并行" not in master:
+        fail(errors, "lny-prd-master/SKILL.md: missing step ① orchestration ownership")
+
+    for skill_name in EXPECTED_SKILL_ORDER[1:]:
+        skill = (ROOT / skill_name / "SKILL.md").read_text(encoding="utf-8")
+        if "reference-agent-orchestration.md" not in skill:
+            fail(errors, f"{skill_name}/SKILL.md: missing orchestration reference")
+        if "无 subagent/Task 时" not in skill:
+            fail(errors, f"{skill_name}/SKILL.md: missing sequential fallback")
+
+    focused_boundaries = {
+        "lny-prd-page": ("每个 `pages_prd/{终端}/PAGE-*.md`", "`pages_prd/_shell/`"),
+        "lny-prd-prototype": ("每个业务 `PAGE-*.html`", "`prototypes/index.html`"),
+        "lny-prd-sp": ("`sp-fe` 与 `sp-be`", "`sp_report.md`"),
+    }
+    for skill_name, phrases in focused_boundaries.items():
+        skill = (ROOT / skill_name / "SKILL.md").read_text(encoding="utf-8")
+        for phrase in phrases:
+            if phrase not in skill:
+                fail(errors, f"{skill_name}/SKILL.md: missing parallel boundary {phrase!r}")
+
+
 def validate_feature_template_boundary(errors: list[str]) -> None:
     """Generated feature_spec keeps reader semantics, not authoring governance."""
     reference_path = ROOT / "lny-prd-feature" / "reference.md"
@@ -882,6 +946,7 @@ def validate_changelog(errors: list[str]) -> None:
 def main() -> int:
     errors: list[str] = []
     validate_bundle_contract(errors)
+    validate_agent_orchestration_contract(errors)
     validate_feature_template_boundary(errors)
     validate_skill_metadata(errors)
     validate_markdown_links(errors)

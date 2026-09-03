@@ -156,6 +156,11 @@ node <skillDir>/scripts/verify-prototype-browser.mjs <prdRoot> --page PAGE-… -
 ```
 
 浏览器脚本 exit 1 表示页面或交互失败，必须修复；exit 2 表示宿主缺 Node 依赖，须明确回报“浏览器冒烟未执行”并继续人工预览，不得伪报通过。截图仅在排障时用 `--artifacts <系统临时目录>` 输出，禁止写入业务项目。
+
+## 并行分片
+
+需要并行时完整 Read [`../lny-prd-master/reference-agent-orchestration.md`](../lny-prd-master/reference-agent-orchestration.md)。主 Agent 必须先完成目标页清单、kit、共享 assets、壳层约束和跨页跳转表；随后可按每个业务 `PAGE-*.html` 启动一个独占子任务，任务只写该页面文件并逐页对照 `pages_prd`、`ui/PAGE`、引用 COMP 与对应 `gold/`。共享 kit/assets、各端 `index.html`、移动端 `map.html`、`prototypes/index.html`、LINKS 汇总与浏览器整体验收由主 Agent 单写/执行。页面数超过可用并发槽时分波；无 subagent/Task 时顺序生成，质量门禁不变。
+
 ## 前置条件
 
 已有 `main_spec.md`。若尚无 `ui_manifest` / 目标页 / 根 `pages_prd`（且非 `ui直出`），或台账仍有 `待②`～`待⑤`：先按开笔前补链并通过Q-S，再写原型。不要因此拒绝。

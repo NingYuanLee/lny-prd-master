@@ -50,6 +50,10 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 上述内容是 Agent 的作者治理规则。生成的 `feature_spec.md` 只保留开发 Agent 理解项目所需的文档分工、编号/状态语义、实际 Module 边界、Feature 索引和项目特有跨模块约定；禁止复制门禁步骤、反例清单或写作方法论。
 
+## 并行分片
+
+需要并行时完整 Read [`../lny-prd-master/reference-agent-orchestration.md`](../lny-prd-master/reference-agent-orchestration.md)。Module 边界、Feature ID、依赖方向与 STORY/PAGE/API 输入先由主 Agent 锁定；之后可按单个 `feature/FEATURE-*.md` 分片，每个子 Agent 只写一个独占明细文件。Module 定义、`feature_spec.md` 索引/依赖、跨 Feature AC 去重、台账状态和 `iteration_notes.md` 由主 Agent 单写。无 subagent/Task 时顺序执行同一分片清单。
+
 ## 前置条件
 
 已有 `main_spec.md`、`api_spec.md`、`ui_manifest.md`。⑩ 委派进入时 Read `feature_changes.md` 中 `待④`。

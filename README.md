@@ -1,6 +1,6 @@
 # LNY-PRD — 李宁远产品工作流
 
-**工具包版本：2.21.0**
+**工具包版本：2.22.0**
 
 ## 背景
 
@@ -207,6 +207,8 @@ Agent 将自动判定当前状态：
 ```
 
 “继续”= 重新走总控§3并从最早未通过环节恢复。**②③④、⑤、Q-S、⑥、Q-P** 默认连续自动执行；只在缺产品事实、明确只要规格或准备进入⑧时停。直接评审而无有效门禁证据时同轮先补齐。⑧首版读取根完整规格；非首版同时读取当前版本三类change、根当前事实与上一版批准基线。若同页本版受影响Feature被拆成“做/不做”，必须调整范围或返回②③④拆解，再重走自动链；不得靠裁剪快照通过。⑨只估⑧确认范围，落盘后同轮只刷 `prototypes/index.html` 版本清单。估点见 [第八章](#八估点与可评估性)。
+
+总控会在宿主实际提供 subagent/Task 能力时自动建立依赖波次：⑤按 PAGE、⑥按业务页面 HTML、⑨按 FE/BE 并行，②③④及⑦⑧⑩也只在输入和写路径互不依赖时分片。Codex 在实际暴露 collaboration tools 时使用 `spawn_agent` 并循环等待所有目标终态；Cursor 在提供 `Task` 时同轮发起多个调用（已有自定义代理时可 `/name`）；TraeWork CN 先读取本轮 `Task` schema，仅在列出 `general_purpose_task` 时按其参数调用。ChatGPT 其他表面及没有可确认并行原语的环境顺序降级，产物和门禁不变。完整契约见 [`lny-prd-master/reference-agent-orchestration.md`](lny-prd-master/reference-agent-orchestration.md)。
 
 ### 5.4 换栈（`profile: none`）
 
