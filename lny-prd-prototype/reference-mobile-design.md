@@ -57,7 +57,7 @@
 | 项 | 落地 |
 |----|------|
 | 设计逻辑宽 | 预览 **375**；`viewport-fit=cover` |
-| 页面骨架 | 状态栏（脚本注入）+ L1 固定区 + L2【下沉首屏】/【滚动容器】+ Tab/操作条 | ② 分层见 `lny-prd-ui/reference/ui-manifest-template.md` **§1.3.4** |
+| 页面骨架 | 状态栏（脚本注入）+ L1 固定区 + L2【下沉首屏】/【滚动容器】+ Tab/操作条 | ② 分层见 `lny-prd-ui/reference/visual-rules.md` **§1.3.4** |
 | 沉浸 vs 下沉 | **沉浸式** = L0 状态栏透明；**下沉滚过** = L2【下沉首屏】+ sheet 盖住 Hero | 二者独立；无下沉时不要页级 `md-hero` |
 | 沉浸下沉 DOM | Hero 与 body **同级**；body 内 **必须** sheet | `md-immersive`+`md-hero` ∥ `md-mobile-body` > `md-mobile-sheet`；`gold/mobile-grid.html` |
 | 随滚 Banner | L3 普通模块内 `md-swiper` | **禁止**页级 `md-hero`；见 `reference-kit/mobile-classes.md` 移动页 **B** |

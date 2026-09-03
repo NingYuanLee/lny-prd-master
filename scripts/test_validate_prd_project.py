@@ -337,6 +337,105 @@ FEATURE-001 PAGE-MP-001
             self.assertIn("PAGE_AC_UNKNOWN_AC", codes)
             self.assertIn("PAGE_AC_DRIFT", codes)
 
+    def test_rejects_product_and_api_facts_in_ui_manifest_global_section(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lny-prd-ui-manifest-scope-") as temp:
+            root = Path(temp)
+            self.make_project(root)
+            manifest = root / "ui_manifest.md"
+            manifest.write_text(
+                manifest.read_text(encoding="utf-8")
+                + """
+## 5. 特殊说明
+
+### 5.1 核心用户路径
+
+PAGE-MP-001 进入后按画像策略设置默认筛选和排序因子。
+| 业务字段 | 必填性 | 默认值 |
+|---|---|---|
+| 标签ID | 必传 | 无 |
+API-MP-001 在页面初始化时触发。
+""",
+                encoding="utf-8",
+            )
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertTrue(
+                {
+                    "UI_MANIFEST_SCOPE_LEAK",
+                    "UI_MANIFEST_PRODUCT_RULE_LEAK",
+                    "UI_MANIFEST_API_CONTRACT_LEAK",
+                }
+                <= codes
+            )
+
+    def test_rejects_legacy_contract_and_page_graph_sections_in_ui_details(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lny-prd-ui-detail-scope-") as temp:
+            root = Path(temp)
+            self.make_project(root)
+            detail = root / "ui" / "PAGE-MP-001.md"
+            detail.write_text(
+                detail.read_text(encoding="utf-8")
+                + """
+**关联页面索引**
+| 页面编号 | 关系说明 |
+|---|---|
+| PAGE-MP-001 | 返回 |
+
+## 6. 关联接口
+| 接口编号 | 用途 | 触发时机 |
+|---|---|---|
+| API-MP-001 | 查询 | 页面初始化 |
+""",
+                encoding="utf-8",
+            )
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertIn("UI_DETAIL_SCOPE_LEAK", codes)
+
+    def test_pc_ad_pages_must_reference_registered_menu_groups(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lny-prd-ui-menu-group-") as temp:
+            root = Path(temp)
+            self.make_project(root)
+            manifest = root / "ui_manifest.md"
+            manifest.write_text(
+                manifest.read_text(encoding="utf-8")
+                + """
+| 所属终端 | 菜单分组 | 分组说明 |
+|---|---|---|
+| 管理后台 | 内容管理 | 管理内容审核任务 |
+
+| 页面编号 | 页面名称 | 所属终端 | 菜单分组 | 页面路由 | 状态 | 明细路径 |
+|---|---|---|---|---|---|---|
+| PAGE-AD-001 | 内容审核 | 管理后台 | 未注册分组 | views/content/audit | active | ui/PAGE-AD-001.md |
+""",
+                encoding="utf-8",
+            )
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertIn("UNREGISTERED_MENU_GROUP", codes)
+
+            manifest.write_text(
+                manifest.read_text(encoding="utf-8").replace("未注册分组", "内容管理"),
+                encoding="utf-8",
+            )
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertNotIn("UNREGISTERED_MENU_GROUP", codes)
+            self.assertNotIn("MISSING_PAGE_MENU_GROUP", codes)
+
+    def test_rejects_legacy_ui_owned_module_column(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="lny-prd-ui-legacy-module-") as temp:
+            root = Path(temp)
+            self.make_project(root)
+            manifest = root / "ui_manifest.md"
+            manifest.write_text(
+                manifest.read_text(encoding="utf-8")
+                + """
+| 页面编号 | 页面名称 | 所属终端 | 所属模块 | 页面路由 | 状态 | 明细路径 |
+|---|---|---|---|---|---|---|
+| PAGE-AD-001 | 内容审核 | 管理后台 | 内容 | views/content/audit | active | ui/PAGE-AD-001.md |
+""",
+                encoding="utf-8",
+            )
+            codes = {issue.code for issue in self.validator.validate_project(root)}
+            self.assertIn("LEGACY_UI_PAGE_GROUP_COLUMN", codes)
+
     def test_fixture_status_is_reserved(self) -> None:
         with tempfile.TemporaryDirectory(prefix="lny-prd-semantic-fixture-") as temp:
             root = Path(temp)

@@ -36,6 +36,26 @@ MODULE_BOUNDARY_FIELDS = MODULE_REQUIRED_FIELDS - {"依赖模块"}
 SCOPE_REVIEW_CONCLUSIONS = {"通过", "附条件通过", "退回补充", "不进入本期"}
 SCOPE_INCLUSIONS = {"本期开发", "本期下线", "待确认"}
 AC_DELIVERY_ROLE_RE = re.compile(r"(?<![A-Z0-9_-])(?:FE|BE|MP|AD|PC|APP|H5|TEST)(?![A-Z0-9_-])")
+UI_MANIFEST_PRODUCT_LEAK_RE = re.compile(
+    r"(?:PAGE|FEATURE|MODULE|STORY)-[A-Z0-9-]+|AC-\d+|用户路径|画像(?:策略|差异|分流)|业务流程|"
+    r"审核(?:闭环|规则|结果)|内容可见性|落库时机|核心指标|排序(?:规则|因子)|默认筛选|业务 Landing",
+    re.I,
+)
+UI_MANIFEST_API_LEAK_RE = re.compile(
+    r"(?:API-[A-Z]+-\d{3}|EXT-\d{3})|业务字段|存储字段|请求字段|响应字段|"
+    r"必传|必填性|默认值|固定枚举|字段映射|接口(?:用途|规则|触发)",
+    re.I,
+)
+UI_MANIFEST_INDEX_LEAK_RE = re.compile(r"管理后台菜单结构|菜单分组注册|主包/分包|pagePath|TabBar", re.I)
+UI_DETAIL_CONTRACT_LEAK_RE = re.compile(
+    r"^##\s+\d+\.\s*(?:数据与接口|关联接口)\b|"
+    r"^\|\s*(?:依赖接口|关键字段|业务字段|请求字段|响应字段|读写说明)\s*\|",
+    re.I | re.M,
+)
+UI_DETAIL_PAGE_GRAPH_RE = re.compile(
+    r"^\*\*关联页面索引\*\*|^\|\s*页面编号\s*\|\s*关系说明\s*\|",
+    re.M,
+)
 
 
 @dataclass(frozen=True)
@@ -89,6 +109,20 @@ def tables(text: str) -> list[list[dict[str, str]]]:
 
 def matching_tables(text: str, required: set[str]) -> list[list[dict[str, str]]]:
     return [table for table in tables(text) if table and required <= set(table[0])]
+
+
+def numbered_section(text: str, number: int) -> str:
+    heading = re.search(rf"^##\s+{number}(?:\.|\s)\s*.*$", text, flags=re.M)
+    if heading is None:
+        return ""
+    next_heading = re.search(r"^##\s+", text[heading.end() :], flags=re.M)
+    end = heading.end() + next_heading.start() if next_heading else len(text)
+    return text[heading.end() : end]
+
+
+def authored_lines(text: str) -> str:
+    """Ignore template guidance blockquotes while scanning authored project facts."""
+    return "\n".join(line for line in text.splitlines() if not line.lstrip().startswith(">"))
 
 
 def id_set(pattern: re.Pattern[str], value: str) -> set[str]:
@@ -247,6 +281,69 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
         ui_path,
         issues,
     )
+    page_index_tables = matching_tables(ui, {"页面编号", "所属终端", "明细路径"})
+    if any("所属模块" in row for table in page_index_tables for row in table):
+        add(
+            issues,
+            "LEGACY_UI_PAGE_GROUP_COLUMN",
+            ui_path,
+            "page navigation grouping must use 包模块 for MP or 菜单分组 for PC/AD; 所属模块 conflicts with Feature Module",
+        )
+
+    menu_groups = {
+        (row.get("所属终端", "").strip(), row.get("菜单分组", "").strip())
+        for table in matching_tables(ui, {"所属终端", "菜单分组", "分组说明"})
+        for row in table
+        if row.get("所属终端", "").strip() and row.get("菜单分组", "").strip()
+    }
+    for table in matching_tables(ui, {"页面编号", "所属终端", "菜单分组", "明细路径"}):
+        for row in table:
+            found = id_set(PAGE_RE, row.get("页面编号", ""))
+            if not found:
+                continue
+            page_id = sorted(found)[0]
+            terminal_code = PAGE_RE.fullmatch(page_id).group(1) if PAGE_RE.fullmatch(page_id) else ""
+            if terminal_code not in {"PC", "AD"}:
+                continue
+            terminal = row.get("所属终端", "").strip()
+            group = row.get("菜单分组", "").strip()
+            if not group or group in {"无", "—", "-"}:
+                add(issues, "MISSING_PAGE_MENU_GROUP", ui_path, f"{page_id} must name a PC/AD 菜单分组")
+            elif (terminal, group) not in menu_groups:
+                add(
+                    issues,
+                    "UNREGISTERED_MENU_GROUP",
+                    ui_path,
+                    f"{page_id} references unregistered menu group {terminal}/{group}",
+                )
+
+    manifest_global = authored_lines(numbered_section(ui, 5))
+    manifest_scope_leaks: list[str] = []
+    if UI_MANIFEST_PRODUCT_LEAK_RE.search(manifest_global):
+        manifest_scope_leaks.append("product/flow facts")
+        add(
+            issues,
+            "UI_MANIFEST_PRODUCT_RULE_LEAK",
+            ui_path,
+            "section 5 contains product, flow, persona, audit, visibility, metric, or sorting facts owned by main/Feature",
+        )
+    if UI_MANIFEST_API_LEAK_RE.search(manifest_global):
+        manifest_scope_leaks.append("API/field facts")
+        add(
+            issues,
+            "UI_MANIFEST_API_CONTRACT_LEAK",
+            ui_path,
+            "section 5 contains field or API contract facts owned by api_spec/api details",
+        )
+    if UI_MANIFEST_INDEX_LEAK_RE.search(manifest_global):
+        manifest_scope_leaks.append("page grouping/index facts")
+    if manifest_scope_leaks:
+        add(
+            issues,
+            "UI_MANIFEST_SCOPE_LEAK",
+            ui_path,
+            f"section 5 is global visual rules only; move out: {', '.join(manifest_scope_leaks)}",
+        )
     for page_id, row in pages.items():
         status = row.get("状态", "active").strip().lower() or "active"
         allowed = {"active", "deprecated"}
@@ -397,7 +494,7 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
         issues=issues,
         cache=detail_cache,
     )
-    collect_details(
+    comp_details = collect_details(
         root,
         comps,
         id_field="组件编号",
@@ -408,6 +505,19 @@ def validate_project(root: Path, *, allow_fixture_status: bool = False) -> list[
         issues=issues,
         cache=detail_cache,
     )
+    for item_id, (path, text, _facts) in {**page_details, **comp_details}.items():
+        leaks: list[str] = []
+        if UI_DETAIL_CONTRACT_LEAK_RE.search(text):
+            leaks.append("field/API contract structure")
+        if UI_DETAIL_PAGE_GRAPH_RE.search(text):
+            leaks.append("page relationship graph")
+        if leaks:
+            add(
+                issues,
+                "UI_DETAIL_SCOPE_LEAK",
+                path,
+                f"{item_id} must keep visual/interaction presentation only; move out: {', '.join(leaks)}",
+            )
     collect_details(
         root,
         apis,
@@ -1018,6 +1128,11 @@ NEXT_ROUTE: dict[str, str] = {
 
     "ACTIVE_PAGE_FEATURE_DRIFT": "ui",
     "INVALID_PAGE_STATUS": "ui",
+    "LEGACY_UI_PAGE_GROUP_COLUMN": "ui",
+    "MISSING_PAGE_MENU_GROUP": "ui",
+    "UNREGISTERED_MENU_GROUP": "ui",
+    "UI_MANIFEST_SCOPE_LEAK": "ui",
+    "UI_DETAIL_SCOPE_LEAK": "ui",
     "MISSING_PAGE_DETAIL": "ui",
     "MISSING_COMP_DETAIL": "ui",
     "PAGE_DETAIL_ID": "ui",
@@ -1026,9 +1141,12 @@ NEXT_ROUTE: dict[str, str] = {
 
     "UNDEFINED_API_REF": "api",
     "UNDEFINED_EXT_REF": "api",
+    "UI_MANIFEST_API_CONTRACT_LEAK": "api",
     "MISSING_API_DETAIL": "api",
     "API_DETAIL_ID": "api",
     "EXT_DETAIL_ID": "api",
+
+    "UI_MANIFEST_PRODUCT_RULE_LEAK": "feature",
 
     "DELIVERY_SCOPE_VERSION_DRIFT": "review",
     "DELIVERY_SCOPE_FEATURE_TABLE_MISSING": "review",

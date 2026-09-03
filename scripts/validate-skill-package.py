@@ -502,12 +502,12 @@ def validate_coverage_regressions(module, errors: list[str]) -> None:
         fail(errors, "coverage accepted gold wizard demo markup on a business page")
 
     matrix = module.parse_comp_states(
-        "## 5. UI 状态矩阵（必填）\n"
+        "## 4. UI 状态矩阵（必填）\n"
         "| 状态 | 触发条件 | 展示要点 | 可执行操作 |\n"
         "|------|----------|----------|------------|\n"
         "| loading | 请求中 | 骨架 | 无 |\n"
         "| default | 已加载 | 内容 | 点击 |\n"
-        "## 6. 关联页面索引\n"
+        "## 5. 关联页面索引\n"
     )
     if matrix != ["loading", "default"]:
         fail(errors, "coverage state matrix parser failed the documented table")

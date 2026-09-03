@@ -169,7 +169,8 @@ def parse_shell_page(index_text: str, page_id: str) -> dict | None:
 
 
 def parse_comp_states(text: str) -> list[str]:
-    heading = re.search(r"^##\s*5\.\s*UI 状态矩阵.*$", text, flags=re.M)
+    # Match the semantic heading so both legacy §5 and current §4 COMP files work.
+    heading = re.search(r"^##\s*\d+\.\s*UI 状态矩阵.*$", text, flags=re.M)
     if not heading:
         return []
     tail = text[heading.end() :]

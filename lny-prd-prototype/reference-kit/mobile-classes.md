@@ -92,7 +92,7 @@
 
 **移动页**
 
-> **L2/L3 与 ② 对齐**：规格 L2 =【下沉首屏】（可选）+【滚动容器】；L3 = 滚动容器内的 `md-module`（普通 / 吸顶）。完整决策表见 `lny-prd-ui/reference/ui-manifest-template.md` **§1.3.4**。
+> **L2/L3 与 ② 对齐**：规格 L2 =【下沉首屏】（可选）+【滚动容器】；L3 = 滚动容器内的 `md-module`（普通 / 吸顶）。完整决策表见 `lny-prd-ui/reference/visual-rules.md` **§1.3.4**。
 
 **A. 下沉式首页（Hero 钉底 + sheet 滚过）** — `gold/mobile-grid.html`
 
@@ -299,7 +299,7 @@
 
 ### 触屏功能区
 
-形态选型执行共享 **`PT-MOBILE-FUNC`**（详表见 `lny-prd-ui/reference/ui-manifest-template.md` **§1.3.6**）。摘要：
+形态选型执行共享 **`PT-MOBILE-FUNC`**（详表见 `lny-prd-ui/reference/visual-rules.md` **§1.3.6**）。摘要：
 
 | 形态 | 要点 |
 |------|------|

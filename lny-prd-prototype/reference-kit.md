@@ -146,6 +146,6 @@ sheet：   md-mobile-sheet         浅灰 #f7f7f7 + 统一上下/左右内边距
 
 **无 sheet 的旧 HTML** 不再推荐；`body` 已无默认 padding/灰底，缺 sheet 会丢滚动区样式。
 
-**② 页型选型**（列表型 vs 浅灰壳、何时改页型、详情评论 hybrid）：见 [`lny-prd-ui/reference/ui-manifest-template.md`](../lny-prd-ui/reference/ui-manifest-template.md) §1.3.4「滚动区页型选型」；② 写 L2 时引用，⑥ 按选型落 sheet 修饰类。
+**② 页型选型**（列表型 vs 浅灰壳、何时改页型、详情评论 hybrid）：见 [`lny-prd-ui/reference/visual-rules.md`](../lny-prd-ui/reference/visual-rules.md) §1.3.4「滚动区页型选型」；② 写 L2 时引用，⑥ 按选型落 sheet 修饰类。
 
 **触屏金样 DOM 纪律**：14 个 `mobile-*.html` **全部** `body` > `sheet`；⑥ 新页照抄。改 `kit/` 后须对业务根 `prototypes/{终端}/` 执行 `copy-kit.py`（或 **`sync-mp-sheet-fixtures.py`** 一键同步 MP+AD 夹具注释与 kit）。对照 **`verify-fixture-gold-parity.py`** 确认 14×MP + 14×AD 夹具与金样文件齐套。

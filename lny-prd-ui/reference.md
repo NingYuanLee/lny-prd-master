@@ -6,7 +6,8 @@
 
 | 分片 | 内容 | 何时 Read |
 |------|------|-----------|
-| [`reference/ui-manifest-template.md`](reference/ui-manifest-template.md) | `ui_manifest.md` 根索引骨架模板（含 §1 阅读约定与 §2～§5 索引结构） | ① 立项 / ② 续跑生成或更新 `ui_manifest.md` 时 |
+| [`reference/ui-manifest-template.md`](reference/ui-manifest-template.md) | `ui_manifest.md` 轻量索引骨架模板 | ① 立项 / ② 续跑生成或更新 `ui_manifest.md` 时 |
+| [`reference/visual-rules.md`](reference/visual-rules.md) | UI 视觉、页型与交互表现作者规则；不复制进项目 manifest | ② 写 PAGE/COMP 与⑥对齐视觉时 |
 | [`reference/component-template.md`](reference/component-template.md) | `ui/COMP-*.md` 明细模板 | 写组件详述时 |
 | [`reference/page-template.md`](reference/page-template.md) | `ui/PAGE-*.md` 明细模板 | 写页面详述时 |
 

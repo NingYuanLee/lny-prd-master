@@ -55,7 +55,7 @@ python <skillDir>/scripts/copy-kit.py <skillDir>/gold
 | 其它桌面页 | 先按上表选最接近的金样；对不上再读 `desktop-lists.html` **只借控件**，禁止整页套成商品表 |
 | 其它移动页 | 先按上表选最接近的金样（设置/我的/向导/时间轴/树/详情/字段列表各有专页）；对不上再读 `mobile-list.html` **只借列表卡**，禁止整页套成商品列表 |
 
-**触屏滚动 sheet（L2）**：凡 `md-mobile-body` 内 **必有** `md-mobile-sheet`（唯一直接子层）。**没有 sheet 的**：L1 固定区、下沉 `md-hero`、TabBar、贴底条、浮层——均在 body **外**并列。默认 sheet 带左右 safe；详情/字段/树用 `--flush-x`；表单/设置靠页根 `md-form-page` / `md-set-page` 自动 lr0。详见 `reference-kit.md`「何时有 sheet」与 `lny-prd-ui/reference/ui-manifest-template.md` §1.3.4。
+**触屏滚动 sheet（L2）**：凡 `md-mobile-body` 内 **必有** `md-mobile-sheet`（唯一直接子层）。**没有 sheet 的**：L1 固定区、下沉 `md-hero`、TabBar、贴底条、浮层——均在 body **外**并列。默认 sheet 带左右 safe；详情/字段/树用 `--flush-x`；表单/设置靠页根 `md-form-page` / `md-set-page` 自动 lr0。详见 `reference-kit.md`「何时有 sheet」与 `lny-prd-ui/reference/visual-rules.md` §1.3.4。
 
 触屏顶栏六种（⑥ 按规格点名复制对应金样）：
 

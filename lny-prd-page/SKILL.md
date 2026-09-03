@@ -28,7 +28,7 @@ description: >-
 
 ## 页型速查（写单页前扫一眼）
 
-线框 **只定分区顺序**；顺序以 `ui/PAGE` §2.3 与下表为准。编号与金样以 [`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md) 为准。⑥ 视觉以 `gold/` 为准（对标下限，禁止照搬演示功能，也禁止忽略金样）。体验细则见 `lny-prd-ui` **§1.3.3 / §1.4.3**。本步不依赖仓库示例。
+线框 **只定分区顺序**；顺序以 `ui/PAGE` §2.3 与下表为准。编号与金样以 [`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md) 为准。⑥ 视觉以 `gold/` 为准（对标下限，禁止照搬演示功能，也禁止忽略金样）。体验细则见 `lny-prd-ui/reference/visual-rules.md` **§1.3.3 / §1.4.3**。本步不依赖仓库示例。
 
 **移动端 ASCII 自上而下**
 

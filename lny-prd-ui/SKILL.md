@@ -1,9 +1,8 @@
 ---
 name: lny-prd-ui
 description: >-
-  交互体验设计（不是控件清单）：布局怎么更好看、更好用、更丝滑；动效、微反馈、过渡、
-  收纳（折叠/半屏/弹窗）写入 ui/PAGE 与 ui/COMP。默认体验规范是地板；⑥ 落地 §2.3 与舒适默认，
-  不发明业务跳转/字段/弹窗。
+  UI 视觉与交互表现设计：维护轻量页面/菜单/包注册，设计布局、信息层级、动效、微反馈、过渡与收纳；
+  只读引用产品和接口事实，不定义用户路径、画像策略、业务跳转、权限合规、字段或接口契约。
   Use when the user mentions /lny-prd-ui, @lny-prd-ui, UI 清单, 页面架构, PAGE-*, COMP-*.
 ---
 
@@ -17,13 +16,17 @@ description: >-
 
 要设计的是：这个页面 **怎么摆会更好看、人用起来更舒服、操作更丝滑**；该有的 **动效 / 微反馈 / 过渡** 要点名；该 **收起来、折叠、半屏、弹窗** 的要给形态和触发。控件清单只是载体。
 
-**复杂交互效果门禁**：只有“一次直接点击，立即得到单一结果，且无中间态/联动/手势”的简单交互，可只写去向或结果并沿用默认按下反馈。除此之外均按复杂交互处理（如拖拽排序、滑动/长按、展开收起、滚动锚点联动、多选批量、分步流程、上传进度、异步提交、浮层开闭、跨区状态切换）：必须在 PAGE §2.3 或所引用 COMP 的状态矩阵写清 **触发方式、过程中的可见效果/过渡、完成后的状态变化，以及适用的取消/失败/禁用反馈**。禁止只写“支持拖拽/联动/切换”而不描述用户看到什么。
+**事实所有权**：② 可以读取 `main_spec`、Feature 与 API 作为设计输入，但只把既定事实表现成界面。页面地址注册不等于用户路径或路由拓扑；菜单分组不等于 Feature `MODULE-*`。产品流程、画像/角色策略、业务跳转及其条件、权限、合规、审核与可见性归 main/Feature；字段、必填性、默认值、枚举、读写、排序与接口触发归 API。上游未定义时标记缺口，禁止在 UI 文档补设。
+
+**复杂交互效果门禁**：只有“一次直接点击，立即得到单一可见结果，且无中间态/联动/手势”的简单交互，可只写按下反馈与结果表现。跳转目标、先后路径及业务条件只读引用上游 Feature / 单页 PRD，不在 UI 新增或维护。除此之外均按复杂交互处理（如拖拽排序、滑动/长按、展开收起、滚动锚点联动、多选批量、分步流程、上传进度、异步提交、浮层开闭、跨区状态切换）：必须在 PAGE §2.3 或所引用 COMP 的状态矩阵写清 **触发方式、过程中的可见效果/过渡、完成后的可见状态变化，以及适用的取消/失败/禁用反馈**。禁止只写“支持拖拽/联动/切换”而不描述用户看到什么。
 
 **和下游的分工**：② 决定体验并写满 §2.3（默认体验规范是地板，不是功能天花板）；⑤ 把体验写进单页 PRD（不降级成线框）；⑥ 用套件实现 §2.3，并对标 `gold/` **视觉下限**（禁止忽略金样，也禁止把金样演示功能整页搬进规格没写的页），并**必须落地舒适默认**（骨架/空态/失败可重试/过渡/语义列宽），即使 §2.3 漏写。点图预览默认给：详情页图片、横卡多行卡内图、**单图/多图/视频上传缩略**；禁止给封面叠字 / 双列 / Banner / **文件上传**加预览。禁止 ⑥ 发明新的业务跳转、字段或弹窗。
 
 ## Additional resources
 
 - 模板与 L/D 层级、控件形态：[`reference.md`](reference.md)
+- UI 视觉与交互规则：[`reference/visual-rules.md`](reference/visual-rules.md)
+- 根索引骨架：[`reference/ui-manifest-template.md`](reference/ui-manifest-template.md)
 - 移动端设计词典（原则/视觉/组件/布局/交互分工）：[`reference-mobile-design.md`](reference-mobile-design.md)
 - 桌面端设计词典（通栏/分栏/表单栅格/列表六型/状态导览/定位与树）：[`reference-desktop-design.md`](reference-desktop-design.md)
 - 三步职责、页型编号与金样映射：[`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)
@@ -42,7 +45,7 @@ description: >-
 
 ## 页型速查（写 PAGE 前扫一眼）
 
-用户**不必**自备设计规范：未另给时一律采用 [`reference/ui-manifest-template.md`](reference/ui-manifest-template.md) **§1.7.0 默认体验规范**。编号与金样以 [`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md) 为准。同类页按表写 **§2.3 必须再写舒适默认**，禁止只抄控件名交差。细则 **§1.3.3 / §1.3.4 / §1.4.3 / §1.7**；**移动端滚动区选型**见 [`reference/ui-manifest-template.md` §1.3.4「滚动区页型选型」](reference/ui-manifest-template.md)。
+用户**不必**自备设计规范：未另给时一律采用 [`reference/visual-rules.md`](reference/visual-rules.md) **§1.7.0 默认体验规范**。编号与金样以 [`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md) 为准。同类页按表写 **§2.3 必须再写舒适默认**，禁止只抄控件名交差。细则 **§1.3.3 / §1.3.4 / §1.4.3 / §1.7**；**移动端滚动区选型**见 [`reference/visual-rules.md` §1.3.4「滚动区页型选型」](reference/visual-rules.md)。
 
 **移动端（MP）**
 
@@ -108,14 +111,14 @@ description: >-
 
 Read `lny-prd-master/framework-exclusions.md`、`lny-prd-master/reference-artifact-paths.md` 及本项目追加排除。不为框架通用已排除项建 `ui/PAGE-*`。Read `main_spec` §1.5「明确不做」（若有）：**禁止**为清单中的能力建 PAGE。**新立项只走目录化**（`ui_manifest` 只留索引 + `ui/` 明细）；旧「manifest 内嵌全文」只读兼容，禁止双轨扩写。
 
-写任何 `ui/PAGE-*` 前必须 Read 共享页型映射、[`reference/ui-manifest-template.md`](reference/ui-manifest-template.md) **§1.7**（先 **§1.7.0**）与 [`reference-mobile-design.md`](reference-mobile-design.md)（移动端）、[`reference-desktop-design.md`](reference-desktop-design.md)（桌面端），并在该页写 **§2.3**。移动端另读 **§1.3.3** 与 **§1.3.4**（L2 下沉/滚动、**滚动区页型选型**、L3 吸顶、Banner 两种形态）。桌面 D1-1 另读 **§1.4.3**。再扫上方 **页型速查**：按默认体验规范写舒适默认；对不上号时按页型找金样，禁止按 MP/AD 序号对齐，禁止拿商品列表硬套，禁止用表单窄双列冒充页面分栏。禁止只写「有个列表、有个按钮」就把球踢给 `/lny-prd-prototype`。用户另给交互规范时只覆盖冲突项，其余仍用 §1.7.0。
+写任何 `ui/PAGE-*` 前必须 Read 共享页型映射、[`reference/visual-rules.md`](reference/visual-rules.md) **§1.7**（先 **§1.7.0**）与 [`reference-mobile-design.md`](reference-mobile-design.md)（移动端）、[`reference-desktop-design.md`](reference-desktop-design.md)（桌面端），并在该页写 **§2.3**。移动端另读 **§1.3.3** 与 **§1.3.4**（L2 下沉/滚动、**滚动区页型选型**、L3 吸顶、Banner 两种形态）。桌面 D1-1 另读 **§1.4.3**。再扫上方 **页型速查**：按默认体验规范写舒适默认；对不上号时按页型找金样，禁止按 MP/AD 序号对齐，禁止拿商品列表硬套，禁止用表单窄双列冒充页面分栏。禁止只写「有个列表、有个按钮」就把球踢给 `/lny-prd-prototype`。用户另给交互规范时只覆盖冲突项，其余仍用 §1.7.0。
 
 **有序向导 / 引导分步页**（`PT-STATE-FLOW`，不限 MP-005 编号）：PAGE 模板 **步骤区必填**——导览形态三选一（桌面二选一）逐字点名 + **共 N 步**；L3 只写一种；§2.3 写「所选一种导览须一眼看懂共 N 步」。禁止 L2/L3 并列多种导览或「步骤条+进步条」类组合措辞。
 
 ## 职责与禁止
 
-- **负责**：以体验设计师身份产出 `ui_manifest.md` + `ui/PAGE-*.md` + `ui/COMP-*.md`（含 **§2.3 交互体验设计**：原则、视觉层级、组件、布局、反馈）；manifest 页面注册表只保留归属、路由、包类型、生命周期与明细路径，体验档位、视觉档位和设计链接只写 PAGE 明细；COMP 索引只登记编号、名称与路径；成功自检后推进本次 `ui_changes.md` 对应行状态。
-- **禁止**：只列控件不设计体验；改第4章终端表；写 `api_spec` 字段；改 `prototypes/`；写预览壳机制（状态演示/postMessage/`map.html`）；在根规范「变更记录」表新增行；落盘 `pages_prd/_shell`（属 ⑤）；把 `ui_manifest.md` 或 `ui/` 复制到 `versions/{v}/`（含 `versions/{v}/ui/` 与版本根散落文件）。**规格里**不要写 `#hex` / `px` / 阴影参数表（动效用「快/中/慢」「过渡滑入」）；**必须**用语义写主次、疏密、图文比例与反馈——「不写色值表」≠「不设计视觉」。仅当 PM 已说出点位或 AD 字典条目才写埋点；**禁止自拟埋点方案**。
+- **负责**：产出轻量 `ui_manifest.md` + `ui/PAGE-*.md` + `ui/COMP-*.md`。manifest 只保留 UI 框架、MP 包/Tab、PC/AD 菜单分组、页面地址与生命周期、COMP 轻索引；PAGE/COMP 只写可见结构、视觉层级、布局、状态表现、动效与反馈。成功自检后推进本次 `ui_changes.md` 对应行状态。
+- **禁止**：把 manifest 写成路由拓扑、产品策略或跨页规则汇总；定义用户路径、画像/角色分流、业务 Landing、跳转条件、权限、合规、审核、可见性、落库与业务状态机；定义或复制字段类型、必填性、默认值、枚举、读写、排序、接口用途和触发时机；让 UI 菜单分组等同 Feature Module。亦禁止只列控件不设计体验、改第4章终端表、改 `prototypes/`、写预览壳机制、在根规范变更记录新增行、落盘 `pages_prd/_shell` 或生成版本镜像。规格不写 `#hex` / `px` / 阴影参数表；仅当 PM 已说出点位才引用埋点，禁止自拟。
 
 COMP **编号必填** `COMP-{三位序号}`，与 `ui_manifest` §4「组件编号」列、`ui/COMP-*.md` 文件名一致。
 
@@ -126,7 +129,7 @@ COMP **编号必填** `COMP-{三位序号}`，与 `ui_manifest` §4「组件编�
 ## 写产物纪律
 
 1. 开笔前 Read `main_spec` 第4章（只读）、`ui_manifest` 与相关 `ui/` 明细。
-2. 一次对话一条主线；先清单后落盘；整块写。旧版宽索引在本次修改涉及对应表时收敛到当前列，禁止把 PAGE/COMP 明细字段复制回索引。
+2. 一次对话一条主线；先清单后落盘；整块写。旧版宽索引在本次修改涉及对应表时收敛到当前列；旧 §5 同轮分类：视觉共性留 §5，复用 UI 下沉 COMP，页面表现下沉 PAGE，产品/API 事实交④/③后从 UI 删除。迁移未完成不得宣称②完成，禁止为消除冲突直接丢弃产品事实。
 3. 收尾：`versions/{版本号}/iteration_notes.md` 文末追加业务变更流水（非则跳过）。
 
 ## 前置条件
@@ -149,9 +152,9 @@ COMP **编号必填** `COMP-{三位序号}`，与 `ui_manifest` §4「组件编�
 
 1. 校验 `main_spec` 第4章终端；目标终端不在表中则停，交 ①。
 2. 缺 `ui_manifest.md` / `ui/` 时按 [`reference/ui-manifest-template.md`](reference/ui-manifest-template.md) 创建索引骨架（立项兜底）。
-3. 更新 `§3.2` 注册信息与 `ui/PAGE-*.md` 设计明细：新建/在用页状态为 `active`，废弃页为 `deprecated`；**结构（L/D）+ §2.3**（含舒适默认六项）。移动端落实 §1.3.3。表外页型选最接近金样，禁止误套 D1-1。`fixture` 仅供技能包仓库回归样例，用户项目禁止生成。
+3. 更新 §3.1 分组注册、§3.2 页面地址注册与 `ui/PAGE-*.md` 设计明细：MP 使用包模块；PC/AD 使用已注册菜单分组；禁止“所属模块”。新建/在用页状态为 `active`，废弃页为 `deprecated`；PAGE 写 **结构（L/D）+ §2.3**（含舒适默认六项），但不写产品流程或接口契约。移动端落实 §1.3.3。表外页型选最接近金样，禁止误套 D1-1。`fixture` 仅供技能包仓库回归样例，用户项目禁止生成。
 4. 涉及 COMP：更新 §4 与 `ui/COMP-*.md`（状态矩阵 + **按下/成功/失败/过渡**，禁止只写 default）。
 5. 文末追加 `iteration_notes`（若有业务变更）。
-6. **自检**：删掉该页 §2.3 后，⑥ 是否只能画出线框空盒子？是 → 没写够。舒适默认六项是否都有一句（或「无」）？表外页型是否误套了 D1-1？**有序向导**：**步骤区**是否三选一点名 + 共 N 步？L3 是否只写一种导览？除一次直接点击的简单交互外，每项复杂交互是否写清触发、可见过程/过渡、结果状态及适用的取消/失败/禁用反馈？
+6. **自检**：manifest §5 是否只剩全局视觉约定？PC/AD 菜单分组是否先注册且不列页面？是否把页面地址误写成用户路径？PAGE/COMP 是否出现产品策略、权限合规、字段契约或接口触发？若有，交责任规格补齐后从 UI 删除。再检查：删掉 §2.3 后⑥是否只能画出线框空盒子；舒适默认六项是否齐；页型、向导与复杂交互效果是否完整。
 7. 自检通过后推进 `ui_changes.md` 状态：新增/修改页 `待②` → `待⑤`；废弃页 `待②` → `已完成`。有缺口或失败则保留 `待②`。
 8. 输出已改文件与页面编号。
