@@ -146,7 +146,7 @@ a:hover { text-decoration: none; }
 .md-h3 { font-size: 1.25rem; font-weight: 500; line-height: 1.6; letter-spacing: 0.0075em; margin: 0; }
 .md-subtitle { font-size: 1rem; font-weight: 400; line-height: 1.75; letter-spacing: 0.00938em; color: var(--md-text-secondary); }
 .md-body2 { font-size: 0.875rem; font-weight: 400; line-height: 1.43; letter-spacing: 0.01071em; }
-.md-caption { font-size: 0.75rem; font-weight: 400; line-height: 1.66; letter-spacing: 0.03333em; color: var(--md-text-secondary); }
+.md-caption { font-size: 0.75rem; font-weight: 400; line-height: 1.66; letter-spacing: 0.03333em; color: var(--md-text-secondary); margin: 0; }
 .md-overline { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08333em; text-transform: uppercase; color: var(--md-text-secondary); }
 
 .md-elev-1 { box-shadow: var(--md-shadow-1); }
@@ -160,6 +160,7 @@ a:hover { text-decoration: none; }
   color: var(--md-text);
 }
 .md-paper--elev { box-shadow: var(--md-shadow-1); }
+.md-paper--clip { overflow: hidden; }
 
 .md-card {
   position: relative;
@@ -1305,6 +1306,11 @@ textarea.md-field__input:disabled:focus,
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.md-table .md-col-label {
+  width: 136px;
+  min-width: 136px;
+  max-width: 160px;
+}
 /* 同一单元格多字段多行：主/次行，禁止上下叠字 */
 .md-cell-stack {
   display: flex;
@@ -1784,7 +1790,9 @@ textarea.md-field__input:disabled:focus,
   transform: translate(-50%, -50%) scale(1);
 }
 .md-dialog__title { padding: 16px 24px 8px; font-size: 1.25rem; font-weight: 500; margin: 0; flex-shrink: 0; }
-.md-dialog__body { padding: 8px 24px 16px; font-size: 1rem; color: var(--md-text-secondary); overflow: auto; min-height: 0; }
+.md-dialog__body { padding: 8px 24px 16px; font-size: 1rem; color: var(--md-text-secondary); overflow: auto; min-height: 0; display: flex; flex-direction: column; gap: 8px; }
+.md-dialog__body > * { margin-block: 0; }
+.md-dialog__body > .md-section-head:not(:first-child) { margin-top: 8px; }
 .md-dialog__actions { padding: 8px; display: flex; justify-content: flex-end; gap: 8px; flex-shrink: 0; }
 body.md-dialog-open { overflow: hidden; }
 
@@ -6692,7 +6700,7 @@ button.md-set-row:active { background: var(--md-selected); }
   box-shadow: var(--md-shadow-edge-top);
   flex-shrink: 0;
 }
-.md-action-bar .md-btn { flex: 1; }
+.md-action-bar .md-btn { flex: 1 1 0; min-width: 0; }
 /* 贴底主操作条：一行只有一个按钮时占满整行 */
 .md-action-bar > .md-btn:only-child,
 .md-action-bar > a.md-btn:only-child {
@@ -7165,6 +7173,10 @@ a.md-card {
   padding-right: max(var(--md-safe-r), 96px);
   transition: background-color 180ms var(--md-ease), color 180ms var(--md-ease), border-color 180ms var(--md-ease);
 }
+.md-mobile-page .md-appbar--mobile.md-appbar--overlay {
+  padding-left: var(--md-safe-l);
+  padding-right: max(var(--md-safe-r), 96px);
+}
 .md-mobile-page.md-immersive .md-appbar--overlay {
   background: transparent;
   border: 0;
@@ -7332,7 +7344,7 @@ a.md-card {
   padding-bottom: 4px;
 }
 .md-detail-page .md-section-head {
-  margin: 0 0 12px;
+  margin: 0;
 }
 .md-detail-page .md-module,
 .md-detail-page .md-detail-hero,
@@ -7991,6 +8003,11 @@ a.md-card {
 .md-mobile-page.md-set-page > .md-mobile-body > .md-mobile-sheet {
   padding-left: 0;
   padding-right: 0;
+}
+.md-mobile-page.md-form-page > .md-mobile-body > .md-mobile-sheet.md-mobile-sheet--inset,
+.md-mobile-page.md-set-page > .md-mobile-body > .md-mobile-sheet.md-mobile-sheet--inset {
+  padding-left: var(--md-safe-l);
+  padding-right: var(--md-safe-r);
 }
 /* Legacy：body 直放 form 且无 sheet 时 body 承担 safe；有 sheet 时 safe 只在 sheet（列表搜索 form 在 toolbar 不算） */
 .md-mobile-page:has(> .md-mobile-body > form):not(.md-form-page) > .md-mobile-body:not(:has(> .md-mobile-sheet)) {

@@ -416,6 +416,47 @@ def validate_script_syntax(errors: list[str]) -> None:
         require_run([node or "node", "--check", str(path)], errors, f"JS syntax {path}")
 
 
+def validate_prototype_source_contract(errors: list[str]) -> None:
+    kit = ROOT / "lny-prd-prototype" / "kit"
+    css = (kit / "mui-kit.css").read_text(encoding="utf-8")
+    js = (kit / "proto-page.js").read_text(encoding="utf-8")
+    css_patterns = {
+        "caption margin reset": r"\.md-caption\s*\{[^}]*\bmargin:\s*0\s*;",
+        "clipped paper": r"\.md-paper--clip\s*\{\s*overflow:\s*hidden\s*;\s*\}",
+        "overlay safe padding": (
+            r"\.md-mobile-page\s+\.md-appbar--mobile\.md-appbar--overlay\s*\{"
+            r"[^}]*padding-left:\s*var\(--md-safe-l\)\s*;"
+            r"[^}]*padding-right:\s*max\(var\(--md-safe-r\),\s*96px\)\s*;"
+        ),
+        "category label width": (
+            r"\.md-table\s+\.md-col-label\s*\{[^}]*width:\s*136px\s*;"
+            r"[^}]*min-width:\s*136px\s*;[^}]*max-width:\s*160px\s*;"
+        ),
+    }
+    js_tokens = {
+        "select-wrap text trigger measurement": (
+            'control.classList.contains("md-select-wrap")',
+            'control.querySelector(".md-btn")',
+            "measureTextPx(label, textRef || button)",
+        ),
+        "direct action gap measurement": (
+            "packStyle.columnGap || packStyle.gap",
+            "Math.max(0, children.length - 1) * gap",
+        ),
+        "overflow-aware default detail nav": (
+            'var automatic = !mode || mode === "on"',
+            "root.scrollHeight <= root.clientHeight + 1",
+            "collectDetailSections(page).length >= 2",
+        ),
+    }
+    for label, pattern in css_patterns.items():
+        if re.search(pattern, css, flags=re.S) is None:
+            fail(errors, f"prototype CSS contract missing: {label}")
+    for label, tokens in js_tokens.items():
+        if any(token not in js for token in tokens):
+            fail(errors, f"prototype JS contract missing: {label}")
+
+
 def validate_example_prototype_identity(errors: list[str]) -> None:
     current = ROOT / "examples" / "mini-shop" / "prototypes"
     for path in sorted(current.rglob("PAGE-*.html")):
@@ -522,32 +563,42 @@ def validate_coverage_regressions(module, errors: list[str]) -> None:
         fail(errors, "coverage rejected md-card--order as a supported mobile list card")
 
     generic_mobile = module.PageParser()
-    generic_mobile.feed('<div class="md-mobile-page md-standard"></div>')
-    if not module.mobile_section_head_required(generic_mobile):
-        fail(errors, "coverage stopped requiring section heads on generic mobile pages")
-    for page_class in ("md-tree-page", "md-form-page"):
-        typed_mobile = module.PageParser()
-        typed_mobile.feed(
-            f'<div class="md-mobile-page md-standard {page_class}"></div>'
-        )
-        if module.mobile_section_head_required(typed_mobile):
-            fail(errors, f"coverage required a section head on {page_class}")
-    for content_class in (
-        "md-card md-card--cover",
-        "md-card md-card--tile",
-        "md-card md-card--row",
-        "md-card md-card--order",
-        "md-grid-2",
-        "md-comment-list",
-        "md-group-list",
+    generic_mobile.feed(
+        '<body><div class="md-mobile-page md-standard">'
+        '<main class="md-mobile-body"><div class="md-mobile-sheet">'
+        '<section data-section="content"></section>'
+        '</div></main></div></body>'
+    )
+    if (
+        generic_mobile.mobile_body_count != 1
+        or generic_mobile.direct_mobile_sheet_count != 1
+        or generic_mobile.direct_mobile_body_non_sheet
     ):
-        typed_mobile = module.PageParser()
-        typed_mobile.feed(
-            '<div class="md-mobile-page md-standard">'
-            f'<div class="{content_class}"></div></div>'
-        )
-        if module.mobile_section_head_required(typed_mobile):
-            fail(errors, f"coverage required a section head on {content_class}")
+        fail(errors, "coverage rejected a valid heading-free body > sheet mobile page")
+
+    direct_l3 = module.PageParser()
+    direct_l3.feed(
+        '<body><div class="md-mobile-page md-standard">'
+        '<main class="md-mobile-body"><section class="md-module"></section></main>'
+        '</div></body>'
+    )
+    if (
+        direct_l3.mobile_body_count != 1
+        or direct_l3.direct_mobile_sheet_count != 0
+        or direct_l3.direct_mobile_body_non_sheet != ["section"]
+    ):
+        fail(errors, "coverage failed to detect a missing sheet and direct L3 child")
+
+    visible_copy = module.PageParser()
+    visible_copy.feed(
+        '<body><script>API-MP-001</script><span hidden>fitBounds</span>'
+        '<p>API-MP-002</p></body>'
+    )
+    visible_text = "".join(visible_copy.text_parts)
+    if visible_text != "API-MP-002":
+        fail(errors, "coverage visible-copy parser included hidden implementation text")
+    if module.VISIBLE_IMPL_COPY_RE.findall(visible_text) != ["API-MP-002"]:
+        fail(errors, "coverage failed to flag visible implementation text")
 
     wizard_demo = (
         '<div class="md-form-page"><div data-wizard-panel="stepper">'
@@ -952,6 +1003,7 @@ def main() -> int:
     validate_markdown_links(errors)
     validate_text_and_yaml(errors)
     validate_script_syntax(errors)
+    validate_prototype_source_contract(errors)
     validate_example_prototype_identity(errors)
     validate_kit_copies(errors)
     validate_page_type_consistency(errors)

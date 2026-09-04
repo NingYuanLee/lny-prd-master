@@ -2640,17 +2640,22 @@
       var mode = page.getAttribute("data-detail-nav");
       if (mode === "off" || mode === "0" || mode === "false") return;
       if (page.querySelector(".md-pod--detail-nav")) return;
-      var wantToc = true;
-      var wantTop = true;
-      if (page.querySelector(".md-split--outline-right .md-locator--outline")) {
-        wantToc = false;
-        if (!mode || mode === "on") wantTop = false;
-      }
-      if (mode === "toc") wantTop = false;
-      else if (mode === "top") wantToc = false;
-      else if (mode && mode !== "on") {
+      var automatic = !mode || mode === "on";
+      var hasRightOutline = !!page.querySelector(
+        ".md-split--outline-right .md-locator--outline"
+      );
+      var wantToc;
+      var wantTop;
+      if (automatic) {
+        if (hasRightOutline) return;
+        var root = detailScrollRoot(page);
+        if (!root || root.scrollHeight <= root.clientHeight + 1) return;
+        wantToc = collectDetailSections(page).length >= 2;
+        wantTop = true;
+      } else {
         wantToc = mode.indexOf("toc") >= 0;
         wantTop = mode.indexOf("top") >= 0;
+        if (hasRightOutline) wantToc = false;
       }
       if (!wantToc && !wantTop) return;
 
@@ -3057,34 +3062,39 @@
     return Math.ceil(ctx.measureText(text || "").width);
   }
 
-  /** 按直出控件计数/文案算宽（28px 图标钮；文字钮按 font 测字宽+padding），与视口无关 */
+  function actionControlWidth(control, textRef) {
+    if (!control) return 0;
+    var button = control;
+    if (control.classList.contains("md-select-wrap")) {
+      button = control.querySelector(".md-btn");
+    }
+    if (!button) return 0;
+    if (button.classList.contains("md-icon-btn")) return 28;
+    if (!button.classList.contains("md-btn")) return 0;
+    var label = (button.textContent || "").replace(/\s+/g, " ").trim();
+    var cs = window.getComputedStyle(button);
+    var pad =
+      (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+    var border =
+      (parseFloat(cs.borderLeftWidth) || 0) +
+      (parseFloat(cs.borderRightWidth) || 0);
+    return pad + border + measureTextPx(label, textRef || button);
+  }
+
+  /** 按直出控件计数/文案与直接子项 gap 算宽，与视口无关 */
   function calcActionsContentWidth(pack, refCell) {
     if (!pack) return 0;
     var total = 0;
-    var iconW = 28;
     var textRef =
       pack.querySelector(".md-btn:not(.md-icon-btn)") ||
       (refCell && refCell.querySelector(".md-actions .md-btn:not(.md-icon-btn)"));
-    Array.prototype.forEach.call(pack.children, function (child) {
-      if (child.classList.contains("md-icon-btn")) {
-        total += iconW;
-        return;
-      }
-      if (child.classList.contains("md-select-wrap")) {
-        if (child.querySelector(".md-icon-btn")) total += iconW;
-        return;
-      }
-      if (child.classList.contains("md-btn")) {
-        var label = (child.textContent || "").replace(/\s+/g, " ").trim();
-        var cs = window.getComputedStyle(child);
-        var pad =
-          (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
-        var border =
-          (parseFloat(cs.borderLeftWidth) || 0) +
-          (parseFloat(cs.borderRightWidth) || 0);
-        total += pad + border + measureTextPx(label, textRef || child);
-      }
+    var children = Array.prototype.slice.call(pack.children);
+    children.forEach(function (child) {
+      total += actionControlWidth(child, textRef);
     });
+    var packStyle = window.getComputedStyle(pack);
+    var gap = parseFloat(packStyle.columnGap || packStyle.gap) || 0;
+    total += Math.max(0, children.length - 1) * gap;
     return total;
   }
 

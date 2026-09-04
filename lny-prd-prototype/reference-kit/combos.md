@@ -64,7 +64,7 @@ D5 弹窗用 `md-dialog` + **`md-backdrop`（半透明黑、全屏、`z-index` �
 | 图文混排 | `md-article` | **四级标题** `__h1`～`__h4`；短段默认**不**首行缩进；大段多行正文用 `__body` 才缩进；多项目用 `__list`（`--ordered` 有序）；配图 `__figures--1/2`；图注 `__caption` 居中；表格 `__table-wrap` |
 | 评论 | `md-comment-list` > `md-comment` | 评论模块 **透底**；条目仍 **列表卡**（轻阴影 `--md-shadow-surface`、间距露灰） |
 | 点图预览 | 页根 `data-lightbox` | **分区成组**：轮播（`.md-swiper`）一组、图文（`.md-article`）一组、评论（`.md-comment-list`）一组；翻上一张/下一张不跨区。可选 `data-lightbox-group` 自定容器 |
-| 页内导航 | 触屏：右下 `md-pod--detail-nav`（目录半屏 + 回顶）。**桌面详情**：`md-d1--detail-split` + `md-split--outline-right`，右栏 `md-locator--outline` 常驻目录，点选滚锚点、滚正文 `is-active` 联动；`data-detail-nav="off"` 或右栏目录时脚本不注入悬浮钮 | 桌面用右下悬浮目录；用悬浮大纲冒充详情分栏 |
+| 页内导航 | 触屏：默认/`data-detail-nav="on"` 仅在正文溢出时注入右下导航；至少 2 个有标题分区才含目录，短页不注入。`off` / `toc` / `top` 等显式模式可覆盖默认。**桌面详情**：`md-d1--detail-split` + `md-split--outline-right`，右栏 `md-locator--outline` 常驻目录并抑制默认悬浮钮，点选滚锚点、滚正文 `is-active` 联动 | 桌面用右下悬浮目录；用悬浮大纲冒充详情分栏 |
 
 ```html
 <div class="md-mobile-page md-immersive md-detail-page" data-lightbox>

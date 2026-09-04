@@ -19,6 +19,9 @@ STYLE_THEME_RE = re.compile(
     r"\b(background|color|font|border(-color|-radius)?)\s*:",
     re.I,
 )
+VISIBLE_IMPL_COPY_RE = re.compile(
+    r"API-[A-Z]+-\d+|fitBounds|本页不含|不提供新建|无操作列|只读监控|只读台账|编号占位|模拟确认"
+)
 SKIP_QUOTES = {"无", "是", "否"}
 VOID_ELEMENTS = {
     "area",
@@ -37,24 +40,6 @@ VOID_ELEMENTS = {
     "wbr",
 }
 CARD_DENSITY_CONTEXT_CLASSES = {"md-grid-2", "md-list-toolbar", "md-timeline"}
-LIST_MODULE_CLASSES = {
-    "md-card--cover",
-    "md-card--tile",
-    "md-card--row",
-    "md-card--order",
-    "md-grid-2",
-    "md-comment-list",
-    "md-group-list",
-}
-FUNC_AREA_CLASSES = {"md-king", "md-svc-strip", "md-set-pair", "md-set-group"}
-MOBILE_SECTION_HEAD_OPTIONAL_CLASSES = {
-    "md-card--order",
-    "md-chapter-list",
-    "md-form-page",
-    "md-group-list",
-    "md-set-page",
-    "md-tree-page",
-}
 MOBILE_LIST_CARD_CLASSES = {"md-card--order", "md-card--row"}
 
 
@@ -259,7 +244,7 @@ def parse_prd(text: str) -> tuple[set[str], set[str], list[str]]:
 class PageParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
-        self.stack: list[tuple[str, set[str]]] = []
+        self.stack: list[tuple[str, set[str], bool]] = []
         self.errors: list[str] = []
         self.text_parts: list[str] = []
         self.has_kit_css = False
@@ -267,13 +252,11 @@ class PageParser(HTMLParser):
         self.hrefs: set[str] = set()
         self.comps: set[str] = set()
         self.empty_for: set[str] = set()
-        self.in_style = False
         self.in_thead = 0
         self.in_data_table = 0
         self.is_mobile = False
         self.is_desktop = False
         self.has_status_bar = False
-        self.has_section_head = False
         self.has_breadcrumb = False
         self.has_tabbar = False
         self.has_mobile_appbar = False
@@ -285,38 +268,47 @@ class PageParser(HTMLParser):
         self.has_card_density_context = False
         self.has_dense_data_table = False
         self.has_list_toolbar = False
-        self.has_list_module = False
-        self.has_func_area = False
-        self.classes_seen: set[str] = set()
+        self.mobile_body_count = 0
+        self.direct_mobile_sheet_count = 0
+        self.direct_mobile_body_non_sheet: list[str] = []
         self.comp_states: dict[str, set[str]] = {}
         self.state_views: dict[str, set[str]] = {}
         self.skel_for: set[str] = set()
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         ad = {k: (v or "") for k, v in attrs}
+        attr_names = {k for k, _ in attrs}
         classes = set((ad.get("class") or "").split())
-        self.classes_seen.update(classes)
-        ancestors = [item_classes for _, item_classes in self.stack]
+        parent = self.stack[-1] if self.stack else None
+        ancestors = [item_classes for _, item_classes, _ in self.stack]
+        hidden_text = (
+            tag in {"script", "style", "template", "noscript"}
+            or "hidden" in attr_names
+            or ad.get("aria-hidden", "").strip().lower() == "true"
+            or "is-hidden" in classes
+            or bool(parent and parent[2])
+        )
+        if "md-mobile-body" in classes:
+            self.mobile_body_count += 1
+        if parent and "md-mobile-body" in parent[1]:
+            if "md-mobile-sheet" in classes:
+                self.direct_mobile_sheet_count += 1
+            else:
+                self.direct_mobile_body_non_sheet.append(tag)
         if tag not in VOID_ELEMENTS:
-            self.stack.append((tag, classes))
+            self.stack.append((tag, classes, hidden_text))
         if classes & CARD_DENSITY_CONTEXT_CLASSES:
             self.has_card_density_context = True
         if "md-d1--list" in classes or "md-d1__list" in classes:
             self.has_dense_data_table = True
         if "md-list-toolbar" in classes:
             self.has_list_toolbar = True
-        if classes & LIST_MODULE_CLASSES:
-            self.has_list_module = True
-        if classes & FUNC_AREA_CLASSES:
-            self.has_func_area = True
         if "md-mobile-page" in classes:
             self.is_mobile = True
         if "md-d1" in classes:
             self.is_desktop = True
         if "md-status-bar" in classes:
             self.has_status_bar = True
-        if "md-section-head" in classes:
-            self.has_section_head = True
         if "md-breadcrumb" in classes:
             self.has_breadcrumb = True
         if "md-tabbar" in classes:
@@ -346,7 +338,6 @@ class PageParser(HTMLParser):
         if tag == "tr" and self.in_data_table and self.in_thead == 0:
             self.table_rows += 1
         if tag == "style":
-            self.in_style = True
             self.errors.append("page <style> is forbidden; use kit classes")
         if tag == "link" and "mui-kit.css" in ad.get("href", ""):
             self.has_kit_css = True
@@ -411,8 +402,6 @@ class PageParser(HTMLParser):
                     + str(self.getpos())
                 )
     def handle_endtag(self, tag: str) -> None:
-        if tag == "style":
-            self.in_style = False
         if tag == "thead" and self.in_thead:
             self.in_thead -= 1
         if tag == "table" and self.in_data_table:
@@ -423,7 +412,11 @@ class PageParser(HTMLParser):
                 break
 
     def handle_data(self, data: str) -> None:
-        if not self.in_style:
+        if (
+            self.stack
+            and any(tag == "body" for tag, _, _ in self.stack)
+            and not self.stack[-1][2]
+        ):
             self.text_parts.append(data)
 
 
@@ -482,13 +475,46 @@ def check_html(
     )
     if low_fi:
         errors.append(str(path) + ": low-fidelity fixture " + low_fi.group(0))
+    for match in dict.fromkeys(VISIBLE_IMPL_COPY_RE.findall(visible)):
+        errors.append(
+            str(path)
+            + ": visible body copy exposes implementation/meta text: "
+            + match
+        )
     if parser.bare_media:
         errors.append(str(path) + ": md-media-ph without --1..--6 variant")
     errors.extend(check_density(path, parser))
     if parser.is_mobile and "proto-page.js" not in parser.scripts:
         errors.append(str(path) + ": mobile page missing proto-page.js (injects fixed status bar)")
-    if mobile_section_head_required(parser) and not parser.has_section_head:
-        errors.append(str(path) + ": mobile page missing md-section-head")
+    if parser.is_mobile:
+        if parser.mobile_body_count == 0:
+            errors.append(str(path) + ": mobile page missing md-mobile-body")
+        elif parser.mobile_body_count > 1:
+            errors.append(
+                str(path)
+                + ": mobile page has multiple md-mobile-body elements (got "
+                + str(parser.mobile_body_count)
+                + ")"
+            )
+        if parser.direct_mobile_sheet_count == 0:
+            errors.append(
+                str(path)
+                + ": mobile page missing direct md-mobile-sheet child of md-mobile-body"
+            )
+        elif parser.direct_mobile_sheet_count > 1:
+            errors.append(
+                str(path)
+                + ": mobile page has multiple direct md-mobile-sheet children of md-mobile-body (got "
+                + str(parser.direct_mobile_sheet_count)
+                + ")"
+            )
+        if parser.direct_mobile_body_non_sheet:
+            errors.append(
+                str(path)
+                + ": md-mobile-body has direct non-sheet child: "
+                + ", ".join(parser.direct_mobile_body_non_sheet)
+                + " (put L3 inside md-mobile-sheet and fixed L1 outside md-mobile-body)"
+            )
     if parser.is_desktop and not parser.has_breadcrumb:
         errors.append(str(path) + ": desktop page missing md-breadcrumb")
     errors.extend(check_visual_floor(path, page_id, text, parser, fixture=fixture))
@@ -614,17 +640,6 @@ def check_density(path: Path, parser: PageParser) -> list[str]:
             + ")"
         )
     return errors
-
-
-def mobile_section_head_required(parser: PageParser) -> bool:
-    """Require a heading only when no self-describing mobile structure exists."""
-    if not parser.is_mobile:
-        return False
-    if parser.classes_seen & MOBILE_SECTION_HEAD_OPTIONAL_CLASSES:
-        return False
-    if parser.has_func_area or parser.has_list_module:
-        return False
-    return True
 
 
 DIALOG_ID_RE = re.compile(

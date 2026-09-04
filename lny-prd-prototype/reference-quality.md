@@ -77,7 +77,7 @@ node <skillDir>/scripts/verify-prototype-browser.mjs <prdRoot> --page PAGE-MP-01
 |------|--------|----------|
 | G4.1 | 本页 `pages_prd` | 本页文件已 Read；未用其它页或记忆顶替 |
 | G4.1b | `ui/PAGE` §2.3 | 动效/微反馈/收纳已按体验规格落地，未另发明交互 |
-| G4.2 | §3 ASCII 线框与 `###` 分区 | 每个内容分区在 HTML 有对应可见区块（`data-section` 或可见标题）；禁止只画顶栏+一张空表 |
+| G4.2 | §3 ASCII 线框与 `###` 分区 | 每个内容分区在 HTML 有对应区块；`data-section` 即足够。Markdown `###` 只用于编写结构，不自动成为可见文案；仅当 §2.3 /「结构与控件」明确声明准确的用户可见标题时才渲染该标题，禁止只为通过校验添加 `md-section-head`；禁止只画顶栏+一张空表 |
 | G4.3 | 各分区「结构与控件」 | 每个按钮/输入/Tab/卡片/列均用 `md-*` 落地；套件无类名 → [`reference-kit/combos.md`](reference-kit/combos.md)「无类名组合」 |
 | G4.4 | §4 跳转清单 | 每个目标 `PAGE-*` 有可点 `href`（本页自身与「无」除外） |
 | G4.5 | `ui/COMP-*` 状态矩阵 | `data-comp` + `data-state`；`empty`/`error` 有 `.md-empty`；`loading` 有骨架（卡片态或 `md-skel-host`） |
@@ -102,7 +102,7 @@ node <skillDir>/scripts/verify-prototype-browser.mjs <prdRoot> --page PAGE-MP-01
 | G5.10 | 易误套页型 | 按页类型打开金样，禁止按 MP/AD 序号对齐。工作台/树/设置/我的/向导/时间轴/桌面详情用对应金样；禁止拿 `desktop-lists` / `mobile-list` 整页硬套；禁止一排按钮冒充功能区 |
 | G5.11 | SKILL 标注 | 总入口 `prototypes/index.html` 页底右下有技能包地址小字（见 `reference-scope.md`）；各端 `index.html` 由 `proto-shell.js` 注入，禁止手写或删 |
 | G5.12 | 控件皮肤 | 可点操作用 `md-btn`（含 `--contained` / `--outlined` / `--soft` / `--text` / `--link`）或 `md-icon-btn` / `md-tab` / `md-menu__item` / `md-page-btn` / `md-tree__item`；无 `md-*` 的 `<button>` / `<input type="submit">` 不得交付（浏览器灰钮） |
-| G5.13 | 触屏间距预算 | 按 `reference-kit.md` §触屏间距三层联动 + **§滚动容器底与边**：L2 统一基础 padding/背景，L3 不重复页级 safe/底色；父 gap + seam 边不叠双倍 |
+| G5.13 | 触屏间距与 DOM | 按 `reference-kit.md` §触屏间距三层联动 + **§滚动容器底与边**：每页恰有一个 `md-mobile-body`，其直接子节点恰有一个 `md-mobile-sheet` 且不直放 L3；固定 L1 位于 body 外。L2 统一基础 padding/背景，L3 不重复页级 safe/底色；父 gap + seam 边不叠双倍 |
 | G5.14 | 浮层遮罩 | 每个 `md-dialog[id]` / `md-drawer[id]` **须**配对 **`{id}Backdrop`**（`md-backdrop` 半透明黑）；打开用 `ProtoPage.openDialog` / `openDrawer`；禁止只有白面板无遮罩、`alert()` |
 
 禁止：对照未过就汇报「已更新」；把 G.3（UTF-8/控制台）当成功能齐套；按 ASCII 线框从零手写一页更瘦的布局。

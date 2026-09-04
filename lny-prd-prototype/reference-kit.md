@@ -48,7 +48,7 @@
 
 **原型默认高保真**：与 `ui/PAGE`「视觉细节」估点档位无关。⑥ 必须按本节「高保真落地」出图，禁止线框式两张灰卡、禁止「示例商品 A」。
 
-`pages_prd` ASCII **只定分区上下顺序**，不是视觉稿。写页前必须 Read [`gold/README.md`](gold/README.md) 与对应金样，**对标视觉下限**再换文案。禁止把 `┌─┐` 画成带边框空盒子，也禁止把金样演示功能（凡图即灯箱、全套表单样例）搬进规格没写的业务页。点图预览只默认给详情页与横卡多行。
+`pages_prd` ASCII **只定分区上下顺序**，不是视觉稿。Markdown 标题、L 层、Module、US、Feature 与否定约束均不自动成为 UI 文案；仅当 §2.3 /「结构与控件」明确声明准确的用户可见标题时才渲染标题。Tab、字段名、设置行已自解释的区域不重复加 `md-section-head`。写页前必须 Read [`gold/README.md`](gold/README.md) 与对应金样，**对标视觉下限**再换文案。禁止把 `┌─┐` 画成带边框空盒子，也禁止把金样演示功能（凡图即灯箱、全套表单样例）搬进规格没写的业务页。点图预览只默认给详情页与横卡多行。
 
 ## 高保真落地（必守）
 
@@ -67,6 +67,8 @@
 | 移动端 | 状态栏由 `proto-page.js` 固定顶注入；页根须标 `md-immersive` 或 `md-standard`；**列表/详情等多模块页**在须区分分区时用 `md-section-head`（产品文案如「精选」「评论」）；**金刚/通栏/服务条等功能区默认无 `md-section-head`**（见 `gold/mobile-grid.html` / `mobile-menu.html`；§1.3.5）。**列表区** `md-card--cover` / `--tile` / `--row`（多行，可无左图+小图）/ `md-set-row`（单行）；**功能区** `md-king` / `--pair` / `md-set-row` 通栏 / `md-set-pair`；触屏 `md-search` 仅左图标+输入；`viewport-fit=cover`；正文左右下走 `--md-safe-*`；标准顶栏左右 4px |
 | 桌面端 | 必须有 `md-breadcrumb`（内容区顶部，不要 `md-page-head` 大标题）；表格首列可用 `md-row-goods` + `md-thumb md-media-ph--n`。D1-1 的冻结、操作阈值、语义列宽、紧凑密度和底部对齐直接执行共享 `PT-DESKTOP-LIST`：根用 `md-d1--list`，列用对应 `md-col-*`，更多菜单用 `md-actions` + `data-menu`，汇总/分页用 `md-d1__stats` / `md-d1__pager`。触屏弹窗/半屏内边距收紧；底半屏高度随内容、最大 70vh、超出正文滚动、关闭钮在面板右上角（`md-drawer__close`）。规格出现的弹窗/签/下拉/日期/按钮组必须用本节 AD 控件，禁止裸 `alert` / 无样式 `<select>` |
 | 间距 | 触屏走 **§触屏间距三层联动** + **§滚动容器底与边**：滚动区基础 padding/背景只在 L2 承担一次；父级 `gap` 定兄弟节奏；块 seam 边不重复叠 padding/margin；块内 content padding 写在 `__item`/`__body` |
+
+纸面内放平铺 `md-set-group` 时给 `md-paper` 加 `md-paper--clip`，让圆角裁住组背景；长分类表头/值列用 `md-col-label`（136–160px）。详情页默认或 `data-detail-nav="on"` 仅在正文实际溢出时注入导航，且至少两个有标题分区才显示目录；短页不注入目录或回顶，`off` / `toc` / `top` 等显式模式仍可用。
 
 ## 触屏间距三层联动（间距预算）
 
@@ -129,12 +131,12 @@ sheet：   md-mobile-sheet         浅灰 #f7f7f7 + 统一上下/左右内边距
 
 | 位置 | sheet？ | DOM 位置 |
 |------|---------|----------|
-| **L2 滚动主内容** | **必须有** | `md-mobile-body` 的 **唯一** 直接子节点 → `md-mobile-sheet` → L3 |
+| **L2 滚动主内容** | **必须有** | 每页恰有一个 `md-mobile-body`；其 **唯一** 直接子节点是一个 `md-mobile-sheet`，L3 只能放入 sheet |
 | **L1 固定**（顶栏/搜索筛选/TabBar/贴底条） | **没有** | 页根下与 `md-mobile-body` **并列** |
 | **L2 下沉 Hero** | **没有** | 页根下与 `md-mobile-body` **并列**的 `md-hero` |
 | **L5 浮层** | **没有** | 页根级 drawer/dialog/toast |
 
-**一种页只有一个 sheet**；禁止 body 里嵌套多层 sheet，禁止 sheet 里再套 Hero。
+**一种页只有一个 sheet**；禁止 body 直放 L3、禁止 body 里嵌套多层 sheet、禁止 sheet 里再套 Hero。固定 L1 必须在 `md-mobile-body` 外与其并列。
 
 **sheet 修饰**（都有 sheet，只变左右 safe）：
 
