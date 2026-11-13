@@ -8,6 +8,13 @@ LNY-PRD 技能包（`bundle_id: lny-prd`）的显著变更记录于此文件。
 
 ## Unreleased
 
+## 2.23.1 - 2026-11-13
+
+- 修复去夹具化后的图标覆盖回归：`kit/md-icons.js` 的 `fillHost()` 此前无条件清空 `[data-icon]` 宿主并注入 Material 图标，导致项目内联的描边风格 SVG 图标在运行时被覆盖回 Material（校验契约要求保留 `data-icon` 属性，故不能直接删除该属性）。新增 `isProjectSvg()`：宿主已内联项目自有 SVG（带 `stroke`、无实底 `fill` 路径）时跳过注入，让项目自有图标优先；空宿主仍由 kit 正常填充。
+- 同步 `examples/mini-shop/prototypes/{MP,AD,PC}/assets/md-icons.js` 三份副本，保持与 kit 字节一致（包校验器强制）。
+- 新增包校验断言：kit 的 `fillHost` 必须包含项目 SVG 优先判定，防止后续回归。
+
+
 ## 2.23.0 - 2026-11-13
 
 - 去夹具化：⑥ 原型步不再对「页面怎么画」负责，只保留壳层与文件结构约束。删除 `lny-prd-prototype/gold/`（15 触屏 + 14 桌面样例页）、`reference-kit.md` 与 `reference-kit/` 分片、`reference-mobile-design.md`、夹具对照与同步脚本。

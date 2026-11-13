@@ -467,6 +467,15 @@ def validate_example_prototype_identity(errors: list[str]) -> None:
             fail(errors, f"{path}: terminal directory must be {terminal}")
 
 
+def validate_project_icon_priority(errors: list[str]) -> None:
+    """kit must not overwrite project-authored inline SVGs on [data-icon] hosts."""
+    path = ROOT / "lny-prd-prototype" / "kit" / "md-icons.js"
+    text = path.read_text(encoding="utf-8") if path.is_file() else ""
+    for needle in ("function isProjectSvg", "if (isProjectSvg(host)) return;"):
+        if needle not in text:
+            fail(errors, f"kit/md-icons.js missing project-SVG guard: {needle}")
+
+
 def validate_kit_copies(errors: list[str]) -> None:
     kit = ROOT / "lny-prd-prototype" / "kit"
     example = ROOT / "examples" / "mini-shop"
@@ -1003,6 +1012,7 @@ def main() -> int:
     validate_prototype_source_contract(errors)
     validate_example_prototype_identity(errors)
     validate_kit_copies(errors)
+    validate_project_icon_priority(errors)
     validate_page_type_consistency(errors)
     validate_de_fixture_contract(errors)
     validate_changelog(errors)

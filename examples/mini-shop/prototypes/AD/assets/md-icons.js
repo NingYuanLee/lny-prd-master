@@ -130,8 +130,21 @@
     return svg;
   }
 
+  function isProjectSvg(host) {
+    // Project-authored SVG (stroke-based, inline <svg> child) wins over the
+    // built-in Material set: the de-fixtured workflow lets a project own its
+    // iconography while still keeping data-icon for the validation contract.
+    var inline = host.querySelector(":scope > svg");
+    if (!inline) return false;
+    var hasStroke = inline.hasAttribute("stroke") ||
+      inline.querySelector("[stroke]") !== null;
+    var hasFillPath = inline.querySelector("path[fill]:not([fill='none'])") !== null;
+    return hasStroke && !hasFillPath;
+  }
+
   function fillHost(host) {
     var name = host.getAttribute("data-icon");
+    if (isProjectSvg(host)) return;
     var svg = element(name);
     host.innerHTML = "";
     if (host.tagName && host.tagName.toLowerCase() === "svg") {
