@@ -128,9 +128,6 @@ def validate_bundle_contract(errors: list[str]) -> None:
                 fail(errors, f"{label}: prototype workflow must not restore fixed three-page cap {pattern!r}")
     if "不按数量截取" not in prototype_skill or "全部 active 缺页" not in prototype_skill:
         fail(errors, "lny-prd-prototype/SKILL.md: missing unbounded target-page selection contract")
-    if "逐页执行金样对照与质量门禁" not in master_skill:
-        fail(errors, "lny-prd-master/SKILL.md: missing per-page prototype quality contract")
-
     for skill_dir in SKILL_DIRS:
         for path in skill_dir.rglob("*"):
             if not path.is_file() or path.suffix.lower() not in TEXT_SUFFIXES:
@@ -473,7 +470,7 @@ def validate_example_prototype_identity(errors: list[str]) -> None:
 def validate_kit_copies(errors: list[str]) -> None:
     kit = ROOT / "lny-prd-prototype" / "kit"
     example = ROOT / "examples" / "mini-shop"
-    targets = [ROOT / "lny-prd-prototype" / "gold" / "assets"]
+    targets: list[Path] = []
     prototype_root = example / "prototypes"
     targets.extend(path for path in prototype_root.glob("*/assets") if path.is_dir())
     for source in sorted(path for path in kit.iterdir() if path.is_file()):
@@ -509,58 +506,36 @@ def validate_coverage_regressions(module, errors: list[str]) -> None:
     if not any("naked <input>" in error for error in naked.errors) or naked.stack:
         fail(errors, "coverage parser failed the void-element ancestor-stack regression")
 
-    detail = module.PageParser()
-    detail.feed('<main><article class="md-card md-card--row"></article></main>')
-    if module.check_density(Path("detail.html"), detail):
-        fail(errors, "coverage density rejected a non-list page with one card")
+    # 条目数门槛可机械判定；页面长相类断言已删除，不再以套件类名判页面长相。
+    check_density = getattr(module, "check_density", None)
+    if check_density is not None:
+        detail = module.PageParser()
+        detail.feed('<main><article class="md-card md-card--row"></article></main>')
+        if check_density(Path("detail.html"), detail):
+            fail(errors, "coverage density rejected a non-list page with one card")
 
-    card_list = module.PageParser()
-    card_list.feed(
-        '<header class="md-list-toolbar"></header>'
-        '<article class="md-card md-card--row"></article>'
-    )
-    if not module.check_density(Path("list.html"), card_list):
-        fail(errors, "coverage density accepted a list page with fewer than four cards")
+        card_list = module.PageParser()
+        card_list.feed(
+            '<header class="md-list-toolbar"></header>'
+            '<article class="md-card md-card--row"></article>'
+        )
+        if not check_density(Path("list.html"), card_list):
+            fail(errors, "coverage density accepted a list page with fewer than four cards")
 
-    short_table = module.PageParser()
-    short_table.feed(
-        '<table class="md-table"><tbody><tr><td>A</td></tr><tr><td>B</td></tr></tbody></table>'
-    )
-    if module.check_density(Path("summary.html"), short_table):
-        fail(errors, "coverage density rejected a short non-D1-1 summary table")
+        short_table = module.PageParser()
+        short_table.feed(
+            '<table class="md-table"><tbody><tr><td>A</td></tr><tr><td>B</td></tr></tbody></table>'
+        )
+        if check_density(Path("summary.html"), short_table):
+            fail(errors, "coverage density rejected a short non-D1-1 summary table")
 
-    dense_table = module.PageParser()
-    dense_table.feed(
-        '<div class="md-d1 md-d1--list"><table class="md-table"><tbody>'
-        '<tr><td>A</td></tr><tr><td>B</td></tr></tbody></table></div>'
-    )
-    if not module.check_density(Path("d1-list.html"), dense_table):
-        fail(errors, "coverage density accepted a D1-1 table with fewer than four rows")
-
-    wrong_card = module.PageParser()
-    wrong_text = (
-        '<div class="md-mobile-page md-standard">'
-        '<header class="md-list-toolbar"></header><article class="md-card"></article></div>'
-    )
-    wrong_card.feed(wrong_text)
-    visual_errors = module.check_visual_floor(
-        Path("mobile-list.html"), "PAGE-MP-002", wrong_text, wrong_card
-    )
-    if not any("mobile list cards must use md-card--row or md-card--order" in error for error in visual_errors):
-        fail(errors, "coverage accepted a non-row card inside a mobile list")
-
-    order_list = module.PageParser()
-    order_text = (
-        '<div class="md-mobile-page md-standard">'
-        '<header class="md-list-toolbar"></header>'
-        '<article class="md-card md-card--order"></article></div>'
-    )
-    order_list.feed(order_text)
-    order_errors = module.check_visual_floor(
-        Path("mobile-order-list.html"), "PAGE-MP-014", order_text, order_list
-    )
-    if any("mobile list cards must use" in error for error in order_errors):
-        fail(errors, "coverage rejected md-card--order as a supported mobile list card")
+        dense_table = module.PageParser()
+        dense_table.feed(
+            '<div class="md-d1 md-d1--list"><table class="md-table"><tbody>'
+            '<tr><td>A</td></tr><tr><td>B</td></tr></tbody></table></div>'
+        )
+        if not check_density(Path("d1-list.html"), dense_table):
+            fail(errors, "coverage density accepted a D1-1 table with fewer than four rows")
 
     generic_mobile = module.PageParser()
     generic_mobile.feed(
@@ -605,16 +580,13 @@ def validate_coverage_regressions(module, errors: list[str]) -> None:
         '<div class="md-stepper"></div><div class="md-advance"></div>'
         '</div></div>'
     )
-    fixture_errors = module.check_wizard_nav(
-        Path("gold/mobile-wizard.html"), "mobile-wizard", wizard_demo, fixture=True
-    )
-    if fixture_errors:
-        fail(errors, "coverage rejected a declared gold wizard fixture")
-    business_errors = module.check_wizard_nav(
-        Path("business.html"), "PAGE-MP-099", wizard_demo
-    )
-    if not any("business page must not copy" in error for error in business_errors):
-        fail(errors, "coverage accepted gold wizard demo markup on a business page")
+    check_wizard_nav = getattr(module, "check_wizard_nav", None)
+    if check_wizard_nav is not None:
+        business_errors = check_wizard_nav(
+            Path("business.html"), "PAGE-MP-099", wizard_demo
+        )
+        if not any("business page must not copy" in error for error in business_errors):
+            fail(errors, "coverage accepted wizard demo markup on a business page")
 
     matrix = module.parse_comp_states(
         "## 4. UI 状态矩阵（必填）\n"
@@ -820,111 +792,86 @@ def validate_prototypes(errors: list[str]) -> None:
         fail(errors, str(exc))
         return
     validate_coverage_regressions(module, errors)
-    for gold in sorted((ROOT / "lny-prd-prototype" / "gold").glob("*.html")):
-        gold_errors = module.check_html(
-            gold, gold.stem, set(), set(), [], fixture=True
-        )
-        for error in gold_errors:
-            fail(errors, "gold validation: " + error)
 
 
 CANONICAL_PAGE_TYPES = ROOT / "lny-prd-master" / "reference-page-types.md"
-GOLD_BASENAME_RE = re.compile(r"([a-z][a-z0-9]*(?:-[a-z0-9]+)*\.html)")
 PAGE_ID_RE = re.compile(r"PAGE-(MP|AD)-(\d{3})")
+PAGE_KEY_RE = re.compile(r"(?:PAGE-)?(MP|AD)-(\d{3})")
 
 
-def section_between(text: str, start_heading: str, end_heading: str) -> str | None:
-    start = text.find(start_heading)
-    if start == -1:
+def section_lines(text: str, heading_prefix: str) -> list[str] | None:
+    """Return the lines under a level-2 heading, up to the next level-2 heading."""
+    lines = text.splitlines()
+    start: int | None = None
+    for index, line in enumerate(lines):
+        if start is None:
+            if line.strip().startswith(heading_prefix):
+                start = index + 1
+            continue
+        if line.startswith("## ") and not line.startswith("###"):
+            return lines[start:index]
+    if start is None:
         return None
-    end = text.find(end_heading, start + len(start_heading))
-    if end == -1:
-        return None
-    return text[start:end]
+    return lines[start:]
 
 
 def parse_canonical_page_map(errors: list[str]) -> dict[str, set[str]] | None:
+    """页型映射只登记 PAGE 编号，不登记样例文件。"""
     text = CANONICAL_PAGE_TYPES.read_text(encoding="utf-8")
-    section = section_between(text, "## 页型映射", "## 金样边界")
-    if section is None:
-        fail(errors, "reference-page-types.md: 页型映射 / 金样边界 sections missing")
+    lines = section_lines(text, "## 页型映射")
+    if lines is None:
+        fail(errors, "reference-page-types.md: 页型映射 section missing")
         return None
     mapping: dict[str, set[str]] = {}
-    for line in section.splitlines():
+    for line in lines:
         stripped = line.strip()
         if not stripped.startswith("|") or "---" in stripped:
             continue
         cells = [cell.strip() for cell in stripped.strip("|").split("|")]
-        if len(cells) < 5 or cells[0] == "页型":
+        if len(cells) < 2 or cells[0] == "页型":
             continue
-        _page_type, mp_cell, ad_cell, mp_gold, ad_gold = cells[:5]
-        for num in re.findall(r"MP-\d{3}", mp_cell):
-            mapping.setdefault(num, set()).update(GOLD_BASENAME_RE.findall(mp_gold))
-        for num in re.findall(r"AD-\d{3}", ad_cell):
-            mapping.setdefault(num, set()).update(GOLD_BASENAME_RE.findall(ad_gold))
+        for cell in cells:
+            for terminal, num in PAGE_KEY_RE.findall(cell):
+                mapping.setdefault(f"{terminal}-{num}", set())
     if not mapping:
         fail(errors, "reference-page-types.md: 页型映射 table parsed empty")
         return None
     return mapping
 
 
-def prototype_quick_row_errors(
+def quick_row_page_id_errors(
     mapping: dict[str, set[str]],
-    all_canonical_golds: set[str],
-    proto_quick: str,
+    quick_text: str,
     *,
-    label: str = "lny-prd-prototype/SKILL.md 金样速查",
+    label: str,
 ) -> list[str]:
-    """Check every PAGE id on every prototype quick-ref table row."""
+    """Check every PAGE id on every quick-ref table row against the canonical map."""
     found: list[str] = []
-    for line in proto_quick.splitlines():
+    for line in quick_text.splitlines():
         stripped = line.strip()
         if not stripped.startswith("|"):
             continue
-        ids = PAGE_ID_RE.findall(stripped)
-        row_golds = set(GOLD_BASENAME_RE.findall(stripped))
-        unknown = row_golds - all_canonical_golds
-        if unknown:
-            found.append(f"{label}: gold file(s) unknown to canonical mapping: {sorted(unknown)}")
-        if not ids:
-            continue
-        row_canonical: set[str] = set()
-        for terminal, num in ids:
-            key = f"{terminal}-{num}"
-            canonical = mapping.get(key)
-            if canonical is None:
-                found.append(f"{label}: PAGE-{key} missing from canonical 页型映射")
-                continue
-            row_canonical.update(canonical)
-        if row_canonical:
-            extra = row_golds - row_canonical
-            if extra:
-                found.append(
-                    f"{label}: gold file(s) not in canonical mapping for this row: {sorted(extra)}"
-                )
+        for terminal, num in PAGE_ID_RE.findall(stripped):
+            if f"{terminal}-{num}" not in mapping:
+                found.append(f"{label}: PAGE-{terminal}-{num} missing from canonical 页型映射")
     return found
 
 
 def validate_page_type_consistency(errors: list[str]) -> None:
-    """②⑤⑥ quick-reference tables may list PAGE ids; they must exist in the canonical map.
-
-    Gold filenames belong in reference-page-types.md. If a ⑥ row still names a
-    ``*.html`` file, it must be a known canonical gold and belong to that PAGE.
-    """
+    """速查表可列 PAGE 编号；编号必须存在于页型映射正本。"""
     mapping = parse_canonical_page_map(errors)
     if mapping is None:
         return
-    all_canonical_golds: set[str] = set().union(*mapping.values())
 
-    second_id_errors = prototype_quick_row_errors(
+    missing = quick_row_page_id_errors(
         mapping,
-        all_canonical_golds,
-        "| PAGE-MP-001 / PAGE-MP-999 | md-hero |\n",
+        "| PAGE-MP-001 / PAGE-MP-999 | 首页 |\n",
+        label="page-type gate self-test",
     )
-    if not any("PAGE-MP-999" in item for item in second_id_errors):
+    if not any("PAGE-MP-999" in item for item in missing):
         fail(
             errors,
-            "page-type gate missed a second illegal PAGE id on a prototype quick-ref row",
+            "page-type gate missed a second illegal PAGE id on a quick-ref row",
         )
 
     for skill_name in ("lny-prd-ui", "lny-prd-page", "lny-prd-prototype"):
@@ -932,22 +879,17 @@ def validate_page_type_consistency(errors: list[str]) -> None:
         if "reference-page-types.md" not in skill_text:
             fail(errors, f"{skill_name}/SKILL.md: missing canonical reference-page-types.md pointer")
 
-    ui_quick = section_between((ROOT / "lny-prd-ui" / "SKILL.md").read_text(encoding="utf-8"), "## 页型速查", "## 开笔前")
-    page_quick = section_between((ROOT / "lny-prd-page" / "SKILL.md").read_text(encoding="utf-8"), "## 页型速查", "## 开笔前")
-    if ui_quick is None or page_quick is None:
-        fail(errors, "lny-prd-ui/lny-prd-page SKILL.md: 页型速查 section missing")
-    else:
-        for label, quick in (("lny-prd-ui", ui_quick), ("lny-prd-page", page_quick)):
-            for terminal, num in PAGE_ID_RE.findall(quick):
-                if f"{terminal}-{num}" not in mapping:
-                    fail(errors, f"{label}/SKILL.md 速查表: PAGE-{terminal}-{num} missing from canonical 页型映射")
-
-    proto_quick = section_between((ROOT / "lny-prd-prototype" / "SKILL.md").read_text(encoding="utf-8"), "## 金样速查", "## 开笔前")
-    if proto_quick is None:
-        fail(errors, "lny-prd-prototype/SKILL.md: 金样速查 section missing")
-        return
-    for item in prototype_quick_row_errors(mapping, all_canonical_golds, proto_quick):
-        fail(errors, item)
+    for skill_name in ("lny-prd-ui", "lny-prd-page"):
+        lines = section_lines(
+            (ROOT / skill_name / "SKILL.md").read_text(encoding="utf-8"), "## 页型速查"
+        )
+        if lines is None:
+            fail(errors, f"{skill_name}/SKILL.md: 页型速查 section missing")
+            continue
+        for item in quick_row_page_id_errors(
+            mapping, "\n".join(lines), label=f"{skill_name}/SKILL.md 速查表"
+        ):
+            fail(errors, item)
 
 
 REPO_ROOT_REF_RE = re.compile(
@@ -960,7 +902,7 @@ def validate_skill_references(errors: list[str]) -> None:
     """Skill prose must not point at repository-root files that are never installed.
 
     Anchored on 仓库/仓库根 + root-file name so legitimate in-skill references
-    (e.g. gold/README.md) and PRD-project wording ("PRD 仓库根目录") pass through.
+    and PRD-project wording ("PRD 仓库根目录") pass through.
     """
     for skill_dir in SKILL_DIRS:
         for path in sorted(skill_dir.rglob("*.md")):
@@ -994,6 +936,61 @@ def validate_changelog(errors: list[str]) -> None:
         fail(errors, f"CHANGELOG.md top version {match.group(1)!r} != skill-bundle.json bundle_version {version!r}")
 
 
+BANNED_FIXTURE_TOKENS = ("\u91d1\u6837", "gold" + "/")
+
+
+def validate_de_fixture_contract(errors: list[str]) -> None:
+    """De-fixture contract: no built-in sample page may act as a gate."""
+    gold_dir = ROOT / "lny-prd-prototype" / "gold"
+    if gold_dir.exists():
+        fail(errors, "lny-prd-prototype/gold must not exist")
+
+    for skill_dir in SKILL_DIRS:
+        for path in sorted(skill_dir.rglob("*.md")):
+            if "__pycache__" in path.parts:
+                continue
+            text = path.read_text(encoding="utf-8")
+            for token in BANNED_FIXTURE_TOKENS:
+                if token in text:
+                    rel = path.relative_to(ROOT).as_posix()
+                    fail(errors, f"{rel}: forbidden fixture wording {token!r}")
+
+    prototype_skill = (ROOT / "lny-prd-prototype" / "SKILL.md").read_text(encoding="utf-8")
+    if "## 壳层与结构约束" not in prototype_skill:
+        fail(errors, "lny-prd-prototype/SKILL.md: missing shell-and-structure section")
+
+    page_types = (ROOT / "lny-prd-master" / "reference-page-types.md").read_text(encoding="utf-8")
+    for heading in ("## 三步职责", "## 页型映射", "## 跨步骤不变量"):
+        if heading not in page_types:
+            fail(errors, f"lny-prd-master/reference-page-types.md: missing section {heading!r}")
+
+    master_skill = (ROOT / "lny-prd-master" / "SKILL.md").read_text(encoding="utf-8")
+    if "⑥ 只保留壳层与文件结构约束" not in master_skill:
+        fail(errors, "lny-prd-master/SKILL.md: missing prototype shell-and-structure scope literal")
+
+    kit = ROOT / "lny-prd-prototype" / "kit"
+    for name in (
+        "mui-kit.css",
+        "proto-shell.css",
+        "proto-shell.js",
+        "proto-page.js",
+        "proto-map.js",
+        "md-icons.js",
+    ):
+        if not (kit / name).is_file():
+            fail(errors, f"lny-prd-prototype/kit/{name} missing")
+
+    copy_kit = ROOT / "lny-prd-prototype" / "scripts" / "copy-kit.py"
+    if not copy_kit.is_file():
+        fail(errors, "lny-prd-prototype/scripts/copy-kit.py missing")
+        return
+    with tempfile.TemporaryDirectory(prefix="lny-prd-kit-contract-") as temp:
+        result = run([sys.executable, str(copy_kit), str(Path(temp) / "MP")])
+        if result.returncode:
+            detail = (result.stdout + result.stderr).strip()
+            fail(errors, "lny-prd-prototype/scripts/copy-kit.py failed:\n" + detail)
+
+
 def main() -> int:
     errors: list[str] = []
     validate_bundle_contract(errors)
@@ -1007,6 +1004,7 @@ def main() -> int:
     validate_example_prototype_identity(errors)
     validate_kit_copies(errors)
     validate_page_type_consistency(errors)
+    validate_de_fixture_contract(errors)
     validate_changelog(errors)
     validate_skill_references(errors)
     validate_migration(errors)
@@ -1040,7 +1038,7 @@ def main() -> int:
     print(
         f"skill package validation ok: {len(SKILL_DIRS)} skills (10 core); bundle/version contract; "
         "runtime examples isolation; real YAML + quick validation; links; UTF-8; Python/JS; "
-        "installer transactions; migration; artifact paths; semantic consistency; kit/gold; "
+        "installer transactions; migration; artifact paths; semantic consistency; kit/shell; "
         "prototype identity; fixture + negative coverage"
     )
     return 0

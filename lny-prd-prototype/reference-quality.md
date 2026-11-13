@@ -45,7 +45,7 @@ node <skillDir>/scripts/verify-prototype-browser.mjs <prdRoot> --page PAGE-MP-01
 
 #### G.2 状态演示按钮归位（必做）
 
-规则见 [`reference-shell.md`](reference-shell.md) 状态演示。搜索 `demo-` / `setDemo` / `mock-` / `alert('原型`；模拟后端 → 移入状态演示；用户操作保留。状态演示用套件 `.md-toggle`。
+规则见 [`reference-shell.md`](reference-shell.md) 状态演示。搜索 `demo-` / `setDemo` / `mock-` / `alert('原型`；模拟后端 → 移入状态演示；用户操作保留。状态演示用壳层提供的开关控件。
 
 #### G.3 自检清单（逐页过）
 
@@ -63,9 +63,9 @@ node <skillDir>/scripts/verify-prototype-browser.mjs <prdRoot> --page PAGE-MP-01
 | G3.10 | script 闭合 | 外部脚本均有 `</script>` |
 | G3.11 | 全局变量存在 | `assets/` 有定义；`rg "ProtoApiClient" prototypes/` 为 0 |
 | G3.12 | 侧栏可滚动 | `.proto-sidebar__nav` `overflow-y: auto` |
-| G3.13 | 套件引用 | `mui-kit.css` + `md-icons.js` + `icons-extra.js`；index 另引 shell；无 `prototypes-mui-app/`；无自造主题 |
-| G3.14 | 业务图标 | `data-icon` 属闭集或 extras 已 register；无手绘 path；未调 Cursor iconfont MCP |
-| G3.15 | 无裸控件 | 每个 `button`/`input`/`table` 使用 `md-*`（或「无类名组合」）；无页内 `<style>`；无主题向内联 `background`/`color` |
+| G3.13 | 资源引用 | `mui-kit.css` + `md-icons.js` + `icons-extra.js` + `proto-page.js`；index 另引 shell；无 `prototypes-mui-app/`；无 `versions/` 副本 |
+| G3.14 | 业务图标 | `data-icon` 属闭集或 extras 已 register；未调 Cursor iconfont MCP（项目自有图标素材不受限） |
+| G3.15 | 无裸控件 | 可点操作的 `button` / `input type="submit"` 不得露出浏览器原生皮肤；套件类与项目自有样式均可 |
 | G3.16 | 规格对照脚本 | `verify-prototype-coverage.py --page …` exit 0 |
 | G3.17 | 浏览器冒烟 | 宿主依赖可用时，`verify-prototype-browser.mjs --page …` exit 0；失败截图写系统临时目录，不污染业务项目 |
 
@@ -77,32 +77,32 @@ node <skillDir>/scripts/verify-prototype-browser.mjs <prdRoot> --page PAGE-MP-01
 |------|--------|----------|
 | G4.1 | 本页 `pages_prd` | 本页文件已 Read；未用其它页或记忆顶替 |
 | G4.1b | `ui/PAGE` §2.3 | 动效/微反馈/收纳已按体验规格落地，未另发明交互 |
-| G4.2 | §3 ASCII 线框与 `###` 分区 | 每个内容分区在 HTML 有对应区块；`data-section` 即足够。Markdown `###` 只用于编写结构，不自动成为可见文案；仅当 §2.3 /「结构与控件」明确声明准确的用户可见标题时才渲染该标题，禁止只为通过校验添加 `md-section-head`；禁止只画顶栏+一张空表 |
-| G4.3 | 各分区「结构与控件」 | 每个按钮/输入/Tab/卡片/列均用 `md-*` 落地；套件无类名 → [`reference-kit/combos.md`](reference-kit/combos.md)「无类名组合」 |
+| G4.2 | §3 ASCII 线框与 `###` 分区 | 每个内容分区在 HTML 有对应区块；`data-section` 即足够。Markdown `###` 只用于编写结构，不自动成为可见文案；仅当 §2.3 /「结构与控件」明确声明准确的用户可见标题时才渲染该标题，禁止只为通过校验添加区块标题；禁止只画顶栏+一张空表 |
+| G4.3 | 各分区「结构与控件」 | 每个按钮/输入/Tab/卡片/列均已落地；可用套件类名，也可用项目自有样式 |
 | G4.4 | §4 跳转清单 | 每个目标 `PAGE-*` 有可点 `href`（本页自身与「无」除外） |
-| G4.5 | `ui/COMP-*` 状态矩阵 | `data-comp` + `data-state`；`empty`/`error` 有 `.md-empty`；`loading` 有骨架（卡片态或 `md-skel-host`） |
+| G4.5 | `ui/COMP-*` 状态矩阵 | `data-comp` + `data-state`；`empty`/`error` 有空态标记；`loading` 有骨架标记 |
 | G4.6 | 脚本 | `verify-prototype-coverage.py` 对根 `prototypes/` 本页 exit 0 |
 | G4.7 | 浏览器行为 | 宿主依赖可用时，本页浏览器冒烟 exit 0；菜单、页签、抽屉、轮盘等已有交互至少完成首个控件的真实点击验收 |
 
-#### G.5 高保真（必做，未过不得交付）
+#### G.5 视觉与结构自检（必做，未过不得交付）
 
-与估点「视觉细节」档位无关。对照 [`reference-kit.md`](reference-kit.md)「高保真落地」。
+与估点「视觉细节」档位无关。视觉依据见 SKILL.md「视觉依据与样式边界」：优先取项目自带设计事实（PRD 正文、`ui/` 规格、既有设计稿/品牌 CSS/真实素材），没有时按 PRD 自行设计。
 
 | 序号 | 检查项 | 通过标准 |
 |------|--------|----------|
 | G5.1 | 数据像真 | 无「示例商品 A/B」「测试数据」；名称/价格像业务数据 |
 | G5.2 | 密度 | 直接执行共享 `PT-DENSITY`；不得把其中的列表门槛扩大到详情附属区或摘要短表，规格/API 明示条数优先 |
-| G5.3 | 封面 | `md-media-ph--1`～`--6` 轮换，无纯灰块。灯箱默认给详情页图（页根 `data-lightbox`；轮播/图文/评论各一组）、横卡多行卡内图（每卡一组）、**单图/多图/视频上传缩略**。封面叠字 / 双列 / Banner / 文件上传不可预览 |
-| G5.4 | 移动端 | 状态栏由 `proto-page.js` 注入；页根 `md-immersive` 或 `md-standard`；**下沉 Banner** 须页级 `md-hero` ∥ `md-mobile-body` > `md-mobile-sheet`（勿把 Hero 塞进 sheet）；**随滚 Banner** 禁止页级 `md-hero`；L1 固定（`md-list-toolbar` 等）在 body 外；触屏顶栏六种 L1–L6；`md-module` 分区；列表 `PT-MOBILE-LIST`；MP + `viewport-fit=cover`；悬浮 `PT-FLOAT` |
-| G5.5 | 桌面端 | 有 `md-breadcrumb`、无页内大标题；表格有 `md-thumb`/`md-chip`；表单字段 `md-field--sm`；D1-1 用 `md-d1--list` + 语义 `md-col-*` 并实现共享 `PT-DESKTOP-LIST`；向导数字步骤可点跳步，不要只留上一步/下一步；悬浮控件实现共享 `PT-FLOAT` |
-| G5.6 | 金样 | 写前已 Read `gold/` 对应文件并对标视觉下限（密度/类名不得低于金样）；未把金样演示功能（凡图即灯箱、全套表单样例）搬进规格没写的页；未给封面叠字 / 双列 / Banner / 文件上传加预览；HTML 无 `┌│└` 线框残留 |
-| G5.7 | 不降质 | 重画不得删 Chip / 面包屑 / 横卡 / 图标 / `md-dialog`；不得因「粗糙」档简化 |
-| G5.8 | 舒适默认 | 列表/卡片页含隐藏骨架与插画空态；失败可重试；D1-1 有 `md-d1--list` + 语义 `md-col-*`；评论有时间行和附图槽。§2.3 漏写也要落地，不算发明业务 |
-| G5.9 | 金样脚本 | 本页规格需要的 `data-wheel` / `data-menu` + `md-menu--fixed` / `md-tabs--page` + `data-panel` 换业务时必须保留，禁止只剩静态壳。详情页根保留 `data-lightbox`；横卡多行图自动可预览，列表页不要整页加 `data-lightbox` |
-| G5.10 | 易误套页型 | 按页类型打开金样，禁止按 MP/AD 序号对齐。工作台/树/设置/我的/向导/时间轴/桌面详情用对应金样；禁止拿 `desktop-lists` / `mobile-list` 整页硬套；禁止一排按钮冒充功能区 |
+| G5.3 | 图片素材 | 有真实素材时用真实素材；无素材时用项目自定的占位样式。禁止把规格没写的图片预览（灯箱 / 上传缩略）加进页 |
+| G5.4 | 移动端 | 状态栏由 `proto-page.js` 注入；页根声明布局形态（沉浸式 / 标准）；固定区在滚动区之外；列表按 `PT-MOBILE-LIST`；悬浮控件按 `PT-FLOAT` |
+| G5.5 | 桌面端 | 有面包屑、无页内大标题；D1-1 按 `PT-DESKTOP-LIST` 实现（语义列宽、冻结、操作列定宽）；向导步骤可点跳步；悬浮控件按 `PT-FLOAT` |
+| G5.6 | 视觉依据 | 视觉取自项目自带设计事实；无项目设计事实时按 PRD 自行设计；未把技能内置样例形态当默认设计 |
+| G5.7 | 不残缺 | 重画不得删掉规格要求的 Chip / 面包屑 / 横卡 / 图标 / 弹窗 |
+| G5.8 | 舒适默认 | 列表/卡片页含隐藏骨架与插画空态；失败可重试；D1-1 有语义列宽；评论有时间行和附图槽。§2.3 漏写也要落地，不算发明业务 |
+| G5.9 | 控件行为 | 本页规格需要的轮盘 / 更多菜单 / 页内签行为必须保留，禁止只剩静态壳；图片预览按规格给，不给规格没写的预览 |
+| G5.10 | 易误套页型 | 按页型选骨架；禁止拿列表页硬套工作台、拿表单窄双列冒充页面分栏、拿一排按钮冒充功能区 |
 | G5.11 | SKILL 标注 | 总入口 `prototypes/index.html` 页底右下有技能包地址小字（见 `reference-scope.md`）；各端 `index.html` 由 `proto-shell.js` 注入，禁止手写或删 |
-| G5.12 | 控件皮肤 | 可点操作用 `md-btn`（含 `--contained` / `--outlined` / `--soft` / `--text` / `--link`）或 `md-icon-btn` / `md-tab` / `md-menu__item` / `md-page-btn` / `md-tree__item`；无 `md-*` 的 `<button>` / `<input type="submit">` 不得交付（浏览器灰钮） |
-| G5.13 | 触屏间距与 DOM | 按 `reference-kit.md` §触屏间距三层联动 + **§滚动容器底与边**：每页恰有一个 `md-mobile-body`，其直接子节点恰有一个 `md-mobile-sheet` 且不直放 L3；固定 L1 位于 body 外。L2 统一基础 padding/背景，L3 不重复页级 safe/底色；父 gap + seam 边不叠双倍 |
-| G5.14 | 浮层遮罩 | 每个 `md-dialog[id]` / `md-drawer[id]` **须**配对 **`{id}Backdrop`**（`md-backdrop` 半透明黑）；打开用 `ProtoPage.openDialog` / `openDrawer`；禁止只有白面板无遮罩、`alert()` |
+| G5.12 | 控件皮肤 | 可点操作不得使用浏览器原生 `button` / `input type="submit"`；用套件类或项目自有样式均可 |
+| G5.13 | 触屏结构 | 每页恰有一个滚动容器，其唯一直接内容层放内容块；固定区在滚动容器之外；父级 gap 与块内 padding 不叠成双倍缝 |
+| G5.14 | 浮层遮罩 | 每个浮层（弹窗 / 抽屉）须配对遮罩层；打开用壳层提供的方法；禁止只有白面板无遮罩、`alert()` |
 
-禁止：对照未过就汇报「已更新」；把 G.3（UTF-8/控制台）当成功能齐套；按 ASCII 线框从零手写一页更瘦的布局。
+禁止：对照未过就汇报「已更新」；把 G.3（UTF-8/控制台）当成功能齐套。

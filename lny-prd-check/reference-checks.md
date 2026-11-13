@@ -114,6 +114,8 @@ Q-S执行第一、第三部分；Q-P执行第二部分；full依次执行。检�
 
 以用户视角对照规格对原型做走查。只读输出评价与委派建议，**不回写文件**。模型不当老板：不判断「该不该做」，只报可判定项。
 
+本节只判规格符合性与功能可达，**不判页面长相**：配色、字号、套件类名、视觉档次都不在 ⑦ 判定范围。视觉与交互表现以项目自带事实为准（PRD 正文、`ui/` 规格、项目既有设计稿/视觉规范/品牌 CSS/真实素材）；项目没有时按 PRD 自行设计，不得把技能内置样例形态当默认设计。
+
 ### 无原型时的行为（必读）
 
 执行Q-P/full且 **不存在** 任何业务页 `prototypes/{终端}/PAGE-*.html`（不含仅有 `index.html`/`map.html`）时：
@@ -152,20 +154,20 @@ Q-S执行第一、第三部分；Q-P执行第二部分；full依次执行。检�
 
 ### 2.4 实现符合规格
 
-对照规格做没做，收成一块（含壳层与套件）。
+对照规格做没做，收成一块（含壳层机制）。
 
 | 检查项 | 规则 | 不通过建议 | 优先级 |
 |--------|------|------------|--------|
 | 状态演示面板 | 汇总页：状态演示固定宽 200px（收起后 0）；顶栏可收起；选项与 `ui/COMP-*` 矩阵逐字一致 | `/lny-prd-prototype` 补状态演示 | 中 |
 | 规格说明宽度 | 右侧规格说明固定 375px | `/lny-prd-prototype` 按套件调整 | 中 |
 | 移动端预览缩放 | MP/H5/APP：`preview-area` 无外围滚动条；含 `phone-scale-host` + `fitPhoneFrame()`；页单/状态演示收起、切页显隐、resize 时重算 | `/lny-prd-prototype` 按 §D 补缩放 | 高 |
-| 原型套件引用 | 各端 `PAGE-*.html` 引用同端 `assets/mui-kit.css`、`md-icons.js`、`icons-extra.js`；`index.html` 另引 `proto-shell.css` + `proto-shell.js`；不得存在 `prototypes-mui-app/`；缺闭集图标须由 `search-icons.py` 写入 extras | `/lny-prd-prototype` 按 kit 补齐 | 中 |
+| 壳层与 kit 引用 | 使用 kit 时：各端 `PAGE-*.html` 引用同端 `assets/` 下所需 kit 资产；`index.html` 另引 `proto-shell.css` + `proto-shell.js`；不得存在 `prototypes-mui-app/`；kit 是可选工具箱，不强制业务页使用某套皮肤 | `/lny-prd-prototype` 按实际引用补齐 | 中 |
 | 演示按钮归位 | `PAGE-*.html` 内不得含 `demo-*`/`setDemo*`/`mock-*`（后端状态切换须归位状态演示） | `/lny-prd-prototype` 移至状态演示 | 中 |
 | 原型 JS 引用 | 静态无残留调用；可选 Console 无 ReferenceError | `/lny-prd-prototype` 按 G.1 修 | 高 |
 | 浏览器冒烟 | 宿主可解析 `playwright` / `pngjs` 时脚本 exit 0；exit 1 的页面级渲染、离线资源、Console、横向溢出或交互失败须逐项报告 | `/lny-prd-prototype` 修复对应 PAGE 或 kit | 高 |
 | 交互体验设计 §2.3 | 每个 `ui/PAGE-*` 含观感与舒适、动效与过渡、微反馈、收纳与浮层；不得只列控件。除一次直接点击的简单交互外，复杂交互须在 PAGE §2.3 或所引 COMP 写清触发、可见过程/过渡、结果状态及适用的取消/失败/禁用反馈 | `/lny-prd-ui` 补 §2.3 / COMP 状态矩阵 | 高 |
 | 布局与 COMP 态 | 布局与 `ui/PAGE-*` 一致；COMP 态与矩阵可演示 | ② 或 ⑥ | 中 |
-| 逐页对照 G.4 | 每个业务 `PAGE-*.html` 对照 `pages_prd`：ASCII 只定分区；视觉须达 `gold/` 金样下限且不照搬演示功能；须能过 `verify-prototype-coverage.py`。密度按共享 `PT-DENSITY`，移动列表、D1-1 与悬浮控件分别按 `PT-MOBILE-LIST`、`PT-DESKTOP-LIST`、`PT-FLOAT`；另查无低保真占位、封面变体、状态栏、ASCII 残留及桌面表 Chip/缩略图 | `/lny-prd-prototype` 按目标范围补页，并对每页执行 G.4/G.5 门禁 | 高 |
+| 逐页对照 G.4 | 每个业务 `PAGE-*.html` 对照 `pages_prd`：分区顺序与 ASCII 线框一致；可机械判定项逐项过（页面 ID、文案来源、可点跳转、离线资源、横向溢出、无 ASCII 残留）；须能过 `verify-prototype-coverage.py`（规格对照 + 结构类检查）；默认态列表/宫格/时间轴/数据表的条目数按共享 `PT-DENSITY`；不得搬入本页规格未写的演示交互 | `/lny-prd-prototype` 按目标范围补页，并对每页执行 G.4/G.5 门禁 | 高 |
 | 接口与 Feature | 展示字段能在 `api/API-*` 找到；主操作有 API；流程与 FEATURE/AC 可对照 | ③④ 或 ⑥ | 中 |
 | 跨层编号 | 原型中的 `PAGE-*` / `API-*` / `FEATURE-*` 可回溯索引 | 对应步补引用 | 高 |
 | 跳转 | 页面间跳转无死路；目标在 manifest | ⑥ 修跳转 | 低 |

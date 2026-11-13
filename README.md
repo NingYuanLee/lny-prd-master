@@ -1,6 +1,6 @@
 # LNY-PRD — 李宁远产品工作流
 
-**工具包版本：2.22.0**
+**工具包版本：2.23.0**
 
 ## 背景
 
@@ -57,7 +57,7 @@ LNY-PRD 做的是 **vibe-spec-coding** 里的 **vibe-spec**：帮助审视产品
 | ⑨ | `/lny-prd-sp` | 按⑧确认的交付范围汇总 FE/BE 标准工时点（`1 SP = 1 有效工程小时`，`sp_report.md`） |
 | ⑩ | `/lny-prd-iter` | 核验前版评审终态与应有 SP 后，创建新版本壳、变更台账和委派清单；不创建交付范围 |
 
-**②③④** 为规格三件套，默认自动链为 **②③④→⑤前检→⑤→⑦/Q-S→⑥作者自检→⑦/Q-P**。只有缺产品事实、明确“只要规格”，或Q-P通过准备进入⑧时才停；**禁止静默⑩**。⑥按用户指定页面范围执行，未指定时一次完成当前全部缺失业务页，并逐页执行规格、金样与验收门禁。
+**②③④** 为规格三件套，默认自动链为 **②③④→⑤前检→⑤→⑦/Q-S→⑥作者自检→⑦/Q-P**。只有缺产品事实、明确“只要规格”，或Q-P通过准备进入⑧时才停；**禁止静默⑩**。⑥按用户指定页面范围执行，未指定时一次完成当前全部缺失业务页，并逐页执行规格与验收门禁。
 
 **职责顺序**：`STORY → FEATURE → AC → PAGE/API/EXT` 是价值与验收主线，`FEATURE → MODULE` 是领域归属；Story↔Feature 只在 Feature 明细维护，Module 边界只在 `feature_spec.md` 维护。UI 是跨 Feature 的横向展示聚合，API 是产品级接口需求；④收束并反查②③，⑤汇合两条规格线。⑦分别把守规格与原型，⑧再做产品判断；评审调整会回②③④并自动重走两道门禁，直到形成最终结论。
 
@@ -473,7 +473,7 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 │   ├── reference-init.md           # main_spec 模板
 │   ├── reference-routing.md        # 总控 §3 完整条件表
 │   ├── reference-artifact-paths.md # 根规格、版本产物与原型落点
-│   ├── reference-page-types.md     # ②⑤⑥ 共用页型职责与金样映射
+│   ├── reference-page-types.md     # ②⑤⑥ 共用页型职责与跨步骤不变量
 │   └── framework-exclusions.md     # lny-default / none
 ├── lny-prd-ui/
 │   ├── SKILL.md                    # ②
@@ -485,12 +485,9 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 ├── lny-prd-page/SKILL.md + reference.md
 ├── lny-prd-prototype/
 │   ├── SKILL.md                    # ⑥ 全端静态 HTML + kit
-│   ├── reference-kit.md            #     MUI 视觉索引与全局 token（圆角/高保真/间距/滚动容器）
-│   ├── reference-kit/              #     类名字典分片（壳层/触屏/桌面/无类名组合/组件速查）
 │   ├── reference-icons.md          #     闭集 + search-icons.py
 │   ├── reference-shell.md
 │   ├── reference-quality.md
-│   ├── gold/                       #     视觉金样（列表/表单/详情 + 分栏/定位/状态导览/树嵌套/工作台等）
 │   ├── kit/                        #     mui-kit.css / proto-shell.* / proto-map.js / md-icons.js
 │   └── scripts/                    #     copy-kit.py、search-icons.py、UTF-8/coverage/browser 原型验收
 ├── lny-prd-check/                   # ⑦ 只读检查 + 路径/跨文档语义扫描器
@@ -501,7 +498,7 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 ├── scripts/install-skills.py       # 三平台用户级整包安装、更新、状态与卸载
 ├── scripts/test_install_skills.py  # 安装事务、回滚、漂移与平台配置测试
 ├── scripts/test_verify_prototype_browser.mjs # 浏览器门禁负例回归
-├── scripts/validate-skill-package.py # 元数据、清单、链接、脚本、kit、金样与回归总门禁
+├── scripts/validate-skill-package.py # 元数据、清单、链接、脚本、kit、壳层与回归总门禁
 ├── requirements-dev.txt            # 本地与 CI 的 PyYAML 发布门禁依赖
 ├── .github/workflows/validate-skills.yml
 ├── README.md
@@ -525,7 +522,7 @@ python3 -m venv .venv
 ./.venv/bin/python -m pip install -r requirements-dev.txt
 ```
 
-以后修改技能、金样、套件或示例后，直接复用该环境运行：
+以后修改技能、壳层或示例后，直接复用该环境运行：
 
 ```powershell
 # Windows
@@ -565,7 +562,7 @@ node lny-prd-prototype/scripts/verify-prototype-browser.mjs examples/mini-shop
 node scripts/test_verify_prototype_browser.mjs
 ```
 
-静态门禁使用真实 YAML 解析并逐一 quick-validate 10 个核心技能，同时检查 `skill-bundle.json` 与 README 版本一致、技能运行时不依赖 `examples/`、`agents/openai.yaml`、Markdown 链接、全量文本 UTF-8、Python/JavaScript 语法、安装事务与回滚、产物路径正反例、跨文档语义一致性、迁移冲突保护、kit 与副本、全部金样、根原型页面 ID 与带正反例的 coverage；同时禁止 `versions/{v}/prototypes/` 副本。跨文档语义门禁会对账索引/文件名/明细身份，并直接从 Story、Module 与 Feature 明细校验需求来源、领域边界、生命周期、评审、AC、PAGE/API/EXT 引用以及已有 SP 报告中的 Feature 输入快照。浏览器门禁再对全部 `PAGE-*.html` 检查真实渲染、离线资源、Console / 页面错误、横向溢出、截图有效性及常见控件冒烟交互，并用 7 类负例验证门禁不会静默失效。GitHub Actions 在 push 和 pull request 时运行两层门禁，失败时保留浏览器截图 7 天；任一项失败均不得发布。浏览器与 npm 依赖按版本键缓存（`actions/cache`），命中时不再全量下载。元数据路由固定为：总控 `allow_implicit_invocation: true`，其余子技能为 `false`，仍可通过 `$lny-prd-*` 显式调用。
+静态门禁使用真实 YAML 解析并逐一 quick-validate 10 个核心技能，同时检查 `skill-bundle.json` 与 README 版本一致、技能运行时不依赖 `examples/`、`agents/openai.yaml`、Markdown 链接、全量文本 UTF-8、Python/JavaScript 语法、安装事务与回滚、产物路径正反例、跨文档语义一致性、迁移冲突保护、kit 与副本、壳层结构、根原型页面 ID 与带正反例的 coverage；同时禁止 `versions/{v}/prototypes/` 副本。跨文档语义门禁会对账索引/文件名/明细身份，并直接从 Story、Module 与 Feature 明细校验需求来源、领域边界、生命周期、评审、AC、PAGE/API/EXT 引用以及已有 SP 报告中的 Feature 输入快照。浏览器门禁再对全部 `PAGE-*.html` 检查真实渲染、离线资源、Console / 页面错误、横向溢出、截图有效性及常见控件冒烟交互，并用 7 类负例验证门禁不会静默失效。GitHub Actions 在 push 和 pull request 时运行两层门禁，失败时保留浏览器截图 7 天；任一项失败均不得发布。浏览器与 npm 依赖按版本键缓存（`actions/cache`），命中时不再全量下载。元数据路由固定为：总控 `allow_implicit_invocation: true`，其余子技能为 `false`，仍可通过 `$lny-prd-*` 显式调用。
 
 ## 十一、许可证
 

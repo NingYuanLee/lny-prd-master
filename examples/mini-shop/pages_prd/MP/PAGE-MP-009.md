@@ -14,7 +14,7 @@
 | 操控形态 | 移动端 |
 | MasterGo | 无 |
 
-> 布局分区见 `ui/PAGE-MP-009.md`；合法 PAGE 与跳转见 `ui_manifest.md` §3。金样 `gold/mobile-timeline.html`。
+> 布局分区见 `ui/PAGE-MP-009.md`；合法 PAGE 与跳转见 `ui_manifest.md` §3。
 
 ## 2. 用户故事（本页）
 

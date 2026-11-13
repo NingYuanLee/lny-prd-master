@@ -31,7 +31,7 @@ description: >-
 | ③ | `lny-prd-api/SKILL.md` | `api_spec` 索引 + `api/API-*`/`EXT-*`（禁路由/JSON/code） | 不写 UI 线框；不改 `prototypes/` |
 | ④ | `lny-prd-feature/SKILL.md` | `feature_spec` Module 定义 + Feature 索引、`feature/`；STORY/AC/PAGE/API 闭环 | 不写接口字段、UI 线框 |
 | ⑤ | `lny-prd-page/SKILL.md` | 根 `pages_prd/{终端}/PAGE-*` 工作源；根 `_shell` | 不替代②③④；不写版本快照 |
-| ⑥ | `lny-prd-prototype/SKILL.md` | 唯一当前原型 `prototypes/`（总入口 `index.html` + `{终端}/`）；按目标范围一次完成，逐页对照 `pages_prd` 与 `gold/` 金样（视觉下限） | 用 HTML 代替规格；改根规格或 `iteration_notes`；写 `versions/{v}/prototypes/`；npm / `prototypes-mui-app/`；按 ASCII 线框降质；忽略金样或把金样演示功能整页搬进业务页 |
+| ⑥ | `lny-prd-prototype/SKILL.md` | 唯一当前原型 `prototypes/`（总入口 `index.html` + `{终端}/`）；按目标范围一次完成，逐页对照 `pages_prd`；只保留壳层与文件结构约束 | 用 HTML 代替规格；改根规格或 `iteration_notes`；写 `versions/{v}/prototypes/`；npm / `prototypes-mui-app/`；把规格外功能整页搬进业务页 |
 | ⑦ | `lny-prd-check/SKILL.md` | `Q-S`规格门禁 / `Q-P`原型门禁 / `full`只读报告 | 改任何PRD正文；把规格问题只用HTML掩盖 |
 | ⑧ | `lny-prd-review/SKILL.md` | 按首版/非首版证据层评审并检查PAGE版本范围原子性；最终“通过”确认后写范围与批准PAGE快照 | 未确认即落盘；同页本版受影响Feature拆分范围；靠裁剪快照绕过；复制 `_shell` |
 | ⑨ | `lny-prd-sp/SKILL.md` | 按 ⑧ 已确认范围写 `sp_report.md`；落盘后同轮交 ⑥ **只刷总入口**（§3.3） | 改范围/规格/台账/各端原型页；不可估则停算（仍刷总入口） |
@@ -138,7 +138,8 @@ Q-S失败时按问题返回②③④或⑤并重跑；Q-S通过后，用户明�
 **不得压过**：未清 I2 委派、明确要求的 ⑦ 检查 / ⑧ 评审 / ⑨ 估点 / ⑩ 新迭代。演示措辞不能把「检查」做成刷原型，也不能静默开版本。
 
 - **本轮连续**：缺则②③④→⑤前检→⑤→Q-S→⑥作者自检→Q-P。⑥被直接唤起且发现缺口时也补齐前链；每步仍须完整Read对应SKILL。
-- **⑥ 页面范围**：用户指定 `页面编号列表` 时一次完成该列表；未指定时一次完成 `ui_manifest` 中当前全部 active 缺页（排除项不计入）。写每一页前必须 Read 该页 `pages_prd`（及 `ui/PAGE`、引用 COMP），并逐页执行金样对照与质量门禁；不得因页面较多跳过任何一页的读取或验收。若因失败中断，列出未完成编号；下一轮「继续」走 **G-partial** 只补 ⑥，禁止重做规格。壳层 `index`/`map`/总入口只挂已验收落盘页。
+- **⑥ 只保留壳层与文件结构约束**：落点结构、壳层资源、路径规则、校验链与写产物纪律；视觉与交互表现以项目自身事实为准（PRD 正文、`ui/` 规格、项目既有设计稿/品牌 CSS/真实素材），没有这些事实时按 PRD 自行设计。
+- **⑥ 页面范围**：用户指定 `页面编号列表` 时一次完成该列表；未指定时一次完成 `ui_manifest` 中当前全部 active 缺页（排除项不计入）。写每一页前必须 Read 该页 `pages_prd`（及 `ui/PAGE`、引用 COMP），并逐页执行规格对照与质量门禁；不得因页面较多跳过任何一页的读取或验收。若因失败中断，列出未完成编号；下一轮「继续」走 **G-partial** 只补 ⑥，禁止重做规格。壳层 `index`/`map`/总入口只挂已验收落盘页。
 - **只问产品事实**：终端有哪些、首页有什么等。不问流程问题。
 - **落在当前版本**：未指定则取 `versions/` 最大 semver。改文案、补页、出原型一律不新建版本目录。
 - **禁止静默 ⑩**：只有用户明确「新迭代 / 新版本 / `/lny-prd-iter`」才走 I。对话不主动推销开版本。小改（如首页改两字）走当前版本 ②⑤⑥，不为此建 v1.1.0。
@@ -262,7 +263,7 @@ Q-S失败时按问题返回②③④或⑤并重跑；Q-S通过后，用户明�
 - 状态检测完整条件表：[`reference-routing.md`](reference-routing.md)
 - 根规格、版本产物与原型落点：[`reference-artifact-paths.md`](reference-artifact-paths.md)
 - 框架排除：[`framework-exclusions.md`](framework-exclusions.md)
-- ②⑤⑥ 共用页型职责与金样映射：[`reference-page-types.md`](reference-page-types.md)（含 **「树 vs 章节列表选型」**）
+- ②⑤⑥ 共用页型职责与跨步骤不变量：[`reference-page-types.md`](reference-page-types.md)（含 **「树 vs 章节列表选型」**）
 - `api_spec.md` → `lny-prd-api/reference.md`
 - `ui_manifest.md` → `lny-prd-ui/reference/ui-manifest-template.md`
 - `feature_spec.md` → `lny-prd-feature/reference.md`

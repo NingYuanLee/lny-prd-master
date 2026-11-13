@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""对照 pages_prd 验收原型 PAGE：跳转、COMP、套件类名、禁止裸控件。"""
+"""对照 pages_prd 验收原型 PAGE：规格对照、结构类检查、禁止裸原生控件。"""
 from __future__ import annotations
 
 import argparse
@@ -14,10 +14,6 @@ QUOTE_RE = re.compile(r"「([^」]+)」")
 FENCED_BLOCK_RE = re.compile(
     r"^[ \t]*(```|~~~).*?^[ \t]*\1[ \t]*$",
     re.M | re.S,
-)
-STYLE_THEME_RE = re.compile(
-    r"\b(background|color|font|border(-color|-radius)?)\s*:",
-    re.I,
 )
 VISIBLE_IMPL_COPY_RE = re.compile(
     r"API-[A-Z]+-\d+|fitBounds|本页不含|不提供新建|无操作列|只读监控|只读台账|编号占位|模拟确认"
@@ -40,7 +36,6 @@ VOID_ELEMENTS = {
     "wbr",
 }
 CARD_DENSITY_CONTEXT_CLASSES = {"md-grid-2", "md-list-toolbar", "md-timeline"}
-MOBILE_LIST_CARD_CLASSES = {"md-card--order", "md-card--row"}
 
 
 def _extract_balanced(text: str, start: int, opening: str, closing: str) -> str | None:
@@ -262,9 +257,7 @@ class PageParser(HTMLParser):
         self.has_mobile_appbar = False
         self.has_center_appbar = False
         self.card_count = 0
-        self.unsupported_list_card_count = 0
         self.table_rows = 0
-        self.bare_media = 0
         self.has_card_density_context = False
         self.has_dense_data_table = False
         self.has_list_toolbar = False
@@ -321,24 +314,13 @@ class PageParser(HTMLParser):
             self.has_mobile_appbar = True
         if "md-card" in classes:
             self.card_count += 1
-            if not classes & MOBILE_LIST_CARD_CLASSES:
-                self.unsupported_list_card_count += 1
-        if "md-media-ph" in classes:
-            if not any(re.match(r"md-media-ph--\d+", c) for c in classes):
-                self.bare_media += 1
         if tag == "table":
             if "md-table" in classes:
                 self.in_data_table += 1
-            elif "md-article__table" not in classes:
-                self.errors.append(
-                    "<table> without md-table or md-article__table"
-                )
         if tag == "thead":
             self.in_thead += 1
         if tag == "tr" and self.in_data_table and self.in_thead == 0:
             self.table_rows += 1
-        if tag == "style":
-            self.errors.append("page <style> is forbidden; use kit classes")
         if tag == "link" and "mui-kit.css" in ad.get("href", ""):
             self.has_kit_css = True
         if tag == "script":
@@ -363,9 +345,6 @@ class PageParser(HTMLParser):
         skel_for = ad.get("data-skel-for")
         if skel_for:
             self.skel_for.add(skel_for)
-        style = ad.get("style") or ""
-        if style and STYLE_THEME_RE.search(style):
-            self.errors.append("inline theme style: " + style[:80])
         if tag == "button":
             allowed = any(c.startswith("md-") or c.startswith("proto-") for c in classes)
             in_toggle = any("md-toggle" in prev for prev in ancestors)
@@ -481,8 +460,6 @@ def check_html(
             + ": visible body copy exposes implementation/meta text: "
             + match
         )
-    if parser.bare_media:
-        errors.append(str(path) + ": md-media-ph without --1..--6 variant")
     errors.extend(check_density(path, parser))
     if parser.is_mobile and "proto-page.js" not in parser.scripts:
         errors.append(str(path) + ": mobile page missing proto-page.js (injects fixed status bar)")
@@ -619,7 +596,6 @@ def check_state_contract(
 
 
 BOX_DRAW_RE = re.compile(r"[┌┐└┘├┤┬┴┼│─]|[+][-]{2,}")
-NATIVE_DATE_RE = re.compile(r"""type\s*=\s*["']date["']""", re.I)
 
 
 def check_density(path: Path, parser: PageParser) -> list[str]:
@@ -702,33 +678,10 @@ def check_drawer_backdrop(path: Path, text: str) -> list[str]:
     return errors
 
 
-DIALOG_TAG_RE = re.compile(
-    r"<div\b[^>]*\bclass=\"[^\"]*\bmd-dialog\b[^\"]*\"[^>]*>",
-    re.I,
-)
-DIALOG_SURFACE_STRIP_RE = re.compile(
-    r"border-radius\s*:\s*0|box-shadow\s*:\s*none",
-    re.I,
-)
-
-
-def check_dialog_surface(path: Path, text: str) -> list[str]:
-    """D5 dialog panel must keep kit rounded surface + unified elevation."""
-    errors: list[str] = []
-    prefix = str(path) + ": "
-    for tag in DIALOG_TAG_RE.findall(text):
-        if "style=" in tag and DIALOG_SURFACE_STRIP_RE.search(tag):
-            errors.append(
-                prefix
-                + "md-dialog must not strip border-radius/box-shadow via inline style; use md-dialog class"
-            )
-    return errors
-
-
 def check_wizard_nav(
     path: Path, page_id: str, text: str, *, fixture: bool = False
 ) -> list[str]:
-    """PT-STATE-FLOW: one wizard nav type per business page; no gold tab-demo on business pages."""
+    """PT-STATE-FLOW: one wizard nav type per business page; no demo tab panel on business pages."""
     errors: list[str] = []
     prefix = str(path) + ": "
     demo = fixture
@@ -736,7 +689,7 @@ def check_wizard_nav(
     if "data-wizard-panel" in text and not demo:
         errors.append(
             prefix
-            + "business page must not copy gold wizard md-tabs demo (data-wizard-panel)"
+            + "business page must not copy the demo wizard tab panel (data-wizard-panel)"
         )
 
     if demo:
@@ -784,64 +737,18 @@ def check_visual_floor(
     errors.extend(check_wizard_nav(path, page_id, text, fixture=fixture))
     errors.extend(check_dialog_backdrop(path, text))
     errors.extend(check_drawer_backdrop(path, text))
-    errors.extend(check_dialog_surface(path, text))
     if BOX_DRAW_RE.search(text):
         errors.append(prefix + "ASCII wireframe leaked into HTML")
     if not parser.is_mobile and not parser.is_desktop:
         errors.append(prefix + "missing md-mobile-page or md-d1 root")
-    if NATIVE_DATE_RE.search(text):
-        errors.append(prefix + "use md-field--date + type=text, not type=date")
-    if parser.is_desktop and parser.table_rows:
-        if "md-chip" not in text and "md-thumb" not in text and "md-row-goods" not in text:
-            errors.append(prefix + "desktop table missing md-chip/md-thumb/md-row-goods")
-    if parser.is_desktop and "md-d1__form" in text and "md-field--sm" not in text:
-        errors.append(prefix + "form fields must use md-field--sm")
-    if parser.is_mobile and parser.has_list_toolbar and parser.unsupported_list_card_count:
-        errors.append(
-            prefix
-            + "mobile list cards must use md-card--row or md-card--order"
-        )
     if parser.is_mobile and "md-tabbar" in text and "data-icon" not in text:
         errors.append(prefix + "tabbar missing data-icon")
-    if parser.has_tabbar and parser.has_mobile_appbar and not parser.has_center_appbar:
-        errors.append(
-            prefix
-            + "tabbar page: only L2 md-appbar--center allowed (not L3/L5/L6 return or overlay appbar)"
-        )
     if parser.is_mobile and "viewport-fit=cover" not in text:
         errors.append(prefix + "mobile page missing viewport-fit=cover")
     if parser.is_mobile and "md-immersive" not in text and "md-sink" not in text and "md-standard" not in text:
         errors.append(prefix + "mobile page must declare md-immersive or md-standard")
-    if "md-d1__list" in text:
-        if "md-d1--list" not in text:
-            errors.append(prefix + "D1-1 list must use md-d1--list compact density")
-        if not any(
-            cls in text
-            for cls in (
-                "md-col-name",
-                "md-col-price",
-                "md-col-status",
-                "md-col-date",
-                "md-col-id",
-                "md-col-num",
-            )
-        ):
-            errors.append(prefix + "D1-1 columns must use semantic md-col-* (not equal widths)")
-        if "md-empty" not in text:
-            errors.append(prefix + "list page missing md-empty (hidden empty state)")
-        if "md-skel-host" not in text and "md-skeleton" not in text:
-            errors.append(prefix + "list page missing skeleton (md-skel-host / md-skeleton)")
-    if "md-comment" in text:
-        if "md-comment__time" not in text:
-            errors.append(prefix + "comments must include md-comment__time")
-        if "md-comment__photos" not in text:
-            errors.append(prefix + "comments must include md-comment__photos (max 5 per row)")
-    if "data-menu" in text and "md-menu--fixed" not in text:
-        errors.append(prefix + "data-menu requires md-menu--fixed (keep gold more-menu behavior)")
-    if "md-tabs--page" in text and "data-panel" not in text:
-        errors.append(prefix + "md-tabs--page requires data-panel (keep gold tab switching)")
     if "data-wheel" in text and "proto-page.js" not in parser.scripts:
-        errors.append(prefix + "data-wheel requires proto-page.js (keep gold picker behavior)")
+        errors.append(prefix + "data-wheel requires proto-page.js (keep the picker behavior)")
     return errors
 
 
@@ -878,7 +785,7 @@ def main(argv: list[str]) -> int:
         "--fixture",
         action="append",
         default=[],
-        help="PAGE id intentionally containing a gold/demo comparison",
+        help="PAGE id intentionally containing a demo/fixture comparison",
     )
     args = parser.parse_args(argv[1:])
     prd_root = Path(args.prd_root).resolve()

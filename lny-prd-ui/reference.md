@@ -11,7 +11,7 @@
 | [`reference/component-template.md`](reference/component-template.md) | `ui/COMP-*.md` 明细模板 | 写组件详述时 |
 | [`reference/page-template.md`](reference/page-template.md) | `ui/PAGE-*.md` 明细模板 | 写页面详述时 |
 
-> §1 分层/滚动/交互等完整约定在 [`reference/ui-manifest-template.md`](reference/ui-manifest-template.md)；视觉实现边界见 `lny-prd-prototype` 的 `reference-kit.md` 与 `gold/`，不在本文件重复。
+> §1 分层/滚动/交互等完整约定在 [`reference/ui-manifest-template.md`](reference/ui-manifest-template.md)；视觉实现边界归 `lny-prd-prototype`，不在本文件重复。
 
 ## 立项落盘与 `ui/` 目录初始化
 

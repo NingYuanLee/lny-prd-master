@@ -64,4 +64,4 @@
 
 ## 6. 备注
 
-金样 `gold/mobile-order-list.html`；夹具 `PAGE-MP-014.html`。
+参考页 `PAGE-MP-014.html`。

@@ -442,7 +442,14 @@ def restore_file(path: Path, original: bytes | None) -> None:
 def prune_backups(target: Target, keep: int = 1) -> None:
     if not target.backups_root.is_dir():
         return
-    backups = sorted(path for path in target.backups_root.iterdir() if path.is_dir())
+    # Keep the newest backups by creation time. Backup names embed the bundle
+    # version, so name order is not chronological ("2.22.0" sorts before
+    # "unmanaged"): sorting by name drops the newest backup whenever several
+    # operations land in the same second.
+    backups = sorted(
+        (path for path in target.backups_root.iterdir() if path.is_dir()),
+        key=lambda path: (path.stat().st_mtime, path.name),
+    )
     for path in backups[:-keep]:
         validate_direct_child(target.backups_root, path, path.name)
         shutil.rmtree(path)

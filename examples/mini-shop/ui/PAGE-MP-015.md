@@ -45,4 +45,4 @@
 - **加载 / 空 / 失败**：列表骨架；空态引导；失败 Toast。
 - **收纳与浮层**：整页列表直出；不是 split 左栏、不是横卡、不是可维护树。
 
-金样 `gold/mobile-chapter-list.html`；夹具 `PAGE-MP-015.html`。
+参考页 `PAGE-MP-015.html`。
