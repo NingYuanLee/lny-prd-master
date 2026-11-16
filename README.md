@@ -1,6 +1,6 @@
 # LNY-PRD — 李宁远产品工作流
 
-**工具包版本：2.23.1**
+**工具包版本：2.23.2**
 
 ## 背景
 
@@ -173,7 +173,7 @@ python scripts/install-skills.py status --host <host>
 
 本地修改过已安装副本时，更新会停止；确认丢弃这些修改时才对 `update` 加 `--force`。可先用 `--dry-run` 预览，卸载使用 `uninstall`。TraeWork CN 安装前须至少启动过一次；安装器会保留 `~/.trae-cn/skill-config.json` 中无关字段，并登记 10 个 `user_upload` 技能。
 
-[`examples/`](examples/) 是仓库的**回归夹具**（供 ⑦ 检查类 AI 自检与作者验收对照，不是对外展示的样例）；技能运行不依赖它，也不会把它复制进技能目录。需要本地独立副本对照时执行：
+[`examples/`](examples/) 是仓库的**回归示例**（供 ⑦ 检查类 AI 自检与作者验收对照，不是对外展示的样例）；技能运行不依赖它，也不会把它复制进技能目录。需要本地独立副本对照时执行：
 
 ```bash
 python scripts/install-skills.py export-examples
@@ -228,7 +228,7 @@ Agent 将自动判定当前状态：
 框架内置排除: []
 ```
 
-需要自定义排除表时，把 [`lny-prd-master/framework-exclusions.md`](lny-prd-master/framework-exclusions.md) 拷到 PRD 项目根后改，或把类别写入 `框架内置排除`。对照 YAML 见 [`lny-prd-master/reference-init.md`](lny-prd-master/reference-init.md)。`examples/` 仍是回归夹具，不是换栈样例。
+需要自定义排除表时，把 [`lny-prd-master/framework-exclusions.md`](lny-prd-master/framework-exclusions.md) 拷到 PRD 项目根后改，或把类别写入 `框架内置排除`。对照 YAML 见 [`lny-prd-master/reference-init.md`](lny-prd-master/reference-init.md)。`examples/` 仍是回归示例，不是换栈样例。
 
 ## 六、产物结构
 
@@ -278,7 +278,7 @@ my-project/                         # PRD 项目根目录
     ├── v1.0.0/                     #   首版
     │   ├── iteration_notes.md      #     过程性留痕
     │   ├── delivery_scope.md       #     ⑧确认后才创建的本期范围与评审决议
-    │   ├── sp_report.md            #     版本标准工时点（⑨ 负责；夹具已给出）
+    │   ├── sp_report.md            #     版本标准工时点（⑨ 负责；示例已给出）
     │   ├── pages_prd/              #     ⑧发布的批准业务页只读快照
     │   │   └── MP/pages/index/index/PAGE-MP-001.md  # 真实路由投影；无 _shell
     └── v1.1.0/                     #   次版（⑩ 创建）
@@ -293,9 +293,9 @@ my-project/                         # PRD 项目根目录
 
 根 `pages_prd/` 是唯一当前单页PRD工作源，按终端/PAGE ID平铺；根 `prototypes/` 是唯一当前原型。只有⑧最终“通过”确认后，批准业务页才按 `delivery_scope.md` 映射与真实UI路由发布到 `versions/{v}/pages_prd/`；不发布 `_shell`。版本目录不复制原型树，历史原型通过项目Git commit/tag回看。
 
-## 七、回归夹具示例（mini-shop）
+## 七、回归示例（mini-shop）
 
-以下摘取回归夹具 `examples/mini-shop/` 五种核心产物的典型片段，展示实际落盘格式（供 ⑦ 检查类 AI 自检与作者验收对照）。
+以下摘取回归示例 `examples/mini-shop/` 五种核心产物的典型片段，展示实际落盘格式（供 ⑦ 检查类 AI 自检与作者验收对照）。
 
 #### 7.1 API 需求明细（`api/API-MP-001.md`）— 请求 & 响应参数字段表
 
@@ -380,7 +380,7 @@ sequenceDiagram
 
 #### 7.5 版本标准工时点
 
-见 [第八章](#八估点与可评估性)、[`lny-prd-sp/reference-weights.md`](lny-prd-sp/reference-weights.md)，以及夹具 [`examples/mini-shop/versions/v1.0.0/sp_report.md`](examples/mini-shop/versions/v1.0.0/sp_report.md)。
+见 [第八章](#八估点与可评估性)、[`lny-prd-sp/reference-weights.md`](lny-prd-sp/reference-weights.md)，以及示例 [`examples/mini-shop/versions/v1.0.0/sp_report.md`](examples/mini-shop/versions/v1.0.0/sp_report.md)。
 
 ## 八、估点与可评估性
 
@@ -493,7 +493,7 @@ prdMaster/                          # 本仓库 = 技能包，禁止在此立项
 ├── lny-prd-check/                   # ⑦ 只读检查 + 路径/跨文档语义扫描器
 ├── lny-prd-iter/SKILL.md + reference.md
 ├── lny-prd-sp/SKILL.md + reference-weights.md
-├── examples/mini-shop/             # 回归夹具：AI 自检 / 作者验收对照（不参与安装）
+├── examples/mini-shop/             # 回归示例：AI 自检 / 作者验收对照（不参与安装）
 ├── skill-bundle.json               # 整包 ID、版本、10 核心技能与可选资源
 ├── scripts/install-skills.py       # 三平台用户级整包安装、更新、状态与卸载
 ├── scripts/test_install_skills.py  # 安装事务、回滚、漂移与平台配置测试

@@ -41,7 +41,7 @@
 | PAGE-AD-002 | AD | pages_prd/AD/PAGE-AD-002.md | views/goods/form | versions/v1.0.0/pages_prd/AD/views/goods/form/PAGE-AD-002.md |
 | PAGE-AD-008 | AD | pages_prd/AD/PAGE-AD-008.md | views/goods/detail | versions/v1.0.0/pages_prd/AD/views/goods/detail/PAGE-AD-008.md |
 
-> 本表仅列 `FEATURE-001`～`FEATURE-003` 已批准 AC 实际覆盖的业务页；版本快照不包含 `_shell` 或夹具专用页面。
+> 本表仅列 `FEATURE-001`～`FEATURE-003` 已批准 AC 实际覆盖的业务页；版本快照不包含 `_shell` 或示例专用页面。
 
 ## 4. 未决决策
 

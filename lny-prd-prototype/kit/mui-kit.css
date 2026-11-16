@@ -3882,7 +3882,7 @@ button.md-tree__item {
 .md-cat-intro .md-detail-head {
   margin: 0;
 }
-/* 触屏分类导航：左一级分组右分组横卡，滚正文与左栏高亮联动（对标 desktop-locator 左栏） */
+/* 触屏分类导航：左一级分组右分组横卡，滚正文与左栏高亮联动（参照 定位导航 左栏） */
 .md-mobile-page.md-locator-page .md-mobile-body {
   padding: 0;
   gap: 0;
