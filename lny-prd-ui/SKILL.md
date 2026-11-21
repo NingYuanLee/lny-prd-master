@@ -119,7 +119,7 @@ COMP **编号必填** `COMP-{三位序号}`，与 `ui_manifest` §4「组件编�
 
 ## 基础模型视觉基线
 
-写 PAGE 前读取 `reference-visual-baseline.md`。它是原型生成和轻量渲染自检的最小视觉规则集。
+写 PAGE 前读取 `reference-visual-baseline.md`。关键页首版同时按[设计选型](reference-design-choices.md)用真实内容推演相邻区块和滚动后的阅读顺序，将最值得用 HTML 验证的判断写进已有 §2.4。它是原型生成和轻量渲染自检的最小视觉规则集。
 
 
 ## 按场景读取视觉规则
