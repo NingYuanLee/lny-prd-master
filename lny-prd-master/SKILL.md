@@ -1,272 +1,78 @@
 ---
 name: lny-prd-master
 description: >-
-  LNY-PRD（李宁远产品工作流）总控入口与立项。Use when the user mentions lny-prd, 李宁远,
-  @lny-prd-master, /lny-prd-master, /lny-prd-ui, /lny-prd-api, /lny-prd-feature, /lny-prd-prototype,
-  /lny-prd-page, /lny-prd-review, /lny-prd-check, /lny-prd-iter, /lny-prd-sp, product spec, or PRD workflows.
-  空目录走立项脚手架；已有 main_spec.md 时按 §3 判定下一步并 Read 对应 lny-prd-*/SKILL.md。
-  入口与「继续」等价；勿要求用户自选子指令。
+  LNY-PRD 的轻量入口与立项。Use for `/lny-prd-master`, 空目录立项、已有 PRD 项目的状态路由，
+  or when the user explicitly asks to continue or choose the next PRD step. Direct step requests such as
+  `/lny-prd-ui`, `/lny-prd-api`, `/lny-prd-feature`, `/lny-prd-page`, `/lny-prd-prototype`,
+  `/lny-prd-check`, `/lny-prd-review`, `/lny-prd-sp`, and `/lny-prd-iter` should load their own skill directly.
+  默认按请求执行，但原型目标会自动推进到原型完成。Q-P 不自动执行，原型完成后必须提示用户是否运行 Q-P。只有用户明确要求完整链、自动检查或自动推进时才读取 `reference-full-chain.md`。
 ---
 
-## 李宁远产品工作流
+## 入口协议
 
-🔷 **LNY-PRD** 保留十步编号：**①** `/lny-prd-master` 立项 · **②** `/lny-prd-ui` · **③** `/lny-prd-api` · **④** `/lny-prd-feature` · **⑤** `/lny-prd-page` · **⑥** `/lny-prd-prototype` · **⑦** `/lny-prd-check` · **⑧** `/lny-prd-review` · **⑨** `/lny-prd-sp` · **⑩** `/lny-prd-iter`。其中 **⑦是横向质量门禁**：⑤后跑 `Q-S`，⑥作者自检后跑 `Q-P`；编号保留但不表示只在⑥后执行一次。默认主链自动运行到Q-P通过，再询问是否进入⑧。
+本技能只负责三件事：确认 PRD 根目录、识别用户意图、加载一个对应子技能。不要在这里展开子步骤的全部写作规范。
 
-②③④同轮完成并先过⑤前置自检，通过后自动⑤→⑦/Q-S→⑥→⑦/Q-P；只有缺产品事实、用户明确只要规格，或Q-P通过准备进入⑧时才停。⑧形成调整、附条件或退回结论时，按影响范围回到②③④，再经过⑤、两道⑦门禁和⑥回到⑧；该循环属于当前版本，不静默触发⑩。
+先检查 PRD 根目录：
 
----
+1. 无非隐藏文件时走立项。
+2. 有 `main_spec.md` 时读取状态并路由。
+3. 有其他文件但没有 `main_spec.md` 时提示用户移入 PRD 根或开始立项，不擅自生成根规范。
 
-## LNY-PRD 总控协议（master 编排）
+默认模式是“按请求执行”。用户只要求一个页面、接口、功能、检查或评审时，只加载对应技能并在该步骤收尾。用户说“继续”时，从最早未完成步骤恢复，但仍不自动扩大到完整链。
 
-**适用范围**：PRD 项目根（存在或将生成 `main_spec.md`）。路径以本技能包目录为准。任何写入或子任务委派前 Read [`reference-artifact-paths.md`](reference-artifact-paths.md)；需要委派或并行时还须完整 Read [`reference-agent-orchestration.md`](reference-agent-orchestration.md)。当前工作版本不是根规格镜像目录。
+用户明确说“完整做完”“直接出可评审原型”“自动推进”“自动检查”或“一次做完规格三件套”时，先读取 [`reference-full-chain.md`](reference-full-chain.md)，再按其中的依赖链执行。原型目标即使未说完整链，也自动补齐必要规格并进入⑥；页面设计决策按 [`reference-design-decision.md`](reference-design-decision.md) 自动完成，只有关键目标、品牌事实、资产或范围冲突时才询问使用者。⑥完成后先提示是否执行 Q-P，除非用户已经明确要求检查。
 
-### 1. 技能边界
+## 路由表
 
-②～⑩ **均不得**在根规范「变更记录」表新增行（**仅 ⑩** 按新版本追加一行；**仅 ① 立项**写 v1.0.0 首行）。②～⑧ 开笔前 Read [`framework-exclusions.md`](framework-exclusions.md)。每轮结束明示：已完成步、下一步、将 Read 的 `SKILL.md`。
+| 用户意图 | 读取 |
+|---|---|
+| 新项目、空目录、立项 | 本文“立项” |
+| UI、页面清单、组件体验 | `lny-prd-ui/SKILL.md` |
+| API、接口语义 | `lny-prd-api/SKILL.md` |
+| Feature、业务规则、验收标准 | `lny-prd-feature/SKILL.md` |
+| 单页 PRD、页面数据流 | `lny-prd-page/SKILL.md` |
+| 原型、演示、页面实现 | `lny-prd-prototype/SKILL.md` |
+| 规格检查、原型检查、完整检查 | `lny-prd-check/SKILL.md` |
+| 需求或范围评审 | `lny-prd-review/SKILL.md` |
+| 估点、SP | `lny-prd-sp/SKILL.md` |
+| 新版本、新迭代 | `lny-prd-iter/SKILL.md` |
 
-| 步 | Read | 产物 | 禁止 |
-|----|------|------|------|
-| ① | 本文 | `versions/v1.0.0/`、根规范初稿、需求故事、变更记录首行、第4章终端 | 续跑不得重建 v1.0.0；② 不得改第4章 |
-| ② | `lny-prd-ui/SKILL.md` | `ui_manifest` + `ui/`（含 PAGE **§2.3 交互体验设计**） | 不改第4章、api 字段、`prototypes/`；只列控件不设计体验 |
-| ③ | `lny-prd-api/SKILL.md` | `api_spec` 索引 + `api/API-*`/`EXT-*`（禁路由/JSON/code） | 不写 UI 线框；不改 `prototypes/` |
-| ④ | `lny-prd-feature/SKILL.md` | `feature_spec` Module 定义 + Feature 索引、`feature/`；STORY/AC/PAGE/API 闭环 | 不写接口字段、UI 线框 |
-| ⑤ | `lny-prd-page/SKILL.md` | 根 `pages_prd/{终端}/PAGE-*` 工作源；根 `_shell` | 不替代②③④；不写版本快照 |
-| ⑥ | `lny-prd-prototype/SKILL.md` | 唯一当前原型 `prototypes/`（总入口 `index.html` + `{终端}/`）；按目标范围一次完成，逐页对照 `pages_prd`；只保留壳层与文件结构约束 | 用 HTML 代替规格；改根规格或 `iteration_notes`；写 `versions/{v}/prototypes/`；npm / `prototypes-mui-app/`；把规格外功能整页搬进业务页 |
-| ⑦ | `lny-prd-check/SKILL.md` | `Q-S`规格门禁 / `Q-P`原型门禁 / `full`只读报告 | 改任何PRD正文；把规格问题只用HTML掩盖 |
-| ⑧ | `lny-prd-review/SKILL.md` | 按首版/非首版证据层评审并检查PAGE版本范围原子性；最终“通过”确认后写范围与批准PAGE快照 | 未确认即落盘；同页本版受影响Feature拆分范围；靠裁剪快照绕过；复制 `_shell` |
-| ⑨ | `lny-prd-sp/SKILL.md` | 按 ⑧ 已确认范围写 `sp_report.md`；落盘后同轮交 ⑥ **只刷总入口**（§3.3） | 改范围/规格/台账/各端原型页；不可估则停算（仍刷总入口） |
-| ⑩ | `lny-prd-iter/SKILL.md` | 只读核验前版评审终态与应有 SP 后创建新版本目录、台账、`eval_signals`、变更记录新行 | 创建/修改 `delivery_scope.md`；写规格正文、生成 `pages_prd` |
+进入子技能前读取 [`reference-common.md`](reference-common.md)。只有涉及对应场景时再读取 `reference-routing.md`、`reference-artifact-paths.md`、`framework-exclusions.md` 或 `reference-agent-orchestration.md`。
 
-子技能「写产物纪律」一并遵守。改根四规范正文 → 当前版本 `iteration_notes.md` 文末追加流水（§1.1），不得靠变更记录表记账。协议不生成任何成树镜像：根规格、`ui/`、`api/`、`feature/` 与 `prototypes/` 均只保留正式落点。
+## 立项
 
-### 1.1 版本号与变更记录
+立项时读取 [`reference-init.md`](reference-init.md) 和 [`framework-exclusions.md`](framework-exclusions.md)。输入可以是一次性 YAML，也可以是自然语言补充。最少需要项目名称、产品定位、需求故事、产品目标和终端范围。
 
-- **v1.0.0**：仅立项创建目录与各规范变更记录首行。续跑与 ②～⑩ 不得再建/再写该行。⑩ 不得补初始化 v1.0.0。
-- **新版本行**：仅 ⑩ 可新建 `versions/{新版本号}/` 并追加一行。细则见 `lny-prd-iter`。
-- **其余技能**：不得在变更记录表新增行；同版本不得多行（发现则交 ⑦/⑩，他步不擅自改表）；表内版本须与 `versions/` 文件夹一致；「文档版本」只能填已存在的版本目录。
-- **过程流水**：②③④改根四规范正文时，在当前版本 `iteration_notes.md` 文末追加业务摘要。⑤只改根 `pages_prd` 工作源时不写流水；⑥不改根规格与流水；⑦只读；⑧范围决议与批准快照不写流水；⑨只写 `sp_report.md`。⑩写开篇。
-- **当前工作版本**：未指定则取 `versions/` 最大 semver；用户显式版本优先且目录须已存在；与文档头不一致时以 `versions/` 为准。
+确认摘要必须逐条展示将排除的能力类别。用户确认后创建：
 
-#### 1.1.1 流水内容过滤（必守）
+- `main_spec.md`
+- `ui_manifest.md`、`api_spec.md`、`feature_spec.md`
+- `api/`、`ui/`、`feature/`
+- `versions/v1.0.0/iteration_notes.md`
 
-| 规则 | 说明 |
-|------|------|
-| ❌ 禁止写入 | 纯文档修复、纯元操作（台账/评审状态）、仅改注释/Meta、review/check 只读报告与非业务修复 |
-| ✅ 应写入 | 新增/修改/废弃页面、接口、功能；业务规则/字段口径/流程；页面交互/状态矩阵 |
-| ⚠️ 标记 | 新增文件 `📁 新增：`；删除文件 `🗑️ 删除：` |
+立项只初始化 `v1.0.0`。不要创建 `delivery_scope.md`，它只由⑧在用户确认评审结论后创建。立项完成后，如果用户没有明确“只做立项”，按当前请求路由到下一步骤，不自动开启完整链。
 
-#### 1.1.2 流水自检
+## 子技能边界速查
 
-1. 是否为业务/功能变更？（非则跳过）
-2. 文件增删是否用了 📁/🗑️？
-3. 是否避免「修复文档」「修正台账」等非功能性措辞？
+| 步骤 | 正式产物 | 主要禁止 |
+|---|---|---|
+| ② | `ui_manifest.md`、`ui/` | 不改终端说明、API字段或原型 |
+| ③ | `api_spec.md`、`api/` | 不写 UI 线框、路由或 JSON 契约 |
+| ④ | `feature_spec.md`、`feature/` | 不写接口字段或 UI 线框 |
+| ⑤ | `pages_prd/`、`_shell` | 不替代②③④、不写版本快照 |
+| ⑥ | `prototypes/` | 不用 HTML 代替规格、不写版本原型副本 |
+| ⑦ | 只读 Q-S/Q-P/full 报告 | 不改 PRD 正文 |
+| ⑧ | 评审结论和批准快照 | 未确认不得落盘 |
+| ⑨ | `sp_report.md`，必要时只刷总入口 | 不改范围、规格或业务页 |
+| ⑩ | 新版本目录、台账、迭代信号 | 不写规格正文或生成 `pages_prd` |
 
-#### 1.1.3 台账状态机（单值、成功后推进）
+## 收尾
 
-台账每行的「状态」只写一个当前值，禁止 `待②/待⑤` 等复合值。仅在本步产物全部成功落盘并完成自检后推进：
-
-| 对象 | 状态转换 |
-|------|----------|
-| 新增/修改页面 | `待②` → ② 完成后 `待⑤` → ⑤ 完成后 `已完成` |
-| 废弃页面 | `待②` → ② 完成后 `已完成` |
-| API | `待③` → ③ 完成后 `已完成` |
-| Feature | `待④` → ④ 完成后 `已完成` |
-
-子技能失败或仍有未落盘缺口时保留原状态。总控只按当前单值匹配 I2-spec / I2-page，禁止凭对话声称跳过台账状态。
+结束时用四项短报：已完成、未完成、门禁状态、下一停点。原型完成后的下一停点默认是“等待用户决定是否执行 Q-P”。产物按 [`reference-common.md`](reference-common.md) 的精简规范写。完整公共规则见 [`reference-common.md`](reference-common.md)。完整自动链见 [`reference-full-chain.md`](reference-full-chain.md)。
 
 ### 1.2 Subagent 与并行编排
 
-存在两个以上独立分片时，总控必须按 [`reference-agent-orchestration.md`](reference-agent-orchestration.md) 先做宿主能力检测，再建立依赖波次与独占写路径：支持 subagent/Task 则 fan-out/fan-in，不支持则按同一任务图顺序降级。不得把任一宿主专用工具当作正确性前提。
+总控负责判断①的只读资料归纳是否值得并行，并确定本轮由②③④中的谁工作。存在独立分片时读取 `reference-agent-orchestration.md`；无 subagent/Task 时按同一依赖图顺序执行。
 
-总控负责判断①的只读资料归纳是否值得并行、本轮由②③④中的谁工作，以及⑤～⑩有哪些就绪分片可并行；子 Agent 只执行已确定的责任步骤，不得自行改变路由。任何共享索引、台账、流水、壳层、入口、范围、SP报告和最终门禁结论均由主 Agent 单写。⑤按 PAGE、⑥按业务页面 HTML、⑨按 FE/BE 是默认高价值并行点；完整边界见参考文件 §5。
+⑥ 只保留壳层与文件结构约束。原型页仍由 `lny-prd-prototype/SKILL.md` 负责视觉与交互验收。
 
-### 2. 前置分流（续跑与立项）
-
-在 **PRD 根**按顶层可见项与 `main_spec.md` 是否存在分流（**不**将 `.` 开头项计入「空目录」）：
-
-1. **无非隐藏文件**：走下方 **立项**；可请用户附 YAML 或项目名称。
-2. **已存在 `main_spec.md`**：不重跑立项（除非用户要求）。执行 **§3** → Read 对应 SKILL（规格三件套见 §3.1）；「继续」进入下一轮（批内不问继续）。
-3. **有非隐藏文件但无 `main_spec.md`**：提示空目录立项或移入 PRD 根；**不**擅自生成 `main_spec.md`。
-
-### 3. 状态检测 → 唯一步骤优先级（从高到低命中即停）
-
-> §3 路由以**用户明确意图与下表为准**；细则与完整条件在 [`reference-routing.md`](reference-routing.md)。**命中后必须 Read 该文件对应条再执行。** 当本轮消费 ⑦ 检查输出时，其 `NEXT_STEP_ROUTE:` 名单作为**委派建议信号**优先参考（`none` 表示无待办委派），不得反压用户明示的检查/评审/估点/迭代要求。
-
-在 **PRD 根目录** 读取信号（按需 Read 文件内容，勿凭猜）。短树只定方向：
-
-| 用户意图 | 步 |
-| --- | --- |
-| 空目录立项（尚无 `main_spec.md`） | **A** → 本文立项 |
-| 需求/范围评审，或处理上一轮 ⑧ 结论 | **Review** → ⑧ |
-| 检查规格 / 检查原型 / 完整检查 | **H** → ⑦/Q-S、Q-P或full |
-| 估点 / SP | **H2** → ⑨ |
-| 新迭代 / 新版本 | **I** → ⑩ |
-| 原型 / 演示 / 先出个页面 | **GoalProto** → §3.2 |
-| 规格缺口或未清 `待②`～`待⑤` | **I2 / B / C / D** → §3.1并自动推进到Q-P |
-| 规格已齐、无上述意图 | **J** → 只建议，不落盘 |
-
-完整条件码（B2 / F / G-partial / G2 / G 等）与禁止句见 [`reference-routing.md`](reference-routing.md) 优先级表。
-
-**自动主链**：除用户明确“只要规格/不要原型”外，规格任务默认推进到“Q-P通过、具备⑧评审条件”。用户要原型但规格未齐时在当前版本补链；禁止用HTML代替规格，禁止静默⑩。
-
-### 3.1 规格生成链（②③④→⑤前检→⑤→Q-S，禁止拆“继续”）
-
-> **问题**：§3 的 B→C→D 优先级 +「每轮只做一步」会把本应同轮完成的 ②③④ 拆成三次「要不要继续」。
-
-**何时触发批跑（满足其一）**：
-
-1. **续跑 / 立项后首次补规格**：同时检测 B、C、D 条件；凡未满足的，**本轮全部执行**（顺序建议：先 **② ui** 定 PAGE，再 **③ api** 与 **④ feature** 可紧接着同一轮完成；三者都缺时 **②→③→④ 连续落盘**，中间 **禁止** 停下来问用户「继续」）。
-2. **I2-spec 委派**：台账同时存在 `待②` / `待③` / `待④`（或任两两组合）时，**同轮清完**所有②③④待办后立即做⑤前检；**不要**做完②就停。`待⑤` 由⑤继续处理，随后自动Q-S→⑥→Q-P；明确只要规格时停在Q-S。
-3. 用户消息明确写「并行 / 一次做完规格三件套 / 一起补 ui api feature」→ 强制本批。
-
-**批内纪律**：
-
-- 开批时明示：`本轮规格三件套批：②… ③… ④…`（列出实际要做的子集）。
-- 总控先按缺失文件、台账单值与 ⑦ `NEXT_STEP_ROUTE` 判定本轮实际责任步骤，建立 `②/③/④` 任务集合；没有待办的步骤不启动 Agent，也不为凑并行重复生成。
-- 每步仍须 **完整 Read** 对应 `SKILL.md` 再落盘；遵守各步写产物纪律与框架排除。②须先锁 PAGE/COMP；其后③与④输入已充分且互不等待时可按 §1.2 并行，否则保持②→③→④。
-- ②③④完成后立即做⑤输入自检。可由现有事实修复的缺口，定向返回责任步骤同轮修复；缺产品事实才询问用户。通过后自动执行⑤，再自动执行⑦/Q-S；中间禁止询问“继续”。
-- 若某步因缺用户输入无法落盘：列出缺口，**其余可做的 ②③④ 仍做完**，再停；不要因 ③ 缺字段而整批不做。
-
-Q-S失败时按问题返回②③④或⑤并重跑；Q-S通过后，用户明确只要规格则停止，否则自动进入⑥。⑧、⑨、⑩与B2仍需各自触发；⑦门禁不再要求用户显式触发。
-
-**“继续”**：重新执行§3并从最早未通过环节恢复。未清②③④/⑤则走完整规格链；Q-S已通过但原型未齐则⑥→Q-P；Q-P通过则只询问是否进入⑧。评审返修按§3.4恢复。不得要求用户自选子指令。
-
-### 3.2 自动到评审就绪（②→⑤→Q-S→⑥→Q-P，禁止静默⑩）
-
-用户目标是原型 / 演示 / 给老板看 / 先出个页面（而非「只要规格」）时：**交付物是原型**。规格或 `pages_prd` 缺口则本轮补齐再出原型；不要拒绝跳步，不要问「要不要先写规格」。
-
-**不得压过**：未清 I2 委派、明确要求的 ⑦ 检查 / ⑧ 评审 / ⑨ 估点 / ⑩ 新迭代。演示措辞不能把「检查」做成刷原型，也不能静默开版本。
-
-- **本轮连续**：缺则②③④→⑤前检→⑤→Q-S→⑥作者自检→Q-P。⑥被直接唤起且发现缺口时也补齐前链；每步仍须完整Read对应SKILL。
-- **⑥ 只保留壳层与文件结构约束**：落点结构、壳层资源、路径规则、校验链与写产物纪律；视觉与交互表现以项目自身事实为准（PRD 正文、`ui/` 规格、项目既有设计稿/品牌 CSS/真实素材），没有这些事实时按 PRD 自行设计。
-- **⑥ 页面范围**：用户指定 `页面编号列表` 时一次完成该列表；未指定时一次完成 `ui_manifest` 中当前全部 active 缺页（排除项不计入）。写每一页前必须 Read 该页 `pages_prd`（及 `ui/PAGE`、引用 COMP），并逐页执行规格对照与质量门禁；不得因页面较多跳过任何一页的读取或验收。若因失败中断，列出未完成编号；下一轮「继续」走 **G-partial** 只补 ⑥，禁止重做规格。壳层 `index`/`map`/总入口只挂已验收落盘页。
-- **只问产品事实**：终端有哪些、首页有什么等。不问流程问题。
-- **落在当前版本**：未指定则取 `versions/` 最大 semver。改文案、补页、出原型一律不新建版本目录。
-- **禁止静默 ⑩**：只有用户明确「新迭代 / 新版本 / `/lny-prd-iter`」才走 I。对话不主动推销开版本。小改（如首页改两字）走当前版本 ②⑤⑥，不为此建 v1.1.0。
-- **门禁失败**：Q-S回②③④⑤；Q-P纯实现问题回⑥，规格根因回②③④⑤与Q-S。可自动修复则同轮继续，缺产品事实才停。
-- **停点**：Q-P通过后询问是否进入⑧；用户本轮已明确要求评审则直接进入⑧。⑨⑩不进入本链。
-
-### 3.4 评审返修循环（⑧→②③④→⑤→Q-S→⑥→Q-P→⑧）
-
-⑧提出调整、附条件通过或退回补充时，结论包必须列出受影响的Feature/PAGE/API与最早责任步骤。产品确认该阶段结论后，在当前版本按影响范围返修，不创建新版本：
-
-- ②页面结构/交互变化通常使相关⑤与⑥失效；③仅在页面字段、状态或数据流受影响时使⑤/⑥失效；④的AC或主路径变化使相关⑤失效，可见行为变化时再使⑥失效。
-- 任何②③④业务正文变化都重跑Q-S；只有原型更新才重跑Q-P。已有HTML页面也必须按影响重画，不能只检测“缺页”。
-- 返修完成后自动回到⑧。只有最终“通过”且产品确认后，⑧才发布版本PAGE快照；`不进入本期`不发布页面，`附条件通过`/`退回补充`继续循环。
-- 最终批准前均属当前版本；最终批准并完成⑨后，新的范围变化才走⑩。
-
-### 3.3 估点后刷总入口（⑨→⑥ 只刷，禁止重画页面）
-
-⑨ 覆盖写入 `sp_report.md` 之后（含不可估 / `—`），**同一轮** Read `lny-prd-prototype/SKILL.md` 的「只刷总入口」：只覆盖 `prototypes/index.html`。
-
-- **禁止**：copy-kit；改各端 `PAGE-*.html`、端 `index.html`、`map.html`；把估点目标升级成 §3.2 全量出原型。
-- **跳过**：尚无任何 `prototypes/{终端}/` 时不新建空总入口，对话说明「无原型可挂」。
-- **直接唤起** `/lny-prd-sp` 时由 ⑨ 技能内执行本段，**禁止**停下来只说「交总控」。
-- 这不是静默 ⑥ 全量，也不是 ⑨ 手改 HTML。
-
-### 4. 防碎片化（总控层要求）
-
-- 进入子步后，遵守该步 `SKILL.md` 中的 **写产物纪律**（先读全篇或全章、变更清单、整块落盘）。
-- 父 Agent 委派时只列 [`reference-artifact-paths.md`](reference-artifact-paths.md) 的正式目标；禁止自加 `mirror to versions/...`、版本根双写或备用副本。冲突委派不下传。
-- 同一轮按自动主链连续执行 ②③④→⑤→Q-S→⑥→Q-P；门禁可自动返修时继续闭环。⑧ 首轮若无有效门禁结果，同轮先补齐再给拟定结论包；确认轮可同轮交④同步已确认状态并发布批准PAGE快照。⑨落盘后仍同轮只刷总入口。结束时报：**已执行步（可多项）**、**门禁状态**、**下一停点**、**将 Read 的 SKILL 路径**。
-
----
-
-# 立项 `/lny-prd-master`
-
-## 功能
-
-创建项目初始文档和文件夹结构，第一个版本在 `versions/v1.0.0/` 下。
-
-> **版本纪律**：仅立项可初始化 `v1.0.0` 与变更记录首行；更高版本与变更记录新行仅 ⑩。其他技能不得在变更记录表新增行；根规格留痕只写当前版本 `iteration_notes.md` 文末，见 **§1.1**。
-
-## 输入方式
-
-仅支持 **一次性输入** 与 **Agent 对话式补充**。
-
-### 一次性输入（推荐）
-
-同一条消息附 YAML。完整字段见 [`reference-init.md`](reference-init.md)。最少：项目名称、定位、需求故事、产品目标、终端范围；Story 的角色可为终端用户、运营、合规、迁移责任方或技术维护者。可选 `框架排除 profile`（`lny-default` / `none`）、`框架内置排除`、`成功怎么算`、`明确不做`。
-
-### 对话式补充
-
-仅发 `/lny-prd-master` 或未带齐字段时，用自然语言补立项要素，可少量来回；齐后输出确认摘要，用户回复「确认」再落盘。**禁止**选择框/多选框分步表单。
-
-> 小程序分包、页面架构与 `ui_manifest.md` 由 **②** 补充。
-
-## 信息确认
-
-确认摘要必须让用户看见将排除的能力类别。`lny-default` 时逐条列出 [`framework-exclusions.md`](framework-exclusions.md) **确认摘要必列类别**（闭集，现为 9 项）；**禁止**只写「见 exclusions」或「默认排除」。`none` 时写「无默认排除，仅遵守本项目追加项」。**看不见该清单，不得请用户确认。**
-
-```
-项目立项信息确认：
-- 项目名称：xxx
-- 产品定位：xxx
-- 需求故事：
-  1. [{故事类型}] {角色A}：{故事A}
-  2. [{故事类型}] {角色B}：{故事B}
-- 产品目标：xxx
-- 终端范围：小程序、管理后台
-- 成功怎么算：{1～3 句；未填则「未填写」}
-- 明确不做：{列表；未填则「未声明」}
-- 竞品参考：xxx
-- 术语介绍：xxx
-- 框架排除 profile：默认沿用 `lny-default`（作者栈个性化配置，不是强制行业表）。**要不要改？** 不单独说明即按默认沿用；也可改 `none` 或自定义
-- 框架内置排除（lny-default 将不展开）：
-  1. 登录/鉴权
-  2. RBAC/后台基础管理
-  3. 上传/资源
-  4. 支付/充值提现
-  5. 微信与小程序通道
-  6. 通知
-  7. 队列/WebSocket
-  8. 系统配置与字典
-  9. uni-app 请求与 TabBar 底座
-- 本项目追加排除（如有）：{用户 YAML 或口头补充}
-
-确认无误请回复"确认"；如需增减排除项请说明。profile 不单独说明即按 `lny-default` 默认沿用；不沿用默认表 → `none` 或把排除表拷到 PRD 根后自行改。
-```
-
-`lny-default` 是作者栈的个性化 profile，**不是**强制行业表。立项确认时显式展示 profile 询问与上列类别；**用户未主动要求更改即按默认沿用**（回复「确认」视为沿用）。**立项确认完成前不得按默认表删需求**。用户提到的能力（登录、支付等）若与排除清单冲突，二次确认。
-
-②③④⑤⑥ **禁止**展开「明确不做」；⑦ 用「成功怎么算 / 明确不做」做规格外与主路径，⑧ 可据此做范围判断。不填则不拿「该不该做」压人。为过检查去改「明确不做」列表属越权（除非用户明确要求改范围）。
-
-埋点：仅当 PM 已说出点位或 AD 字典条目才落规格或原型；**禁止自拟埋点方案**。RBAC 维持排除，不写权限矩阵。
-
-## 执行步骤
-
-1. 创建空目录：`api/`、`ui/`、`feature/`（新立项只走目录化）
-2. 生成根规范（**不在项目内落地 `.templates/`**）：
-   - `main_spec.md` ← [`reference-init.md`](reference-init.md)
-   - `api_spec.md` ← `lny-prd-api/reference.md`
-   - `ui_manifest.md` ← `lny-prd-ui/reference/ui-manifest-template.md`
-   - `feature_spec.md` ← `lny-prd-feature/reference.md`
-3. 四份文档统一文档信息 / 变更记录首行 v1.0.0；`main_spec` 第4章终端表直接放在二级标题下，**禁止** `###` 小节
-4. 创建 `versions/v1.0.0/` 与 `iteration_notes.md`（含「版本名称」，无则写「首版」）；不创建 `delivery_scope.md`，该文件仅由 ⑧ 在产品确认结论后创建
-5. 输出结构；下一步总控自动执行②③④→⑤前检→⑤→Q-S→⑥→Q-P，到具备⑧条件时再询问产品
-
-## 续跑：新增/变更/删减终端
-
-仅当用户明确要求或 §3 命中 **B2**；② 不得代改第4章。
-
-1. 确认终端名称、类型编码、描述
-2. 更新 `main_spec.md` `## 4. 终端说明` 下表格（禁止 `### 4.x`）
-3. 同步 §5 / §6 汇总行（数量由后续 ② 补齐）
-4. `iteration_notes.md` 文末追加流水
-5. 下一步 ② 补 `ui_manifest` §2 及该终端页面
-
----
-
-## Additional resources
-
-- 立项 YAML 与 `main_spec.md` 模板：[`reference-init.md`](reference-init.md)
-- 状态检测完整条件表：[`reference-routing.md`](reference-routing.md)
-- 根规格、版本产物与原型落点：[`reference-artifact-paths.md`](reference-artifact-paths.md)
-- 框架排除：[`framework-exclusions.md`](framework-exclusions.md)
-- ②⑤⑥ 共用页型职责与跨步骤不变量：[`reference-page-types.md`](reference-page-types.md)（含 **「树 vs 章节列表选型」**）
-- `api_spec.md` → `lny-prd-api/reference.md`
-- `ui_manifest.md` → `lny-prd-ui/reference/ui-manifest-template.md`
-- `feature_spec.md` → `lny-prd-feature/reference.md`
-- 单页 PRD → `lny-prd-page/reference.md`
-
-立项时 Read 上述一层 reference；**禁止在本技能包根目录立项**。

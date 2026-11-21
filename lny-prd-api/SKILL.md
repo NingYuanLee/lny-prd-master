@@ -61,3 +61,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 3. 更新 §2 / §4 索引与明细文件。
 4. 文末追加 `iteration_notes`（若有业务变更）。
 5. 索引、明细与引用自检通过后，将本次 `api_changes.md` 条目由 `待③` 改为 `已完成`；有缺口或失败则保留 `待③`。
+
+## 产物长度
+
+正式产物遵守 `../lny-prd-master/reference-common.md` 的产物精简规范。只写本步骤新增的事实和决策，重复内容用编号或路径引用。

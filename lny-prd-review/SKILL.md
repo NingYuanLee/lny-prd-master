@@ -68,3 +68,7 @@ description: >-
 - 根 `feature_spec.md` / `feature/` 的评审状态仍由 `/lny-prd-feature` 维护；本技能在确认轮同轮调用其规则同步，无需产品二次确认。
 - 文档一致性与引用闭环属于⑦/Q-S，原型符合规格属于⑦/Q-P；本技能引用两者，不复制检查表。
 - 创建新版本目录属于 ⑩ `/lny-prd-iter`；创建和维护 `delivery_scope.md` 只属于本技能。
+
+## 产物长度
+
+正式产物遵守 `../lny-prd-master/reference-common.md` 的产物精简规范。只写本步骤新增的事实和决策，重复内容用编号或路径引用。

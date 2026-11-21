@@ -78,3 +78,7 @@ BE_SP：{n / —}
 无用户给出的系数、且不满 3 个已完成版本的实际小时样本时，必须写 `1.0（暂定）`，禁止写「已校准」。
 
 6. **只刷总入口**：Read `lny-prd-prototype/SKILL.md`「只刷总入口」与 [`../lny-prd-prototype/reference-scope.md`](../lny-prd-prototype/reference-scope.md)。有任一 `prototypes/{终端}/` 则覆盖刷新 `prototypes/index.html`；无则跳过并说明。禁止重画各端页面或写 `versions/{v}/prototypes/`。
+
+## 产物长度
+
+正式产物遵守 `../lny-prd-master/reference-common.md` 的产物精简规范。只写本步骤新增的事实和决策，重复内容用编号或路径引用。

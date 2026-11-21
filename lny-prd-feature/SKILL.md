@@ -78,3 +78,7 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 4. 补双图或免画理由。
 5. 确认每个 Feature 的 Story、Module、AC、PAGE/API/EXT 引用有效，索引与文件双向一致。
 6. 自检通过后，将本次 `feature_changes.md` 条目由 `待④` 改为 `已完成`；有缺口或失败则保留 `待④`。
+
+## 产物长度
+
+正式产物遵守 `../lny-prd-master/reference-common.md` 的产物精简规范。只写本步骤新增的事实和决策，重复内容用编号或路径引用。

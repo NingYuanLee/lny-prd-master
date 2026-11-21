@@ -57,3 +57,11 @@ description: >-
 5. Q-S与Q-P均通过且存在产品取舍对象时，输出“具备⑧评审条件”。自动主链在此询问产品是否进入⑧；显式评审请求不重复询问。已有⑧批准范围且产品链可估时才建议⑨。
 
 须关注项用 🔴/🟠/🟢。齐/可估/无缺口不占序号。
+
+## 按检查类型读取规则
+
+Q-S 读取 `reference-q-s.md`，Q-P 读取 `reference-q-p.md`，full 读取 `reference-full.md` 并依次执行 Q-S 与 Q-P。常规单项检查不读取完整 `reference-checks.md`，只有复杂失败复核时才读取对应章节。
+
+## 产物长度
+
+正式产物遵守 `../lny-prd-master/reference-common.md` 的产物精简规范。只写本步骤新增的事实和决策，重复内容用编号或路径引用。

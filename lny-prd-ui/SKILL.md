@@ -25,7 +25,7 @@ description: >-
 
 - **视觉依据（N1）**：以项目自身事实为准——PRD 正文、`ui/` 规格、项目既有设计稿/视觉规范/品牌 CSS/真实图片素材。项目未给视觉规范时按 PRD 自行设计。**禁止把技能内置样例形态当默认设计**。
 - **允许项目自有样式（N2）**：原型页可用项目级 CSS 与 `assets/` 下真实图片素材，可用项目主题色；内置套件类名 **可用可不用**，不作为强制皮肤。
-- **分工不变（N3）**：② 只输出 **信息结构与交互契约**（层级、分区顺序、状态表现、§2.3），**不写套件类名**；⑤ ASCII 只定分区顺序；⑥ 视觉自定，但必须满足 ⑤ 的结构与交互契约与本页规格。
+- **分工调整（N3）**：② 输出 **信息结构、交互契约和视觉方向契约**（层级、分区顺序、状态表现、§2.3、§2.4），**不写套件类名**；⑤ ASCII 只定分区顺序；⑥ 负责把已确定的视觉方向实现出来，不再为每页临时发明风格。
 - **和下游的分工**：② 决定体验并写满 §2.3（默认体验规范是地板，不是功能天花板）；⑤ 把体验写进单页 PRD（不降级成线框）；⑥ 按项目视觉依据实现 §2.3，并**必须落地舒适默认**（骨架/空态/失败可重试/过渡/语义列宽），即使 §2.3 漏写。点图预览默认给：详情页图片、横卡多行卡内图、**单图/多图/视频上传缩略**；禁止给封面叠字 / 双列 / Banner / **文件上传**加预览。禁止 ⑥ 发明新的业务跳转、字段或弹窗。
 
 ## Additional resources
@@ -35,6 +35,8 @@ description: >-
 - 根索引骨架：[`reference/ui-manifest-template.md`](reference/ui-manifest-template.md)
 - 移动端设计词典（原则/视觉/组件/布局/交互分工）：[`reference-mobile-design.md`](reference-mobile-design.md)
 - 桌面端设计词典（通栏/分栏/表单栅格/列表六型/状态导览/定位与树）：[`reference-desktop-design.md`](reference-desktop-design.md)
+- PAGE 视觉方向契约：[`reference-visual-direction.md`](reference-visual-direction.md)
+- 自动设计决策协议：[`../lny-prd-master/reference-design-decision.md`](../lny-prd-master/reference-design-decision.md)
 - 三步职责、页型编号与跨步骤不变量：[`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)
 - 正式落点与镜像禁区：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
 - 框架排除：`lny-prd-master/framework-exclusions.md`
@@ -115,15 +117,18 @@ description: >-
 
 ## 开笔前
 
+页面设计方向缺失时，先按 [`../lny-prd-master/reference-design-decision.md`](../lny-prd-master/reference-design-decision.md) 自动完成页面任务、层级、骨架、视觉方向和素材实现判断。只有产品目标、品牌事实、关键资产或范围发生实质冲突时才询问使用者。不得要求使用者先提供概念图或完整视觉规范。
+
 Read `lny-prd-master/framework-exclusions.md`、`lny-prd-master/reference-artifact-paths.md` 及本项目追加排除。不为框架通用已排除项建 `ui/PAGE-*`。Read `main_spec` §1.5「明确不做」（若有）：**禁止**为清单中的能力建 PAGE。**新立项只走目录化**（`ui_manifest` 只留索引 + `ui/` 明细）；旧「manifest 内嵌全文」只读兼容，禁止双轨扩写。
 
-写任何 `ui/PAGE-*` 前必须 Read 共享页型映射、[`reference/visual-rules.md`](reference/visual-rules.md) **§1.7**（先 **§1.7.0**）与 [`reference-mobile-design.md`](reference-mobile-design.md)（移动端）、[`reference-desktop-design.md`](reference-desktop-design.md)（桌面端），并在该页写 **§2.3**。移动端另读 **§1.3.3** 与 **§1.3.4**（L2 下沉/滚动、**滚动区页型选型**、L3 吸顶、Banner 两种形态）。桌面 D1-1 另读 **§1.4.3**。再扫上方 **页型速查**：按默认体验规范写舒适默认；对不上号时按页型语义选最接近的一类，禁止按 MP/AD 序号对齐，禁止拿商品列表硬套，禁止用表单窄双列冒充页面分栏。禁止只写「有个列表、有个按钮」就把球踢给 `/lny-prd-prototype`。用户另给交互规范时只覆盖冲突项，其余仍用 §1.7.0。
+写任何 `ui/PAGE-*` 前必须 Read 共享页型映射、[`reference/visual-rules.md`](reference/visual-rules.md) **§1.7**（先 **§1.7.0**）与 [`reference-mobile-design.md`](reference-mobile-design.md)（移动端）、[`reference-desktop-design.md`](reference-desktop-design.md)（桌面端），并在该页写 **§2.3、§2.4、§2.5**。移动端另读 **§1.3.3** 与 **§1.3.4**（L2 下沉/滚动、**滚动区页型选型**、L3 吸顶、Banner 两种形态）。桌面 D1-1 另读 **§1.4.3**。再扫上方 **页型速查**：按默认体验规范写舒适默认；对不上号时按页型语义选最接近的一类，禁止按 MP/AD 序号对齐，禁止拿商品列表硬套，禁止用表单窄双列冒充页面分栏。禁止只写「有个列表、有个按钮」就把球踢给 `/lny-prd-prototype`。用户另给交互规范时只覆盖冲突项，其余仍用 §1.7.0。
 
 **有序向导 / 引导分步页**（`PT-STATE-FLOW`，不限 MP-005 编号）：PAGE 模板 **步骤区必填**——导览形态三选一（桌面二选一）逐字点名 + **共 N 步**；L3 只写一种；§2.3 写「所选一种导览须一眼看懂共 N 步」。禁止 L2/L3 并列多种导览或「步骤条+进步条」类组合措辞。
 
 ## 职责与禁止
 
 - **负责**：产出轻量 `ui_manifest.md` + `ui/PAGE-*.md` + `ui/COMP-*.md`。manifest 只保留 UI 框架、MP 包/Tab、PC/AD 菜单分组、页面地址与生命周期、COMP 轻索引；PAGE/COMP 只写可见结构、视觉层级、布局、状态表现、动效与反馈。成功自检后推进本次 `ui_changes.md` 对应行状态。
+- **设计决策责任**：② 必须把页面首要任务、视觉锚点、页面骨架、视觉语言、素材策略和响应式取舍写入 PAGE §2.4。涉及关键资产时补充实现来源和替代方案。常规视觉取舍由技能自动决定，只有关键冲突才询问使用者。
 - **禁止**：把 manifest 写成路由拓扑、产品策略或跨页规则汇总；定义用户路径、画像/角色分流、业务 Landing、跳转条件、权限、合规、审核、可见性、落库与业务状态机；定义或复制字段类型、必填性、默认值、枚举、读写、排序、接口用途和触发时机；让 UI 菜单分组等同 Feature Module。亦禁止只列控件不设计体验、改第4章终端表、改 `prototypes/`、写预览壳机制、在根规范变更记录新增行、落盘 `pages_prd/_shell` 或生成版本镜像。规格不写 `#hex` / `px` / 阴影参数表；仅当 PM 已说出点位才引用埋点，禁止自拟。
 
 COMP **编号必填** `COMP-{三位序号}`，与 `ui_manifest` §4「组件编号」列、`ui/COMP-*.md` 文件名一致。
@@ -168,3 +173,16 @@ COMP **编号必填** `COMP-{三位序号}`，与 `ui_manifest` §4「组件编�
 6. **自检**：manifest §5 是否只剩全局视觉约定？PC/AD 菜单分组是否先注册且不列页面？是否把页面地址误写成用户路径？PAGE/COMP 是否出现产品策略、权限合规、字段契约或接口触发？若有，交责任规格补齐后从 UI 删除。再检查：删掉 §2.3 后⑥是否只能画出线框空盒子；舒适默认六项是否齐；页型、向导与复杂交互效果是否完整。
 7. 自检通过后推进 `ui_changes.md` 状态：新增/修改页 `待②` → `待⑤`；废弃页 `待②` → `已完成`。有缺口或失败则保留 `待②`。
 8. 输出已改文件与页面编号。
+
+
+## 基础模型视觉基线
+
+写 PAGE 前读取 `reference-visual-baseline.md`。它是原型生成和轻量渲染自检的最小视觉规则集。
+
+
+## 按场景读取视觉规则
+
+常规 PAGE 只读取 `reference/visual-common.md`，再按终端读取 `reference/visual-mobile.md` 或 `reference/visual-desktop.md`。完整 `visual-rules.md` 仅在复杂页型、迁移或门禁失败时读取。
+
+PAGE 明细只写页面事实和设计决策。不要复制页型规则、视觉基线或上游 API/Feature 内容，直接引用其编号和路径。
+

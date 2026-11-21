@@ -14,6 +14,7 @@ description: >-
 ## Additional resources
 
 - 产出具约束、单页模板、桌面壳模板：[`reference.md`](reference.md)
+- 自动设计决策协议：[`../lny-prd-master/reference-design-decision.md`](../lny-prd-master/reference-design-decision.md)
 - 三步职责、页型编号与映射：[`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)
 - 正式落点与禁止副本范围：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
 - 框架排除：`lny-prd-master/framework-exclusions.md`
@@ -105,9 +106,13 @@ Read `lny-prd-master/framework-exclusions.md` 与 `lny-prd-master/reference-arti
 
 1. 校验版本目录与页面编号；有台账则核对目标路径。
 2. Read `ui/PAGE-*` + 引用 COMP、`api/API-*`、`feature/`、`main_spec` §1.2（仅作背景）。
-3. 按 [`reference.md`](reference.md) 模板落盘；§1 表后写根规格依赖引用块；§3 顶 ASCII 线框默认必填（页型顺序见上方页型速查）；§6 反查 Feature AC 的 `关联页面`，写入本页对应的 AC ID 集合并核对双向一致。交互、动效、收纳从 `ui/PAGE-*` **§2.3** 带入，禁止降级成「有个按钮」。桌面 D1-1 须写列宽语义与紧凑密度。
+3. 按 [`reference.md`](reference.md) 模板落盘；§1 表后写根规格依赖引用块；§3 顶 ASCII 线框默认必填（页型顺序见上方页型速查）；§6 反查 Feature AC 的 `关联页面`，写入本页对应的 AC ID 集合并核对双向一致。交互、动效、收纳从 `ui/PAGE-*` **§2.3** 带入，视觉方向从 **§2.4** 带入，素材和实现约束从 **§2.5** 带入，禁止降级成「有个按钮」。桌面 D1-1 须写列宽语义与紧凑密度。
 4. 工作源路径固定为 `pages_prd/{终端编码}/{PAGE-ID}.md`，例如 `pages_prd/MP/PAGE-MP-001.md`、`pages_prd/AD/PAGE-AD-001.md`。页面真实路由写入基本信息，不参与工作源文件寻址。
 5. 若终端含 PC/AD：按壳模板写 `_shell/{编码}-shell.md`（尚无则创建）。
 6. 单页 PRD 与桌面壳自检通过后，将本次 `ui_changes.md` 条目由 `待⑤` 改为 `已完成`；有缺口或失败则保留 `待⑤`。
 7. 若改了根四规范：`iteration_notes` 文末追加；否则省略。
 8. 自动进入 **⑦/Q-S**。Q-S通过后自动进入⑥；失败则按责任定向返修②③④或⑤并重跑。仅当用户明确要求“只要规格/不要原型”时，在Q-S通过后停止。
+
+## 产物长度
+
+正式产物遵守 `../lny-prd-master/reference-common.md` 的产物精简规范。只写本步骤新增的事实和决策，重复内容用编号或路径引用。
