@@ -155,7 +155,7 @@ node <skillDir>/scripts/verify-prototype-browser.mjs <prdRoot> --page PAGE-… -
 3. 复制 kit 到目标页涉及的每个 `prototypes/{终端}/assets/`（assets 已齐可跳过 copy-kit）。
 4. **逐页**：对该页完整 Read `pages_prd`（无则须 `ui直出`）+ `ui/PAGE-*` **§2.3 + §2.4** + COMP。视觉先按 PAGE §2.4 取项目设计事实（PRD 正文、`ui/` 规格、既有设计稿/品牌 CSS/真实素材），无项目设计事实时按 PRD 自行设计；结构与交互契约以 ⑤ 的分区顺序和本页规格为准。写完立刻过 [`reference-quality.md`](reference-quality.md) **§G.4 / G.5**。禁止凭记忆、禁止把规格没写的功能画进页。
 5. 按 `reference-shell-quick.md` 写/刷新各端 `index.html`（及移动端 `map.html`）：**只挂已落盘**的 `PAGE-*.html`。按 [`reference-scope.md`](reference-scope.md) 写 `prototypes/index.html`。禁止写项目根 `index.html`、`versions/{v}/index.html` 或 `versions/{v}/prototypes/`，不写 `scope.html`。
-6. 对全部目标页跑 UTF-8 脚本 + `verify-prototype-coverage.py` + `<checkSkillDir>/scripts/verify-artifact-paths.py` + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）；宿主依赖可用时，再运行 `render-prototype.mjs`、`score-visual-quality.mjs` 和 `verify-prototype-browser.mjs`。评分只用于定位问题，不得把通过当作审美完成。按 [`reference-visual-improvement.md`](reference-visual-improvement.md) 执行至少一轮“截图诊断 → 修改 HTML/CSS/素材 → 重新渲染 → 截图对比”的闭环；截图差异为零时不得报告已修复。浏览器依赖缺失须按上文披露。
+6. 对全部目标页跑 UTF-8 脚本 + `verify-prototype-coverage.py` + `<checkSkillDir>/scripts/verify-artifact-paths.py` + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）；宿主依赖可用时，再运行 `render-prototype.mjs`、`score-visual-quality.mjs` 和 `verify-prototype-browser.mjs`。评分只用于定位问题，不得把通过当作审美完成。按 [`reference-visual-improvement.md`](reference-visual-improvement.md) 检查真实截图。发现具体问题时修改并对照复验；画面已支持目标任务时可直接交付并说明观察依据。浏览器依赖缺失须按上文披露。
 7. **清理临时文件**：删除本轮在 `prdRoot` 留下的辅助脚本/草稿/备份及空的 `scripts/` 等（见写产物纪律）；未建临时文件可跳过。
 8. 作者自检全部通过后，提示用户是否执行 **⑦/Q-P**。用户明确执行后，Q-P发现纯原型问题则本步同轮修复并重跑；发现规格问题则按总控回到②③④⑤与Q-S，再更新原型。Q-P通过后输出目标页、验收结果与未完成编号，并询问产品是否进入⑧评审。
 

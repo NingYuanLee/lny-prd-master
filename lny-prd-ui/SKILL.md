@@ -129,6 +129,7 @@ Read `lny-prd-master/framework-exclusions.md`、`lny-prd-master/reference-artifa
 ## 职责与禁止
 
 - **负责**：产出轻量 `ui_manifest.md` + `ui/PAGE-*.md` + `ui/COMP-*.md`。manifest 只保留 UI 框架、MP 包/Tab、PC/AD 菜单分组、页面地址与生命周期、COMP 轻索引；PAGE/COMP 只写可见结构、视觉层级、布局、状态表现、动效与反馈。成功自检后推进本次 `ui_changes.md` 对应行状态。
+- 新页或重画关键页先按[设计选型](reference-design-choices.md)找出影响任务的分歧，再填写 §2.4。
 - **设计决策责任**：② 必须把页面首要任务、视觉锚点、页面骨架、视觉语言、素材策略和响应式取舍写入 PAGE §2.4。涉及关键资产时补充实现来源和替代方案。常规视觉取舍由技能自动决定，只有关键冲突才询问使用者。
 - **禁止**：把 manifest 写成路由拓扑、产品策略或跨页规则汇总；定义用户路径、画像/角色分流、业务 Landing、跳转条件、权限、合规、审核、可见性、落库与业务状态机；定义或复制字段类型、必填性、默认值、枚举、读写、排序、接口用途和触发时机；让 UI 菜单分组等同 Feature Module。亦禁止只列控件不设计体验、改第4章终端表、改 `prototypes/`、写预览壳机制、在根规范变更记录新增行、落盘 `pages_prd/_shell` 或生成版本镜像。规格不写 `#hex` / `px` / 阴影参数表；仅当 PM 已说出点位才引用埋点，禁止自拟。
 
