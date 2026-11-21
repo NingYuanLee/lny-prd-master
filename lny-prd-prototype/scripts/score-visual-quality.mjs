@@ -55,6 +55,22 @@ function imageSignal(path) {
   return { score: Math.round((diversity * 0.45 + coverage * 0.55) * 100), width: png.width, height: png.height };
 }
 
+function visualSystemSignal(html) {
+  const signals = {
+    customTokens: /--[a-z0-9-]+\s*:/i.test(html),
+    typography: /(font-family|font-size|font-weight|letter-spacing)\s*:/i.test(html),
+    surfaces: /(border-radius|box-shadow|background(?:-image)?|linear-gradient)\s*:/i.test(html),
+    spacing: /(padding|margin|gap)\s*:/i.test(html),
+    responsive: /@media\b/i.test(html),
+    brandedAsset: /<(img|svg)\b/i.test(html),
+    layeredComposition: /(::before|::after|position\s*:\s*(absolute|relative|sticky)|transform\s*:)/i.test(html),
+  };
+  return {
+    score: Math.round(Object.values(signals).filter(Boolean).length / Object.keys(signals).length * 100),
+    signals,
+  };
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const manifestPath = join(args.renderDir, "render-manifest.json");
@@ -74,7 +90,12 @@ async function main() {
     };
     const structuralScore = Math.round(Object.values(checks).filter(Boolean).length / Object.keys(checks).length * 100);
     const image = imageSignal(item.screenshot);
-    const score = Math.round(structuralScore * 0.45 + image.score * 0.55);
+    const visualSystem = visualSystemSignal(html);
+    // This is an implementation-readiness signal. It deliberately cannot claim
+    // aesthetic approval because taste, hierarchy, and brand fit need review.
+    const implementationScore = Math.round(structuralScore * 0.45 + image.score * 0.55);
+    const visualReadiness = Math.round(implementationScore * 0.4 + visualSystem.score * 0.35 + image.score * 0.25);
+    const score = Math.min(89, visualReadiness);
     const issues = [];
     if (!checks.hasTitle) issues.push("missing title");
     if (!checks.hasStructuredSections) issues.push("few structured sections");
@@ -82,10 +103,12 @@ async function main() {
     if (!checks.hasAssetReferences) issues.push("no local visual asset reference detected");
     if (!checks.hasStateHooks) issues.push("no state visual hook detected");
     if (image.score < 45) issues.push("weak rendered visual signal");
-    pages.push({ page: item.page, terminal: item.terminal, score, structuralScore, imageScore: image.score, checks, issues });
+    if (visualSystem.score < 70) issues.push("limited visual-system evidence; review hierarchy and brand expression");
+    issues.push("automated score does not replace human aesthetic review");
+    pages.push({ page: item.page, terminal: item.terminal, score, implementationScore, visualReadiness, visualSystemScore: visualSystem.score, imageScore: image.score, checks, visualSystem, issues });
   }
   const overall = pages.length ? Math.round(pages.reduce((sum, page) => sum + page.score, 0) / pages.length) : 0;
-  const report = { generatedAt: new Date().toISOString(), overall, threshold: 80, passed: pages.length > 0 && overall >= 80 && pages.every((page) => page.score >= 70), pages };
+  const report = { generatedAt: new Date().toISOString(), overall, threshold: 80, scoreMeaning: "implementation and visual-system readiness only; human aesthetic review remains required", passed: pages.length > 0 && overall >= 80 && pages.every((page) => page.score >= 70), pages };
   await writeFile(args.output, `${JSON.stringify(report, null, 2)}\n`, "utf8");
   console.log(`visual score ${overall}/100 ${report.passed ? "passed" : "needs revision"}`);
   if (!report.passed) process.exitCode = 1;
