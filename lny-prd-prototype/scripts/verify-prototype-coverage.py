@@ -229,8 +229,14 @@ def parse_prd(text: str) -> tuple[set[str], set[str], list[str]]:
     # ASCII wireframes describe layout and may use illustrative copy. Only prose/table
     # requirements are label contracts for the prototype coverage check.
     label_contract = FENCED_BLOCK_RE.sub("", sec3)
-    for q in QUOTE_RE.findall(label_contract):
+    for match in QUOTE_RE.finditer(label_contract):
+        q = match.group(1)
         q = q.strip()
+        context = label_contract[max(0, match.start() - 24) : match.start()]
+        # Quoted prose can describe a control layout or explicitly forbid a
+        # placeholder. Neither is a user-visible label contract.
+        if len(q) > 24 or re.search(r"(?:禁止|不写|不要|不出现|不设|不得)\s*$", context):
+            continue
         if q and q not in SKIP_QUOTES and q not in quotes:
             quotes.append(q)
     return comps, jumps, quotes
