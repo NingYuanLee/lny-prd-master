@@ -35,7 +35,6 @@ VOID_ELEMENTS = {
     "track",
     "wbr",
 }
-CARD_DENSITY_CONTEXT_CLASSES = {"md-grid-2", "md-list-toolbar", "md-timeline"}
 
 
 def _extract_balanced(text: str, start: int, opening: str, closing: str) -> str | None:
@@ -253,8 +252,6 @@ class PageParser(HTMLParser):
         self.hrefs: set[str] = set()
         self.comps: set[str] = set()
         self.empty_for: set[str] = set()
-        self.in_thead = 0
-        self.in_data_table = 0
         self.is_mobile = False
         self.is_desktop = False
         self.has_status_bar = False
@@ -262,10 +259,6 @@ class PageParser(HTMLParser):
         self.has_tabbar = False
         self.has_mobile_appbar = False
         self.has_center_appbar = False
-        self.card_count = 0
-        self.table_rows = 0
-        self.has_card_density_context = False
-        self.has_dense_data_table = False
         self.has_list_toolbar = False
         self.mobile_body_count = 0
         self.direct_mobile_sheet_count = 0
@@ -296,10 +289,6 @@ class PageParser(HTMLParser):
                 self.direct_mobile_body_non_sheet.append(tag)
         if tag not in VOID_ELEMENTS:
             self.stack.append((tag, classes, hidden_text))
-        if classes & CARD_DENSITY_CONTEXT_CLASSES:
-            self.has_card_density_context = True
-        if "md-d1--list" in classes or "md-d1__list" in classes:
-            self.has_dense_data_table = True
         if "md-list-toolbar" in classes:
             self.has_list_toolbar = True
         if "md-mobile-page" in classes:
@@ -318,15 +307,6 @@ class PageParser(HTMLParser):
             tag in {"header"} and "md-appbar" in classes
         ):
             self.has_mobile_appbar = True
-        if "md-card" in classes:
-            self.card_count += 1
-        if tag == "table":
-            if "md-table" in classes:
-                self.in_data_table += 1
-        if tag == "thead":
-            self.in_thead += 1
-        if tag == "tr" and self.in_data_table and self.in_thead == 0:
-            self.table_rows += 1
         if tag == "link" and "mui-kit.css" in ad.get("href", ""):
             self.has_kit_css = True
         if tag == "script":
@@ -387,10 +367,6 @@ class PageParser(HTMLParser):
                     + str(self.getpos())
                 )
     def handle_endtag(self, tag: str) -> None:
-        if tag == "thead" and self.in_thead:
-            self.in_thead -= 1
-        if tag == "table" and self.in_data_table:
-            self.in_data_table -= 1
         for index in range(len(self.stack) - 1, -1, -1):
             if self.stack[index][0] == tag:
                 del self.stack[index:]
@@ -466,7 +442,6 @@ def check_html(
             + ": visible body copy exposes implementation/meta text: "
             + match
         )
-    errors.extend(check_density(path, parser))
     if parser.is_mobile and "proto-page.js" not in parser.scripts:
         errors.append(str(path) + ": mobile page missing proto-page.js (injects fixed status bar)")
     if parser.is_mobile:
@@ -604,26 +579,6 @@ def check_state_contract(
 BOX_DRAW_RE = re.compile(r"[┌┐└┘├┤┬┴┼│─]|[+][-]{2,}")
 
 
-def check_density(path: Path, parser: PageParser) -> list[str]:
-    """Enforce repeated-content density only for explicit list/grid contexts."""
-    errors: list[str] = []
-    if parser.has_card_density_context and 0 < parser.card_count < 4:
-        errors.append(
-            str(path)
-            + ": need ≥4 cards in list/grid default state (got "
-            + str(parser.card_count)
-            + ")"
-        )
-    if parser.has_dense_data_table and 0 < parser.table_rows < 4:
-        errors.append(
-            str(path)
-            + ": need ≥4 table rows in D1-1 default state (got "
-            + str(parser.table_rows)
-            + ")"
-        )
-    return errors
-
-
 DIALOG_ID_RE = re.compile(
     r'<div\b[^>]*\bid="([^"]+)"[^>]*\bclass="[^"]*\bmd-dialog\b',
     re.I,
@@ -687,7 +642,7 @@ def check_drawer_backdrop(path: Path, text: str) -> list[str]:
 def check_wizard_nav(
     path: Path, page_id: str, text: str, *, fixture: bool = False
 ) -> list[str]:
-    """PT-STATE-FLOW: one wizard nav type per business page; no demo tab panel on business pages."""
+    """PT-STATE-FLOW: exclude demo tab panels from business pages."""
     errors: list[str] = []
     prefix = str(path) + ": "
     demo = fixture
@@ -698,34 +653,6 @@ def check_wizard_nav(
             + "business page must not copy the demo wizard tab panel (data-wizard-panel)"
         )
 
-    if demo:
-        return errors
-
-    kinds: list[str] = []
-    if re.search(r"\bmd-stepper\b", text):
-        kinds.append("md-stepper")
-    if re.search(r"\bmd-advance\b", text):
-        kinds.append("md-advance")
-    if re.search(r"\bmd-progress--lg\b", text):
-        kinds.append("md-progress--lg")
-
-    if len(kinds) < 2:
-        return errors
-
-    wizardish = (
-        "md-form-page" in text
-        or "md-stepper" in text
-        or "data-wizard-host" in text
-        or ("md-d1__form" in text and "md-stepper" in text)
-    )
-    if not wizardish:
-        return errors
-
-    errors.append(
-        prefix
-        + "wizard nav must pick one of stepper/advance/progress-lg (PT-STATE-FLOW), got: "
-        + "+".join(kinds)
-    )
     return errors
 
 

@@ -515,36 +515,26 @@ def validate_coverage_regressions(module, errors: list[str]) -> None:
     if not any("naked <input>" in error for error in naked.errors) or naked.stack:
         fail(errors, "coverage parser failed the void-element ancestor-stack regression")
 
-    # 条目数门槛可机械判定；页面长相类断言已删除，不再以套件类名判页面长相。
-    check_density = getattr(module, "check_density", None)
-    if check_density is not None:
-        detail = module.PageParser()
-        detail.feed('<main><article class="md-card md-card--row"></article></main>')
-        if check_density(Path("detail.html"), detail):
-            fail(errors, "coverage density rejected a non-list page with one card")
-
-        card_list = module.PageParser()
-        card_list.feed(
-            '<header class="md-list-toolbar"></header>'
-            '<article class="md-card md-card--row"></article>'
+    # Equal content must pass coverage regardless of its visual grouping.
+    with tempfile.TemporaryDirectory() as directory:
+        root = Path(directory)
+        assets = root / "assets"
+        assets.mkdir()
+        names = ("md-icons.js", "icons-extra.js", "proto-page.js")
+        for name in ("mui-kit.css", *names):
+            (assets / name).touch()
+        resources = '<link href="./assets/mui-kit.css">' + "".join(
+            f'<script src="./assets/{name}"></script>' for name in names
         )
-        if not check_density(Path("list.html"), card_list):
-            fail(errors, "coverage density accepted a list page with fewer than four cards")
-
-        short_table = module.PageParser()
-        short_table.feed(
-            '<table class="md-table"><tbody><tr><td>A</td></tr><tr><td>B</td></tr></tbody></table>'
-        )
-        if check_density(Path("summary.html"), short_table):
-            fail(errors, "coverage density rejected a short non-D1-1 summary table")
-
-        dense_table = module.PageParser()
-        dense_table.feed(
-            '<div class="md-d1 md-d1--list"><table class="md-table"><tbody>'
-            '<tr><td>A</td></tr><tr><td>B</td></tr></tbody></table></div>'
-        )
-        if not check_density(Path("d1-list.html"), dense_table):
-            fail(errors, "coverage density accepted a D1-1 table with fewer than four rows")
+        page = root / "PAGE-AD-001.html"
+        for layout in ('<section class="md-grid-2"><article class="md-card">购票</article></section>',
+                       '<section><a href="#tickets">购票</a></section>'):
+            page.write_text(resources + '<main class="md-d1"><nav class="md-breadcrumb"></nav>' + layout + "</main>", encoding="utf-8")
+            issues = module.check_html(page, page.stem, set(), set(), ["购票"])
+            if issues:
+                fail(errors, f"coverage rejected equivalent content: {issues}")
+            if not module.check_html(page, page.stem, set(), set(), ["开园日历"]):
+                fail(errors, "coverage accepted a missing required label")
 
     generic_mobile = module.PageParser()
     generic_mobile.feed(
