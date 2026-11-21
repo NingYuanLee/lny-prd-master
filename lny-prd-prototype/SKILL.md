@@ -22,6 +22,7 @@ description: >-
 - 内置图标：[`reference-icons.md`](reference-icons.md)
 - 桌面端设计词典（② 同源）：[`../lny-prd-ui/reference-desktop-design.md`](../lny-prd-ui/reference-desktop-design.md)
 - 自动设计决策协议：[`../lny-prd-master/reference-design-decision.md`](../lny-prd-master/reference-design-decision.md)
+- 项目视觉档案模板：[`../lny-prd-ui/reference/visual-profile-template.md`](../lny-prd-ui/reference/visual-profile-template.md)
 - 三步职责与跨步骤不变量：[`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)
 - 正式落点与禁止副本范围：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
 - 复制套件：`<skillDir>/scripts/copy-kit.py`
@@ -30,6 +31,9 @@ description: >-
 - UTF-8 校验：`<skillDir>/scripts/verify-prototype-utf8.py`
 - 规格对照校验：`<skillDir>/scripts/verify-prototype-coverage.py`
 - 浏览器冒烟验收：`<skillDir>/scripts/verify-prototype-browser.mjs`
+- 真实渲染截图：`<skillDir>/scripts/render-prototype.mjs`
+- 客观视觉评分：`<skillDir>/scripts/score-visual-quality.mjs`
+- 截图差异报告：`<skillDir>/scripts/compare-prototype-shot.mjs`
 - 框架排除：`lny-prd-master/framework-exclusions.md`
 
 ## 三步对照（防错用）
@@ -58,7 +62,7 @@ description: >-
 
 ## 自动设计决策与实现策略
 
-- 进入本步后先读取 [`../lny-prd-master/reference-design-decision.md`](../lny-prd-master/reference-design-decision.md)，检查 PAGE §2.4 是否已经包含页面任务、视觉锚点、素材策略和响应式取舍。
+- 进入本步后先读取 [`../lny-prd-master/reference-design-decision.md`](../lny-prd-master/reference-design-decision.md)，检查 PAGE §2.4 是否已经包含页面任务、视觉锚点、素材策略和响应式取舍。项目存在 `ui/visual/visual-profile.md`、`tokens.json` 或 `assets-manifest.md` 时一并读取，并优先继承其中的共享视觉事实。
 - 缺少这些判断时，本步自动根据上游产品事实、页型规则、终端设计词典和项目现有素材补齐，并在 `prototypes/.design-decisions/PAGE-*.md` 记录默认假设。不得因为缺少概念图而停下。
 - 原型默认 **HTML 优先**。页面结构、文字、组件、状态、跳转和响应式表现直接用 HTML/CSS 实现，再通过浏览器真实渲染调整。
 - 概念图是可选的内部探索材料。仅在视觉方向未定且探索能改变方向时生成；主视觉、插画、纹理和建筑场景可生成独立素材。整页生图不得作为正式页面来源。
@@ -150,14 +154,14 @@ node <skillDir>/scripts/verify-prototype-browser.mjs <prdRoot> --page PAGE-… -
 3. 复制 kit 到目标页涉及的每个 `prototypes/{终端}/assets/`（assets 已齐可跳过 copy-kit）。
 4. **逐页**：对该页完整 Read `pages_prd`（无则须 `ui直出`）+ `ui/PAGE-*` **§2.3 + §2.4** + COMP。视觉先按 PAGE §2.4 取项目设计事实（PRD 正文、`ui/` 规格、既有设计稿/品牌 CSS/真实素材），无项目设计事实时按 PRD 自行设计；结构与交互契约以 ⑤ 的分区顺序和本页规格为准。写完立刻过 [`reference-quality.md`](reference-quality.md) **§G.4 / G.5**。禁止凭记忆、禁止把规格没写的功能画进页。
 5. 按 `reference-shell-quick.md` 写/刷新各端 `index.html`（及移动端 `map.html`）：**只挂已落盘**的 `PAGE-*.html`。按 [`reference-scope.md`](reference-scope.md) 写 `prototypes/index.html`。禁止写项目根 `index.html`、`versions/{v}/index.html` 或 `versions/{v}/prototypes/`，不写 `scope.html`。
-6. 对全部目标页跑 UTF-8 脚本 + `verify-prototype-coverage.py` + `<checkSkillDir>/scripts/verify-artifact-paths.py` + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）；宿主依赖可用时，再对全部目标 PAGE 跑 `verify-prototype-browser.mjs`。任一步失败则重写，不得交付；浏览器依赖缺失须按上文披露。
+6. 对全部目标页跑 UTF-8 脚本 + `verify-prototype-coverage.py` + `<checkSkillDir>/scripts/verify-artifact-paths.py` + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）；宿主依赖可用时，再运行 `render-prototype.mjs`、`score-visual-quality.mjs` 和 `verify-prototype-browser.mjs`。视觉评分未达到门槛时先修正页面并重新渲染；浏览器依赖缺失须按上文披露。
 7. **清理临时文件**：删除本轮在 `prdRoot` 留下的辅助脚本/草稿/备份及空的 `scripts/` 等（见写产物纪律）；未建临时文件可跳过。
 8. 作者自检全部通过后，提示用户是否执行 **⑦/Q-P**。用户明确执行后，Q-P发现纯原型问题则本步同轮修复并重跑；发现规格问题则按总控回到②③④⑤与Q-S，再更新原型。Q-P通过后输出目标页、验收结果与未完成编号，并询问产品是否进入⑧评审。
 
 
 ## 基础模型视觉基线
 
-原型逐页读取 `../lny-prd-ui/reference-visual-baseline.md`。页面完成后先做一次真实渲染自检，检查首屏主次、层级、密度、横向溢出、图片比例、移动端滚动、桌面端对齐、空态和失败态。发现明显问题先修复，再报告原型完成。Q-P 仍是用户可选择的正式门禁。
+原型逐页读取 `../lny-prd-ui/reference-visual-baseline.md`。页面完成后使用 `render-prototype.mjs` 保留截图，再用 `score-visual-quality.mjs` 检查首屏主次、层级、密度、横向溢出、图片比例、移动端滚动、桌面端对齐、空态和失败态。发现明显问题先修复，再报告原型完成。Q-P 仍是用户可选择的正式门禁。
 
 ## 按场景读取原型规则
 

@@ -27,4 +27,4 @@
 
 ## 明细模板（放在本技能维护）
 
-`ui_manifest.md` 作为索引清单，不再内嵌明细模板引用；单组件模板见 [`reference/component-template.md`](reference/component-template.md)，单页面模板见 [`reference/page-template.md`](reference/page-template.md)。
+`ui_manifest.md` 作为索引清单，不再内嵌明细模板引用；单组件模板见 [`reference/component-template.md`](reference/component-template.md)，单页面模板见 [`reference/page-template.md`](reference/page-template.md)。项目级视觉档案见 [`reference/visual-profile-template.md`](reference/visual-profile-template.md)，正式落点为 `ui/visual/`。

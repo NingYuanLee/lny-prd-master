@@ -8,6 +8,7 @@
 |------|--------------|
 | 根规格 | `main_spec.md`、`ui_manifest.md`、`api_spec.md`、`feature_spec.md` |
 | UI 明细 | `ui/PAGE-*.md`、`ui/COMP-*.md` |
+| 项目视觉档案 | `ui/visual/visual-profile.md`、`ui/visual/tokens.json`、`ui/visual/assets-manifest.md` |
 | API 明细 | `api/API-*.md`、`api/EXT-*.md` |
 | Feature 明细 | `feature/FEATURE-*.md` |
 | 当前原型 | `prototypes/index.html`、`prototypes/{终端}/**` |

@@ -37,6 +37,7 @@ description: >-
 - 桌面端设计词典（通栏/分栏/表单栅格/列表六型/状态导览/定位与树）：[`reference-desktop-design.md`](reference-desktop-design.md)
 - PAGE 视觉方向契约：[`reference-visual-direction.md`](reference-visual-direction.md)
 - 自动设计决策协议：[`../lny-prd-master/reference-design-decision.md`](../lny-prd-master/reference-design-decision.md)
+- 项目视觉档案模板：[`reference/visual-profile-template.md`](reference/visual-profile-template.md)
 - 三步职责、页型编号与跨步骤不变量：[`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)
 - 正式落点与镜像禁区：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
 - 框架排除：`lny-prd-master/framework-exclusions.md`
@@ -117,7 +118,7 @@ description: >-
 
 ## 开笔前
 
-页面设计方向缺失时，先按 [`../lny-prd-master/reference-design-decision.md`](../lny-prd-master/reference-design-decision.md) 自动完成页面任务、层级、骨架、视觉方向和素材实现判断。只有产品目标、品牌事实、关键资产或范围发生实质冲突时才询问使用者。不得要求使用者先提供概念图或完整视觉规范。
+页面设计方向缺失时，先按 [`../lny-prd-master/reference-design-decision.md`](../lny-prd-master/reference-design-decision.md) 自动完成页面任务、层级、骨架、视觉方向和素材实现判断。项目缺少共享视觉事实，或已有两个以上页面需要统一语言时，创建或更新 `ui/visual/` 下的项目视觉档案。只有产品目标、品牌事实、关键资产或范围发生实质冲突时才询问使用者。不得要求使用者先提供概念图或完整视觉规范。
 
 Read `lny-prd-master/framework-exclusions.md`、`lny-prd-master/reference-artifact-paths.md` 及本项目追加排除。不为框架通用已排除项建 `ui/PAGE-*`。Read `main_spec` §1.5「明确不做」（若有）：**禁止**为清单中的能力建 PAGE。**新立项只走目录化**（`ui_manifest` 只留索引 + `ui/` 明细）；旧「manifest 内嵌全文」只读兼容，禁止双轨扩写。
 
@@ -166,7 +167,7 @@ COMP **编号必填** `COMP-{三位序号}`，与 `ui_manifest` §4「组件编�
 ## 执行步骤
 
 1. 校验 `main_spec` 第4章终端；目标终端不在表中则停，交 ①。
-2. 缺 `ui_manifest.md` / `ui/` 时按 [`reference/ui-manifest-template.md`](reference/ui-manifest-template.md) 创建索引骨架（立项兜底）。
+2. 缺 `ui_manifest.md` / `ui/` 时按 [`reference/ui-manifest-template.md`](reference/ui-manifest-template.md) 创建索引骨架（立项兜底）。项目缺少共享视觉事实，或已有两个以上页面需要统一语言时按 [`reference/visual-profile-template.md`](reference/visual-profile-template.md) 创建或更新 `ui/visual/`。
 3. 更新 §3.1 分组注册、§3.2 页面地址注册与 `ui/PAGE-*.md` 设计明细：MP 使用包模块；PC/AD 使用已注册菜单分组；禁止“所属模块”。新建/在用页状态为 `active`，废弃页为 `deprecated`；PAGE 写 **结构（L/D）+ §2.3**（含舒适默认六项），但不写产品流程或接口契约。移动端落实 §1.3.3。表外页型选语义最接近的一类，禁止误套 D1-1。`fixture` 仅供技能包仓库回归样例，用户项目禁止生成。
 4. 涉及 COMP：更新 §4 与 `ui/COMP-*.md`（状态矩阵 + **按下/成功/失败/过渡**，禁止只写 default）。
 5. 文末追加 `iteration_notes`（若有业务变更）。
