@@ -1,1046 +1,197 @@
-# -*- coding: utf-8 -*-
-"""Validate skill metadata, scripts, examples, and regression contracts."""
+#!/usr/bin/env python3
+"""Validate the unified LNY PRD Workflow package without third-party dependencies."""
 from __future__ import annotations
 
-import importlib.util
 import json
 import re
-import shutil
-import subprocess
 import sys
-import tempfile
 from pathlib import Path
-
-try:
-    import yaml
-except ModuleNotFoundError:
-    print(
-        "PyYAML is required in the active interpreter. Create the repository "
-        ".venv and install requirements-dev.txt; see README.md section 10.",
-        file=sys.stderr,
-    )
-    raise SystemExit(2)
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL_DIRS = sorted(path for path in ROOT.glob("lny-prd-*") if path.is_dir())
-EXPECTED_SKILL_ORDER = (
+SKILL_ROOT = ROOT / "lny-prd"
+MODULE_ROOT = SKILL_ROOT / "modules"
+EXPECTED_MODULES = {
     "lny-prd-master",
+    "lny-prd-discovery",
+    "lny-prd-learning",
     "lny-prd-ui",
     "lny-prd-api",
     "lny-prd-feature",
-    "lny-prd-review",
     "lny-prd-page",
     "lny-prd-prototype",
     "lny-prd-check",
-    "lny-prd-iter",
+    "lny-prd-review",
     "lny-prd-sp",
+    "lny-prd-iter",
+}
+REQUIRED_RUNTIME_FILES = (
+    "modules/lny-prd-check/scripts/validate-prd-project.py",
+    "modules/lny-prd-check/scripts/verify-artifact-paths.py",
+    "modules/lny-prd-check/scripts/audit-fact-consistency.py",
+    "modules/lny-prd-prototype/scripts/copy-kit.py",
+    "modules/lny-prd-prototype/scripts/verify-prototype-utf8.py",
+    "modules/lny-prd-prototype/scripts/verify-prototype-coverage.py",
+    "modules/lny-prd-prototype/scripts/verify-prototype-browser.mjs",
+    "modules/lny-prd-prototype/scripts/validate-visual-review.py",
 )
-EXPECTED_SKILLS = set(EXPECTED_SKILL_ORDER)
+PROJECT_ARTIFACTS = {
+    "main_spec.md",
+    "ui_manifest.md",
+    "api_spec.md",
+    "feature_spec.md",
+}
 FRONTMATTER_RE = re.compile(r"\A---\r?\n(.*?)\r?\n---(?:\r?\n|\Z)", re.S)
-MARKDOWN_LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
-EXAMPLES_PATH_RE = re.compile(r"(?:^|[\s(\"'`])(?:\.\./)*examples[\\/]", re.M)
-SEMVER_RE = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
-GENERATED_PROJECT_DOCS = {"api_spec.md", "feature_spec.md", "ui_manifest.md"}
-TEXT_SUFFIXES = {".css", ".html", ".js", ".json", ".md", ".mdc", ".mjs", ".py", ".txt", ".yaml", ".yml"}
-TEXT_NAMES = {".gitignore", "LICENSE"}
-EXCLUDED_PARTS = {".cursor", ".git", "__pycache__", "node_modules"}
-QUICK_VALIDATE = ROOT / "scripts" / "quick_validate.py"
-INSTALLER_TESTS = ROOT / "scripts" / "test_install_skills.py"
-ARTIFACT_PATH_CHECKER = ROOT / "lny-prd-check" / "scripts" / "verify-artifact-paths.py"
-PRD_SEMANTIC_CHECKER = ROOT / "lny-prd-check" / "scripts" / "validate-prd-project.py"
-PRD_SEMANTIC_TESTS = ROOT / "scripts" / "test_validate_prd_project.py"
+LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
+PATH_RE = re.compile(r"(?:<skillDir>|\bmodules)/[^\s)`>]+")
+LEGACY_PATH_RE = re.compile(
+    r"(?<!\.\./)(?<!modules/)(?<!/)`?lny-prd-"
+    r"(?:master|ui|api|feature|page|prototype|check|review|sp|iter)/"
+)
 
 
 def fail(errors: list[str], message: str) -> None:
     errors.append(message)
 
 
-def run(command: list[str], *, cwd: Path = ROOT) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        command,
-        cwd=cwd,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-        capture_output=True,
-        check=False,
-    )
-
-
-def require_run(command: list[str], errors: list[str], label: str, *, cwd: Path = ROOT) -> None:
-    result = run(command, cwd=cwd)
-    if result.returncode:
-        detail = (result.stdout + result.stderr).strip()
-        fail(errors, f"{label} failed:\n{detail}")
-
-
-def load_yaml_mapping(path: Path, text: str, errors: list[str]) -> dict | None:
+def read(path: Path, errors: list[str]) -> str:
     try:
-        value = yaml.safe_load(text)
-    except yaml.YAMLError as exc:
-        fail(errors, f"{path}: invalid YAML: {exc}")
-        return None
-    if not isinstance(value, dict):
-        fail(errors, f"{path}: YAML root must be a mapping")
-        return None
-    return value
+        return path.read_text(encoding="utf-8")
+    except OSError as exc:
+        fail(errors, f"{path}: cannot read: {exc}")
+        return ""
 
 
-def validate_bundle_contract(errors: list[str]) -> None:
-    manifest_path = ROOT / "skill-bundle.json"
+def check_bundle(errors: list[str]) -> None:
+    path = ROOT / "skill-bundle.json"
     try:
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        data = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
-        fail(errors, f"{manifest_path}: invalid bundle manifest: {exc}")
+        fail(errors, f"{path}: invalid JSON: {exc}")
         return
-    if not isinstance(manifest, dict):
-        fail(errors, f"{manifest_path}: root must be an object")
-        return
-    if manifest.get("schema_version") != 1 or manifest.get("bundle_id") != "lny-prd":
-        fail(errors, f"{manifest_path}: expected schema_version 1 and bundle_id lny-prd")
-    version = manifest.get("bundle_version")
-    if not isinstance(version, str) or not SEMVER_RE.fullmatch(version):
-        fail(errors, f"{manifest_path}: bundle_version must be stable X.Y.Z")
-    if manifest.get("skills") != list(EXPECTED_SKILL_ORDER):
-        fail(errors, f"{manifest_path}: skills must list ten ordered core skills")
-    expected_resources = {"examples": {"path": "examples", "audience": "regression"}}
-    if manifest.get("optional_resources") != expected_resources:
-        fail(errors, f"{manifest_path}: optional_resources must declare regression-only examples")
-
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    match = re.search(r"\*\*工具包版本：([^*]+)\*\*", readme)
-    readme_version = match.group(1).strip() if match else None
-    if isinstance(version, str) and readme_version != version:
-        fail(errors, f"README version {readme_version!r} does not match bundle {version!r}")
-
-    prototype_skill = (ROOT / "lny-prd-prototype" / "SKILL.md").read_text(encoding="utf-8")
-    master_skill = (ROOT / "lny-prd-master" / "SKILL.md").read_text(encoding="utf-8")
-    prototype_contract_files = {
-        "README.md": readme,
-        "lny-prd-master/SKILL.md": master_skill,
-        "lny-prd-prototype/SKILL.md": prototype_skill,
+    expected = {
+        "schema_version": 2,
+        "bundle_id": "lny-prd",
+        "skills": ["lny-prd"],
+        "source_dir": "lny-prd",
+        "install_contract": "junction",
     }
-    fixed_page_cap_patterns = ("每轮最多 3", "截取最多 3", "超过 3 个业务页")
-    for label, text in prototype_contract_files.items():
-        for pattern in fixed_page_cap_patterns:
-            if pattern in text:
-                fail(errors, f"{label}: prototype workflow must not restore fixed three-page cap {pattern!r}")
-    if "不按数量截取" not in prototype_skill or "全部 active 缺页" not in prototype_skill:
-        fail(errors, "lny-prd-prototype/SKILL.md: missing unbounded target-page selection contract")
-    for skill_dir in SKILL_DIRS:
-        for path in skill_dir.rglob("*"):
-            if not path.is_file() or path.suffix.lower() not in TEXT_SUFFIXES:
-                continue
-            text = path.read_text(encoding="utf-8")
-            if EXAMPLES_PATH_RE.search(text):
-                fail(errors, f"{path}: skill runtime must not reference repository examples/")
+    for key, value in expected.items():
+        if data.get(key) != value:
+            fail(errors, f"{path}: {key} must be {value!r}")
+    version = data.get("bundle_version")
+    if not isinstance(version, str) or not re.fullmatch(r"\d+\.\d+\.\d+", version):
+        fail(errors, f"{path}: bundle_version must use X.Y.Z")
 
 
-def validate_agent_orchestration_contract(errors: list[str]) -> None:
-    reference_path = ROOT / "lny-prd-master" / "reference-agent-orchestration.md"
-    if not reference_path.is_file():
-        fail(errors, "lny-prd-master/reference-agent-orchestration.md missing")
+def check_frontmatter(errors: list[str]) -> None:
+    path = SKILL_ROOT / "SKILL.md"
+    text = read(path, errors)
+    match = FRONTMATTER_RE.match(text)
+    if not match:
+        fail(errors, f"{path}: missing or malformed frontmatter")
         return
-
-    reference = reference_path.read_text(encoding="utf-8")
-    required_reference_phrases = (
-        "并行是优化，不是前置条件",
-        "一个正式文件一个写者",
-        "spawn_agent",
-        "wait_agent",
-        "必须循环等待",
-        "`list_agents` 确认本波所有目标均为终态",
-        "`task_name` 另行规范化为小写字母/数字/下划线",
-        "同一条 Agent 消息中发起多个独立 Task 调用",
-        'subagent_type="general_purpose_task"',
-        'query="完整任务包"',
-        "仅作为 TraeCode 概念旁证",
-        "无可确认原语则顺序执行",
-        "task_id",
-        "write_paths",
-        "forbidden_paths",
-        "`blocked` 默认必须满足 `changed_files: []`",
-        "可独立验收对象/依赖组",
-        "成功但尚未收口的独占产物",
-        "⑤ 单页 PRD",
-        "⑥ 原型",
-        "⑨ SP",
-        "⑥等待⑤与Q-S",
-        "⑨等待⑧最终通过且范围已确认",
-        "⑩等待⑧终态",
-    )
-    for phrase in required_reference_phrases:
-        if phrase not in reference:
-            fail(errors, f"agent orchestration reference missing contract: {phrase!r}")
-
-    master = (ROOT / "lny-prd-master" / "SKILL.md").read_text(encoding="utf-8")
-    if "### 1.2 Subagent 与并行编排" not in master:
-        fail(errors, "lny-prd-master/SKILL.md: missing orchestration entry")
-    if "本轮由②③④中的谁工作" not in master:
-        fail(errors, "lny-prd-master/SKILL.md: missing ②③④ dispatch ownership")
-    if "判断①的只读资料归纳是否值得并行" not in master:
-        fail(errors, "lny-prd-master/SKILL.md: missing step ① orchestration ownership")
-
-    for skill_name in EXPECTED_SKILL_ORDER[1:]:
-        skill = (ROOT / skill_name / "SKILL.md").read_text(encoding="utf-8")
-        if "reference-agent-orchestration.md" not in skill:
-            fail(errors, f"{skill_name}/SKILL.md: missing orchestration reference")
-        if "无 subagent/Task 时" not in skill:
-            fail(errors, f"{skill_name}/SKILL.md: missing sequential fallback")
-
-    focused_boundaries = {
-        "lny-prd-page": ("每个 `pages_prd/{终端}/PAGE-*.md`", "`pages_prd/_shell/`"),
-        "lny-prd-prototype": ("每个业务 `PAGE-*.html`", "`prototypes/index.html`"),
-        "lny-prd-sp": ("`sp-fe` 与 `sp-be`", "`sp_report.md`"),
-    }
-    for skill_name, phrases in focused_boundaries.items():
-        skill = (ROOT / skill_name / "SKILL.md").read_text(encoding="utf-8")
-        for phrase in phrases:
-            if phrase not in skill:
-                fail(errors, f"{skill_name}/SKILL.md: missing parallel boundary {phrase!r}")
+    fields: dict[str, str] = {}
+    for line in match.group(1).splitlines():
+        if ":" in line and not line.startswith(" "):
+            key, value = line.split(":", 1)
+            fields[key.strip()] = value.strip().strip("'\"")
+    if fields.get("name") != "lny-prd":
+        fail(errors, f"{path}: frontmatter name must be lny-prd")
+    if not fields.get("description"):
+        fail(errors, f"{path}: description must be non-empty")
 
 
-def validate_feature_template_boundary(errors: list[str]) -> None:
-    """Generated feature_spec keeps reader semantics, not authoring governance."""
-    reference_path = ROOT / "lny-prd-feature" / "reference.md"
-    reference = reference_path.read_text(encoding="utf-8")
-    match = re.search(r"## feature_spec\.md 模板.*?```markdown\s*(.*?)```", reference, re.S)
-    if match is None:
-        fail(errors, "lny-prd-feature/reference.md: feature_spec.md template block missing")
-        return
-    template = match.group(1)
-    leaked_authoring_rules = (
-        "领域粒度门禁",
-        "新增/拆分 Module 前必做",
-        "默认决策是复用现有 Module",
-        "以下默认不是 Module",
-        "lny-prd-feature/SKILL.md",
-        "/lny-prd-feature",
-    )
-    for phrase in leaked_authoring_rules:
-        if phrase in template:
-            fail(errors, f"feature_spec.md template leaks authoring governance: {phrase!r}")
-
-    required_reader_semantics = (
-        "文档范围与关系",
-        "与根规格的分工",
-        "引用与闭环",
-        "公共语义",
-        "规格状态",
-        "评审状态",
-        "领域模块定义",
-        "Feature 索引表",
-        "跨功能约定",
-    )
-    for phrase in required_reader_semantics:
-        if phrase not in template:
-            fail(errors, f"feature_spec.md template lost reader-facing semantics: {phrase!r}")
-
-    skill = (ROOT / "lny-prd-feature" / "SKILL.md").read_text(encoding="utf-8")
-    if "领域粒度门禁（仅约束生成过程，不写入项目文档）" not in skill:
-        fail(errors, "lny-prd-feature/SKILL.md: domain gate must remain in skill instructions")
-
-    example = (ROOT / "examples" / "mini-shop" / "feature_spec.md").read_text(encoding="utf-8")
-    for phrase in leaked_authoring_rules:
-        if phrase in example:
-            fail(errors, f"mini-shop feature_spec.md leaks authoring governance: {phrase!r}")
+def check_agent(errors: list[str]) -> None:
+    path = SKILL_ROOT / "agents" / "openai.yaml"
+    text = read(path, errors)
+    for field in ("display_name", "short_description", "default_prompt"):
+        if not re.search(rf"^\s+{field}:\s*\".+\"\s*$", text, re.M):
+            fail(errors, f"{path}: interface.{field} must be a quoted non-empty value")
+    if "$lny-prd" not in text:
+        fail(errors, f"{path}: default_prompt must mention $lny-prd")
+    if "allow_implicit_invocation: true" not in text:
+        fail(errors, f"{path}: implicit invocation must remain enabled")
 
 
-def validate_skill_metadata(errors: list[str]) -> None:
-    names = {path.name for path in SKILL_DIRS}
-    if names != EXPECTED_SKILLS:
-        fail(
-            errors,
-            "skill directories mismatch: expected "
-            + str(sorted(EXPECTED_SKILLS))
-            + ", got "
-            + str(sorted(names)),
-        )
-
-    for skill_dir in SKILL_DIRS:
-        require_run(
-            [sys.executable, str(QUICK_VALIDATE), str(skill_dir)],
-            errors,
-            f"quick validation for {skill_dir.name}",
-        )
-
-        skill_file = skill_dir / "SKILL.md"
-        if not skill_file.is_file():
-            fail(errors, f"{skill_dir.name}: SKILL.md missing")
+def check_modules(errors: list[str]) -> None:
+    actual = {path.name for path in MODULE_ROOT.iterdir() if path.is_dir()}
+    if actual != EXPECTED_MODULES:
+        fail(errors, f"{MODULE_ROOT}: modules mismatch, got {sorted(actual)}")
+    for name in sorted(EXPECTED_MODULES):
+        path = MODULE_ROOT / name / "SKILL.md"
+        text = read(path, errors)
+        if not text.strip():
             continue
-        text = skill_file.read_text(encoding="utf-8")
-        match = FRONTMATTER_RE.match(text)
-        if not match:
-            fail(errors, f"{skill_file}: invalid or unclosed frontmatter")
-            continue
-        frontmatter = load_yaml_mapping(skill_file, match.group(1), errors)
-        if frontmatter is None:
-            continue
-        if list(frontmatter) != ["name", "description"]:
-            fail(
-                errors,
-                f"{skill_file}: frontmatter keys must be name, description; got {list(frontmatter)}",
-            )
-        if frontmatter.get("name") != skill_dir.name:
-            fail(errors, f"{skill_file}: name must match directory {skill_dir.name}")
-
-        agent_file = skill_dir / "agents" / "openai.yaml"
-        if not agent_file.is_file():
-            fail(errors, f"{agent_file}: missing")
-            continue
-        agent_text = agent_file.read_text(encoding="utf-8")
-        agent = load_yaml_mapping(agent_file, agent_text, errors)
-        if agent is None:
-            continue
-        unexpected = set(agent) - {"interface", "dependencies", "policy"}
-        if unexpected:
-            fail(errors, f"{agent_file}: unexpected top-level keys {sorted(unexpected)}")
-
-        interface = agent.get("interface")
-        if not isinstance(interface, dict):
-            fail(errors, f"{agent_file}: interface must be a mapping")
-            continue
-        for field in ("display_name", "short_description", "default_prompt"):
-            value = interface.get(field)
-            if not isinstance(value, str) or not value.strip():
-                fail(errors, f"{agent_file}: interface.{field} must be a non-empty string")
-            quoted = re.search(
-                rf'^  {re.escape(field)}: "(?:[^"\\]|\\.)*"$',
-                agent_text,
-                flags=re.M,
-            )
-            if not quoted:
-                fail(errors, f"{agent_file}: interface.{field} must be double-quoted")
-        short = interface.get("short_description")
-        if isinstance(short, str) and not 25 <= len(short) <= 64:
-            fail(errors, f"{agent_file}: short_description must be 25..64 characters")
-        prompt = interface.get("default_prompt")
-        if isinstance(prompt, str) and f"${skill_dir.name}" not in prompt:
-            fail(errors, f"{agent_file}: default_prompt must mention ${skill_dir.name}")
-
-        policy = agent.get("policy")
-        if not isinstance(policy, dict):
-            fail(errors, f"{agent_file}: policy must be a mapping")
-            continue
-        implicit = policy.get("allow_implicit_invocation")
-        expected = skill_dir.name == "lny-prd-master"
-        if not isinstance(implicit, bool) or implicit is not expected:
-            fail(
-                errors,
-                f"{agent_file}: allow_implicit_invocation must be {str(expected).lower()}",
-            )
-
-    with tempfile.TemporaryDirectory(prefix="lny-prd-invalid-skill-") as temp:
-        bad = Path(temp) / "bad-skill"
-        bad.mkdir()
-        (bad / "SKILL.md").write_text(
-            "---\nname: bad-skill\ndescription: [\n---\n# Broken\n",
-            encoding="utf-8",
-        )
-        result = run([sys.executable, str(QUICK_VALIDATE), str(bad)])
-        if result.returncode == 0:
-            fail(errors, "quick_validate.py accepted malformed YAML regression fixture")
+        if "lny-prd-master" not in text and name != "lny-prd-master":
+            fail(errors, f"{path}: missing reference to the shared master rules")
+    for relative in REQUIRED_RUNTIME_FILES:
+        if not (SKILL_ROOT / relative).is_file():
+            fail(errors, f"missing required runtime file: {relative}")
 
 
-def markdown_files() -> list[Path]:
-    paths = [ROOT / "README.md"]
-    for skill_dir in SKILL_DIRS:
-        paths.extend(skill_dir.rglob("*.md"))
-    return sorted(set(path for path in paths if path.is_file()))
-
-
-def validate_markdown_links(errors: list[str]) -> None:
-    for path in markdown_files():
-        text = path.read_text(encoding="utf-8")
-        for match in MARKDOWN_LINK_RE.finditer(text):
+def check_markdown_links(errors: list[str]) -> None:
+    for path in SKILL_ROOT.rglob("*.md"):
+        text = read(path, errors)
+        for match in LINK_RE.finditer(text):
             raw = match.group(1).split("#", 1)[0].strip()
             if not raw or re.match(r"^(?:https?://|mailto:)", raw):
                 continue
-            if any(char in raw for char in "{}<>*"):
-                continue
-            if Path(raw).name in GENERATED_PROJECT_DOCS:
+            if Path(raw).name in PROJECT_ARTIFACTS and raw.startswith("./"):
                 continue
             target = (path.parent / raw).resolve()
             if not target.exists():
-                fail(errors, f"{path}: broken Markdown link {raw}")
-
-
-def repo_files() -> list[Path]:
-    files: list[Path] = []
-    for path in ROOT.rglob("*"):
-        if not path.is_file():
-            continue
-        relative = path.relative_to(ROOT)
-        if any(part in EXCLUDED_PARTS for part in relative.parts):
-            continue
-        files.append(path)
-    return files
-
-
-def validate_text_and_yaml(errors: list[str]) -> None:
-    for path in repo_files():
-        if path.suffix.lower() not in TEXT_SUFFIXES and path.name not in TEXT_NAMES:
-            continue
-        try:
-            text = path.read_text(encoding="utf-8")
-        except UnicodeDecodeError as exc:
-            fail(errors, f"{path}: invalid UTF-8: {exc}")
-            continue
-        if path.suffix.lower() in {".yaml", ".yml"}:
-            load_yaml_mapping(path, text, errors)
-
-
-def validate_script_syntax(errors: list[str]) -> None:
-    for path in repo_files():
-        if path.suffix.lower() != ".py":
-            continue
-        try:
-            compile(path.read_text(encoding="utf-8"), str(path), "exec")
-        except (OSError, SyntaxError) as exc:
-            fail(errors, f"{path}: Python syntax error: {exc}")
-
-    node = shutil.which("node")
-    js_files = [
-        path
-        for path in repo_files()
-        if path.suffix.lower() in {".js", ".mjs", ".cjs"}
-    ]
-    if js_files and node is None:
-        fail(errors, "Node.js is required to validate JavaScript syntax")
-        return
-    for path in js_files:
-        require_run([node or "node", "--check", str(path)], errors, f"JS syntax {path}")
-
-
-def validate_prototype_source_contract(errors: list[str]) -> None:
-    kit = ROOT / "lny-prd-prototype" / "kit"
-    css = (kit / "mui-kit.css").read_text(encoding="utf-8")
-    js = (kit / "proto-page.js").read_text(encoding="utf-8")
-    css_patterns = {
-        "caption margin reset": r"\.md-caption\s*\{[^}]*\bmargin:\s*0\s*;",
-        "clipped paper": r"\.md-paper--clip\s*\{\s*overflow:\s*hidden\s*;\s*\}",
-        "overlay safe padding": (
-            r"\.md-mobile-page\s+\.md-appbar--mobile\.md-appbar--overlay\s*\{"
-            r"[^}]*padding-left:\s*var\(--md-safe-l\)\s*;"
-            r"[^}]*padding-right:\s*max\(var\(--md-safe-r\),\s*96px\)\s*;"
-        ),
-        "category label width": (
-            r"\.md-table\s+\.md-col-label\s*\{[^}]*width:\s*136px\s*;"
-            r"[^}]*min-width:\s*136px\s*;[^}]*max-width:\s*160px\s*;"
-        ),
-    }
-    js_tokens = {
-        "select-wrap text trigger measurement": (
-            'control.classList.contains("md-select-wrap")',
-            'control.querySelector(".md-btn")',
-            "measureTextPx(label, textRef || button)",
-        ),
-        "direct action gap measurement": (
-            "packStyle.columnGap || packStyle.gap",
-            "Math.max(0, children.length - 1) * gap",
-        ),
-        "overflow-aware default detail nav": (
-            'var automatic = !mode || mode === "on"',
-            "root.scrollHeight <= root.clientHeight + 1",
-            "collectDetailSections(page).length >= 2",
-        ),
-    }
-    for label, pattern in css_patterns.items():
-        if re.search(pattern, css, flags=re.S) is None:
-            fail(errors, f"prototype CSS contract missing: {label}")
-    for label, tokens in js_tokens.items():
-        if any(token not in js for token in tokens):
-            fail(errors, f"prototype JS contract missing: {label}")
-
-
-def validate_example_prototype_identity(errors: list[str]) -> None:
-    current = ROOT / "examples" / "mini-shop" / "prototypes"
-    for path in sorted(current.rglob("PAGE-*.html")):
-        text = path.read_text(encoding="utf-8")
-        title = re.search(r"<title>\s*([^<]+)</title>", text, flags=re.I)
-        if not title or not re.match(rf"^{re.escape(path.stem)}(?:\s|$)", title.group(1)):
-            fail(errors, f"{path}: <title> must start with {path.stem}")
-        parts = path.stem.split("-")
-        terminal = parts[1] if len(parts) >= 3 else ""
-        if path.parent.name != terminal:
-            fail(errors, f"{path}: terminal directory must be {terminal}")
-
-
-def validate_project_icon_priority(errors: list[str]) -> None:
-    """kit must not overwrite project-authored inline SVGs on [data-icon] hosts."""
-    path = ROOT / "lny-prd-prototype" / "kit" / "md-icons.js"
-    text = path.read_text(encoding="utf-8") if path.is_file() else ""
-    for needle in ("function isProjectSvg", "if (isProjectSvg(host)) return;"):
-        if needle not in text:
-            fail(errors, f"kit/md-icons.js missing project-SVG guard: {needle}")
-
-
-def validate_kit_copies(errors: list[str]) -> None:
-    kit = ROOT / "lny-prd-prototype" / "kit"
-    example = ROOT / "examples" / "mini-shop"
-    targets: list[Path] = []
-    prototype_root = example / "prototypes"
-    targets.extend(path for path in prototype_root.glob("*/assets") if path.is_dir())
-    for source in sorted(path for path in kit.iterdir() if path.is_file()):
-        for target_dir in targets:
-            target = target_dir / source.name
-            if not target.is_file():
-                fail(errors, f"{target}: missing kit mirror file")
-            elif target.read_bytes() != source.read_bytes():
-                fail(errors, f"{target}: differs from kit/{source.name}")
-
-
-def import_module(path: Path, name: str):
-    spec = importlib.util.spec_from_file_location(name, path)
-    if spec is None or spec.loader is None:
-        raise RuntimeError(f"cannot import {path}")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
-def validate_coverage_regressions(module, errors: list[str]) -> None:
-    _, _, labels = module.parse_prd(
-        "## 3. 页面模块详述\n"
-        "```\n节点「仅示意」\n```\n"
-        "- **结构与控件**：按钮「提交」\n"
-        "## 4. 交互\n"
-    )
-    if labels != ["提交"]:
-        fail(errors, "coverage label parser treated fenced wireframe copy as a label contract")
-
-    naked = module.PageParser()
-    naked.feed("<label class=md-field><input></label><input>")
-    if not any("naked <input>" in error for error in naked.errors) or naked.stack:
-        fail(errors, "coverage parser failed the void-element ancestor-stack regression")
-
-    # Equal content must pass coverage regardless of its visual grouping.
-    with tempfile.TemporaryDirectory() as directory:
-        root = Path(directory)
-        assets = root / "assets"
-        assets.mkdir()
-        names = ("md-icons.js", "icons-extra.js", "proto-page.js")
-        for name in ("mui-kit.css", *names):
-            (assets / name).touch()
-        resources = '<link href="./assets/mui-kit.css">' + "".join(
-            f'<script src="./assets/{name}"></script>' for name in names
-        )
-        page = root / "PAGE-AD-001.html"
-        for layout in ('<section class="md-grid-2"><article class="md-card">购票</article></section>',
-                       '<section><a href="#tickets">购票</a></section>'):
-            page.write_text(resources + '<main class="md-d1"><nav class="md-breadcrumb"></nav>' + layout + "</main>", encoding="utf-8")
-            issues = module.check_html(page, page.stem, set(), set(), ["购票"])
-            if issues:
-                fail(errors, f"coverage rejected equivalent content: {issues}")
-            if not module.check_html(page, page.stem, set(), set(), ["开园日历"]):
-                fail(errors, "coverage accepted a missing required label")
-
-    generic_mobile = module.PageParser()
-    generic_mobile.feed(
-        '<body><div class="md-mobile-page md-standard">'
-        '<main class="md-mobile-body"><div class="md-mobile-sheet">'
-        '<section data-section="content"></section>'
-        '</div></main></div></body>'
-    )
-    if (
-        generic_mobile.mobile_body_count != 1
-        or generic_mobile.direct_mobile_sheet_count != 1
-        or generic_mobile.direct_mobile_body_non_sheet
-    ):
-        fail(errors, "coverage rejected a valid heading-free body > sheet mobile page")
-
-    direct_l3 = module.PageParser()
-    direct_l3.feed(
-        '<body><div class="md-mobile-page md-standard">'
-        '<main class="md-mobile-body"><section class="md-module"></section></main>'
-        '</div></body>'
-    )
-    if (
-        direct_l3.mobile_body_count != 1
-        or direct_l3.direct_mobile_sheet_count != 0
-        or direct_l3.direct_mobile_body_non_sheet != ["section"]
-    ):
-        fail(errors, "coverage failed to detect a missing sheet and direct L3 child")
-
-    visible_copy = module.PageParser()
-    visible_copy.feed(
-        '<body><script>API-MP-001</script><span hidden>fitBounds</span>'
-        '<p>API-MP-002</p></body>'
-    )
-    visible_text = "".join(visible_copy.text_parts)
-    if visible_text != "API-MP-002":
-        fail(errors, "coverage visible-copy parser included hidden implementation text")
-    if module.VISIBLE_IMPL_COPY_RE.findall(visible_text) != ["API-MP-002"]:
-        fail(errors, "coverage failed to flag visible implementation text")
-
-    wizard_demo = (
-        '<div class="md-form-page"><div data-wizard-panel="stepper">'
-        '<div class="md-stepper"></div><div class="md-advance"></div>'
-        '</div></div>'
-    )
-    check_wizard_nav = getattr(module, "check_wizard_nav", None)
-    if check_wizard_nav is not None:
-        business_errors = check_wizard_nav(
-            Path("business.html"), "PAGE-MP-099", wizard_demo
-        )
-        if not any("business page must not copy" in error for error in business_errors):
-            fail(errors, "coverage accepted wizard demo markup on a business page")
-
-    matrix = module.parse_comp_states(
-        "## 4. UI 状态矩阵（必填）\n"
-        "| 状态 | 触发条件 | 展示要点 | 可执行操作 |\n"
-        "|------|----------|----------|------------|\n"
-        "| loading | 请求中 | 骨架 | 无 |\n"
-        "| default | 已加载 | 内容 | 点击 |\n"
-        "## 5. 关联页面索引\n"
-    )
-    if matrix != ["loading", "default"]:
-        fail(errors, "coverage state matrix parser failed the documented table")
-
-    shell = module.parse_shell_page(
-        "window.PROTO_SHELL = { pages: [{ id: 'PAGE-MP-001', stateDemo: true, "
-        "comps: [{ id: 'COMP-001', states: ['loading', 'default'] }] }] };",
-        "PAGE-MP-001",
-    )
-    if not shell or shell["comps"][0]["states"] != ["loading", "default"]:
-        fail(errors, "coverage shell parser failed the PROTO_SHELL state contract")
-
-    state_parser = module.PageParser()
-    state_parser.feed(
-        '<article data-comp="COMP-001" data-state="default"></article>'
-        '<div class="is-hidden" data-state-for="COMP-001" data-state="pending">处理中</div>'
-    )
-    if state_parser.state_views.get("COMP-001") != {"pending"}:
-        fail(errors, "coverage parser failed custom state visual markers")
-
-
-def validate_migration(errors: list[str]) -> None:
-    node = shutil.which("node")
-    if node is None:
-        fail(errors, "Node.js is required to test migrate-prd-structure.mjs")
-        return
-    script = ROOT / "lny-prd-ui" / "scripts" / "migrate-prd-structure.mjs"
-    manifest = """# UI manifest
-
-## 5 页面与组件
-
-### PAGE-MP-001 首页
-
-#### 结构
-
-page body
-
-### COMP-001 卡片
-
-#### 状态
-
-component body
-
-## 6 其它
-
-must not migrate
-"""
-    with tempfile.TemporaryDirectory(prefix="lny-prd-migrate-") as temp:
-        root = Path(temp)
-        (root / "ui_manifest.md").write_text(manifest, encoding="utf-8")
-        command = [node, str(script), "--root", str(root)]
-
-        dry = run([*command, "--dry-run"])
-        if dry.returncode or "would write 2 file(s)" not in dry.stdout:
-            fail(errors, "migration dry-run did not report the two planned files")
-
-        first = run(command)
-        page = root / "ui" / "PAGE-MP-001.md"
-        comp = root / "ui" / "COMP-001.md"
-        if first.returncode or not page.is_file() or not comp.is_file():
-            fail(errors, "migration failed to create PAGE and COMP detail files")
-            return
-        page_text = page.read_text(encoding="utf-8")
-        if "COMP-001" in page_text or "must not migrate" in page_text:
-            fail(errors, "migration PAGE section leaked an adjacent or trailing section")
-
-        page.write_text("local edit\n", encoding="utf-8")
-        blocked = run(command)
-        if blocked.returncode != 2 or page.read_text(encoding="utf-8") != "local edit\n":
-            fail(errors, "migration did not preserve an existing conflicting detail file")
-
-        conflict_dry = run([*command, "--dry-run"])
-        if conflict_dry.returncode or "[would overwrite]" not in conflict_dry.stdout:
-            fail(errors, "migration dry-run did not identify an overwrite conflict")
-
-        forced = run([*command, "--force"])
-        if forced.returncode or "page body" not in page.read_text(encoding="utf-8"):
-            fail(errors, "migration --force did not replace the conflicting file")
-        leftovers = [path for path in root.rglob("*") if ".lny-prd-" in path.name]
-        if leftovers:
-            fail(errors, f"migration left transaction files behind: {leftovers}")
-
-
-def validate_artifact_path_checker(errors: list[str]) -> None:
-    with tempfile.TemporaryDirectory(prefix="lny-prd-artifact-paths-") as temp:
-        root = Path(temp)
-        version = root / "versions" / "v1.0.0"
-        (root / "api").mkdir()
-        (root / "ui").mkdir()
-        (root / "feature").mkdir()
-        (root / "prototypes" / "MP").mkdir(parents=True)
-        (root / "pages_prd" / "MP").mkdir(parents=True)
-        (version / "pages_prd" / "MP" / "pages" / "index" / "index").mkdir(parents=True)
-        for name in ("main_spec.md", "ui_manifest.md", "api_spec.md", "feature_spec.md"):
-            (root / name).write_text("# spec\n", encoding="utf-8")
-        (root / "api" / "API-MP-001.md").write_text("# API\n", encoding="utf-8")
-        (root / "ui" / "PAGE-MP-001.md").write_text("# PAGE\n", encoding="utf-8")
-        (root / "feature" / "FEATURE-001.md").write_text("# Feature\n", encoding="utf-8")
-        (root / "prototypes" / "index.html").write_text("ok\n", encoding="utf-8")
-        clean = run([sys.executable, str(ARTIFACT_PATH_CHECKER), str(root)])
-        if clean.returncode:
-            fail(errors, "artifact path checker rejected a canonical project:\n" + clean.stderr.strip())
-
-        (root / "index.html").write_text("wrong\n", encoding="utf-8")
-        (version / "index.html").write_text("wrong\n", encoding="utf-8")
-        (version / "main_spec.md").write_text("copy\n", encoding="utf-8")
-        (version / "api").mkdir()
-        (version / "api" / "API-MP-001.md").write_text("copy\n", encoding="utf-8")
-        (version / "prototypes" / "MP").mkdir(parents=True)
-        (version / "prototypes" / "index.html").write_text("copy\n", encoding="utf-8")
-        (version / "FEATURE-001.md").write_text("copy\n", encoding="utf-8")
-        invalid = run([sys.executable, str(ARTIFACT_PATH_CHECKER), str(root)])
-        output = invalid.stdout + invalid.stderr
-        expected_codes = {
-            "ROOT_INDEX",
-            "VERSION_ROOT_INDEX",
-            "VERSION_SPEC_COPY",
-            "VERSION_SPEC_TREE",
-            "VERSION_PROTOTYPE_TREE",
-            "VERSION_LOOSE_DETAIL",
-        }
-        (root / "pages_prd" / "pages" / "index").mkdir(parents=True)
-        (root / "pages_prd" / "pages" / "index" / "PAGE-MP-002.md").write_text("wrong\n", encoding="utf-8")
-        (version / "pages_prd" / "_shell").mkdir()
-        invalid = run([sys.executable, str(ARTIFACT_PATH_CHECKER), str(root)])
-        output = invalid.stdout + invalid.stderr
-        expected_codes |= {"ROOT_PAGE_PRD_PATH", "VERSION_PAGE_SHELL"}
-        missing = sorted(code for code in expected_codes if code not in output)
-        if invalid.returncode != 1 or missing:
-            fail(
-                errors,
-                "artifact path checker missed forbidden project artifacts: "
-                f"returncode={invalid.returncode}, missing={missing}\n{output.strip()}",
-            )
-
-
-def validate_prototypes(errors: list[str]) -> None:
-    scripts = ROOT / "lny-prd-prototype" / "scripts"
-    utf8 = scripts / "verify-prototype-utf8.py"
-    coverage = scripts / "verify-prototype-coverage.py"
-    copy_kit = scripts / "copy-kit.py"
-    search_icons = scripts / "search-icons.py"
-    example = ROOT / "examples" / "mini-shop"
-    require_run(
-        [sys.executable, str(search_icons), "--list-kit"],
-        errors,
-        "offline icon index",
-    )
-    require_run(
-        [sys.executable, str(search_icons), "首页", "--local-only"],
-        errors,
-        "offline icon lookup",
-    )
-    html = sorted((example / "prototypes").rglob("*.html"))
-    require_run(
-        [sys.executable, str(utf8), *(str(path) for path in html)],
-        errors,
-        "UTF-8 validation",
-    )
-
-    pages = sorted(
-        path.stem
-        for path in (example / "pages_prd").rglob("PAGE-*.md")
-    )
-    command = [sys.executable, str(coverage), str(example), "--version", "v1.0.0"]
-    for page in pages:
-        command.extend(("--page", page))
-    for fixture in ("PAGE-AD-003", "PAGE-MP-005"):
-        command.extend(("--fixture", fixture))
-    require_run(command, errors, "prototype coverage")
-
-    with tempfile.TemporaryDirectory(prefix="lny-prd-kit-") as temp:
-        destination = Path(temp) / "MP"
-        require_run(
-            [sys.executable, str(copy_kit), str(destination)],
-            errors,
-            "kit copy",
-        )
-        expected = {
-            "icons-extra.js",
-            "md-icons.js",
-            "mui-kit.css",
-            "proto-map.js",
-            "proto-page.js",
-            "proto-shell.css",
-            "proto-shell.js",
-        }
-        actual = {path.name for path in (destination / "assets").glob("*")}
-        if actual != expected:
-            fail(errors, f"kit copy files mismatch: expected {sorted(expected)}, got {sorted(actual)}")
-
-    try:
-        module = import_module(coverage, "prototype_coverage")
-    except RuntimeError as exc:
-        fail(errors, str(exc))
-        return
-    validate_coverage_regressions(module, errors)
-
-
-CANONICAL_PAGE_TYPES = ROOT / "lny-prd-master" / "reference-page-types.md"
-PAGE_ID_RE = re.compile(r"PAGE-(MP|AD)-(\d{3})")
-PAGE_KEY_RE = re.compile(r"(?:PAGE-)?(MP|AD)-(\d{3})")
-
-
-def section_lines(text: str, heading_prefix: str) -> list[str] | None:
-    """Return the lines under a level-2 heading, up to the next level-2 heading."""
-    lines = text.splitlines()
-    start: int | None = None
-    for index, line in enumerate(lines):
-        if start is None:
-            if line.strip().startswith(heading_prefix):
-                start = index + 1
-            continue
-        if line.startswith("## ") and not line.startswith("###"):
-            return lines[start:index]
-    if start is None:
-        return None
-    return lines[start:]
-
-
-def parse_canonical_page_map(errors: list[str]) -> dict[str, set[str]] | None:
-    """页型映射只登记 PAGE 编号，不登记样例文件。"""
-    text = CANONICAL_PAGE_TYPES.read_text(encoding="utf-8")
-    lines = section_lines(text, "## 页型映射")
-    if lines is None:
-        fail(errors, "reference-page-types.md: 页型映射 section missing")
-        return None
-    mapping: dict[str, set[str]] = {}
-    for line in lines:
-        stripped = line.strip()
-        if not stripped.startswith("|") or "---" in stripped:
-            continue
-        cells = [cell.strip() for cell in stripped.strip("|").split("|")]
-        if len(cells) < 2 or cells[0] == "页型":
-            continue
-        for cell in cells:
-            for terminal, num in PAGE_KEY_RE.findall(cell):
-                mapping.setdefault(f"{terminal}-{num}", set())
-    if not mapping:
-        fail(errors, "reference-page-types.md: 页型映射 table parsed empty")
-        return None
-    return mapping
-
-
-def quick_row_page_id_errors(
-    mapping: dict[str, set[str]],
-    quick_text: str,
-    *,
-    label: str,
-) -> list[str]:
-    """Check every PAGE id on every quick-ref table row against the canonical map."""
-    found: list[str] = []
-    for line in quick_text.splitlines():
-        stripped = line.strip()
-        if not stripped.startswith("|"):
-            continue
-        for terminal, num in PAGE_ID_RE.findall(stripped):
-            if f"{terminal}-{num}" not in mapping:
-                found.append(f"{label}: PAGE-{terminal}-{num} missing from canonical 页型映射")
-    return found
-
-
-def validate_page_type_consistency(errors: list[str]) -> None:
-    """速查表可列 PAGE 编号；编号必须存在于页型映射正本。"""
-    mapping = parse_canonical_page_map(errors)
-    if mapping is None:
-        return
-
-    missing = quick_row_page_id_errors(
-        mapping,
-        "| PAGE-MP-001 / PAGE-MP-999 | 首页 |\n",
-        label="page-type gate self-test",
-    )
-    if not any("PAGE-MP-999" in item for item in missing):
-        fail(
-            errors,
-            "page-type gate missed a second illegal PAGE id on a quick-ref row",
-        )
-
-    for skill_name in ("lny-prd-ui", "lny-prd-page", "lny-prd-prototype"):
-        skill_text = (ROOT / skill_name / "SKILL.md").read_text(encoding="utf-8")
-        if "reference-page-types.md" not in skill_text:
-            fail(errors, f"{skill_name}/SKILL.md: missing canonical reference-page-types.md pointer")
-
-    for skill_name in ("lny-prd-ui", "lny-prd-page"):
-        lines = section_lines(
-            (ROOT / skill_name / "SKILL.md").read_text(encoding="utf-8"), "## 页型速查"
-        )
-        if lines is None:
-            fail(errors, f"{skill_name}/SKILL.md: 页型速查 section missing")
-            continue
-        for item in quick_row_page_id_errors(
-            mapping, "\n".join(lines), label=f"{skill_name}/SKILL.md 速查表"
-        ):
-            fail(errors, item)
-
-
-REPO_ROOT_REF_RE = re.compile(
-    r"仓库\s*根?\s*[`「『(（]?\s*(?:README|LICENSE\b|skill-bundle\.json|CHANGELOG\.md|requirements[^\s`」』)）]*\.txt)",
-    re.IGNORECASE,
-)
-
-
-def validate_skill_references(errors: list[str]) -> None:
-    """Skill prose must not point at repository-root files that are never installed.
-
-    Anchored on 仓库/仓库根 + root-file name so legitimate in-skill references
-    and PRD-project wording ("PRD 仓库根目录") pass through.
-    """
-    for skill_dir in SKILL_DIRS:
-        for path in sorted(skill_dir.rglob("*.md")):
-            if "__pycache__" in path.parts:
+                fail(errors, f"{path}: broken local link {raw}")
+
+
+def check_declared_scripts(errors: list[str]) -> None:
+    for path in SKILL_ROOT.rglob("*.md"):
+        text = read(path, errors)
+        for match in PATH_RE.finditer(text):
+            raw = match.group(0)
+            if raw.startswith("<skillDir>"):
+                raw = raw.replace("<skillDir>/", "", 1)
+                target = SKILL_ROOT / raw
+            else:
+                target = SKILL_ROOT / raw
+            if any(char in raw for char in "…{}"):
                 continue
-            text = path.read_text(encoding="utf-8")
-            for lineno, line in enumerate(text.splitlines(), start=1):
-                match = REPO_ROOT_REF_RE.search(line)
-                if match:
-                    rel = path.relative_to(ROOT).as_posix()
-                    fail(
-                        errors,
-                        f"{rel}:{lineno}: references repository root file "
-                        f"({match.group(0)!r}); repo-root files are not installed with the skill",
-                    )
+            if ("scripts/" in raw or raw.endswith(".py") or raw.endswith(".mjs")) and not target.exists():
+                fail(errors, f"{path}: declared path does not exist {match.group(0)}")
 
 
-def validate_changelog(errors: list[str]) -> None:
-    path = ROOT / "CHANGELOG.md"
+def check_legacy_paths(errors: list[str]) -> None:
+    for path in SKILL_ROOT.rglob("*.md"):
+        text = read(path, errors)
+        if LEGACY_PATH_RE.search(text):
+            fail(errors, f"{path}: contains a legacy top-level module path")
+
+
+def check_regression_runner(errors: list[str]) -> None:
+    path = ROOT / "scripts" / "run-regression.py"
     if not path.is_file():
-        fail(errors, "CHANGELOG.md missing at repository root")
-        return
-    text = path.read_text(encoding="utf-8")
-    match = re.search(r"^## (\d+\.\d+\.\d+)\b", text, flags=re.M)
-    if match is None:
-        fail(errors, "CHANGELOG.md: no '## X.Y.Z' version section found")
-        return
-    manifest = json.loads((ROOT / "skill-bundle.json").read_text(encoding="utf-8"))
-    version = manifest.get("bundle_version")
-    if match.group(1) != version:
-        fail(errors, f"CHANGELOG.md top version {match.group(1)!r} != skill-bundle.json bundle_version {version!r}")
-
-
-BANNED_FIXTURE_TOKENS = ("\u91d1\u6837", "gold" + "/")
-
-
-def validate_de_fixture_contract(errors: list[str]) -> None:
-    """De-fixture contract: no built-in sample page may act as a gate."""
-    gold_dir = ROOT / "lny-prd-prototype" / "gold"
-    if gold_dir.exists():
-        fail(errors, "lny-prd-prototype/gold must not exist")
-
-    for skill_dir in SKILL_DIRS:
-        for path in sorted(skill_dir.rglob("*.md")):
-            if "__pycache__" in path.parts:
-                continue
-            text = path.read_text(encoding="utf-8")
-            for token in BANNED_FIXTURE_TOKENS:
-                if token in text:
-                    rel = path.relative_to(ROOT).as_posix()
-                    fail(errors, f"{rel}: forbidden fixture wording {token!r}")
-
-    prototype_skill = (ROOT / "lny-prd-prototype" / "SKILL.md").read_text(encoding="utf-8")
-    if "## 壳层与结构约束" not in prototype_skill:
-        fail(errors, "lny-prd-prototype/SKILL.md: missing shell-and-structure section")
-
-    page_types = (ROOT / "lny-prd-master" / "reference-page-types.md").read_text(encoding="utf-8")
-    for heading in ("## 三步职责", "## 页型映射", "## 跨步骤不变量"):
-        if heading not in page_types:
-            fail(errors, f"lny-prd-master/reference-page-types.md: missing section {heading!r}")
-
-    master_skill = (ROOT / "lny-prd-master" / "SKILL.md").read_text(encoding="utf-8")
-    if "⑥ 只保留壳层与文件结构约束" not in master_skill:
-        fail(errors, "lny-prd-master/SKILL.md: missing prototype shell-and-structure scope literal")
-
-    kit = ROOT / "lny-prd-prototype" / "kit"
-    for name in (
-        "mui-kit.css",
-        "proto-shell.css",
-        "proto-shell.js",
-        "proto-page.js",
-        "proto-map.js",
-        "md-icons.js",
-    ):
-        if not (kit / name).is_file():
-            fail(errors, f"lny-prd-prototype/kit/{name} missing")
-
-    copy_kit = ROOT / "lny-prd-prototype" / "scripts" / "copy-kit.py"
-    if not copy_kit.is_file():
-        fail(errors, "lny-prd-prototype/scripts/copy-kit.py missing")
-        return
-    with tempfile.TemporaryDirectory(prefix="lny-prd-kit-contract-") as temp:
-        result = run([sys.executable, str(copy_kit), str(Path(temp) / "MP")])
-        if result.returncode:
-            detail = (result.stdout + result.stderr).strip()
-            fail(errors, "lny-prd-prototype/scripts/copy-kit.py failed:\n" + detail)
+        fail(errors, f"missing regression runner: {path}")
 
 
 def main() -> int:
     errors: list[str] = []
-    validate_bundle_contract(errors)
-    validate_agent_orchestration_contract(errors)
-    validate_feature_template_boundary(errors)
-    validate_skill_metadata(errors)
-    validate_markdown_links(errors)
-    validate_text_and_yaml(errors)
-    validate_script_syntax(errors)
-    validate_prototype_source_contract(errors)
-    validate_example_prototype_identity(errors)
-    validate_kit_copies(errors)
-    validate_project_icon_priority(errors)
-    validate_page_type_consistency(errors)
-    validate_de_fixture_contract(errors)
-    validate_changelog(errors)
-    validate_skill_references(errors)
-    validate_migration(errors)
-    validate_artifact_path_checker(errors)
-    validate_prototypes(errors)
-    require_run(
-        [sys.executable, str(PRD_SEMANTIC_TESTS), "-v"],
-        errors,
-        "PRD semantic validator tests",
-    )
-    require_run(
-        [
-            sys.executable,
-            str(PRD_SEMANTIC_CHECKER),
-            str(ROOT / "examples" / "mini-shop"),
-            "--allow-fixture-status",
-        ],
-        errors,
-        "mini-shop semantic validation",
-    )
-    require_run(
-        [sys.executable, str(INSTALLER_TESTS), "-v"],
-        errors,
-        "atomic bundle installer tests",
-    )
+    for check in (
+        check_bundle,
+        check_frontmatter,
+        check_agent,
+        check_modules,
+        check_markdown_links,
+        check_declared_scripts,
+        check_legacy_paths,
+        check_regression_runner,
+    ):
+        check(errors)
     if errors:
-        print("skill package validation failed:", file=sys.stderr)
+        print("LNY PRD Workflow package validation failed")
         for error in errors:
-            print("- " + error, file=sys.stderr)
+            print(f"- {error}")
         return 1
-    print(
-        f"skill package validation ok: {len(SKILL_DIRS)} skills (10 core); bundle/version contract; "
-        "runtime examples isolation; real YAML + quick validation; links; UTF-8; Python/JS; "
-        "installer transactions; migration; artifact paths; semantic consistency; kit/shell; "
-        "prototype identity; fixture + negative coverage"
-    )
+    print("LNY PRD Workflow package validation passed")
     return 0
 
 

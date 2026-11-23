@@ -1,0 +1,6 @@
+interface:
+  display_name: "LNY PRD Workflow"
+  short_description: "智能编排全量 PRD、发现、原型、验证与迭代工作流"
+  default_prompt: "Use $lny-prd to inspect this PRD workspace and execute the requested workflow step with only the necessary rules loaded."
+policy:
+  allow_implicit_invocation: true

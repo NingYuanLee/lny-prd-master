@@ -1,117 +1,40 @@
-# 变更日志
+# Changelog
 
-LNY-PRD 技能包（`bundle_id: lny-prd`）的显著变更记录于此文件。
+## 3.1.4
 
-- 版本号必须与 `skill-bundle.json` 的 `bundle_version`、`README.md` 的「工具包版本」保持一致（`scripts/validate-skill-package.py` 强制）。
-- 升版使用 `python scripts/bump_version.py <X.Y.Z>`：同步上述位置并预置本节模板。
-- 2.14.0 之前的历史未追溯（早期提交以 `v2.8.x` 系列编号留言，无语义版本标签），详见 git 历史。
+- 清理无调用方的测试夹具、开发依赖、缓存和旧 fixture 参数，仓库只保留技能源、运行时脚本和必要文档。
 
-## Unreleased
+## 3.1.3
 
-## 2.23.2 - 2026-11-15
+- 清理原型验收中的历史视觉和套件耦合硬门禁，允许项目自有 CSS、原生控件、探索性文案和自由页面骨架。
+- 保留规格覆盖、资源加载、链接、运行时错误、溢出和声明状态的正确性检查。
+- 移除只服务旧回归夹具的 `fixture` 状态和 coverage 排除参数。
 
-- 清理历史残留措辞：`examples/mini-shop/`（29 个原型页首注释、壳层 index 数据、PRD/API/Feature/版本流水等）、`README.md`、`CHANGELOG.md`、`.cursor/plans/` 中的内置样例相关旧称谓与已删样例文件名，全部改写为中性表述（示例页 / 页型形态 / 视觉档次 / 中文形态名）。历史事实与回归示例定位不变，仅抹去旧称谓。
-- 同步 `lny-prd-prototype/kit/` 与 `examples/mini-shop/prototypes/{MP,AD,PC}/assets/` 全部 7 个资产文件，保持字节一致（包校验器强制）。
-- 验证：`validate-skill-package.py` exit 0；`validate-prd-project.py --allow-fixture-status` exit 0 + `NEXT_STEP_ROUTE: none`；examples 29 页浏览器冒烟无 JS 错误、无断链、无标题异常；全仓旧术语扫描 0 命中。
+## 3.1.2
 
+- 将回归验证改为产品无关的运行时检查，移除固定业务页面对视觉回归的影响。
 
-## 2.23.1 - 2026-11-13
+## 3.1.1
 
-- 修复移除画法约束后的图标覆盖回归：`kit/md-icons.js` 的 `fillHost()` 此前无条件清空 `[data-icon]` 宿主并注入 Material 图标，导致项目内联的描边风格 SVG 图标在运行时被覆盖回 Material（校验契约要求保留 `data-icon` 属性，故不能直接删除该属性）。新增 `isProjectSvg()`：宿主已内联项目自有 SVG（带 `stroke`、无实底 `fill` 路径）时跳过注入，让项目自有图标优先；空宿主仍由 kit 正常填充。
-- 同步 `examples/mini-shop/prototypes/{MP,AD,PC}/assets/md-icons.js` 三份副本，保持与 kit 字节一致（包校验器强制）。
-- 新增包校验断言：kit 的 `fillHost` 必须包含项目 SVG 优先判定，防止后续回归。
+- 增加项目仓库共享契约，明确 `shared-required`、`shared-optional` 和 `local-only` 文件边界。
+- 将共享前敏感信息、绝对路径、临时文件和可复现交付物检查接入总控规则。
+- 移除回归脚本对 `examples/` 目录的依赖。
+- 将回归脚本改为产品无关的运行时检查，不再读取固定业务页面或约束视觉表达。
 
+## 3.1.0
 
-## 2.23.0 - 2026-11-13
+- 增加碎片输入与智能自动推进协议，按用户意图、项目状态和变更影响计算最小必要路径。
+- 保留完整产品能力，普通缺字段由模型补全并记录事实、推断、默认假设和待确认项。
+- 增加单人 PM 工作台、证据记录和发布学习记录的底层产物约定。
 
-- 移除画法约束：⑥ 原型步不再对「页面怎么画」负责，只保留壳层与文件结构约束。删除 `lny-prd-prototype/` 下的内置样例页（15 触屏 + 14 桌面）、`reference-kit.md` 与 `reference-kit/` 分片、`reference-mobile-design.md`、内置样例对照与同步脚本。
-- 视觉依据改为项目自身事实：PRD 正文、`ui/` 规格、既有设计稿与品牌 CSS、真实图片素材优先；没有时按 PRD 自行设计，禁止把技能内置样例形态当默认设计。原型页可用项目自有 CSS 与主题色，套件类名可用可不用，`kit/` 降级为可选工具箱。
-- 跨步骤不变量保留语义、剥除类名：`reference-page-types.md` 去掉页型映射的内置样例列，PT-MOBILE-FUNC / PT-DESKTOP-LIST / PT-STATE-FLOW / PT-LOCATOR 等十条规则改写为不含 `md-*` 类名与样例文件名的表述；「树 vs 章节列表选型」与「步骤向导语义」同步去类名。
-- ⑤ 单页 PRD 与 ② UI 规格去除套件类名处方，保留分区顺序、信息结构与交互契约；⑦ 质量门禁不再判视觉档次与配色字号，只判规格符合性、功能可达与结构完整性。
-- `verify-prototype-coverage.py` 改为规格对照与结构类检查（保留相对路径、裸控件、浮层遮罩、状态矩阵、密度门槛、ASCII 残留等机械项），不再强制套件类名与视觉档次。
-- 修复安装器 `prune_backups` 缺陷：备份名内嵌版本号使名称排序非时间序（`2.22.0` 排在 `unmanaged` 前），同一秒内连续操作会误删最新备份；改为按创建时间排序保留最新备份。
+## 3.0.1
 
+- 将统一入口展示名更新为 `LNY PRD Workflow`，英文缩写为 `LNY-PRD-WF`。
+- 保留 `lny-prd` 技术标识和 `$lny-prd` 调用方式，确保现有安装与调用兼容。
 
-## 2.22.0 - 2026-09-03
+## 3.0.0
 
-- 新增跨宿主 Agent 编排契约：以宿主无关任务图、依赖波次、独占写路径和完成证据驱动并行；subagent/Task 不可用时按同一任务图顺序降级，产物与门禁保持一致。
-- 明确 Codex `spawn_agent`/循环 `wait_agent` + 终态检查、Cursor 多 `Task`/`/name` 与 TraeWork CN 运行时 schema 驱动的 `Task(general_purpose_task)` 调用和回收方式，禁止猜测未暴露的工具或把 TraeCode 配置当作 TraeWork 必备能力。
-- 十步流程全部补充分片边界：⑤按 PAGE、⑥按业务 HTML、⑨按 FE/BE 并行；②③④明细、⑦只读检查、⑧评审维度及⑩变更解析按依赖选择性并行，共享索引/壳层/流水/报告始终由主 Agent 单写。
-- 技能包验证新增编排契约、九个子技能引用、顺序降级及⑤⑥⑨关键边界门禁。
-- 子任务回收按可独立验收对象/依赖组原子收口；`blocked` 默认禁止遗留正式文件，写后失败须由主 Agent 核对独占路径并重新验收，避免成功明细与共享索引/台账脱节。
-
-## 2.21.0 - 2026-09-03
-
-- 收紧 UI 事实所有权：`ui_manifest` §5 仅保留项目级全局视觉约定；用户路径、画像、业务跳转、权限合规与审核可见性归 main/Feature，字段、必填性、默认值、枚举、读写、排序与接口触发归 API。
-- 重构页面索引：§3.1 分别注册 MP 主包/分包与 PC/AD 菜单分组，§3.2 以“包模块”或“菜单分组”登记页面归属；菜单分组不再混称 Feature“所属模块”，完整桌面壳层留在 `pages_prd/_shell`。
-- PAGE/COMP 模板移除页面关系图、关联接口、关键字段与读写契约，只维护可见结构、视觉状态、动效与反馈；通用视觉规则从 manifest 模板拆至 `visual-rules.md`。
-- 语义检查新增 UI manifest 越界、旧分组列、未注册菜单分组及 UI 明细契约泄漏门禁，并让原型组件状态解析兼容新旧章节编号。
-
-## 2.20.0 - 2026-09-02
-
-- ⑧新增PAGE版本范围原子性门禁：同一PAGE的本版受影响Feature必须全部纳入或全部不纳入，禁止靠裁剪版本快照实现“一个做、一个不做”。冲突时只能在⑧调整范围，或返回受影响②③④拆解后重走⑤、Q-S、⑥、Q-P与⑧。
-- 明确评审证据分层：首版读取用户取舍与根目录完整规格；非首版读取当前三类change、根目录修改后事实及此前版本累计批准基线，禁止只看change或只看根目录。
-- 非首版保留存量例外：上一版已批准且本期未变化的Feature可继续存在于共享页面和版本快照中，无需重复纳入本期范围。
-- 语义扫描器新增 `PAGE_SCOPE_ATOMICITY`，并按历史 `delivery_scope.md` 累计本期之前的开发/下线基线；新增首版拆分阻断与非首版存量放行测试。
-
-## 2.19.0 - 2026-09-02
-
-- 保留⑦ `/lny-prd-check` 编号并改造为横向质量门禁：⑤后自动Q-S规格检查，⑥作者自检后自动Q-P原型检查；默认主链连续运行到Q-P通过，再询问是否进入⑧。
-- ⑧评审支持当前版本内的返修循环：产品调整可回②③④并自动重走⑤、Q-S、⑥、Q-P；最终“通过”确认前不发布版本单页PRD快照。
-- 根 `pages_prd/{终端}/PAGE-*` 成为可编辑当前工作源，按终端与PAGE编号平铺；桌面 `_shell` 仅保留在根目录，⑥不再读取版本快照作为原型依据。
-- ⑧最终批准后按 `delivery_scope.md` 的PAGE映射与真实UI路由发布只读版本快照；快照仅含批准业务页/Feature/AC，不含 `_shell`。⑨只读取该批准快照估点。
-- 路径与语义扫描器新增根工作源布局、PAGE发布映射、路由、范围泄漏和版本壳层校验；mini-shop示例页同步为完整根工作源与7页批准快照。
-
-## 2.18.1 - 2026-09-02
-
-- 修复 `feature_spec.md` 模板职责泄漏：领域粒度门禁、反例清单与写作方法论仅保留在 ④ 技能指令中，不再复制到项目规格。
-- 项目模板继续保留开发 Agent 所需的文档分工、引用关系、编号/状态语义、实际 Module 边界、Feature 导航与项目特有跨功能约定，并新增模板边界回归门禁。
-
-## 2.18.0 - 2026-09-02
-
-- ④ 新增领域粒度门禁：Module 默认复用现有边界，只有具备稳定核心对象、独立规则/生命周期、清晰范围与跨域契约时才允许新建；页面、终端、CRUD、流程阶段、技术组件和单 Feature 改名不得充当领域。
-- 明确 Module 少量、稳定、粗粒度，Module 只写边界级短句/短列表；业务规则、流程、验收及 STORY/FEATURE/AC/PAGE/API/EXT 细节统一下沉 Feature。
-- ⑦ 新增 Module 功能级编号泄漏、孤立 Module 和循环依赖校验与负例；单 Feature Module、Module/Feature 数量接近等只作为语义复核信号，不设僵硬数量阈值。
-
-## 2.17.0 - 2026-09-02
-
-- 建立规格、Story、Module、Feature/AC 四驱动模型：Story 扩展到用户价值、运营、合规、迁移和技术使能，所有正式 Feature 必须具备明确 Story 来源、唯一 Module 归属和可验证 AC。
-- Story↔Feature 映射统一以 `feature/FEATURE-*.md` 为事实源；`main_spec.md` Story 表移除 Feature 反向列，检查器由 Feature 明细反查 Story 覆盖。
-- Module 领域边界迁入 `feature_spec.md` 并由④统一维护，不新增技能或 `module/` 目录；`main_spec.md` 删除模块注册表，Feature 明细只引用 `MODULE-*`，不复制模块名称。
-- 收敛三类根索引的事实源边界：Feature 与 API/EXT 仅保留编号、名称和明细路径；UI manifest 只保留全局页面注册、路由、包类型和生命周期，PAGE/COMP 设计事实回归明细。
-- ⑦ 语义扫描器直接从明细验证生命周期、评审、Story、Module、分支及 PAGE/API/EXT 关联，并新增 Story 覆盖、Module 边界与依赖负例；旧宽索引、旧 Story 表和旧 Module 注册表保留只读兼容。
-
-## 2.16.1 - 2026-09-01
-
-- ⑥ 内置样例速查门禁校验一行内全部 PAGE 编号（不再只看第一个），并内置「第二编号非法」负例。
-- Cursor 宿主同步改为走 `install-skills.py update --host cursor`，禁止只拷目录导致 `install.json` 落后。
-
-## 2.16.0 - 2026-09-01
-
-- 立项确认摘要必须列出 `lny-default` 将不展开的类别闭集；看不见清单不得请用户确认。确认仍等于沿用。
-- 总控 §3 改为用户意图短树；完整条件表下沉 `lny-prd-master/reference-routing.md`。
-- ②⑤⑥ 速查只留本步增量（体验 / 线框词 / 关键类）；内置样例文件名以 `reference-page-types.md` 为正本。`validate_page_type_consistency` 不再要求 ⑥ 每行自带内置样例文件名。
-- README 新增 5.4 换栈（`profile: none`）最小立项示例；`examples/` 仍是回归示例。
-- ⑨ 对话回报固定五行：FE_SP / BE_SP / 合计、校准系数（默认 `1.0（暂定）`）、非日历工期声明。
-
-## 2.15.0 - 2026-09-01
-
-- 修复 6 处已发布技能内的「仓库 README」死链（改指随包可达位置或删除指针）。
-- 新增防复发门禁 `validate_skill_references`：禁止技能文件在 prose 中引用仓库根文件（README/LICENSE/skill-bundle.json/CHANGELOG/requirements）。
-- `reference-kit.md` 拆分索引化：索引保留全局 token（67K 字符 → 8.4K），类名字典分为 `reference-kit/` 下 5 个分域分片，入站引用同步更新。
-- 页型速查表与正本 `reference-page-types.md` 建立发布门禁比对（`validate_page_type_consistency`）；三份速查表加入「冲突以正本为准」优先级规则。
-- 新增 `CHANGELOG.md` 与 `scripts/bump_version.py`（版本号单一命令同步三处，`validate_changelog` 强制顶版一致）。
-- 安装器健康检查区分 `unreadable` 与 `locally modified`，`unreadable` 时拒绝 `update/uninstall --force`（`UnreadableSkillError` fail-loud）。
-- `.cursor/rules` 本地规则去重并声明仅 Cursor 宿主生效。
-- `lny-prd-ui/reference.md` 拆分索引化：索引保留落地/初始化约定与分片表；`ui_manifest.md` / `ui/COMP-*.md` / `ui/PAGE-*.md` 三份模板分别落 `lny-prd-ui/reference/` 下三片，入站 §x.y 指针同步更新。
-- ⑦ 语义扫描器 `validate-prd-project.py` 输出机器可读 `NEXT_STEP_ROUTE:`（issue 码 → 建议委派技能，供 ① 总控路由消费）。
-- `examples/` 定位为**回归示例**单一身份（供 ⑦ 检查类 AI 自检与作者验收对照）：`skill-bundle.json` audience 改 `regression`，README 与 `export-examples` 文案同步，撤「人类样例」表述（2026-09-01 决议：不做样例/示例页分目录，单一身份即收口）。
-- 框架排除 profile 立项交互显式化：确认摘要中明确「要不要改」询问，**用户未主动要求更改即按 `lny-default` 默认沿用**（2026-09-01 决议：作者为主要使用者，默认不变，仅显式展示询问）。
-- CI 缓存：`.github/workflows/validate-skills.yml` 用 `actions/cache@v4` 按版本键缓存 `~/.cache/ms-playwright` 与 `~/.npm`，命中时浏览器不再全量下载。至此原 P3 三项全部收口（profile 显式化、examples 单一身份、CI 缓存）。
-
-## 2.14.0 - 2026-08-29
-
-- 新增 ⑧ `lny-prd-review` 需求与交付范围评审技能：拟定结论 / 确认落盘两段式；`delivery_scope.md` 仅由 ⑧ 在产品确认后创建或更新（`272e5d3`）。
-- 精化评审与交付门禁：⑧ 结论包、⑨ 已确认范围估点、⑩ 前版保底检查对齐（`b79f823`）。
-- 移除原型每轮三页上限：⑥ 按目标页面范围一次完成、逐页对照内置样例与质量门禁（`52176d2`）。
-- 移除云效（Yunxiao）交付导出适配器（`f21d64c`）；`main_spec` 展开为共享阅读指南并去掉根级冗余统计（`785f107`、`4818d4e`）。
+- 将十个独立入口收敛为一个 `lny-prd` 技能。
+- 将原步骤规则迁移到 `lny-prd/modules/` 内部模块。
+- 增加 bundle 元数据、junction 安装脚本和包级结构校验。
+- 保留原型、路径和 PRD 项目语义校验脚本，并更新到统一入口路径。

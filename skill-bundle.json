@@ -1,23 +1,9 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "bundle_id": "lny-prd",
-  "bundle_version": "2.23.2",
-  "skills": [
-    "lny-prd-master",
-    "lny-prd-ui",
-    "lny-prd-api",
-    "lny-prd-feature",
-    "lny-prd-review",
-    "lny-prd-page",
-    "lny-prd-prototype",
-    "lny-prd-check",
-    "lny-prd-iter",
-    "lny-prd-sp"
-  ],
-  "optional_resources": {
-    "examples": {
-      "path": "examples",
-      "audience": "regression"
-    }
-  }
+  "bundle_version": "3.1.4",
+  "display_name": "LNY PRD Workflow",
+  "skills": ["lny-prd"],
+  "source_dir": "lny-prd",
+  "install_contract": "junction"
 }
