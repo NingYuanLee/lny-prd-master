@@ -1,7 +1,7 @@
 
 ## 与总控的关系
 
-本步为 **⑥ `$lny-prd`**。只写根 `prototypes/`（含总入口 `index.html`、各端目录），只读取根 `pages_prd/` 工作源，禁止读取版本快照作为当前依据，禁止生成 `versions/{v}/prototypes/`。禁止改根规格与 `iteration_notes`。缺规格时 **本步内** Read ②③④⑤ 对应 SKILL 并落盘，再经⑦/Q-S通过后写 HTML；**禁止**空中楼阁 HTML，**禁止**停下来只说“交总控”。⑨交来时只走“只刷总入口”。完成作者自检后自动进入 **⑦/Q-P**；Q-P通过才询问是否进入⑧。全流程见 `modules/lny-prd-master/SKILL.md`。
+本步为 **⑥ `$lny-prd`**。只写根 `prototypes/`（含总入口 `index.html`、各端目录），只读取根 `pages_prd/` 工作源，禁止读取版本快照作为当前依据，禁止生成 `versions/{v}/prototypes/`。禁止改根规格与 `iteration_notes`。缺规格时 **本步内** Read ②③④⑤ 对应 SKILL 并落盘，再经⑦/Q-S通过后写 HTML；**禁止**空中楼阁 HTML，**禁止**停下来只说“交总控”。⑨交来时只走“只刷总入口”。完成作者自检后按影响范围执行 **⑦/Q-P**；Q-P通过后完成自动验证，只有当前目标需要正式评审时才进入⑧。全流程见 `modules/lny-prd-master/SKILL.md`。
 
 **页面范围**：用户给出 `页面编号列表` 时，一次生成/重画该列表中的业务 `PAGE-*.html`；未指定时，一次完成 `ui_manifest` 中当前全部 active 缺页（排除项不计入）。数量不设固定上限，但每一页都必须独立读取规格并通过验收，禁止以页面较多为由合并或跳过质量门禁。因失败中断时列出未完成 PAGE，下一轮「继续」只补 ⑥（总控 **G-partial**），禁止借机重做 ②③④⑤。
 
@@ -161,7 +161,7 @@ node <skillDir>/modules/lny-prd-prototype/scripts/verify-prototype-browser.mjs <
 5. 按 `reference-shell-quick.md` 写/刷新各端 `index.html`（及移动端 `map.html`）：**只挂已落盘**的 `PAGE-*.html`。按 [`reference-scope.md`](reference-scope.md) 写 `prototypes/index.html`。禁止写项目根 `index.html`、`versions/{v}/index.html` 或 `versions/{v}/prototypes/`，不写 `scope.html`。
 6. 对全部目标页跑 UTF-8 脚本 + `verify-prototype-coverage.py` + `<skillDir>/modules/lny-prd-check/scripts/verify-artifact-paths.py` + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）；宿主依赖可用时，再运行 `render-prototype.mjs`、`score-visual-quality.mjs` 和 `verify-prototype-browser.mjs`。评分只用于定位问题。随后按 [`reference-visual-self-review.md`](reference-visual-self-review.md) 实际查看截图。单个可逆细节做目标区域快速检查，页面结构、视觉方向或多个区块变化时完成十项证据化自评，并运行 `validate-visual-review.py`。发现问题时继续修改并复验。首次交给用户看之前，即按 [`reference-visual-improvement.md`](reference-visual-improvement.md) 的「首次交付前的走查」和 [`../lny-prd-ui/reference/visual-consistency.md`](../lny-prd-ui/reference/visual-consistency.md) 检查真实画面，确认页面任务、内容密度、组件行为和状态语义成立，视觉差异只在影响任务或可读性时调整；可逆的视觉取舍由作者完成。发现具体问题时修改并对照复验；画面已支持目标任务时可直接交付并说明观察依据。浏览器依赖缺失须按上文披露。
 7. **清理临时文件**：删除本轮在 `prdRoot` 留下的辅助脚本/草稿/备份及空的 `scripts/` 等（见写产物纪律）；未建临时文件可跳过。
-8. 作者自检全部通过后，提示用户是否执行 **⑦/Q-P**。用户明确执行后，Q-P发现纯原型问题则本步同轮修复并重跑；发现规格问题则按总控回到②③④⑤与Q-S，再更新原型。Q-P通过后输出目标页、验收结果与未完成编号，并询问产品是否进入⑧评审。
+8. 作者自检全部通过后按影响范围执行 **⑦/Q-P**。Q-P发现纯原型问题则本步同轮修复并重跑；发现规格问题则按总控回到②③④⑤与Q-S，再更新原型。Q-P通过后输出目标页、验收结果与未完成编号；只有当前目标需要正式评审时才进入⑧。
 
 
 ## 基础模型视觉基线
