@@ -30,7 +30,7 @@ LNY PRD Workflow 的规则用于保护事实、决策和交付质量，不用于
 
 ## 宿主工具选择
 
-执行检查或预览前，先探测当前宿主实际提供的应用、连接器、命令、运行时和第三方依赖，再选择最适合当前任务的已有能力。可运行仓库根目录的 `python scripts/probe-host-capabilities.py --json` 获取基础探测结果，并合并宿主集成提供的能力声明。可用能力包括专用工具、浏览器自动化、CUA、技能包脚本、系统 Python/Node 和宿主已安装依赖，具体顺序由任务适配性和可验证性决定。
+执行检查或预览前，先探测当前宿主实际提供的应用、连接器、命令、运行时和第三方依赖，再选择最适合当前任务的已有能力。可运行仓库根目录的 `python scripts/probe-host-capabilities.py --json --self-check` 获取基础探测结果和 Agent 后续检查清单，并合并宿主集成提供的能力声明。可用能力包括专用工具、浏览器自动化、CUA、技能包脚本、系统 Python/Node 和宿主已安装依赖，具体顺序由任务适配性和可验证性决定。
 
 探测器认识 Codex/ChatGPT、Claude Code、Cursor、DeepSeek Harness、WorkBuddy、豆包工作、千问办公和 Trae 等常见 Agent 宿主。宿主名称被识别不代表某项能力已经可用，能力状态应以宿主声明和实际工具清单为准。
 

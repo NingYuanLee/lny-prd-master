@@ -50,6 +50,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--capabilities", help="JSON string or file supplied by the host integration")
     parser.add_argument("--json", action="store_true")
+    parser.add_argument("--self-check", action="store_true", help="print the agent follow-up checklist")
     args = parser.parse_args()
 
     declared = load_declared_capabilities(args.capabilities)
@@ -73,6 +74,13 @@ def main() -> int:
         "declared_capabilities": declared,
         "policy": "unknown means not detected by this probe, not unavailable",
         "next_action": "use the host-provided tool inventory before requesting installation",
+        "self_check": [
+            "Inspect the current host tool inventory and connected app/connector names.",
+            "Match the task to the most suitable available capability.",
+            "Treat unknown probe results as unconfirmed, not unavailable.",
+            "Run static checks before proposing installation.",
+            "Ask the user before installing missing optional dependencies.",
+        ],
     }
     if args.json:
         print(json.dumps(result, ensure_ascii=False, indent=2))
@@ -83,6 +91,10 @@ def main() -> int:
         for key, item in hosts.items():
             print(f"- host {item['label']}: {item['status']}")
         print("- policy: unknown means not detected by this probe, not unavailable")
+        if args.self_check:
+            print("Self-check:")
+            for item in result["self_check"]:
+                print(f"- {item}")
     return 0
 
 

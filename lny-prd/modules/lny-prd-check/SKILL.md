@@ -26,6 +26,7 @@
 - 决策兑现扫描器：`scripts/audit-decision-walkthrough.py`
 - 原型浏览器冒烟：`../modules/lny-prd-prototype/scripts/verify-prototype-browser.mjs`
 - 框架排除：`modules/lny-prd-master/framework-exclusions.md`
+- 统一检查报告：`modules/lny-prd-master/reference-check-report.md`
 
 ## 职责与禁止
 

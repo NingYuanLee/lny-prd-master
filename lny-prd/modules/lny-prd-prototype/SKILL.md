@@ -34,6 +34,7 @@
 - 原型反馈变更路由：[`../lny-prd-master/reference-change-routing.md`](../lny-prd-master/reference-change-routing.md)
 - 反馈记录模板：[`../lny-prd-master/reference-feedback-record.md`](../lny-prd-master/reference-feedback-record.md)
 - 反馈记录校验：`<skillDir>/modules/lny-prd-prototype/scripts/validate-feedback-record.py`
+- 原型模块加载策略：[`reference-load-policy.md`](reference-load-policy.md)
 - 演示级高保真协议：[`reference-demo-fidelity.md`](reference-demo-fidelity.md)
 - 框架排除：`modules/lny-prd-master/framework-exclusions.md`
 
@@ -170,7 +171,7 @@ node <skillDir>/modules/lny-prd-prototype/scripts/verify-prototype-browser.mjs <
 
 ## 按场景读取原型规则
 
-常规业务页读取 `reference-page-implementation.md` 和 `reference-quality-quick.md`。只有维护壳层、总入口或关系图时读取 `reference-shell-quick.md`，只有复杂门禁或失败复核时读取完整 `reference-shell.md` 与 `reference-quality.md`。
+常规业务页按 [`reference-load-policy.md`](reference-load-policy.md) 读取最小参考集。只有维护壳层、总入口、复杂门禁或失败复核时才升级读取完整壳层、质量和视觉参考。
 
 ## 产物长度
 

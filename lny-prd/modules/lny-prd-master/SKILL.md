@@ -5,6 +5,8 @@
 
 公共模块契约见 [`reference-module-contracts.md`](reference-module-contracts.md)。本文件负责总控决策，模块执行细节只在对应模块目录维护。
 
+控制面职责和检查报告格式分别见 [`reference-control-plane.md`](reference-control-plane.md) 与 [`reference-check-report.md`](reference-check-report.md)。
+
 原型反馈或局部修改先读取 [`reference-change-routing.md`](reference-change-routing.md)，按 A～D 分类后走最小必要写入和检查范围。
 
 规格和原型完成后按 [`reference-decision-walkthrough.md`](reference-decision-walkthrough.md) 自动对照前置产品决策走查。

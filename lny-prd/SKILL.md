@@ -10,6 +10,8 @@ description: >-
 
 模块输入、产物、写入边界和下一跳以 `modules/lny-prd-master/reference-module-contracts.md` 为公共索引。模块细节与模板仍以当前模块文件为准。
 
+控制面文件职责见 `modules/lny-prd-master/reference-control-plane.md`，检查输出统一遵守 `modules/lny-prd-master/reference-check-report.md`。
+
 规格和原型完成后按 [`modules/lny-prd-master/reference-decision-walkthrough.md`](modules/lny-prd-master/reference-decision-walkthrough.md) 自动对照最初产品决策走查。只有决策冲突、范围变化或不可逆取舍才请求产品确认。
 
 完整路由图见 [`modules/lny-prd-master/reference-workflow-map.md`](modules/lny-prd-master/reference-workflow-map.md)。
