@@ -27,7 +27,7 @@ lny-prd/
 
 小范围可逆修改按 [`lny-prd/modules/lny-prd-master/reference-flexible-execution.md`](lny-prd/modules/lny-prd-master/reference-flexible-execution.md) 走快速路径，不要求完整链或完整记录。
 
-宿主能力可用 `python .\scripts\probe-host-capabilities.py --json` 探测。探测器识别 Codex、Claude Code、Cursor、DeepSeek Harness、WorkBuddy、豆包工作、千问办公和 Trae 等宿主，`unknown` 只表示未被当前探测器确认，不表示能力不存在。
+宿主能力可用 `python .\scripts\probe-host-capabilities.py --json` 探测。探测器识别 Codex/ChatGPT、Claude Code、Cursor、DeepSeek Harness、WorkBuddy、豆包工作、千问办公和 Trae 等宿主，`unknown` 只表示未被当前探测器确认，不表示能力不存在。
 
 ## 安装
 

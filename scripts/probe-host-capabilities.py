@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 KNOWN_HOSTS = {
-    "codex": ("Codex", ("codex", "chatgpt", "openai codex")),
+    "codex": ("Codex / ChatGPT", ("codex", "chatgpt", "openai codex")),
     "claude-code": ("Claude Code", ("claude", "claude code")),
     "cursor": ("Cursor", ("cursor",)),
     "deepseek-harness": ("DeepSeek Harness", ("dsh", "deepseek harness", "deepseek")),
