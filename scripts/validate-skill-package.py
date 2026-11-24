@@ -37,7 +37,7 @@ REQUIRED_RUNTIME_FILES = (
     "modules/lny-prd-prototype/scripts/validate-visual-review.py",
     "modules/lny-prd-prototype/scripts/validate-feedback-record.py",
 )
-REQUIRED_REPO_TOOLS = ("scripts/classify-change.py", "scripts/run-regression.py")
+REQUIRED_REPO_TOOLS = ("scripts/classify-change.py", "scripts/run-regression.py", "scripts/probe-host-capabilities.py")
 PROJECT_ARTIFACTS = {
     "main_spec.md",
     "ui_manifest.md",

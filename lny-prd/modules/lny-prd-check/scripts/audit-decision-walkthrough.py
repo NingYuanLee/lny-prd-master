@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 from pathlib import Path
 
@@ -56,28 +57,59 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("prd_root", type=Path)
     parser.add_argument("--decision-file", default=None)
+    parser.add_argument("--report", type=Path, default=None)
     args = parser.parse_args()
     root = args.prd_root.expanduser().resolve()
     contract = find_contract(root, args.decision_file)
     if contract is None:
+        result = {
+            "status": "skipped",
+            "decision_contract": None,
+            "checks": [],
+            "next_route": "continue_without_decision_walkthrough",
+            "reason": "no decision_contract.md or product_workspace.md",
+        }
+        if args.report:
+            args.report.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print("DECISION_WALKTHROUGH: skipped (no decision_contract.md or product_workspace.md)")
         return 2
 
     text = contract.read_text(encoding="utf-8")
     errors: list[str] = []
+    checks: list[dict[str, object]] = []
+    missing_fields: list[str] = []
     for field in REQUIRED_FIELDS:
         value = field_value(text, field)
         if not value or value in {"-", "待填写", "TODO", "{...}"}:
-            errors.append(f"{contract.name}: missing decision field {field}")
+            missing_fields.append(field)
+    if missing_fields:
+        errors.extend(f"{contract.name}: missing decision field {field}" for field in missing_fields)
+    checks.append({"id": "decision_fields", "status": "failed" if missing_fields else "passed", "missing": missing_fields})
 
     status = field_value(text, "状态")
     if status and status not in {"暂定", "已确认", "provisional", "approved"}:
         errors.append(f"{contract.name}: 状态 must be 暂定/已确认")
+    checks.append({"id": "decision_status", "status": "passed" if status in {"暂定", "已确认", "provisional", "approved"} else "failed", "value": status})
 
     ids = referenced_ids(text)
     available = existing_ids(root, contract)
-    for item_id in sorted(ids - available):
+    missing_ids = sorted(ids - available)
+    for item_id in missing_ids:
         errors.append(f"{contract.name}: decision references missing artifact {item_id}")
+    checks.append({"id": "artifact_references", "status": "failed" if missing_ids else "passed", "referenced": sorted(ids), "missing": missing_ids})
+    checks.append({"id": "visual_and_behavioral_verification", "status": "delegated", "owner": "Q-S/Q-P and visual self-review"})
+
+    result = {
+        "status": "failed" if errors else "passed",
+        "decision_contract": contract.relative_to(root).as_posix(),
+        "decision_status": status,
+        "checks": checks,
+        "next_route": "repair_decision_or_artifact_refs" if errors else "continue_or_prepare_delivery",
+        "errors": errors,
+    }
+    if args.report:
+        args.report.parent.mkdir(parents=True, exist_ok=True)
+        args.report.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     if errors:
         print("DECISION_WALKTHROUGH: failed")
