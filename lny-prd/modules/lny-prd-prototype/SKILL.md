@@ -120,7 +120,7 @@ python <skillDir>/modules/lny-prd-prototype/scripts/verify-prototype-coverage.py
 node <skillDir>/modules/lny-prd-prototype/scripts/verify-prototype-browser.mjs <prdRoot> --page PAGE-… --page PAGE-…
 ```
 
-浏览器脚本 exit 1 表示页面或交互失败，必须修复；exit 2 表示宿主缺 Node 依赖，须明确回报“浏览器冒烟未执行”并继续人工预览，不得伪报通过。截图仅在排障时用 `--artifacts <系统临时目录>` 输出，禁止写入业务项目。
+浏览器脚本 exit 1 表示页面或交互失败，必须修复；exit 2 表示宿主缺 Node 依赖。优先使用当前宿主已有的 CUA 浏览器能力进行页面查看和操作；仍无法完成时明确回报“浏览器冒烟未执行”，继续静态检查和视觉自评，不得伪报通过。只有用户选择安装时才补充宿主依赖。截图仅在排障时用 `--artifacts <系统临时目录>` 输出，禁止写入业务项目。
 
 ## 并行分片
 
