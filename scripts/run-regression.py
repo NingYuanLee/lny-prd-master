@@ -63,6 +63,19 @@ def decision_walkthrough_regression(temp_root: Path) -> None:
 
 
 def main() -> int:
+    probe = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "probe-host-capabilities.py"), "--json", "--self-check"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if probe.returncode:
+        raise SystemExit(probe.returncode)
+    probe_data = json.loads(probe.stdout)
+    if "codex" not in probe_data.get("hosts", {}) or "cursor" not in probe_data.get("hosts", {}):
+        raise SystemExit("host capability probe regression failed")
+
     classification = subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "classify-change.py"), "把首页标题左边距缩小", "--page-id", "PAGE-MP-001"],
         cwd=ROOT,
