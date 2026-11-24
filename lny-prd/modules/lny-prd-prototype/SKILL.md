@@ -9,7 +9,7 @@
 
 ## Additional resources
 
-- 壳层 / 关系图 / 缩放：[`reference-shell.md`](reference-shell.md)
+- 壳层 / 缩放：[`reference-shell.md`](reference-shell.md)
 - 原型总入口：[`reference-scope.md`](reference-scope.md)
 - UTF-8 与 BUG / 逐页对照：[`reference-quality.md`](reference-quality.md)
 - 内置图标：[`reference-icons.md`](reference-icons.md)
@@ -20,7 +20,6 @@
 - 三步职责与跨步骤不变量：[`../lny-prd-master/reference-page-types.md`](../lny-prd-master/reference-page-types.md)
 - 正式落点与禁止副本范围：[`../lny-prd-master/reference-artifact-paths.md`](../lny-prd-master/reference-artifact-paths.md)
 - 复制套件：`<skillDir>/modules/lny-prd-prototype/scripts/copy-kit.py`
-- 关系图画布：`kit/proto-map.js`（`map.html` 只 boot 数据）
 - 搜图标：`<skillDir>/modules/lny-prd-prototype/scripts/search-icons.py`
 - UTF-8 校验：`<skillDir>/modules/lny-prd-prototype/scripts/verify-prototype-utf8.py`
 - 规格对照校验：`<skillDir>/modules/lny-prd-prototype/scripts/verify-prototype-coverage.py`
@@ -48,8 +47,8 @@
 
 本步只对 **文件结构 / 壳层机制 / 产物落点 / 可校验性** 负责；**不对“页面长什么样、怎么画”负责**。
 
-- **R1 落点结构**：`prototypes/index.html`（唯一总入口）+ `prototypes/{终端}/PAGE-*.html` + `prototypes/{终端}/assets/` + 各端 `index.html`、`map.html`。禁止项目根 index.html、禁止 `versions/{v}/prototypes/` 副本。
-- **R2 壳层资源**：`kit/` 全部资产（`mui-kit.css`、`proto-shell.css`、`proto-shell.js`、`proto-page.js`、`proto-map.js`、`md-icons.js`）与 `scripts/copy-kit.py` 保留可用；壳层仍支持 `PROTO_SHELL` 状态演示与关系图。**kit 是可选工具箱，不是强制皮肤，业务页可以完全使用项目自有 CSS。**
+- **R1 落点结构**：`prototypes/index.html`（唯一总入口）+ `prototypes/{终端}/PAGE-*.html` + `prototypes/{终端}/assets/` + 各端 `index.html`。禁止项目根 index.html、禁止 `versions/{v}/prototypes/` 副本。
+- **R2 壳层资源**：`kit/` 全部资产（`mui-kit.css`、`proto-shell.css`、`proto-shell.js`、`proto-page.js`、`md-icons.js`）与 `scripts/copy-kit.py` 保留可用；壳层仍支持 `PROTO_SHELL` 状态演示。**kit 是可选工具箱，不是强制皮肤，业务页可以完全使用项目自有 CSS。**
 - **R3 路径规则**：本地相对路径必须带 `./`；禁绝对路径、站点根路径、裸相对名；`#` 锚点与 `https://` 外链除外。
 - **R4 校验链**：`verify-prototype-utf8.py`、`verify-prototype-coverage.py`（规格对照 + 结构类检查）、`modules/lny-prd-check/scripts/verify-artifact-paths.py`、`verify-prototype-browser.mjs`。
 - **R5 纪律**：禁 npm/Vite/React、禁在业务项目装依赖、禁改根规格与 `iteration_notes`、禁 HTML 编造规格、临时文件必须清理、⑨ 只刷总入口、并行分片时主 Agent 单写共享产物。
@@ -62,7 +61,7 @@
 - **N2 允许项目自有样式**：原型页可用项目级 CSS（如 `brand.css`）与 `assets/` 下真实图片素材，可用项目主题色；套件类名可用可不用，套件资源仍默认引用以保证壳层与状态演示可用。
 - **N3 分工不变**：② 输出信息结构、交互契约和 PAGE §2.4 视觉方向契约；⑤ ASCII 表达内容关系和必要顺序。⑥ 保留项目确认的形式及业务交互；若截图或操作验证显示当前构图影响任务，可调整设计假设，并同步 UI 与单页 PRD 的对应描述。
 - **N4 演示面**：业务 `PAGE-*.html` 应能直接演示核心任务。默认状态优先使用与业务一致的数据，页面可以按项目需要使用探索性文案或占位数据。壳层的规格说明和状态演示不应注入业务页，项目明确要求的品牌或产品标识可以保留。
-- **N5 视觉边界**：原型壳层、总入口和关系图的样式与交互由技能固定。业务 `PAGE-*.html` 不继承壳层皮肤，不强制使用 `mui-kit.css`、`project-theme.css` 或统一卡片样式。业务页只接受页面规格、交互语义、真实内容和可用性验收。
+- **N5 视觉边界**：原型壳层和总入口的样式与交互由技能固定。业务 `PAGE-*.html` 不继承壳层皮肤，不强制使用 `mui-kit.css`、`project-theme.css` 或统一卡片样式。业务页只接受页面规格、交互语义、真实内容和可用性验收。
 
 ## 自动设计决策与实现策略
 
@@ -89,14 +88,14 @@ Read `modules/lny-prd-master/framework-exclusions.md` 与 `modules/lny-prd-maste
 
 ## 一条路径（全端静态 HTML + kit）
 
-所有终端（MP / H5 / APP / PC / AD）均为静态 HTML。观感由项目自身设计事实决定；套件 `kit/` 提供可用的控件与壳层能力，**可选不强制**。图标：套件闭集 `md-icons.js`；闭集没有的用 **`scripts/search-icons.py`**（技能自带，不调用 Cursor MCP）；项目自有图标素材可直接引用。**本地 URL 一律相对路径且带 `./`**：静态资源（如 `./assets/mui-kit.css`）、页面跳转与 `<a href>`（如 `./PAGE-MP-001.html`）、`iframe`/`script`/`link` 的 `src`/`href`、壳层 `PROTO_SHELL.pages[].file`、关系图 `map` 数据里的 `file` 等；禁止绝对路径、站点根路径（`/…`）或省略 `./` 的裸相对名。`#` 锚点与 `https://` 外链除外。
+所有终端（MP / H5 / APP / PC / AD）均为静态 HTML。观感由项目自身设计事实决定；套件 `kit/` 提供可用的控件与壳层能力，**可选不强制**。图标：套件闭集 `md-icons.js`；闭集没有的用 **`scripts/search-icons.py`**（技能自带，不调用 Cursor MCP）；项目自有图标素材可直接引用。**本地 URL 一律相对路径且带 `./`**：静态资源（如 `./assets/mui-kit.css`）、页面跳转与 `<a href>`（如 `./PAGE-MP-001.html`）、`iframe`/`script`/`link` 的 `src`/`href`、壳层 `PROTO_SHELL.pages[].file` 等；禁止绝对路径、站点根路径（`/…`）或省略 `./` 的裸相对名。`#` 锚点与 `https://` 外链除外。
 
 **本地预览**：在 `prototypes/` 目录执行 `python -m http.server`（不要用 `npx serve`，也**禁止**在业务项目生成 `serve.json`）。
 
 1. `python <skillDir>/modules/lny-prd-prototype/scripts/copy-kit.py <prdRoot>/prototypes/{终端}`
 2. Read `reference-shell-quick.md`、`reference-quality-quick.md` 与 [`../lny-prd-ui/reference/visual-consistency.md`](../lny-prd-ui/reference/visual-consistency.md)；复杂壳层或门禁失败时再读取完整参考；页面结构与交互契约按本页规格与 `ui/PAGE` §2.3 落地，控件可用套件类名、也可按项目自有 CSS 落地，不强制套件形态。先检索本页引用的 `COMP-*`，复用已有组件的结构和状态，再按页面任务决定是否复用主题文件或建立页面样式。
 3. 业务图标：Read [`reference-icons.md`](reference-icons.md)。闭集能覆盖则 `data-icon`；否则 `search-icons.py --pick 0 --name … --out …/assets`。无网或接口失败时按该文选择闭集近义项并记录替代，**不中止本轮**。
-4. 壳层行为（状态演示 / 规格说明 / 缩放 / 关系图）见 [`reference-shell.md`](reference-shell.md)。目标页完成后按 [`reference-scope.md`](reference-scope.md) 覆盖刷新 `prototypes/index.html`（含页底右下 SKILL 标注）。各端 `index.html` 的同类标注由 `proto-shell.js` 注入，禁止手写。
+4. 壳层行为（状态演示 / 规格说明 / 缩放）见 [`reference-shell.md`](reference-shell.md)。目标页完成后按 [`reference-scope.md`](reference-scope.md) 覆盖刷新 `prototypes/index.html`（含页底右下 SKILL 标注）。各端 `index.html` 的同类标注由 `proto-shell.js` 注入，禁止手写。
 
 **状态机硬约束**：`PROTO_SHELL.pages[].comps[].states` 只能从对应 `ui/COMP-*.md` 的 UI 状态矩阵复制，逐字且按行顺序一致；禁止凭空补 `edit` / `disabled` / `pending` 等状态。`loading` / `empty` / `error` 必须分别落地 `data-skel-for` / `data-empty-for` 视觉实现，其它状态必须有 `data-state-for` + `data-state` 视觉块。默认显示壳层状态演示；只有页内产品控件明确承担同一 COMP 切态时才写 `stateDemo: false`，不要再用 `tabBarExempt` 隐藏有组件的页面。覆盖验收会同时检查状态矩阵、壳层枚举和页面视觉实现。
 
@@ -125,7 +124,7 @@ node <skillDir>/modules/lny-prd-prototype/scripts/verify-prototype-browser.mjs <
 
 ## 并行分片
 
-需要并行时完整 Read [`../lny-prd-master/reference-agent-orchestration.md`](../lny-prd-master/reference-agent-orchestration.md)。主 Agent 必须先完成目标页清单、kit、共享 assets、壳层约束和跨页跳转表；随后可按每个业务 `PAGE-*.html` 启动一个独占子任务，任务只写该页面文件并逐页对照 `pages_prd`、`ui/PAGE`、引用 COMP 与本页结构契约。共享 kit/assets、各端 `index.html`、移动端 `map.html`、`prototypes/index.html`、LINKS 汇总与浏览器整体验收由主 Agent 单写/执行。页面数超过可用并发槽时分波；无 subagent/Task 时顺序生成，质量门禁不变。
+需要并行时完整 Read [`../lny-prd-master/reference-agent-orchestration.md`](../lny-prd-master/reference-agent-orchestration.md)。主 Agent 必须先完成目标页清单、kit、共享 assets、壳层约束和跨页跳转表；随后可按每个业务 `PAGE-*.html` 启动一个独占子任务，任务只写该页面文件并逐页对照 `pages_prd`、`ui/PAGE`、引用 COMP 与本页结构契约。共享 kit/assets、各端 `index.html`、`prototypes/index.html` 与浏览器整体验收由主 Agent 单写/执行。页面数超过可用并发槽时分波；无 subagent/Task 时顺序生成，质量门禁不变。
 
 ## 前置条件
 
@@ -147,7 +146,7 @@ node <skillDir>/modules/lny-prd-prototype/scripts/verify-prototype-browser.mjs <
 2. 若尚无任何 `prototypes/{终端}/`：不新建空总入口，回报「无原型可挂」并结束。
 3. 覆盖写入唯一总入口 `prototypes/index.html`。版本清单按 **全部** `versions/` 填写。页底右下须保留 SKILL 标注（见 [`reference-scope.md`](reference-scope.md)）。
 4. UTF-8 验收该 `index.html`。
-5. **禁止**：copy-kit；改各端 `PAGE-*.html` / 端 `index.html` / `map.html`；补 ②③④⑤；把本节当成全量出原型。
+5. **禁止**：copy-kit；改各端 `PAGE-*.html` / 端 `index.html`；补 ②③④⑤；把本节当成全量出原型。
 
 ## 执行步骤
 
@@ -159,7 +158,7 @@ node <skillDir>/modules/lny-prd-prototype/scripts/verify-prototype-browser.mjs <
 2. 列出本轮目标页：用户给了 `页面编号列表` 时，以其中在 `ui_manifest` 中为 **active** 的业务页为准，可生成缺页或重画已有页；未指定时，选择 `ui_manifest` 中 **active** 且 `prototypes/{终端}/PAGE-*.html` 尚不存在的全部业务页（排除项不计入）。不按数量截取。
 3. 复制 kit 到目标页涉及的每个 `prototypes/{终端}/assets/`（assets 已齐可跳过 copy-kit）。
 4. **逐页**：对该页完整 Read `pages_prd`（无则须 `ui直出`）+ `ui/PAGE-*` **§2.3 + §2.4** + COMP。视觉依据项目事实、PAGE §2.4 和设计判断实现，允许页面族或单页形成独立的视觉表达。按 [`reference-demo-fidelity.md`](reference-demo-fidelity.md) 组织与任务匹配的默认数据和用户文案。结构与交互契约以 ⑤ 的分区顺序和本页规格为准。写完立刻过 [`reference-quality.md`](reference-quality.md) **§G.4 / G.5**。禁止凭记忆、禁止把规格没写的功能画进页。
-5. 按 `reference-shell-quick.md` 写/刷新各端 `index.html`（及移动端 `map.html`）：**只挂已落盘**的 `PAGE-*.html`。按 [`reference-scope.md`](reference-scope.md) 写 `prototypes/index.html`。禁止写项目根 `index.html`、`versions/{v}/index.html` 或 `versions/{v}/prototypes/`，不写 `scope.html`。
+5. 按 `reference-shell-quick.md` 写/刷新各端 `index.html`：**只挂已落盘**的 `PAGE-*.html`。按 [`reference-scope.md`](reference-scope.md) 写 `prototypes/index.html`。禁止写项目根 `index.html`、`versions/{v}/index.html` 或 `versions/{v}/prototypes/`，不写 `scope.html`。
 6. 对全部目标页跑 UTF-8 脚本 + `verify-prototype-coverage.py` + `<skillDir>/modules/lny-prd-check/scripts/verify-artifact-paths.py` + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）；宿主依赖可用时，再运行 `render-prototype.mjs`、`score-visual-quality.mjs` 和 `verify-prototype-browser.mjs`。评分只用于定位问题。随后按 [`reference-visual-self-review.md`](reference-visual-self-review.md) 实际查看截图。单个可逆细节做目标区域快速检查，页面结构、视觉方向或多个区块变化时完成十项证据化自评，并运行 `validate-visual-review.py`。发现问题时继续修改并复验。首次交给用户看之前，即按 [`reference-visual-improvement.md`](reference-visual-improvement.md) 的「首次交付前的走查」和 [`../lny-prd-ui/reference/visual-consistency.md`](../lny-prd-ui/reference/visual-consistency.md) 检查真实画面，确认页面任务、内容密度、组件行为和状态语义成立，视觉差异只在影响任务或可读性时调整；可逆的视觉取舍由作者完成。发现具体问题时修改并对照复验；画面已支持目标任务时可直接交付并说明观察依据。浏览器依赖缺失须按上文披露。
 7. **清理临时文件**：删除本轮在 `prdRoot` 留下的辅助脚本/草稿/备份及空的 `scripts/` 等（见写产物纪律）；未建临时文件可跳过。
 8. 作者自检全部通过后按影响范围执行 **⑦/Q-P**。Q-P发现纯原型问题则本步同轮修复并重跑；发现规格问题则按总控回到②③④⑤与Q-S，再更新原型。Q-P通过后输出目标页、验收结果与未完成编号；只有当前目标需要正式评审时才进入⑧。

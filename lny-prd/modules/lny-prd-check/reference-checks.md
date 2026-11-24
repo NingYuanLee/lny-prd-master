@@ -105,7 +105,7 @@ Q-S执行第一、第三部分；Q-P执行第二部分；full依次执行。检�
 | 原型图文件存在性（建议） | 每个页面可有 `prototypes/{终端}/PAGE-{终端}-{序号}.html`；不作为规格阻塞项 | 运行 `$lny-prd`（⑥） | 低 |
 | 原型总入口 | 若已有任一端 `prototypes/{终端}/`：须有 `prototypes/index.html`（含简介正文 + 各端入口）；**不**再写 `scope.html` | 运行 `$lny-prd`（⑥）补总入口 | 中 |
 | 错位总入口 | 正式入口只在根 `prototypes/index.html`；项目根 `index.html`、`versions/{v}/index.html` 和 `versions/{v}/prototypes/index.html` 均禁止 | `$lny-prd` 迁移；删除须用户授权 | 高 |
-| 原型须有单页 PRD 来源 | 每个业务页原型 `prototypes/{终端}/PAGE-*.html`（不含各端 `index.html`/`map.html`、也不含 `prototypes/index.html`）须能对应到根 `pages_prd/{终端}/PAGE-*.md` 工作源；**例外**仅当台账或产物明确标注 **`ui直出`**（须可核对） | 缺来源则先跑 `$lny-prd`（⑤）补单页 PRD并过Q-S，再 `$lny-prd` | 中 |
+| 原型须有单页 PRD 来源 | 每个业务页原型 `prototypes/{终端}/PAGE-*.html`（不含各端 `index.html`、也不含 `prototypes/index.html`）须能对应到根 `pages_prd/{终端}/PAGE-*.md` 工作源；**例外**仅当台账或产物明确标注 **`ui直出`**（须可核对） | 缺来源则先跑 `$lny-prd`（⑤）补单页 PRD并过Q-S，再 `$lny-prd` | 中 |
 | 页面 ID | 每个根 `prototypes/{终端}/PAGE-*.html` 的 `<title>` 以文件名 PAGE ID 开头；终端目录与 PAGE ID 终端码一致 | `$lny-prd` 按当前规格修正根原型 | 高 |
 
 ---
@@ -118,7 +118,7 @@ Q-S执行第一、第三部分；Q-P执行第二部分；full依次执行。检�
 
 ### 无原型时的行为（必读）
 
-执行Q-P/full且 **不存在** 任何业务页 `prototypes/{终端}/PAGE-*.html`（不含仅有 `index.html`/`map.html`）时：
+执行Q-P/full且 **不存在** 任何业务页 `prototypes/{终端}/PAGE-*.html`（不含仅有 `index.html`）时：
 
 1. **跳过** 本节逐项对照（不编造失败项）。
 2. 输出 **一条** 须关注项：原型缺失，本轮功能性验收跳过；优先级 **中**（用户目标是演示则可升 **高**）。

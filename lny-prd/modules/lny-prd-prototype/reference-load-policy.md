@@ -16,7 +16,7 @@
 
 | 场景 | 再读取 |
 |---|---|
-| 壳层、总入口或关系图 | `reference-shell-quick.md`，失败后 `reference-shell.md` |
+| 壳层或总入口 | `reference-shell-quick.md`，失败后 `reference-shell.md` |
 | 规格覆盖或结构门禁失败 | `reference-quality.md` 对应章节 |
 | 视觉方向不清或需要返修 | `reference-visual-improvement.md`、`reference-visual-self-review.md` |
 | 图标缺失 | `reference-icons.md` |

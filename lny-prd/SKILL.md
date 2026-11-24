@@ -51,7 +51,7 @@ description: >-
 - `COMP-*` 作为 UI 模块中的跨页公共组件复用，页面原型实现必须读取被引用的组件明细。
 - `ui/visual/`、`COMP-*` 和可选的 `project-theme.css` 提供视觉参考与组件复用，详见 `modules/lny-prd-ui/reference/visual-consistency.md`。
 - 原型步骤默认按演示级高保真协议生成可直接打开的业务页面，包含真实感模拟数据、完整默认态和可操作反馈。具体规则按需加载 `modules/lny-prd-prototype/reference-demo-fidelity.md`。
-- 原型壳层、总入口和关系图使用技能内置的固定样式与交互，业务单页保持独立的视觉设计空间。
+- 原型壳层和总入口使用技能内置的固定样式与交互，业务单页保持独立的视觉设计空间。
 - 所有模块文档位于本技能目录内，`modules/` 下的 `SKILL.md` 是内部步骤说明，不是独立技能入口。
 
 ## 兼容调用

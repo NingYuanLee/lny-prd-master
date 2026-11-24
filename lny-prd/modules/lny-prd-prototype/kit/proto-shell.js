@@ -326,11 +326,6 @@
     ]);
     if (!sidebarOpen) sidebar.classList.add("collapsed");
 
-    var mapLink =
-      mode === "mobile"
-        ? el("a", { className: "proto-link", href: "./map.html", text: "关系图" })
-        : null;
-
     var appbar = el("header", { className: "proto-appbar" }, [
       el("button", {
         type: "button",
@@ -357,7 +352,6 @@
         },
       }, [icon("tune")]),
       el("div", { className: "proto-appbar__title", id: "protoTitle", text: "" }),
-      mapLink,
       el("button", {
         type: "button",
         className: "md-btn md-btn--text",

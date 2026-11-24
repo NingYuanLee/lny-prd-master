@@ -104,7 +104,6 @@ def main() -> int:
             "icons-extra.js",
             "md-icons.js",
             "mui-kit.css",
-            "proto-map.js",
             "proto-page.js",
             "proto-shell.css",
             "proto-shell.js",

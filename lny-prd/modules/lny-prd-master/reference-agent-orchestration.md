@@ -62,7 +62,7 @@
 | ③ API | 已锁定 API/EXT ID 后，每个 `api/API-*.md` 或 `api/EXT-*.md` 独占文件 | `api_spec.md` 索引/公共约定、跨接口冲突消解、台账状态和流水 |
 | ④ Feature | Module 边界与 Feature ID 锁定后，每个 `feature/FEATURE-*.md` 独占文件 | Module 定义、`feature_spec.md` 索引/依赖、跨 Feature AC 去重、台账状态和流水 |
 | ⑤ 单页 PRD | 每个 `pages_prd/{终端}/PAGE-*.md` 独占文件 | ⑤输入自检、桌面 `_shell`、跨页导航一致性、台账 `待⑤→已完成` |
-| ⑥ 原型 | kit、共享资产和页面输入就绪后，每个业务 `PAGE-*.html` 独占文件 | kit/共享 assets、终端 `index.html`/`map.html`、`prototypes/index.html`、跨页连线与整体验收 |
+| ⑥ 原型 | kit、共享资产和页面输入就绪后，每个业务 `PAGE-*.html` 独占文件 | kit/共享 assets、终端 `index.html`、`prototypes/index.html` 与整体验收 |
 | ⑦ 检查 | 路径/语义/原型/浏览器等只读检查维度；脚本互不写业务文件时可并行运行 | 去重、严重级排序、唯一 `NEXT_STEP_ROUTE`、Q-S/Q-P/full 总结论 |
 | ⑧ 评审 | 用户价值、范围、验收、风险、证据层等只读评审维度 | 唯一产品判断与结论包；确认后单写 `delivery_scope.md`、Feature 状态和批准快照 |
 | ⑨ SP | `sp-fe` 与 `sp-be` 并行；范围很大时可在两侧内部按 Feature 分波只返回明细 | 复用消重、校准、FE/BE 汇总、单写 `sp_report.md`，再单写刷新总入口 |

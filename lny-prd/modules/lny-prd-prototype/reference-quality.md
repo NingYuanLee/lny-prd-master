@@ -62,7 +62,7 @@ node <skillDir>/modules/lny-prd-prototype/scripts/verify-prototype-browser.mjs <
 | G3.9 | 无重复监听 | 同一操作无全局 click + 局部 onclick 两套 |
 | G3.10 | script 闭合 | 外部脚本均有 `</script>` |
 | G3.11 | 全局变量存在 | 页面调用的全局变量和资源均有定义 |
-| G3.12 | 壳层可用 | 使用壳层时导航、状态面板和关系图可操作 |
+| G3.12 | 壳层可用 | 使用壳层时导航和状态面板可操作 |
 | G3.13 | 资源引用 | 页面实际引用的本地资源均存在；使用套件控件时可引用 `mui-kit.css`，自有 CSS 页面不强制引用；移动页按需引用 `proto-page.js`；index 另引 shell；无 `prototypes-mui-app/`；无 `versions/` 副本 |
 | G3.14 | 业务图标 | 图标来源明确、资源可加载、语义可理解；允许项目自有 SVG、字体图标或其它实现 |
 | G3.15 | 控件可用 | 可点操作有明确语义、可识别热区和可见反馈；样式由项目 CSS、套件或浏览器原生控件决定 |
