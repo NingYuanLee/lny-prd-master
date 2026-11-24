@@ -46,3 +46,7 @@ A 类反馈不新增版本，不修改 `main_spec`、`ui_manifest`、`api_spec`�
 - 检查范围：目标页或受影响对象
 - 结果：完成 / 升级处理 / 待产品决策
 
+可先运行仓库根目录的 `python scripts/classify-change.py "反馈原文" --page-id PAGE-...` 获取初步类别和建议路径。关键词只用于分流，最终仍按“研发实现是否会改变”复核。
+
+会影响后续判断、产品事实或下游工作的反馈追加到当前项目的 `prototypes/.design-decisions/feedback-log.md`，格式见 [`reference-feedback-record.md`](reference-feedback-record.md)，并运行 `validate-feedback-record.py`。一次性可逆小改可以只在回复中说明修改和检查结果。
+

@@ -23,7 +23,7 @@ def main() -> int:
         return 1
     text = path.read_text(encoding="utf-8")
     errors: list[str] = []
-    if any(token in text for token in ("{位置与现象}", "{动作或理由}", "{首屏路径}", "{操作后路径}")):
+    if any(token in text for token in ("{位置与现象}", "{动作或理由}", "{首屏路径}", "{操作后路径}", "{修改前截图路径}", "{修改后截图路径}")):
         errors.append("review still contains template placeholders")
     if re.search(r"\|[^\n|]+\|\s*(?:清楚|合理|不错|ok|OK)\s*\|", text):
         errors.append("review uses a vague score without observable evidence")
@@ -33,6 +33,10 @@ def main() -> int:
         errors.append("actual screenshot inspection is not confirmed")
     if not re.search(r"截图证据：\s*[^\n；]+；[^\n；]+；[^\n]+", text):
         errors.append("three screenshot evidence paths are required")
+    if "修改前后对照：" in text and re.search(r"修改前后对照：\s*(?:无|待|未)", text):
+        errors.append("before and after comparison is empty")
+    if "修改前后对照：" in text and not re.search(r"修改前后对照：\s*[^→]+→[^；]+；变化区域：\s*[^\n]+", text):
+        errors.append("before and after comparison needs two paths and a changed area")
     scores: dict[str, int] = {}
     for dimension in DIMENSIONS:
         match = re.search(rf"\|\s*{re.escape(dimension)}\s*\|\s*([0-2])\s*\|", text)

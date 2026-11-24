@@ -29,12 +29,15 @@ REQUIRED_RUNTIME_FILES = (
     "modules/lny-prd-check/scripts/validate-prd-project.py",
     "modules/lny-prd-check/scripts/verify-artifact-paths.py",
     "modules/lny-prd-check/scripts/audit-fact-consistency.py",
+    "modules/lny-prd-check/scripts/audit-decision-walkthrough.py",
     "modules/lny-prd-prototype/scripts/copy-kit.py",
     "modules/lny-prd-prototype/scripts/verify-prototype-utf8.py",
     "modules/lny-prd-prototype/scripts/verify-prototype-coverage.py",
     "modules/lny-prd-prototype/scripts/verify-prototype-browser.mjs",
     "modules/lny-prd-prototype/scripts/validate-visual-review.py",
+    "modules/lny-prd-prototype/scripts/validate-feedback-record.py",
 )
+REQUIRED_REPO_TOOLS = ("scripts/classify-change.py", "scripts/run-regression.py")
 PROJECT_ARTIFACTS = {
     "main_spec.md",
     "ui_manifest.md",
@@ -168,9 +171,10 @@ def check_legacy_paths(errors: list[str]) -> None:
 
 
 def check_regression_runner(errors: list[str]) -> None:
-    path = ROOT / "scripts" / "run-regression.py"
-    if not path.is_file():
-        fail(errors, f"missing regression runner: {path}")
+    for relative in REQUIRED_REPO_TOOLS:
+        path = ROOT / relative
+        if not path.is_file():
+            fail(errors, f"missing repository tool: {path}")
 
 
 def main() -> int:

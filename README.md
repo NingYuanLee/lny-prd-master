@@ -23,6 +23,10 @@ lny-prd/
 
 `lny-prd/SKILL.md` 是唯一公开入口。`modules/*/SKILL.md` 是内部步骤说明，不单独安装或触发。
 
+当前工作流不是固定直线。路由图见 [`lny-prd/modules/lny-prd-master/reference-workflow-map.md`](lny-prd/modules/lny-prd-master/reference-workflow-map.md)。PM 视图压缩为理解与决策、规格与原型、自动验证、交付准备、发布学习五个阶段，内部模块仍按影响范围自动选取。
+
+小范围可逆修改按 [`lny-prd/modules/lny-prd-master/reference-flexible-execution.md`](lny-prd/modules/lny-prd-master/reference-flexible-execution.md) 走快速路径，不要求完整链或完整记录。
+
 ## 安装
 
 在 Windows 上从仓库根目录执行：
@@ -49,6 +53,8 @@ python .\scripts\run-regression.py
 ```
 
 第一条命令检查 bundle 元数据、入口 frontmatter、Agent 配置、内部模块路径、技能文档中的本地引用和脚本路径。第二条命令运行产品无关的运行时回归，验证 UTF-8、产物路径和 kit 复制，不读取固定业务页面，也不把任何视觉样例当作原型标准。
+
+原型反馈可先运行 `python .\scripts\classify-change.py "反馈原文" --page-id PAGE-...` 获取 A～D 影响分类和最小检查范围。反馈记录格式与视觉前后截图要求分别见 `lny-prd/modules/lny-prd-master/reference-feedback-record.md` 和 `lny-prd/modules/lny-prd-prototype/reference-visual-self-review.md`。
 
 ## 使用
 

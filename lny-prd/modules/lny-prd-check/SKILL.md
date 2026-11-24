@@ -23,6 +23,7 @@
 - 路径扫描器：`scripts/verify-artifact-paths.py`
 - 跨文档语义扫描器：`scripts/validate-prd-project.py`
 - 事实一致性扫描器：`scripts/audit-fact-consistency.py`
+- 决策兑现扫描器：`scripts/audit-decision-walkthrough.py`
 - 原型浏览器冒烟：`../modules/lny-prd-prototype/scripts/verify-prototype-browser.mjs`
 - 框架排除：`modules/lny-prd-master/framework-exclusions.md`
 

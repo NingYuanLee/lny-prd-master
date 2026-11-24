@@ -7,6 +7,10 @@
 
 原型反馈或局部修改先读取 [`reference-change-routing.md`](reference-change-routing.md)，按 A～D 分类后走最小必要写入和检查范围。
 
+规格和原型完成后按 [`reference-decision-walkthrough.md`](reference-decision-walkthrough.md) 自动对照前置产品决策走查。
+
+执行强度按 [`reference-flexible-execution.md`](reference-flexible-execution.md) 调整。小范围可逆修改走快速路径，不因为缺少正式记录或完整门禁停止。
+
 先检查 PRD 根目录：
 
 1. 无非隐藏文件时走立项。

@@ -10,6 +10,16 @@ description: >-
 
 模块输入、产物、写入边界和下一跳以 `modules/lny-prd-master/reference-module-contracts.md` 为公共索引。模块细节与模板仍以当前模块文件为准。
 
+规格和原型完成后按 [`modules/lny-prd-master/reference-decision-walkthrough.md`](modules/lny-prd-master/reference-decision-walkthrough.md) 自动对照最初产品决策走查。只有决策冲突、范围变化或不可逆取舍才请求产品确认。
+
+完整路由图见 [`modules/lny-prd-master/reference-workflow-map.md`](modules/lny-prd-master/reference-workflow-map.md)。
+
+执行弹性和检查强度按 [`modules/lny-prd-master/reference-flexible-execution.md`](modules/lny-prd-master/reference-flexible-execution.md) 判断。规则保护事实和决策，不要求每次输入都走完整链。
+
+对外按五个阶段理解工作流：理解与决策、规格与原型、自动验证、交付准备、发布学习。内部步骤按影响范围自动选取。
+
+“理解与决策”内部包含一个可选的探索讨论分支。明确反馈和证据充分时直接跳过，问题模糊、假设冲突或需要比较方案时进入 Discovery。
+
 ## 按需加载
 
 | 用户意图 | 读取模块 |

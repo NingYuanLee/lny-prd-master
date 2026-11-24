@@ -32,6 +32,8 @@
 - 原型视觉自评协议：[`reference-visual-self-review.md`](reference-visual-self-review.md)
 - 视觉自评记录校验：`<skillDir>/modules/lny-prd-prototype/scripts/validate-visual-review.py`
 - 原型反馈变更路由：[`../lny-prd-master/reference-change-routing.md`](../lny-prd-master/reference-change-routing.md)
+- 反馈记录模板：[`../lny-prd-master/reference-feedback-record.md`](../lny-prd-master/reference-feedback-record.md)
+- 反馈记录校验：`<skillDir>/modules/lny-prd-prototype/scripts/validate-feedback-record.py`
 - 演示级高保真协议：[`reference-demo-fidelity.md`](reference-demo-fidelity.md)
 - 框架排除：`modules/lny-prd-master/framework-exclusions.md`
 
@@ -157,7 +159,7 @@ node <skillDir>/modules/lny-prd-prototype/scripts/verify-prototype-browser.mjs <
 3. 复制 kit 到目标页涉及的每个 `prototypes/{终端}/assets/`（assets 已齐可跳过 copy-kit）。
 4. **逐页**：对该页完整 Read `pages_prd`（无则须 `ui直出`）+ `ui/PAGE-*` **§2.3 + §2.4** + COMP。视觉依据项目事实、PAGE §2.4 和设计判断实现，允许页面族或单页形成独立的视觉表达。按 [`reference-demo-fidelity.md`](reference-demo-fidelity.md) 组织与任务匹配的默认数据和用户文案。结构与交互契约以 ⑤ 的分区顺序和本页规格为准。写完立刻过 [`reference-quality.md`](reference-quality.md) **§G.4 / G.5**。禁止凭记忆、禁止把规格没写的功能画进页。
 5. 按 `reference-shell-quick.md` 写/刷新各端 `index.html`（及移动端 `map.html`）：**只挂已落盘**的 `PAGE-*.html`。按 [`reference-scope.md`](reference-scope.md) 写 `prototypes/index.html`。禁止写项目根 `index.html`、`versions/{v}/index.html` 或 `versions/{v}/prototypes/`，不写 `scope.html`。
-6. 对全部目标页跑 UTF-8 脚本 + `verify-prototype-coverage.py` + `<skillDir>/modules/lny-prd-check/scripts/verify-artifact-paths.py` + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）；宿主依赖可用时，再运行 `render-prototype.mjs`、`score-visual-quality.mjs` 和 `verify-prototype-browser.mjs`。评分只用于定位问题。随后必须按 [`reference-visual-self-review.md`](reference-visual-self-review.md) 实际查看截图，完成十项证据化自评，并运行 `validate-visual-review.py`。自评未通过时继续修改并复验，不得报告原型完成。首次交给用户看之前，即按 [`reference-visual-improvement.md`](reference-visual-improvement.md) 的「首次交付前的走查」和 [`../lny-prd-ui/reference/visual-consistency.md`](../lny-prd-ui/reference/visual-consistency.md) 检查真实画面，确认页面任务、内容密度、组件行为和状态语义成立，视觉差异只在影响任务或可读性时调整；可逆的视觉取舍由作者完成。发现具体问题时修改并对照复验；画面已支持目标任务时可直接交付并说明观察依据。浏览器依赖缺失须按上文披露。
+6. 对全部目标页跑 UTF-8 脚本 + `verify-prototype-coverage.py` + `<skillDir>/modules/lny-prd-check/scripts/verify-artifact-paths.py` + [`reference-quality.md`](reference-quality.md) §G 自检（含 kit 引用）；宿主依赖可用时，再运行 `render-prototype.mjs`、`score-visual-quality.mjs` 和 `verify-prototype-browser.mjs`。评分只用于定位问题。随后按 [`reference-visual-self-review.md`](reference-visual-self-review.md) 实际查看截图。单个可逆细节做目标区域快速检查，页面结构、视觉方向或多个区块变化时完成十项证据化自评，并运行 `validate-visual-review.py`。发现问题时继续修改并复验。首次交给用户看之前，即按 [`reference-visual-improvement.md`](reference-visual-improvement.md) 的「首次交付前的走查」和 [`../lny-prd-ui/reference/visual-consistency.md`](../lny-prd-ui/reference/visual-consistency.md) 检查真实画面，确认页面任务、内容密度、组件行为和状态语义成立，视觉差异只在影响任务或可读性时调整；可逆的视觉取舍由作者完成。发现具体问题时修改并对照复验；画面已支持目标任务时可直接交付并说明观察依据。浏览器依赖缺失须按上文披露。
 7. **清理临时文件**：删除本轮在 `prdRoot` 留下的辅助脚本/草稿/备份及空的 `scripts/` 等（见写产物纪律）；未建临时文件可跳过。
 8. 作者自检全部通过后，提示用户是否执行 **⑦/Q-P**。用户明确执行后，Q-P发现纯原型问题则本步同轮修复并重跑；发现规格问题则按总控回到②③④⑤与Q-S，再更新原型。Q-P通过后输出目标页、验收结果与未完成编号，并询问产品是否进入⑧评审。
 
