@@ -126,5 +126,5 @@ flowchart TD
 | “库存字段改成可选” | D → API/Feature 正本 → 下游同步 → Q-S → Prototype → Q-P |
 | “用户反馈注册后留存下降” | Learning → 证据与假设 → 按影响范围回流 |
 | “继续” | 从最早未完成且与当前目标相关的责任步骤恢复 |
-| “完整做完并评审” | 必要规格 → Page → Q-S → Prototype → Q-P → ⑧ |
+| “完整做完并评审” | 必要规格 → Page → Q-S → Prototype → Q-P → 自动走查 → ⑧ |
 

@@ -166,7 +166,7 @@ node <skillDir>/modules/lny-prd-prototype/scripts/verify-prototype-browser.mjs <
 
 ## 基础模型视觉基线
 
-原型逐页读取 `../lny-prd-ui/reference-visual-baseline.md`。页面完成后使用 `render-prototype.mjs` 保留截图，再用 `score-visual-quality.mjs` 检查首屏主次、层级、密度、横向溢出、图片比例、移动端滚动、桌面端对齐、空态和失败态。随后必须实际查看截图并完成视觉自评协议。发现明显问题先修复，再报告原型完成。Q-P 仍是用户可选择的正式门禁。
+原型逐页读取 `../lny-prd-ui/reference-visual-baseline.md`。页面完成后使用 `render-prototype.mjs` 保留截图，再用 `score-visual-quality.mjs` 检查首屏主次、层级、密度、横向溢出、图片比例、移动端滚动、桌面端对齐、空态和失败态。随后按影响范围实际查看截图并完成视觉自评协议。发现明显问题先修复，再报告原型完成。Q-P 是内部自动验证，只有当前目标需要正式评审时才进入⑧。
 
 ## 按场景读取原型规则
 
