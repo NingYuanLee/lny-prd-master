@@ -34,6 +34,31 @@ def command_version(command: str) -> str | None:
     return output[0] if output else "available"
 
 
+def global_node_root() -> Path | None:
+    npm = shutil.which("npm")
+    if not npm:
+        return None
+    try:
+        result = subprocess.run([npm, "root", "--global"], capture_output=True, text=True, timeout=3)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    value = result.stdout.strip()
+    return Path(value) if value else None
+
+
+def package_version(root: Path | None, name: str) -> str | None:
+    if root is None:
+        return None
+    package = root / name / "package.json"
+    if not package.is_file():
+        return None
+    try:
+        data = json.loads(package.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return "available"
+    return str(data.get("version", "available"))
+
+
 def load_declared_capabilities(path: str | None) -> dict:
     raw = path or os.environ.get("LNY_PRD_HOST_CAPABILITIES")
     if not raw:
@@ -54,10 +79,24 @@ def main() -> int:
     args = parser.parse_args()
 
     declared = load_declared_capabilities(args.capabilities)
+    node_root = global_node_root()
     commands = {}
     for command in ("python", "node", "npm", "git", "pwsh", "playwright", "chromium", "google-chrome", "msedge"):
         version = command_version(command)
         commands[command] = {"status": "available" if version else "unknown", "version": version}
+    for package_name in ("playwright", "pngjs"):
+        version = package_version(node_root, package_name)
+        commands[f"node-package:{package_name}"] = {
+            "status": "available" if version else "unknown",
+            "version": version,
+            "global_root": str(node_root) if node_root else None,
+        }
+    browser_cache = Path(os.environ.get("LOCALAPPDATA", "")) / "ms-playwright"
+    commands["playwright-browser-cache"] = {
+        "status": "available" if (browser_cache / "chromium-1255").is_dir() or any(browser_cache.glob("chromium-*")) else "unknown",
+        "version": None,
+        "path": str(browser_cache),
+    }
 
     hosts = {}
     declared_hosts = declared.get("hosts", {}) if isinstance(declared, dict) else {}
