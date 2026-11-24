@@ -29,6 +29,16 @@ lny-prd/
 
 宿主能力可用 `python .\scripts\probe-host-capabilities.py --json` 探测。探测器识别 Codex/ChatGPT、Claude Code、Cursor、DeepSeek Harness、WorkBuddy、豆包工作、千问办公和 Trae 等宿主，`unknown` 只表示未被当前探测器确认，不表示能力不存在。
 
+浏览器验收依赖建议安装在用户级宿主环境，供多个 Agent 共用，不要安装到 PRD 项目：
+
+```powershell
+npm install --global playwright pngjs
+playwright install chromium
+[Environment]::SetEnvironmentVariable('NODE_PATH', (npm root --global), 'User')
+```
+
+安装后重新打开 Agent 进程，再运行 `python .\scripts\probe-host-capabilities.py --json --self-check` 确认运行时能力。
+
 ## 安装
 
 在 Windows 上从仓库根目录执行：
