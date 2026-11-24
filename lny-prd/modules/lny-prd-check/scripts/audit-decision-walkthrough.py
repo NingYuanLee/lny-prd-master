@@ -100,11 +100,11 @@ def main() -> int:
     checks.append({"id": "visual_and_behavioral_verification", "status": "delegated", "owner": "Q-S/Q-P and visual self-review"})
 
     result = {
-        "status": "failed" if errors else "passed",
+        "status": "failed" if errors else "passed_core_checks",
         "decision_contract": contract.relative_to(root).as_posix(),
         "decision_status": status,
         "checks": checks,
-        "next_route": "repair_decision_or_artifact_refs" if errors else "continue_or_prepare_delivery",
+        "next_route": "repair_decision_or_artifact_refs" if errors else "run_qs_qp_before_delivery",
         "errors": errors,
     }
     if args.report:
@@ -116,7 +116,7 @@ def main() -> int:
         for error in errors:
             print(f"- {error}")
         return 1
-    print(f"DECISION_WALKTHROUGH: passed ({contract.relative_to(root).as_posix()})")
+    print(f"DECISION_WALKTHROUGH: passed_core_checks; Q-S/Q-P delegated ({contract.relative_to(root).as_posix()})")
     return 0
 
 
